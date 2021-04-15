@@ -4,7 +4,9 @@ local RoactRouter = require(game.ReplicatedStorage.Packages.RoactRouter)
 
 local EnvironmentSetup = require(game.ReplicatedStorage.RobeatsGameCore.EnvironmentSetup)
 
-local TestComponent = require(game.ReplicatedStorage.UI.Components.TestComponent)
+local Components = game.ReplicatedStorage.UI.Components
+
+local TestComponent = require(Components.TestComponent)
 
 local RoactController = Knit.CreateController({
     Name = "RoactController"
@@ -14,15 +16,19 @@ function RoactController:KnitStart()
     self:MountRoactNodes()
 end
 
-function RoactController:MountRoactNodes()
-    local routes = {
+function RoactController:GetRoutes()
+    return {
         Main = Roact.createElement(RoactRouter.Route, {
             path = "/",
             component = TestComponent
         })
     }
+end
 
-    local router = Roact.createElement(TestComponent, {
+function RoactController:MountRoactNodes()
+    local routes = self:GetRoutes()
+
+    local router = Roact.createElement(RoactRouter.Router, {
         initialEntries = { "/" },
         initialIndex = 1
     }, routes)
