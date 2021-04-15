@@ -7,7 +7,12 @@ local TestComponent = Roact.Component:extend("TestComponent")
 function TestComponent:render()
     return Roact.createElement(RoundedTextButton, {
         Size = UDim2.fromScale(1, 1),
-        Text = "Hello World!"
+        Text = "Hello World!",
+        TextColor3 = Color3.fromRGB(255, 255, 255),
+        HighlightBackgroundColor3 = Color3.fromRGB(212, 6, 219),
+        OnClick = function()
+            print("kek")
+        end
     })
 end
 
