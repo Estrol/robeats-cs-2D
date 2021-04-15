@@ -4,7 +4,6 @@ local RoundedFrame = Roact.Component:extend("Button")
 
 RoundedFrame.defaultProps = {
     Size = UDim2.fromScale(1, 1),
-    Font = Enum.Font.GothamSemibold;
     BackgroundColor3 = Color3.fromRGB(29, 29, 29);
 }
 
