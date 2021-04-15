@@ -1,6 +1,6 @@
 local DatastoreSerializer = require(game.ReplicatedStorage.Serialization.Datastore)
 local SPUtil = require(game.ReplicatedStorage.Shared.SPUtil)
-local Signal = require(game.ReplicatedStorage.Packages.Signal)
+local Signal = require(game.ReplicatedStorage.Knit.Util.Signal)
 local DebugOut = require(game.ReplicatedStorage.Shared.DebugOut)
 
 --[[

@@ -13,7 +13,6 @@ EnvironmentSetup.Mode = {
 local _game_environment
 local _element_protos_folder
 local _local_elements_folder
-local _menu_protos_folder
 local _player_gui
 
 function EnvironmentSetup:initial_setup()
@@ -27,12 +26,6 @@ function EnvironmentSetup:initial_setup()
 	
 	_local_elements_folder = Instance.new("Folder",game.Workspace)
 	_local_elements_folder.Name = "LocalElements"
-	
-	_menu_protos_folder = game.StarterGui.MenuProtos
-	_menu_protos_folder.Parent = nil
-	for _,child in pairs(game.StarterGui.DebugUI:GetChildren()) do
-		child.Parent = _menu_protos_folder
-	end
 	
 	_player_gui = Instance.new("ScreenGui")
 	_player_gui.Parent = game.Players.LocalPlayer.PlayerGui
@@ -66,10 +59,6 @@ end
 
 function EnvironmentSetup:get_local_elements_folder()
 	return _local_elements_folder
-end
-
-function EnvironmentSetup:get_menu_protos_folder()
-	return _menu_protos_folder
 end
 
 function EnvironmentSetup:get_player_gui_root()

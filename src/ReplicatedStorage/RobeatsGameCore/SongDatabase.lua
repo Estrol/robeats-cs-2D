@@ -16,17 +16,6 @@ local DebugOut = require(game.ReplicatedStorage.Shared.DebugOut)
 
 local SongDatabase = {}
 
-local invalid_require_error_message = [[
-	There is an error in one of the song modules!
-	Usually this is caused by a wacky require call in the module (this should never happen), or because there is no return statement at the end of the song module (song modules should end with "return rtv").
-
-	If there is still an issue please contact one of the game's maintainers.
-
-	Stack trace:
-
-	%s
-]]
-
 SongDatabase.SongMode = {
 	Normal = 0;
 	SupporterOnly = 1;
@@ -45,22 +34,12 @@ function SongDatabase:new()
 
 	local _all_keys = SPList:new()
 
-	local _get_maps
-	local _get_hit_data
-
 	function self:cons()
-
-		_get_maps = Remotes.Client:Get("GetMaps")
-		_get_hit_data = Remotes.Client:Get("GetHitData")
-		local succeeded, maps = _get_maps:CallServerAsync():await()
-
-		if not succeeded then
-			error("Oh no! Something went wrong when trying to get the map data.")
-		end
+		local maps = workspace:WaitForChild("SongMaps"):GetChildren()
 
 		for _, map in ipairs(maps) do
-			-- SongErrorParser:scan_audiodata_for_errors(audio_data)
-
+			local audio_data = require(map)
+			SongErrorParser:scan_audiodata_for_errors(audio_data)
 			_all_keys:push_back(map)
 		end
 	end

@@ -1,1 +1,0 @@
-game.Players.CharacterAutoLoads = false
