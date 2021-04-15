@@ -1,4 +1,5 @@
 local Roact = require(game.ReplicatedStorage.Packages.Roact)
+local Llama = require(game.ReplicatedStorage.Packages.Llama)
 local Flipper = require(game.ReplicatedStorage.Packages.Flipper)
 local RoactFlipper = require(game.ReplicatedStorage.Packages.RoactFlipper)
 
@@ -106,12 +107,13 @@ function RoundedTextButton:render()
         [Roact.Event.MouseButton1Click] = self.props.OnClick;
     }
 
-    return Roact.createElement("TextButton", props, {
+    local children = Llama.Dictionary.join(self.props[Roact.Children], {
         Corner = Roact.createElement("UICorner", {
             CornerRadius = UDim.new(0,4);
         });
-        Cdrn = Roact.createFragment(self.props[Roact.Children]);
     })
+
+    return Roact.createElement("TextButton", props, children)
 end
 
 return RoundedTextButton
