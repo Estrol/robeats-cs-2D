@@ -6,7 +6,7 @@ local function game_init()
     Knit.AddServices(game.ServerScriptService.Services)
 
     Knit.Start():Then(function()
-        print("Knit running")
+        print("Knit successfully started(server)")
     end):Catch(function(err)
         warn(err)
     end)

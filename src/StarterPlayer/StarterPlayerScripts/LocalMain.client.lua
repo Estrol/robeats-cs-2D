@@ -15,7 +15,7 @@ local function game_init()
 	EnvironmentSetup:initial_setup()
 
 	Knit.Start():Then(function()
-		print("Knit running")
+		print("Knit successfully started(client)")
 	end):Catch(function(err)
 		warn(err)
 	end)
