@@ -29,7 +29,7 @@ function EnvironmentSetup:initial_setup()
 	
 	_player_gui = Instance.new("ScreenGui")
 	_player_gui.Parent = game.Players.LocalPlayer.PlayerGui
-	_player_gui.IgnoreGuiInset = true
+	_player_gui.IgnoreGuiInset = false
 	_player_gui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
 	--LOAD SETTINGS

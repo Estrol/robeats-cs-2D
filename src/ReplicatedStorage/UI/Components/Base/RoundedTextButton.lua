@@ -62,6 +62,7 @@ function RoundedTextButton:render()
         TextXAlignment = self.props.TextXAlignment;
         TextYAlignment = self.props.TextYAlignment;
         AutoButtonColor = false;
+        LayoutOrder = self.props.LayoutOrder;
         Size = self.motorBinding:map(function(a)
             local shrinkByX = self.props.suppressXAxis and 0 or self.props.ShrinkBy*a.tap
             local shrinkByY = self.props.suppressYAxis and 0 or self.props.ShrinkBy*a.tap

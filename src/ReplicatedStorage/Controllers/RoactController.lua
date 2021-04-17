@@ -4,9 +4,9 @@ local RoactRouter = require(game.ReplicatedStorage.Packages.RoactRouter)
 
 local EnvironmentSetup = require(game.ReplicatedStorage.RobeatsGameCore.EnvironmentSetup)
 
-local Components = game.ReplicatedStorage.UI.Components
+local Screens = game.ReplicatedStorage.UI.Screens
 
-local TestComponent = require(Components.TestComponent)
+local SongSelect = require(Screens.SongSelect)
 
 local RoactController = Knit.CreateController({
     Name = "RoactController"
@@ -20,7 +20,7 @@ function RoactController:GetRoutes()
     return {
         Main = Roact.createElement(RoactRouter.Route, {
             path = "/",
-            component = TestComponent
+            component = SongSelect
         })
     }
 end

@@ -1,16 +1,8 @@
 local SPList = require(game.ReplicatedStorage.Shared.SPList)
-local SPDict = require(game.ReplicatedStorage.Shared.SPDict)
-local SPUtil = require(game.ReplicatedStorage.Shared.SPUtil)
-local TryRequire = require(game.ReplicatedStorage.Shared.TryRequire)
-local SongErrorParser = require(game.ReplicatedStorage.RobeatsGameCore.SongErrorParser)
 
-local Remotes = require(game.ReplicatedStorage.Remotes)
+local Promise = require(game.ReplicatedStorage.Knit.Util.Promise)
 
-local Promise = require(game.ReplicatedStorage.Packages.Promise)
-
-local DebugOut = require(game.ReplicatedStorage.Shared.DebugOut)
-
--- local SongMapList = string.split(game.Workspace.SongMapList.Value, "\n")
+local SongMapList = require(workspace.Songs.SongMapList)
 
 -- local SongMaps = workspace:WaitForChild("SongMaps")
 
@@ -30,30 +22,19 @@ SongDatabase.SongType = {
 
 function SongDatabase:new()
 	local self = {}
+
 	self.SongMode = SongDatabase.SongMode
 
-	local _all_keys = SPList:new()
-
-	function self:cons()
-		local maps = workspace:WaitForChild("SongMaps"):GetChildren()
-
-		for _, map in ipairs(maps) do
-			local audio_data = require(map)
-			SongErrorParser:scan_audiodata_for_errors(audio_data)
-			_all_keys:push_back(map)
-		end
-	end
-
 	function self:key_itr()
-		return ipairs(_all_keys._table)
+		return pairs(SongMapList)
 	end
 
 	function self:get_data_for_key(key)
-		return _all_keys:get(key)
+		return require(SongMapList[key])
 	end
 
 	function self:contains_key(key)
-		return _all_keys:get(key) ~= nil
+		return SongMapList[key] ~= nil
 	end
 
 	function self:key_get_audiomod(key)
@@ -98,17 +79,22 @@ function SongDatabase:new()
 		local songdata = self:get_data_for_key(key)
 		return songdata.AudioDescription
 	end
-
+	
 	function self:get_song_length_for_key(key)
 		local data = self:get_data_for_key(key)
 		local last_hit_ob = data.HitObjects[#data.HitObjects]
-
+		
 		return last_hit_ob.Time + (last_hit_ob.Duration or 0)
 	end
-
+	
 	function self:get_song_type_for_key(key)
 		--hey regen leave this method empty, i'll keep workin on it - astral
 		return
+	end
+	
+	function self:get_image_for_key(key)
+		local songdata = self:get_data_for_key(key)
+		return songdata.AudioCoverImageAssetId
 	end
 
 	function self:get_search_string_for_key(key)
@@ -125,20 +111,29 @@ function SongDatabase:new()
 		return ""
 	end
 
+	function self:get_note_metrics_for_key(key)
+		local data = self:get_data_for_key(key)
+		local total_notes = 0
+		local total_holds = 0
+
+		for _, hit_object in pairs(data.HitObjects) do
+			if hit_object.Type == 1 then
+				total_notes += 1
+			elseif hit_object.Type == 2 then
+				total_holds += 1
+			end
+		end
+
+		return total_notes, total_holds
+	end
+
 	function self:get_hit_objects_for_key(key)
 		local data = self:get_data_for_key(key)
-		return Promise.new(function(resolve, reject)
-			if data.HitObjects then
-				resolve(data.HitObjects)
-				return
-			end
-			resolve(_get_hit_data:CallServerAsync(data._id))
-		end)
+		return data.HitObjects
 	end
 	
 	function self:invalid_songkey() return -1 end
 
-	self:cons()
 	return self
 end
 
