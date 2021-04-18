@@ -2,23 +2,24 @@ local Roact = require(game.ReplicatedStorage.Packages.Roact)
 
 local SPUtil = require(game.ReplicatedStorage.Shared.SPUtil)
 
-local LeaderboardSlot = require(game.ReplicatedStorage.Client.Components.Screens.SongSelect.LeaderboardSlot)
+local LeaderboardSlot = require(game.ReplicatedStorage.UI.Screens.SongSelect.LeaderboardSlot)
 
 return function(target)
-    local userid = 526993347
-    local name = SPUtil:player_name_from_id(userid)
+    local UserId = 526993347
+    local name = "kisperal"
     local testApp = Roact.createElement(LeaderboardSlot, {
-        userid = userid,
-        playername = name,
-        marvelouses = 6,
-        perfects = 5,
-        greats = 4,
-        goods = 3,
-        bads = 2,
-        misses = 1,
-        time = 8596444113,
-        accuracy = 82,
-        place = 1
+        UserId = UserId,
+        PlayerName = name,
+        Score = 0,
+        Marvelouses = 6,
+        Perfects = 5,
+        Greats = 4,
+        Goods = 3,
+        Bads = 2,
+        Misses = 1,
+        Time = 8596444113,
+        Accuracy = 82,
+        Place = 1
     })
 
     local fr = Roact.mount(testApp, target)
