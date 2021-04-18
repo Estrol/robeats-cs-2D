@@ -1,5 +1,8 @@
 local Roact = require(game.ReplicatedStorage.Packages.Roact)
 
+local RoundedTextLabel =  require(game.ReplicatedStorage.UI.Components.Base.RoundedTextLabel)
+local RoundedImageLabel = require(game.ReplicatedStorage.UI.Components.Base.RoundedImageLabel)
+
 local SPUtil = require(game.ReplicatedStorage.Shared.SPUtil)
 
 local LeaderboardSlot = Roact.Component:extend("LeaderboardSlot")
@@ -17,29 +20,26 @@ function LeaderboardSlot:render()
         BorderMode = Enum.BorderMode.Inset,
         BorderSizePixel = 0,
         Size = UDim2.new(0.982, 0, 0.3, 25),
-        LayoutOrder = self.props.place
+        LayoutOrder = self.props.Place
     }, {
-        UserThumbnail = Roact.createElement("ImageLabel", {
+        UserThumbnail = Roact.createElement(RoundedImageLabel, {
             AnchorPoint = Vector2.new(0, 0.5),
             BackgroundColor3 = Color3.fromRGB(255, 255, 255),
             Position = UDim2.new(0.025, 0, 0.5, 0),
             Size = UDim2.new(0.07, 0, 0.75, 0),
-            Image = string.format("https://www.roblox.com/headshot-thumbnail/image?userId=%d&width=420&height=420&format=png", self.props.userid)
+            Image = string.format("https://www.roblox.com/headshot-thumbnail/image?userid=%d&width=420&height=420&format=png", self.props.UserId)
         }, {
             Roact.createElement("UIAspectRatioConstraint", {
                 AspectType = Enum.AspectType.ScaleWithParentSize,
                 DominantAxis = Enum.DominantAxis.Height,
             }),
-            Roact.createElement("UICorner", {
-                CornerRadius = UDim.new(0, 4),
-            }),
-            Place = Roact.createElement("TextLabel", {
+            Place = Roact.createElement(RoundedTextLabel, {
                 BackgroundColor3 = Color3.fromRGB(54, 54, 54),
                 BorderSizePixel = 0,
                 Position = UDim2.new(0.0963930413, 0, 0.0963930413, 0),
                 Size = UDim2.new(0.6, 0, 0.3, 0),
                 Font = Enum.Font.GothamBold,
-                Text = string.format("#%d", self.props.place),
+                Text = string.format("#%d", self.props.Place),
                 TextColor3 = Color3.fromRGB(204, 204, 8),
                 TextScaled = true,
             }, {
@@ -47,18 +47,15 @@ function LeaderboardSlot:render()
                     MaxTextSize = 13,
                     MinTextSize = 7,
                 }),
-                Roact.createElement("UICorner", {
-                    CornerRadius = UDim.new(0, 4),
-                })
             }),
-            Data = Roact.createElement("TextLabel", {
+            Data = Roact.createElement(RoundedTextLabel, {
                 BackgroundColor3 = Color3.fromRGB(255, 255, 255),
                 BackgroundTransparency = 1,
                 BorderSizePixel = 0,
                 Position = UDim2.new(1.24999988, 0, 0.600000143, 0),
                 Size = UDim2.new(12.7336206, 0, 0.349999994, 0),
                 Font = Enum.Font.GothamSemibold,
-                Text = string.format("Score: %d | %d / %d / %d / %d / %d / %d", self.props.score, self.props.marvelouses, self.props.perfects, self.props.greats, self.props.goods, self.props.bads, self.props.misses),
+                Text = string.format("Score: %d | %d / %d / %d / %d / %d / %d", self.props.Score, self.props.Marvelouses, self.props.Perfects, self.props.Greats, self.props.Goods, self.props.Bads, self.props.Misses),
                 TextColor3 = Color3.fromRGB(255, 255, 255),
                 TextScaled = true,
                 TextXAlignment = Enum.TextXAlignment.Left,
@@ -68,14 +65,14 @@ function LeaderboardSlot:render()
                     MinTextSize = 3,
                 })
             }),
-            Player = Roact.createElement("TextLabel", {
+            Player = Roact.createElement(RoundedTextLabel, {
                 BackgroundColor3 = Color3.fromRGB(255, 255, 255),
                 BackgroundTransparency = 1,
                 BorderSizePixel = 0,
                 Position = UDim2.new(1.25, 0, 0, 0),
                 Size = UDim2.new(15.3386288, 0, 0.550000012, 0),
                 Font = Enum.Font.GothamSemibold,
-                Text = self.props.playername,
+                Text = self.props.PlayerName,
                 TextColor3 = Color3.fromRGB(145, 145, 145),
                 TextScaled = true,
                 TextXAlignment = Enum.TextXAlignment.Left,
@@ -84,14 +81,14 @@ function LeaderboardSlot:render()
                     MaxTextSize = 26,
                 })
             });
-            Accuracy = Roact.createElement("TextLabel", {
+            Accuracy = Roact.createElement(RoundedTextLabel, {
                 BackgroundColor3 = Color3.fromRGB(255, 255, 255),
                 BackgroundTransparency = 1,
                 BorderSizePixel = 0,
                 Position = UDim2.new(10, 0, 0.22, 0),
                 Size = UDim2.new(1.5, 0, 0.550000012, 0),
                 Font = Enum.Font.GothamSemibold,
-                Text = string.format("%0.2f%%", self.props.accuracy),
+                Text = string.format("%0.2f%%", self.props.Accuracy),
                 TextColor3 = Color3.fromRGB(145, 145, 145),
                 TextScaled = true,
                 TextXAlignment = Enum.TextXAlignment.Left,
