@@ -1,18 +1,11 @@
-local SongDatabase = require(game.ReplicatedStorage.RobeatsGameCore.SongDatabase)
 local Roact = require(game.ReplicatedStorage.Packages.Roact)
 
-local NpsGraph = require(game.ReplicatedStorage.Client.Components.Graph.NpsGraph)
-
-local SongButton = require(game.ReplicatedStorage.Client.Components.Screens.SongSelect.SongButton)
+local SongButton = require(game.ReplicatedStorage.UI.Screens.SongSelect.SongButton)
 
 return function(target)
     local testApp = Roact.createElement(SongButton, {
-        song_key = 1,
-        artist = "hello",
-        title = "it's me",
-        difficulty = 1,
-        image = "",
-        on_click = function(song_key)
+        SongKey = 1,
+        OnClick = function(song_key)
             print(song_key)
         end
     })
