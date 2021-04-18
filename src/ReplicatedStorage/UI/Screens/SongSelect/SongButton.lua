@@ -1,35 +1,22 @@
-local SongDatabase = require(game.ReplicatedStorage.RobeatsGameCore.SongDatabase)
 local Roact = require(game.ReplicatedStorage.Packages.Roact)
+local SongDatabase = require(game.ReplicatedStorage.RobeatsGameCore.SongDatabase)
 
 local Flipper = require(game.ReplicatedStorage.Packages.Flipper)
 local RoactFlipper = require(game.ReplicatedStorage.Packages.RoactFlipper)
 
-local SPUtil = require(game.ReplicatedStorage.Shared.SPUtil)
-local Gradient = require(game.ReplicatedStorage.Shared.Gradient)
-
 local RoundedTextButton = require(game.ReplicatedStorage.UI.Components.Base.RoundedTextButton)
-
-local NpsGraph = require(game.ReplicatedStorage.Client.Components.Graph.NpsGraph)
 
 local SongButton = Roact.Component:extend("SongButton")
 
 local function noop() end
 
+SongButton.defaultProps = {
+    OnClick = noop
+}
+
 function SongButton:init()
     self.motor = Flipper.SingleMotor.new(0)
     self.motorBinding = RoactFlipper.getBinding(self.motor)
-
-    self.on_click = self.props.on_click or noop
-end
-
-function SongButton:getGradient()
-    local gradient = Gradient:new()
-
-    for i = 0, 1, 0.1 do
-        gradient:add_number_keypoint(i, 1-i)
-    end
-
-    return gradient:number_sequence()
 end
 
 function SongButton:didMount()
@@ -40,28 +27,31 @@ function SongButton:didMount()
 end
 
 function SongButton:render()
-    return Roact.createElement(Button, {
+    if SongDatabase:contains_key(self.props.SongKey) == false then
+        return nil
+    end
+
+    return Roact.createElement(RoundedTextButton, {
         BackgroundTransparency = self.motorBinding:map(function(a)
             return math.clamp(1-a, 0, 0.58)
         end);
         BackgroundColor3 = Color3.fromRGB(15, 15, 15),
         BorderMode = Enum.BorderMode.Inset,
         BorderSizePixel = 0,
-        Size = UDim2.new(1, 0, 0, 120),
-        onActivated = function()
-            self.on_click(self.props.song_key)
+        Position = self.props.Position,
+        Size = UDim2.new(1, 0, 0, 75),
+        OnClick = function()
+            self.props.OnClick(self.props.SongKey)
         end;
+        AnchorPoint = self.props.AnchorPoint,
         Text = "";
-        shrinkBy = 0.000001;
-        LayoutOrder = self.props.LayoutOrder;
+        HoldSize = UDim2.new(0.98, 0, 0, 72);
+        ZIndex = 4;
+        LayoutOrder = self.props.SongKey;
     }, {
-        Roact.createElement("UICorner", {
-            CornerRadius = UDim.new(0, 4),
-        }),
-        Roact.createElement("UIAspectRatioConstraint", {
-            AspectRatio = 11,
-            AspectType = Enum.AspectType.ScaleWithParentSize,
-        }),
+        -- Roact.createElement("UIAspectRatioConstraint", {
+        --     AspectRatio = 8
+        -- }),
         Roact.createElement("ImageLabel", {
             Name = "SongCover",
             AnchorPoint = Vector2.new(1, 0.5),
@@ -70,10 +60,15 @@ function SongButton:render()
             Position = UDim2.new(1, 0, 0.5, 0),
             Size = UDim2.new(0.5, 0, 1, 0),
             ScaleType = Enum.ScaleType.Crop,
-            Image = self.props.image
+            Image = SongDatabase:get_image_for_key(self.props.SongKey)
         }, {
             Roact.createElement("UIGradient", {
-                Transparency = self:getGradient()
+                Transparency = NumberSequence.new({
+                    NumberSequenceKeypoint.new(0, 0),
+                    NumberSequenceKeypoint.new(0.75, 0.9),
+                    NumberSequenceKeypoint.new(1, 1)
+                }),
+                Rotation = 180
             }),
             Roact.createElement("UICorner", {
                 CornerRadius = UDim.new(0, 4),
@@ -87,7 +82,7 @@ function SongButton:render()
             Position = UDim2.new(0.0199999847, 0, 0.5, 0),
             Size = UDim2.new(0.462034643, 0, 0.330079168, 0),
             Font = Enum.Font.GothamSemibold,
-            Text = string.format("Difficulty: %d", self.props.difficulty),
+            Text = string.format("Difficulty: %d", SongDatabase:get_difficulty_for_key(self.props.SongKey)),
             TextColor3 = Color3.fromRGB(255, 255, 255),
             TextScaled = true,
             TextSize = 16,
@@ -104,11 +99,11 @@ function SongButton:render()
             BackgroundColor3 = Color3.fromRGB(255, 255, 255),
             BackgroundTransparency = 1,
             BorderSizePixel = 0,
-            Position = UDim2.new(0.0199999996, 0, 0.100000001, 0),
+            Position = UDim2.new(0.02, 0, 0.1, 0),
             Selectable = true,
             Size = UDim2.new(0.45, 0, 0.400000006, 0),
             Font = Enum.Font.GothamBold,
-            Text = string.format("%s - %s", self.props.title, self.props.artist),
+            Text = string.format("%s - %s", SongDatabase:get_title_for_key(self.props.SongKey), SongDatabase:get_artist_for_key(self.props.SongKey)),
             TextColor3 = Color3.fromRGB(255, 208, 87),
             TextScaled = true,
             TextSize = 26,
@@ -118,8 +113,7 @@ function SongButton:render()
             Roact.createElement("UITextSizeConstraint", {
                 MaxTextSize = 26,
             })
-        }),
-        
+        })
     })
 end
 
