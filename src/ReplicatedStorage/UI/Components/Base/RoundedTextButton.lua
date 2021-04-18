@@ -13,7 +13,7 @@ RoundedTextButton.defaultProps = {
     Text = "RoundedTextButton";
     TextSize = 18;
     BackgroundColor3 = Color3.fromRGB(29, 29, 29);
-    ShrinkBy = 0.1;
+    HoldSize = UDim2.fromScale(0.8, 0.8);
     HighlightBackgroundColor3 = Color3.fromRGB(17, 17, 17);
     OnPress = noop;
     OnRelease = noop
@@ -64,9 +64,7 @@ function RoundedTextButton:render()
         AutoButtonColor = false;
         LayoutOrder = self.props.LayoutOrder;
         Size = self.motorBinding:map(function(a)
-            local shrinkByX = self.props.suppressXAxis and 0 or self.props.ShrinkBy*a.tap
-            local shrinkByY = self.props.suppressYAxis and 0 or self.props.ShrinkBy*a.tap
-            return self.props.Size - UDim2.fromScale(shrinkByX, shrinkByY)
+            return self.props.Size:Lerp(self.props.HoldSize, a.tap)
         end);
         BackgroundColor3 = self.motorBinding:map(function(a)
             return self.props.BackgroundColor3:Lerp(self.props.HighlightBackgroundColor3, a.tap)
