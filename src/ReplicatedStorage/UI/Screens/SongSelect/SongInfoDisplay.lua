@@ -151,7 +151,7 @@ function SongInfoDisplay:render()
                 SortOrder = Enum.SortOrder.LayoutOrder,
                 FillDirection = Enum.FillDirection.Horizontal,
                 FillDirectionMaxCells = 2,
-                CellSize = UDim2.fromScale(0.18, 0.3)
+                CellSize = UDim2.fromScale(0.1, 0.3)
             }),
             DifficultyDisplay = Roact.createElement(RoundedTextLabel, {
                 BackgroundColor3 = Color3.fromRGB(255, 255, 255),
