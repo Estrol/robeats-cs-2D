@@ -1,9 +1,15 @@
 local RandomLua = require(game.ReplicatedStorage.Shared.RandomLua)
+local RunService = game:GetService("RunService")
 
 local SPUtil = {}
 
 function SPUtil:inverse_lerp(min, max, num)
 	return ((num - min) / (max - min))
+end
+
+-- https://stackoverflow.com/questions/4353525/floating-point-linear-interpolation
+function SPUtil:lerp(min, max, alpha)
+    return (min * (1.0 - alpha)) + (max * alpha);
 end
 
 function SPUtil:rad_to_deg(rad)
@@ -223,6 +229,10 @@ function SPUtil:get_user_thumbnail(u_id)
 	end
 
 	return game.Players:GetUserThumbnailAsync(u_id, Enum.ThumbnailType.HeadShot, Enum.ThumbnailSize.Size420x420)
+end
+
+function SPUtil:bind_to_frame(_callback)
+	return RunService.Heartbeat:Connect(_callback)
 end
 
 return SPUtil
