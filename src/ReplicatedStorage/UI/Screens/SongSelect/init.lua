@@ -5,6 +5,7 @@ local RoundedFrame = require(game.ReplicatedStorage.UI.Components.Base.RoundedFr
 
 local SongInfoDisplay = require(script.SongInfoDisplay)
 local SongList = require(script.SongList)
+local Leaderboard = require(script.Leaderboard)
 
 local SongSelect = Roact.Component:extend("SongSelect")
 
@@ -32,6 +33,11 @@ function SongSelect:render()
                     selectedSongKey = key
                 })
             end
+        }),
+        Leaderboard = e(Leaderboard, {
+            Size = UDim2.fromScale(0.35, 0.7),
+            Position = UDim2.fromScale(0.02, 0.22),
+            SongKey = self.state.selectedSongKey
         })
     })
 end

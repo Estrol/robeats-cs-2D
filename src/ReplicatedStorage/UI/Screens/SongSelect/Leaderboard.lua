@@ -1,35 +1,92 @@
 local Roact = require(game.ReplicatedStorage.Packages.Roact)
 
-local RoundedScrollingFrame = require(game.ReplicatedStorage.UI.Components.Base.RoundedScrollingFrame)
+local RoundedTextLabel =  require(game.ReplicatedStorage.UI.Components.Base.RoundedTextLabel)
+local RoundedFrame = require(game.ReplicatedStorage.UI.Components.Base.RoundedFrame)
+local RoundedAutoScrollingFrame = require(game.ReplicatedStorage.UI.Components.Base.RoundedAutoScrollingFrame)
+local LoadingWheel = require(game.ReplicatedStorage.UI.Components.Base.LoadingWheel)
 
 local LeaderboardSlot = require(game.ReplicatedStorage.UI.Screens.SongSelect.LeaderboardSlot)
 
 local Leaderboard = Roact.Component:extend("LeaderboardDisplay")
 
 Leaderboard.defaultProps = {
-    Leaderboard = {}
+    Leaderboard = {},
+    Position = UDim2.fromScale(0, 0),
+    Size = UDim2.fromScale(1, 1)
 }
 
 function Leaderboard:init()
-    self.listLayoutRef = Roact.createRef()
-end
-
-function Leaderboard:didMount()
-    local leaderboardListLayout = self.listLayoutRef:getValue()
-    local leaderboard_list = leaderboardListLayout.Parent
-    leaderboardListLayout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
-        leaderboardListLayout.Parent.CanvasSize = UDim2.new(0, 0, 0, leaderboard_list.UIListLayout.AbsoluteContentSize.Y)
-    end)
+    self:setState({
+        loading = false,
+        scores = {} -- List of scores to display. Can be fetched from some external resource. This is the format it follows:
+        -- {
+        --     UserId = 526993347,
+        --     PlayerName = "kisperal",
+        --     Marvelouses = 6,
+        --     Perfects = 5,
+        --     Greats = 4,
+        --     Goods = 3,
+        --     Bads = 2,
+        --     Misses = 1,
+        --     Time = 1596444113,
+        --     Accuracy = 98.98,
+        --     Place = 1,
+        --     Score = 0
+        -- }
+        -- WHEN YOU ARE TESTING THE DATASET PLEASE DO NOT COMMIT THE DATA!!!
+        -- I am actually not sure how to do the actual fetching with Knit. Doing something story-based would be coolio
+    })
 end
 
 function Leaderboard:render()
-    local children = {}
+    if self.state.loading then
+        return Roact.createElement(RoundedFrame, {
+            Active = true,
+            BackgroundColor3 = Color3.fromRGB(25, 25, 25),
+            BackgroundTransparency = 0,
+            BorderColor3 = Color3.fromRGB(25, 25, 25),
+            BorderSizePixel = 0,
+            Position = self.props.Position,
+            AnchorPoint = self.props.AnchorPoint,
+            Size = self.props.Size
+        }, {
+            LoadingWheel = Roact.createElement(LoadingWheel, {
+                RotationSpeed = 0.45,
+                Size = UDim2.fromScale(0.13, 0.13),
+                AnchorPoint = Vector2.new(0.5, 0.5),
+                Position = UDim2.fromScale(0.5, 0.5)
+            })
+        })
+    elseif #self.state.scores == 0 then
+        return Roact.createElement(RoundedFrame, {
+            Active = true,
+            BackgroundColor3 = Color3.fromRGB(25, 25, 25),
+            BackgroundTransparency = 0,
+            BorderColor3 = Color3.fromRGB(25, 25, 25),
+            BorderSizePixel = 0,
+            Position = self.props.Position,
+            AnchorPoint = self.props.AnchorPoint,
+            Size = self.props.Size
+        }, {
+            NoScoresMessage = Roact.createElement(RoundedTextLabel, {
+                Size = UDim2.fromScale(0.95, 0.3),
+                AnchorPoint = Vector2.new(0.5, 0.5),
+                Position = UDim2.fromScale(0.5, 0.5),
+                Text = "There are no scores to display! How about setting one?",
+                TextColor3 = Color3.fromRGB(255, 255, 255),
+                TextSize = 13,
+                BackgroundTransparency = 1
+            })
+        })
+    end
 
-    for i, v in pairs(self.props.Leaderboard) do
+    local children = {}
+    
+    for i, v in pairs(self.state.scores) do
         children[i] = Roact.createElement(LeaderboardSlot, v)
     end
 
-    return Roact.createElement(RoundedScrollingFrame, {
+    return Roact.createElement(RoundedAutoScrollingFrame, {
         Active = true,
         BackgroundColor3 = Color3.fromRGB(25, 25, 25),
         BackgroundTransparency = 0,
@@ -38,17 +95,14 @@ function Leaderboard:render()
         Position = self.props.Position,
         AnchorPoint = self.props.AnchorPoint,
         Size = self.props.Size,
-        BottomImage = "rbxasset://textures/ui/Scroll/scroll-middle.png",
         ScrollingDirection = Enum.ScrollingDirection.Y,
-        TopImage = "rbxasset://textures/ui/Scroll/scroll-middle.png",
-        VerticalScrollBarPosition = Enum.VerticalScrollBarPosition.Left
-    }, {
-        UIListLayout = Roact.createElement("UIListLayout", {
+        VerticalScrollBarPosition = Enum.VerticalScrollBarPosition.Left,
+        UIListLayoutProps = {
             SortOrder = Enum.SortOrder.LayoutOrder,
-            [Roact.Ref] = self.listLayoutRef,
             HorizontalAlignment = Enum.HorizontalAlignment.Center,
             Padding = UDim.new(0, 4),
-        }),
+        }
+    }, {
         Children = Roact.createFragment(children)
     });
 end
