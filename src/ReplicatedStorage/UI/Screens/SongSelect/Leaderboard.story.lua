@@ -1,5 +1,5 @@
 local Roact = require(game.ReplicatedStorage.Packages.Roact)
-local LeaderboardDisplay = require(game.ReplicatedStorage.UI.Screens.SongSelect.LeaderboardDisplay)
+local Leaderboard = require(game.ReplicatedStorage.UI.Screens.SongSelect.Leaderboard)
 
 return function(target)
     local leaderboard = {
@@ -75,8 +75,8 @@ return function(target)
         }
     }
 
-    local app = Roact.createElement(LeaderboardDisplay, {
-        leaderboard = leaderboard,
+    local app = Roact.createElement(Leaderboard, {
+        Leaderboard = leaderboard,
         Size = UDim2.new(1, 0, 1, 0);
         Position = UDim2.new(0.5, 0, 0.5, 0),
         AnchorPoint = Vector2.new(0.5, 0.5),

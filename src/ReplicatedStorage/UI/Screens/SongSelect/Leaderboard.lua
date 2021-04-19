@@ -4,13 +4,17 @@ local RoundedScrollingFrame = require(game.ReplicatedStorage.UI.Components.Base.
 
 local LeaderboardSlot = require(game.ReplicatedStorage.UI.Screens.SongSelect.LeaderboardSlot)
 
-local LeaderboardDisplay = Roact.Component:extend("LeaderboardDisplay")
+local Leaderboard = Roact.Component:extend("LeaderboardDisplay")
 
-function LeaderboardDisplay:init()
+Leaderboard.defaultProps = {
+    Leaderboard = {}
+}
+
+function Leaderboard:init()
     self.listLayoutRef = Roact.createRef()
 end
 
-function LeaderboardDisplay:didMount()
+function Leaderboard:didMount()
     local leaderboardListLayout = self.listLayoutRef:getValue()
     local leaderboard_list = leaderboardListLayout.Parent
     leaderboardListLayout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
@@ -18,17 +22,17 @@ function LeaderboardDisplay:didMount()
     end)
 end
 
-function LeaderboardDisplay:render()
+function Leaderboard:render()
     local children = {}
 
-    for i, v in pairs(self.props.leaderboard) do
+    for i, v in pairs(self.props.Leaderboard) do
         children[i] = Roact.createElement(LeaderboardSlot, v)
     end
 
     return Roact.createElement(RoundedScrollingFrame, {
         Active = true,
         BackgroundColor3 = Color3.fromRGB(25, 25, 25),
-        BackgroundTransparency = 1,
+        BackgroundTransparency = 0,
         BorderColor3 = Color3.fromRGB(25, 25, 25),
         BorderSizePixel = 0,
         Position = self.props.Position,
@@ -41,10 +45,12 @@ function LeaderboardDisplay:render()
     }, {
         UIListLayout = Roact.createElement("UIListLayout", {
             SortOrder = Enum.SortOrder.LayoutOrder,
-            [Roact.Ref] = self.listLayoutRef
+            [Roact.Ref] = self.listLayoutRef,
+            HorizontalAlignment = Enum.HorizontalAlignment.Center,
+            Padding = UDim.new(0, 4),
         }),
         Children = Roact.createFragment(children)
     });
 end
 
-return LeaderboardDisplay
+return Leaderboard
