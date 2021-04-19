@@ -11,7 +11,10 @@ local RoundedScrollingFrame = Roact.Component:extend("Button")
 RoundedScrollingFrame.defaultProps = {
     Size = UDim2.fromScale(1, 1),
     BackgroundColor3 = Color3.fromRGB(29, 29, 29);
-    ZIndex = 1
+    ZIndex = 1,
+    BottomImage = "rbxasset://textures/ui/Scroll/scroll-middle.png",
+    TopImage = "rbxasset://textures/ui/Scroll/scroll-middle.png",
+    ScrollBarThickness = 2
 }
 
 function RoundedScrollingFrame:render()
