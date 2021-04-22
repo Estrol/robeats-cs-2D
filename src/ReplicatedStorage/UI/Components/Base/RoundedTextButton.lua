@@ -16,38 +16,15 @@ RoundedTextButton.defaultProps = {
     HoldSize = UDim2.fromScale(0.8, 0.8);
     HighlightBackgroundColor3 = Color3.fromRGB(17, 17, 17);
     OnPress = noop;
-    OnRelease = noop
+    OnRelease = noop;
+    Frequency = 13
 }
 
 function RoundedTextButton:init()
     self.motor = Flipper.GroupMotor.new({
         tap = 0;
-        colorR = self.props.BackgroundColor3 and self.props.BackgroundColor3.R or 1;
-        colorG = self.props.BackgroundColor3 and self.props.BackgroundColor3.G or 1;
-        colorB = self.props.BackgroundColor3 and self.props.BackgroundColor3.B or 1;
     });
     self.motorBinding = RoactFlipper.getBinding(self.motor)
-
-    self.onActivated = self.props.onActivated or noop
-    self.onPress = self.props.onPress or noop
-    self.onRelease = self.props.onRelease or noop
-end
-
-function RoundedTextButton:didUpdate()
-    self.motor:setGoal({
-        colorR = Flipper.Spring.new(self.props.BackgroundColor3.R, {
-            frequency = 8;
-            dampingRatio = 2.5;
-        });
-        colorG = Flipper.Spring.new(self.props.BackgroundColor3.G, {
-            frequency = 8;
-            dampingRatio = 2.5;
-        });
-        colorB = Flipper.Spring.new(self.props.BackgroundColor3.B, {
-            frequency = 8;
-            dampingRatio = 2.5;
-        });
-    })
 end
 
 function RoundedTextButton:render()
@@ -72,7 +49,7 @@ function RoundedTextButton:render()
         [Roact.Event.MouseEnter] = function()
             self.motor:setGoal({
                 tap = Flipper.Spring.new(0.7, {
-                    frequency = 8;
+                    frequency = self.props.Frequency;
                     dampingRatio = 2.5;
                 })
             })
@@ -80,7 +57,7 @@ function RoundedTextButton:render()
         [Roact.Event.MouseLeave] = function()
             self.motor:setGoal({
                 tap = Flipper.Spring.new(0, {
-                    frequency = 8;
+                    frequency = self.props.Frequency;
                     dampingRatio = 2.5;
                 })
             })
