@@ -2,6 +2,7 @@ local Roact = require(game.ReplicatedStorage.Packages.Roact)
 local e = Roact.createElement
 
 local RoundedFrame = require(game.ReplicatedStorage.UI.Components.Base.RoundedFrame)
+local RoundedTextButton = require(game.ReplicatedStorage.UI.Components.Base.RoundedTextButton)
 
 local SongInfoDisplay = require(script.SongInfoDisplay)
 local SongList = require(script.SongList)
@@ -38,7 +39,7 @@ function SongSelect:render()
             Size = UDim2.fromScale(0.35, 0.7),
             Position = UDim2.fromScale(0.02, 0.22),
             SongKey = self.state.selectedSongKey
-        })
+        });
     })
 end
 
