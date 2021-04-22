@@ -1,4 +1,4 @@
-local Roact = require(game.ReplicatedStorage.Libraries.Roact)
+local Roact = require(game.ReplicatedStorage.Packages.Roact)
 
 local Story = require(game.ReplicatedStorage.Shared.Utils.Story)
 
