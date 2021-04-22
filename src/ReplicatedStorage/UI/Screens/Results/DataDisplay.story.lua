@@ -1,9 +1,29 @@
-local Roact = require(game.ReplicatedStorage.Libraries.Roact)
-local Story = require(game.ReplicatedStorage.Shared.Utils.Story)
+local Roact = require(game.ReplicatedStorage.Packages.Roact)
+local e = Roact.createElement
+
 local DataDisplay = require(script.Parent.DataDisplay)
 
-local DataDisplayApp = Story:new(function()
-    return Roact.createElement(DataDisplay, {
+-- local DataDisplayApp = Story:new(function()
+--     return Roact.createElement(DataDisplay, {
+--         data = {
+--             {
+--                 Name = "Accuracy";
+--                 Value = 98;
+--             };
+--             {
+--                 Name = "Score";
+--                 Value = 45899936;
+--             };
+--             {
+--                 Name = "Rating";
+--                 Value = 45.85;
+--             };
+--         }
+--     })
+-- end)
+
+return function (target)
+    local app  = e(DataDisplay,  {
         data = {
             {
                 Name = "Accuracy";
@@ -18,7 +38,13 @@ local DataDisplayApp = Story:new(function()
                 Value = 45.85;
             };
         }
-    })
-end)
+    });
 
-return DataDisplayApp
+    local handle = Roact.mount(app, target)
+
+    return function ()
+        Roact.unmount(handle)
+    end
+end
+
+-- return DataDisplayApp
