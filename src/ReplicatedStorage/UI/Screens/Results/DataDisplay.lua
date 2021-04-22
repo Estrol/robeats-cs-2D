@@ -1,6 +1,6 @@
-local Roact = require(game.ReplicatedStorage.Libraries.Roact)
-local Flipper = require(game.ReplicatedStorage.Libraries.Flipper)
-local RoactFlipper = require(game.ReplicatedStorage.Libraries.RoactFlipper)
+local Roact = require(game.ReplicatedStorage.Packages.Roact)
+local Flipper = require(game.ReplicatedStorage.Packages.Flipper)
+local RoactFlipper = require(game.ReplicatedStorage.Packages.RoactFlipper)
 
 local DataDisplay = Roact.Component:extend("DataDisplay")
 
