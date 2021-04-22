@@ -58,7 +58,7 @@ function SongSelect:render()
             SongRate = self.state.rate
         }),
         SongList = e(SongList, {
-            Size = UDim2.fromScale(0.45, 0.77),
+            Size = UDim2.fromScale(0.35, 0.77),
             AnchorPoint = Vector2.new(1, 1),
             Position = UDim2.fromScale(0.995, 0.985),
             OnSongSelected = function(key)
@@ -68,14 +68,14 @@ function SongSelect:render()
             end
         }),
         Leaderboard = e(Leaderboard, {
-            Size = UDim2.fromScale(0.35, 0.7),
+            Size = UDim2.fromScale(0.325, 0.7),
             Position = UDim2.fromScale(0.02, 0.22),
             SongKey = self.state.selectedSongKey
         }),
         PlayButton = e(RoundedTextButton, {
             Position = UDim2.fromScale(0.02, 0.935),
-            Size = UDim2.fromScale(0.35, 0.05),
-            HoldSize = UDim2.fromScale(0.1, 0.045),
+            Size = UDim2.fromScale(0.325, 0.05),
+            HoldSize = UDim2.fromScale(0.315, 0.045),
             BackgroundColor3 = Color3.fromRGB(40, 40, 40),
             HighlightBackgroundColor3 = Color3.fromRGB(93, 221, 33),
             TextScaled = true,
