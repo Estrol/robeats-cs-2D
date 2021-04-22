@@ -5,7 +5,6 @@ local SPUtil = require(game.ReplicatedStorage.Shared.SPUtil)
 
 local Maid = require(game.ReplicatedStorage.Knit.Util.Maid)
 
-local RoundedTextButton = require(game.ReplicatedStorage.UI.Components.Base.RoundedTextButton)
 local RoundedFrame = require(game.ReplicatedStorage.UI.Components.Base.RoundedFrame)
 local RoundedTextButton = require(game.ReplicatedStorage.UI.Components.Base.RoundedTextButton)
 
@@ -75,13 +74,15 @@ function SongSelect:render()
         }),
         PlayButton = e(RoundedTextButton, {
             Position = UDim2.fromScale(0.02, 0.935),
-            Size = UDim2.fromScale(0.1, 0.05),
+            Size = UDim2.fromScale(0.35, 0.05),
             HoldSize = UDim2.fromScale(0.1, 0.045),
             BackgroundColor3 = Color3.fromRGB(40, 40, 40),
-            HighlightBackgroundColor3 = Color3.fromRGB(70, 170, 24),
+            HighlightBackgroundColor3 = Color3.fromRGB(93, 221, 33),
             TextScaled = true,
             Text = "Play!",
             TextColor3 = Color3.fromRGB(255, 255, 255),
+            Frequency = 10,
+            dampingRatio = 1.5;
             OnClick = function()
                 self.props.history:push("/play", {
                     songKey = self.state.selectedSongKey,
@@ -90,7 +91,7 @@ function SongSelect:render()
             end
         }, {
             UITextSizeConstraint = e("UITextSizeConstraint", {
-                MaxTextSize = 17
+                MaxTextSize = 20
             })
         })
     })
