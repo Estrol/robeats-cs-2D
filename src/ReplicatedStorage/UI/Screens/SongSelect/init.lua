@@ -7,6 +7,7 @@ local Maid = require(game.ReplicatedStorage.Knit.Util.Maid)
 
 local RoundedTextButton = require(game.ReplicatedStorage.UI.Components.Base.RoundedTextButton)
 local RoundedFrame = require(game.ReplicatedStorage.UI.Components.Base.RoundedFrame)
+local RoundedTextButton = require(game.ReplicatedStorage.UI.Components.Base.RoundedTextButton)
 
 local SongInfoDisplay = require(script.SongInfoDisplay)
 local SongList = require(script.SongList)

@@ -236,7 +236,7 @@ function SongInfoDisplay:render()
                 UITextSizeConstraint = Roact.createElement("UITextSizeConstraint", {
                     MaxTextSize = 22,
                 })
-            })
+            });
         })
     })
 end

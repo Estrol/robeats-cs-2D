@@ -25,28 +25,13 @@ function LeaderboardSlot:render()
         UserThumbnail = Roact.createElement(RoundedImageLabel, {
             AnchorPoint = Vector2.new(0, 0.5),
             BackgroundColor3 = Color3.fromRGB(255, 255, 255),
-            Position = UDim2.new(0.025, 0, 0.5, 0),
+            Position = UDim2.new(0.09, 0, 0.5, 0),
             Size = UDim2.new(0.07, 0, 0.75, 0),
             Image = string.format("https://www.roblox.com/headshot-thumbnail/image?userid=%d&width=420&height=420&format=png", self.props.UserId)
         }, {
             Roact.createElement("UIAspectRatioConstraint", {
                 AspectType = Enum.AspectType.ScaleWithParentSize,
                 DominantAxis = Enum.DominantAxis.Height,
-            }),
-            Place = Roact.createElement(RoundedTextLabel, {
-                BackgroundColor3 = Color3.fromRGB(54, 54, 54),
-                BorderSizePixel = 0,
-                Position = UDim2.new(0.0963930413, 0, 0.0963930413, 0),
-                Size = UDim2.new(0.6, 0, 0.3, 0),
-                Font = Enum.Font.GothamBold,
-                Text = string.format("#%d", self.props.Place),
-                TextColor3 = Color3.fromRGB(204, 204, 8),
-                TextScaled = true,
-            }, {
-                Roact.createElement("UITextSizeConstraint", {
-                    MaxTextSize = 13,
-                    MinTextSize = 7,
-                }),
             }),
             Data = Roact.createElement(RoundedTextLabel, {
                 BackgroundColor3 = Color3.fromRGB(255, 255, 255),
@@ -61,7 +46,7 @@ function LeaderboardSlot:render()
                 TextXAlignment = Enum.TextXAlignment.Left,
             }, {
                 Roact.createElement("UITextSizeConstraint", {
-                    MaxTextSize = 18,
+                    MaxTextSize = 25,
                     MinTextSize = 3,
                 })
             }),
@@ -73,7 +58,7 @@ function LeaderboardSlot:render()
                 Size = UDim2.new(15.3386288, 0, 0.550000012, 0),
                 Font = Enum.Font.GothamSemibold,
                 Text = self.props.PlayerName,
-                TextColor3 = Color3.fromRGB(145, 145, 145),
+                TextColor3 = Color3.fromRGB(204, 204, 8),
                 TextScaled = true,
                 TextXAlignment = Enum.TextXAlignment.Left,
             }, {
@@ -85,7 +70,7 @@ function LeaderboardSlot:render()
                 BackgroundColor3 = Color3.fromRGB(255, 255, 255),
                 BackgroundTransparency = 1,
                 BorderSizePixel = 0,
-                Position = UDim2.new(10, 0, 0.22, 0),
+                Position = UDim2.new(9, 0, 0.22, 0),
                 Size = UDim2.new(1.5, 0, 0.550000012, 0),
                 Font = Enum.Font.GothamSemibold,
                 Text = string.format("%0.2f%%", self.props.Accuracy),
@@ -98,6 +83,23 @@ function LeaderboardSlot:render()
                     MinTextSize = 7;
                 })
             })
+        }),
+
+        Place = Roact.createElement(RoundedTextLabel, {
+            BackgroundColor3 = Color3.fromRGB(54, 54, 54),
+            BorderSizePixel = 0,
+            Position = UDim2.fromScale(0.0075, 0.1),
+            Size = UDim2.fromScale(0.075, 0.755),
+            Font = Enum.Font.GothamBold,
+            Text = string.format("#%d", self.props.Place),
+            TextColor3 = Color3.fromRGB(204, 204, 8),
+            TextScaled = true,
+            BackgroundTransparency = 1;
+        }, {
+            Roact.createElement("UITextSizeConstraint", {
+                MaxTextSize = 35,
+                MinTextSize = 7,
+            }),
         }),
         UIAspectRatioConstraint = Roact.createElement("UIAspectRatioConstraint", {
             AspectRatio = 9,

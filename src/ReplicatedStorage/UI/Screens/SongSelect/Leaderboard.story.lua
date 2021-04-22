@@ -19,59 +19,17 @@ return function(target)
         },
         {
             UserId = 160677253,
-            PlayerName = "DetWasTaken",
-            Marvelouses = 6,
-            Perfects = 5,
-            Greats = 4,
-            Goods = 3,
-            Bads = 2,
-            Misses = 1,
+            PlayerName = "AstralKingdoms",
+            Marvelouses = 696969,
+            Perfects = 51324,
+            Greats = 43,
+            Goods = 0,
+            Bads = 1,
+            Misses = 0,
             Time = 1596666465,
-            Accuracy = 95.67,
+            Accuracy = 100,
             Place = 2,
-            Score = 0
-        },
-        {
-            UserId = 160677253,
-            PlayerName = "DetWasTaken",
-            Marvelouses = 6,
-            Perfects = 5,
-            Greats = 4,
-            Goods = 3,
-            Bads = 2,
-            Misses = 1,
-            Time = 1596666465,
-            Accuracy = 95.67,
-            Place = 3,
-            Score = 0
-        },
-        {
-            UserId = 160677253,
-            PlayerName = "DetWasTaken",
-            Marvelouses = 6,
-            Perfects = 5,
-            Greats = 4,
-            Goods = 3,
-            Bads = 2,
-            Misses = 1,
-            Time = 1596666465,
-            Accuracy = 95.67,
-            Place = 4,
-            Score = 0
-        },
-        {
-            UserId = 160677253,
-            PlayerName = "DetWasTaken",
-            Marvelouses = 6,
-            Perfects = 5,
-            Greats = 4,
-            Goods = 3,
-            Bads = 2,
-            Misses = 1,
-            Time = 1596666465,
-            Accuracy = 95.67,
-            Place = 5,
-            Score = 0
+            Score = 939394993
         }
     }
 

@@ -5,9 +5,9 @@ local SongMetadata = require(workspace:WaitForChild("Songs"):WaitForChild("SongM
 
 local SongDatabase = {}
 
-SongDatabase.SongMode = {
-	Normal = 0;
-	SupporterOnly = 1;
+SongDatabase.SongStatus = {
+	RANKED = "RANKED";
+	UNRANKED = "UNRANKED";
 }
 
 SongDatabase.SongType = {
