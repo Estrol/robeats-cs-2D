@@ -107,6 +107,9 @@ function SongList:render()
                 TextSize = 14,
                 TextWrapped = true,
                 TextXAlignment = Enum.TextXAlignment.Left,
+                [Roact.Event.Focused] = function()
+                    
+                end,
                 [Roact.Change.Text] = self.OnSearchChanged
             }, {
                 UITextSizeConstraint = Roact.createElement("UITextSizeConstraint", {
