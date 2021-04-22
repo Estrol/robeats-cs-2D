@@ -1,14 +1,13 @@
 local Roact = require(game.ReplicatedStorage.Packages.Roact)
 local RoactRouter = require(game.ReplicatedStorage.Packages.RoactRouter)
-local SongSelect = require(game.ReplicatedStorage.UI.Screens.SongSelect)
+local Gameplay = require(game.ReplicatedStorage.UI.Screens.Gameplay)
 
 return function(target)
     local app = Roact.createElement(RoactRouter.Router, {}, {
-        SongSelect = Roact.createElement(RoactRouter.Route, {
-            component = SongSelect,
+        Gameplay = Roact.createElement(RoactRouter.Route, {
+            component = Gameplay,
             path = "/",
             exact = true
-            
         })
     })
     local handle = Roact.mount(app, target)

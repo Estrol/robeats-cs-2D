@@ -17,7 +17,8 @@ local RoundedTextLabel = require(game.ReplicatedStorage.UI.Components.Base.Round
 local SongInfoDisplay = Roact.Component:extend("SongInfoDisplay")
 
 SongInfoDisplay.defaultProps = {
-    Size = UDim2.fromScale(1, 1)
+    Size = UDim2.fromScale(1, 1),
+    SongRate = 100
 }
 
 local function noop() end
@@ -131,7 +132,7 @@ function SongInfoDisplay:render()
                 TextTransparency = self.motorBinding:map(function(a)
                     return 1-a.title
                 end);
-                Text = SongDatabase:get_title_for_key(self.props.SongKey),
+                Text = string.format("%s [%0.2fx Rate]", SongDatabase:get_title_for_key(self.props.SongKey), self.props.SongRate / 100),
                 TextColor3 = Color3.fromRGB(255, 187, 14),
                 TextScaled = true,
                 TextXAlignment = Enum.TextXAlignment.Left,

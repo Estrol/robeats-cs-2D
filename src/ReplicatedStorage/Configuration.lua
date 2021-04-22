@@ -13,7 +13,7 @@ local Configuration = {
 	Preferences = SPUtil:copy_table(require(game.ReplicatedStorage.DefaultSettings))
 }
 
-Configuration.on_settings_changed = Signal.new()
+Configuration.Changed = Signal.new()
 
 function Configuration:set(path, value)
 	local ptr = self.Preferences
@@ -33,7 +33,7 @@ function Configuration:set(path, value)
 		ptr[path[#path]] = value
 	end
 
-	self.on_settings_changed:fire(self.Preferences)
+	self.Changed:Fire(self.Preferences)
 end
 
 function Configuration:load_from_save()

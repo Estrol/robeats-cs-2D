@@ -22,4 +22,7 @@ return {
 		NoteRemoveTimeMS = -200;
 		PostFinishWaitTimeMS = 300;
 		PreStartCountdownTimeMS = 3000;
+
+		--This is used to determine the speed of the song
+		SongRate = 100
 }

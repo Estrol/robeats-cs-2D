@@ -1,9 +1,11 @@
+local EnvironmentSetup = require(game.ReplicatedStorage.RobeatsGameCore.EnvironmentSetup)
 local CurveUtil = require(game.ReplicatedStorage.Shared.CurveUtil)
 local InputUtil = require(game.ReplicatedStorage.Shared.InputUtil)
 local SPList = require(game.ReplicatedStorage.Shared.SPList)
 local SPDict = require(game.ReplicatedStorage.Shared.SPDict)
 local SPUtil = require(game.ReplicatedStorage.Shared.SPUtil)
 local AudioManager = require(game.ReplicatedStorage.RobeatsGameCore.AudioManager)
+local ObjectPool = require(game.ReplicatedStorage.RobeatsGameCore.ObjectPool)
 local SFXManager = require(game.ReplicatedStorage.RobeatsGameCore.SFXManager)
 local ScoreManager = require(game.ReplicatedStorage.RobeatsGameCore.ScoreManager)
 local NoteTrackSystem = require(game.ReplicatedStorage.RobeatsGameCore.NoteTrack.NoteTrackSystem)
@@ -12,6 +14,8 @@ local GameSlot = require(game.ReplicatedStorage.RobeatsGameCore.Enums.GameSlot)
 local GameTrack = require(game.ReplicatedStorage.RobeatsGameCore.Enums.GameTrack)
 local DebugOut = require(game.ReplicatedStorage.Shared.DebugOut)
 local AssertType = require(game.ReplicatedStorage.Shared.AssertType)
+local Signal = require(game.ReplicatedStorage.Knit.Util.Signal)
+local Promise = require(game.ReplicatedStorage.Knit.Util.Promise)
 
 local RobeatsGame = {}
 RobeatsGame.Mode = {
@@ -20,18 +24,21 @@ RobeatsGame.Mode = {
 	GameEnded = 3;
 }
 
-function RobeatsGame:new(local_services, _game_environment_center_position)
+function RobeatsGame:new(_game_environment_center_position)
 	local self = {
 		_tracksystems = SPDict:new();
 		_audio_manager = nil;
 		_score_manager = nil;
 		_effects = EffectSystem:new();
-		_input = local_services._input;
-		_sfx_manager = local_services._sfx_manager;
-		_object_pool = local_services._object_pool;
+		_input = InputUtil:new();
+		_sfx_manager = SFXManager:new();
+		_object_pool = ObjectPool:new();
 	}
 	self._audio_manager = AudioManager:new(self)
 	self._score_manager = ScoreManager:new(self)
+
+	self._mode_changed = Signal.new()
+	self._loaded = Signal.new()
 	
 	local _local_game_slot = 0
 	function self:get_local_game_slot() return _local_game_slot end
@@ -41,6 +48,7 @@ function RobeatsGame:new(local_services, _game_environment_center_position)
 	function self:set_mode(val) 
 		AssertType:is_enum_member(val, RobeatsGame.Mode)
 		_current_mode = val 
+		self._mode_changed:Fire(_current_mode)
 	end
 
 	function self:get_game_environment_center_position()
@@ -70,9 +78,18 @@ function RobeatsGame:new(local_services, _game_environment_center_position)
 		return self._tracksystems:key_itr()
 	end
 
+	local _was_loaded = false
+
 	function self:update(dt_scale)
+		local is_loaded = self._audio_manager:is_ready_to_play()
+
+		if _was_loaded ~= is_loaded then
+			_was_loaded = is_loaded
+			self._loaded:Fire(self)
+		end
+
 		if _current_mode == RobeatsGame.Mode.Game then
-			self._audio_manager:update(dt_scale,self)
+			self._audio_manager:update(dt_scale)
 			for itr_key,itr_index in GameTrack:inpututil_key_to_track_index():key_itr() do
 				if self._input:control_just_pressed(itr_key) then
 					self:get_local_tracksystem():press_track_index(itr_index)
@@ -82,21 +99,40 @@ function RobeatsGame:new(local_services, _game_environment_center_position)
 				end
 			end
 			
-			for slot,itr in self._tracksystems:key_itr() do
+			for _, itr in self._tracksystems:key_itr() do
 				itr:update(dt_scale)
 			end
 			
+			self._sfx_manager:update()
+			self._score_manager:update()
 			self._effects:update(dt_scale)
-			self._score_manager:update(dt_scale)
+			self._input:post_update()
 		end
+	end
+
+	function self:load(_song_key, _local_player_slot)
+		return Promise.new(function(resolve)
+			EnvironmentSetup:set_mode(EnvironmentSetup.Mode.Game)
+
+			self._audio_manager:load_song(_song_key)
+			self:setup_world(_local_player_slot)
+
+			local con
+			con = self._loaded:Connect(function()
+				resolve(self)
+				con:Disconnect()
+			end)
+		end)
 	end
 	
 	function self:teardown()
-		for key,val in self:tracksystems_itr() do
+		for _, val in self:tracksystems_itr() do
 			val:teardown()
 		end
 		self._audio_manager:teardown()
-		self._effects:teardown()
+		self._effects:teardown() 
+
+		EnvironmentSetup:set_mode(EnvironmentSetup.Mode.Menu)
 	end
 
 	return self

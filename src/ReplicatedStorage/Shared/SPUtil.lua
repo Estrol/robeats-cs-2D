@@ -1,5 +1,9 @@
+local UserInputService = game:GetService("UserInputService")
+
 local RandomLua = require(game.ReplicatedStorage.Shared.RandomLua)
 local RunService = game:GetService("RunService")
+
+local function noop() end
 
 local SPUtil = {}
 
@@ -37,7 +41,7 @@ function SPUtil:part_cframe_rotation(part)
 end
 
 function SPUtil:table_clear(tab)
-	for k,v in pairs(tab) do tab[k]=nil end
+	for k, _ in pairs(tab) do tab[k]=nil end
 end
 
 function SPUtil:vec3_lerp(a,b,t)
@@ -153,7 +157,7 @@ function SPUtil:bind_input_fire(object_, callback_)
 			callback_(i,n)
 		end
 	end
-	local suc, err = pcall(function()
+	local suc, _ = pcall(function()
 		object_.Activated:Connect(cb)
 	end)
 	if not suc then
@@ -233,6 +237,28 @@ end
 
 function SPUtil:bind_to_frame(_callback)
 	return RunService.Heartbeat:Connect(_callback)
+end
+
+function SPUtil:bind_to_key(key_code, _callback)
+	_callback = _callback or noop
+	return UserInputService.InputBegan:Connect(function(inputob)
+		if inputob.KeyCode == key_code or key_code == Enum.KeyCode then
+			if inputob.KeyCode ~= Enum.KeyCode.Unknown then
+				_callback(inputob.KeyCode)
+			end
+		end
+	end)
+end
+
+function SPUtil:bind_to_key_release(key_code, _callback)
+	_callback = _callback or noop
+	return UserInputService.InputEnded:Connect(function(inputob)
+		if inputob.KeyCode == key_code or key_code == Enum.KeyCode then
+			if inputob.KeyCode ~= Enum.KeyCode.Unknown then
+				_callback(inputob.KeyCode)
+			end
+		end
+	end)
 end
 
 return SPUtil

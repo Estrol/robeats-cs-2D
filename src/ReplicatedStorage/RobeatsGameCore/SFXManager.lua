@@ -119,7 +119,7 @@ function SFXManager:new()
 		return play_sfx
 	end
 
-	function self:update(dt_scale)
+	function self:update()
 		for itr_key,_ in self._key_to_active_sound:key_itr() do
 			local itr_list = self._key_to_active_sound:list_of(itr_key)
 			for i=itr_list:count(),1,-1 do

@@ -130,9 +130,36 @@ function SongDatabase:new()
 		return ret
 	end
 
-	function self:get_hit_objects_for_key(key)
+	function self:get_hit_objects_for_key(key, rate)
 		local data = self:get_data_for_key(key)
-		return require(data.AudioMapData)
+		local map_data = require(data.AudioMapData)
+
+		if rate == 1 or rate == nil then
+			return map_data
+		else
+			local _rate_map_data = {}
+
+			for i = 1, #map_data do
+				local itr_hit_object = map_data[i]
+
+				if itr_hit_object.Type == 1 then
+					_rate_map_data[i] = {
+						Time = itr_hit_object.Time / rate,
+						Track = itr_hit_object.Track,
+						Type = itr_hit_object.Type
+					}
+				elseif itr_hit_object.Type == 2 then
+					_rate_map_data[i] = {
+						Time = itr_hit_object.Time / rate,
+						Track = itr_hit_object.Track,
+						Duration = itr_hit_object.Duration / rate,
+						Type = itr_hit_object.Type
+					}
+				end
+			end
+
+			return _rate_map_data
+		end
 	end
 
 	function self:get_note_metrics_for_key(key)

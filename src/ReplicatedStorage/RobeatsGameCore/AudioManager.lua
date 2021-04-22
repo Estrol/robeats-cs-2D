@@ -22,35 +22,28 @@ AudioManager.Mode = {
 function AudioManager:new(_game)
 	local self = {}
 
-	local _rate = 100 / 100 --Rate multiplier, you may implement some sort of way to modify the rate at runtime.
+	local _rate = 1 --Rate multiplier, you may implement some sort of way to modify the rate at runtime.
+	function self:set_rate(rate) _rate = rate end
 	
 	--Note speed in milliseconds, from time it takes to spawn the note to time the note is hit. Default value is 2000, or 2 seconds.
-	
-	local _current_audio_data
 	
 	local _note_prebuffer_time = 0
 	
 	local _song_key = 0
 	function self:get_song_key() return _song_key end
 	
-	function self:get_note_prebuffer_time_ms() 
-		_current_audio_data = SongDatabase:get_data_for_key(_song_key) --??
-		_note_prebuffer_time = (1-(21/30))*2000
-		return _note_prebuffer_time
-	end
-	
 	--Note timings: millisecond offset (positive is early, negative is late) mapping to what the note result is
 	local window = TimingPresets["Standard"]
-	local _note_bad_max = window.NoteBadMaxMS * _rate
-	local _note_good_max = window.NoteGoodMaxMS * _rate --Default: 260
-	local _note_great_max = window.NoteGreatMaxMS * _rate --Default: 140
-	local _note_perfect_max = window.NotePerfectMaxMS * _rate --Default: 40
-	local _note_marvelous_max = window.NoteMarvelousMaxMS * _rate --Default: 40
-	local _note_marvelous_min = window.NoteMarvelousMinMS * _rate --Default: -20
-	local _note_perfect_min = window.NotePerfectMinMS * _rate --Default: -20
-	local _note_great_min = window.NoteGreatMinMS * _rate --Default: -70
-	local _note_good_min = window.NoteGoodMinMS * _rate
-	local _note_bad_min = window.NoteBadMinMS * _rate
+	local _note_bad_max = window.NoteBadMaxMS
+	local _note_good_max = window.NoteGoodMaxMS --Default: 260
+	local _note_great_max = window.NoteGreatMaxMS --Default: 140
+	local _note_perfect_max = window.NotePerfectMaxMS --Default: 40
+	local _note_marvelous_max = window.NoteMarvelousMaxMS --Default: 40
+	local _note_marvelous_min = window.NoteMarvelousMinMS --Default: -20
+	local _note_perfect_min = window.NotePerfectMinMS --Default: -20
+	local _note_great_min = window.NoteGreatMinMS --Default: -70
+	local _note_good_min = window.NoteGoodMinMS
+	local _note_bad_min = window.NoteBadMinMS
 	
 	--Called in NoteResult:timedelta_to_result(time_to_end, _game)
 	function self:get_note_result_timing()
@@ -58,7 +51,7 @@ function AudioManager:new(_game)
 	end
 	
 	--Time in milliseconds after note expected hit time to remove note (and do a Time miss)
-	local _note_remove_time = -200 * _rate --Default: -200
+	local _note_remove_time = -200 --Default: -200
 	function self:get_note_remove_time() return _note_remove_time end
 	
 	--Time in milliseconds countdown will take
@@ -79,6 +72,7 @@ function AudioManager:new(_game)
 	--Keeping track of BGM TimePosition ourselves (Sound.TimePosition does not update at 60fps)
 	local _bgm_time_position = 0
 	local _current_audio_data
+	local _hit_objects
 	
 	--Index of _current_audio_data.HitObject we are currently at
 	local _audio_data_index = 1
@@ -97,13 +91,29 @@ function AudioManager:new(_game)
 
 	local _note_count = 0
 	function self:get_note_count() return _note_count end
+
+	function self:get_note_prebuffer_time_ms() 
+		_current_audio_data = SongDatabase:get_data_for_key(_song_key) --??
+		_note_prebuffer_time = (1-(21/30))*2000
+		return _note_prebuffer_time
+	end
+
 	function self:load_song(song_key)
 
 		_song_key = song_key
 		_current_mode = AudioManager.Mode.Loading
 		_audio_data_index = 1
 		_current_audio_data = SongDatabase:get_data_for_key(_song_key)
-
+		_hit_objects = SongDatabase:get_hit_objects_for_key(_song_key, _rate)
+		
+		for i = 1, #_hit_objects do
+			local itr = _hit_objects[i]
+			if itr.Type == 1 then
+				_note_count = _note_count + 1
+			else
+				_note_count = _note_count + 2
+			end
+		end
 
 		local sfxg_id = _current_audio_data.AudioHitSFXGroup
 		_hit_sfx_group = HitSFXGroup:new(_game,sfxg_id)
@@ -116,24 +126,13 @@ function AudioManager:new(_game)
 		_bgm.Volume = 0
 		_bgm.PlaybackSpeed = 0
 		_bgm_time_position = 0
-
+		
 		if _current_audio_data.AudioVolume ~= nil then
 			_audio_volume = _current_audio_data.AudioVolume
 		end
 		
 		--Apply note speed multiplier
-		_note_prebuffer_time = 800*_rate
-	end
-
-	function self:load_hit_objects()
-		for i=1,#_current_audio_data.HitObjects do
-			local itr = _current_audio_data.HitObjects[i]
-			if itr.Type == 1 then
-				_note_count = _note_count + 1
-			else
-				_note_count = _note_count + 2
-			end
-		end
+		_note_prebuffer_time = 800
 	end
 
 	function self:teardown()
@@ -157,7 +156,7 @@ function AudioManager:new(_game)
 		local track_number = itr_hitobj.Track
 		AssertType:is_int(track_number)
 
-		for slot_id,tracksystem in _game:tracksystems_itr() do
+		for _,tracksystem in _game:tracksystems_itr() do
 			tracksystem:get_notes():push_back(
 				SingleNote:new(
 					_game,
@@ -180,7 +179,7 @@ function AudioManager:new(_game)
 		local track_number = itr_hitobj.Track
 		AssertType:is_int(track_number)
 
-		for slot_id,tracksystem in _game:tracksystems_itr() do
+		for _,tracksystem in _game:tracksystems_itr() do
 			tracksystem:get_notes():push_back(
 				HeldNote:new(
 					_game,
@@ -213,7 +212,6 @@ function AudioManager:new(_game)
 	local _ended_connection = nil
 
 	function self:update(dt_scale)
-		dt_scale = dt_scale * _rate
 		if _current_mode == AudioManager.Mode.PreStart then
 			--Do pre-start countdown
 			local pre_start_time_pre = _pre_start_time_ms
@@ -289,14 +287,14 @@ function AudioManager:new(_game)
 		return rtv
 	end
 
-	function self:update_spawn_notes(dt_scale)
+	function self:update_spawn_notes()
 		local current_time_ms = self:get_current_time_ms()
 		local note_prebuffer_time_ms = self:get_note_prebuffer_time_ms()
 
 		local test_time = current_time_ms + note_prebuffer_time_ms - _pre_countdown_time_ms
 
-		for i=_audio_data_index,#_current_audio_data.HitObjects do
-			local itr_hitobj = _current_audio_data.HitObjects[i]
+		for i=_audio_data_index,#_hit_objects do
+			local itr_hitobj = _hit_objects[i]
 			if test_time >= itr_hitobj.Time then
 				if itr_hitobj.Type == 1 then
 					push_back_single_note(
@@ -327,7 +325,7 @@ function AudioManager:new(_game)
 	end
 
 	function self:get_song_length_ms()
-		return _bgm.TimeLength * 1000 + _pre_countdown_time_ms
+		return (_bgm.TimeLength * 1000 + _pre_countdown_time_ms) / _rate
 	end
 
 	return self
