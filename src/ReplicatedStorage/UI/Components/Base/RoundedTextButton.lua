@@ -17,7 +17,8 @@ RoundedTextButton.defaultProps = {
     HighlightBackgroundColor3 = Color3.fromRGB(17, 17, 17);
     OnPress = noop;
     OnRelease = noop;
-    Frequency = 13
+    Frequency = 13;
+    dampingRatio = 2.5;
 }
 
 function RoundedTextButton:init()
@@ -50,7 +51,7 @@ function RoundedTextButton:render()
             self.motor:setGoal({
                 tap = Flipper.Spring.new(0.7, {
                     frequency = self.props.Frequency;
-                    dampingRatio = 2.5;
+                    dampingRatio = self.props.dampingRatio;
                 })
             })
         end;
@@ -58,7 +59,7 @@ function RoundedTextButton:render()
             self.motor:setGoal({
                 tap = Flipper.Spring.new(0, {
                     frequency = self.props.Frequency;
-                    dampingRatio = 2.5;
+                    dampingRatio = self.props.dampingRatio;
                 })
             })
         end;
