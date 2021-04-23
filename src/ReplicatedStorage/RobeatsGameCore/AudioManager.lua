@@ -9,6 +9,8 @@ local TimingPresets = require(game.ReplicatedStorage.TimingPresets)
 local SingleNote = require(game.ReplicatedStorage.RobeatsGameCore.NoteTypes.SingleNote)
 local HeldNote = require(game.ReplicatedStorage.RobeatsGameCore.NoteTypes.HeldNote)
 
+local Configuration = require(game.ReplicatedStorage.Configuration)
+
 local AudioManager = {}
 AudioManager.Mode = {
 	NotLoaded = 0; --No audio is loaded (call AudioManager:load_song)
@@ -92,14 +94,11 @@ function AudioManager:new(_game)
 	local _note_count = 0
 	function self:get_note_count() return _note_count end
 
-	function self:get_note_prebuffer_time_ms() 
-		_current_audio_data = SongDatabase:get_data_for_key(_song_key) --??
-		_note_prebuffer_time = (1-(21/30))*2000
+	function self:get_note_prebuffer_time_ms()
 		return _note_prebuffer_time
 	end
 
 	function self:load_song(song_key)
-
 		_song_key = song_key
 		_current_mode = AudioManager.Mode.Loading
 		_audio_data_index = 1
@@ -132,7 +131,7 @@ function AudioManager:new(_game)
 		end
 		
 		--Apply note speed multiplier
-		_note_prebuffer_time = 800
+		_note_prebuffer_time = 13720 / Configuration.Preferences.NoteSpeed
 	end
 
 	function self:teardown()
