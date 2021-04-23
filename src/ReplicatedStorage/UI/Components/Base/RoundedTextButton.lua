@@ -1,7 +1,14 @@
+--[[
+    NOTE: This component will only render properly if the ScreenGui it is childed to has its ZIndexBehavior set to "Global".
+    This is due to the fact that an ImageLabel is DECLARED UNDER THE TEXTLABEL. Normal animated TextLabels will work fine, but those with backgournd images will not.
+]]
+
 local Roact = require(game.ReplicatedStorage.Packages.Roact)
 local Llama = require(game.ReplicatedStorage.Packages.Llama)
 local Flipper = require(game.ReplicatedStorage.Packages.Flipper)
 local RoactFlipper = require(game.ReplicatedStorage.Packages.RoactFlipper)
+
+local RoundedImageLabel = require(game.ReplicatedStorage.UI.Components.Base.RoundedImageLabel)
 
 local RoundedTextButton = Roact.Component:extend("Button")
 
@@ -19,6 +26,7 @@ RoundedTextButton.defaultProps = {
     OnRelease = noop;
     Frequency = 13;
     dampingRatio = 2.5;
+    ZIndex = 1
 }
 
 function RoundedTextButton:init()
@@ -39,6 +47,7 @@ function RoundedTextButton:render()
         TextScaled = self.props.TextScaled;
         TextXAlignment = self.props.TextXAlignment;
         TextYAlignment = self.props.TextYAlignment;
+        ZIndex = self.props.ZIndex;
         AutoButtonColor = false;
         LayoutOrder = self.props.LayoutOrder;
         Size = self.motorBinding:map(function(a)
@@ -47,6 +56,7 @@ function RoundedTextButton:render()
         BackgroundColor3 = self.motorBinding:map(function(a)
             return self.props.BackgroundColor3:Lerp(self.props.HighlightBackgroundColor3, a.tap)
         end);
+        BackgroundTransparency = self.props.BackgroundTransparency;
         [Roact.Event.MouseEnter] = function()
             self.motor:setGoal({
                 tap = Flipper.Spring.new(0.7, {
@@ -84,11 +94,25 @@ function RoundedTextButton:render()
         [Roact.Event.MouseButton1Click] = self.props.OnClick;
     }
 
-    local children = Llama.Dictionary.join(self.props[Roact.Children], {
+    local children = {
         Corner = Roact.createElement("UICorner", {
             CornerRadius = UDim.new(0,4);
         });
-    })
+    }
+
+    if self.props.BackgroundImage then
+        children.BackgroundImage = Roact.createElement(RoundedImageLabel, {
+            BackgroundTransparency = 1,
+            AnchorPoint = Vector2.new(0.5, 0.5),
+            Position = UDim2.fromScale(0.5, 0.5),
+            Size = UDim2.fromScale(1, 1),
+            Image = self.props.BackgroundImage,
+            ImageColor3 = self.props.BackgroundImageColor3,
+            ZIndex = self.props.ZIndex - 1
+        })
+    end
+
+    children = Llama.Dictionary.join(self.props[Roact.Children], children)
 
     return Roact.createElement("TextButton", props, children)
 end
