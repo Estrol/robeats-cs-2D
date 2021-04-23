@@ -96,7 +96,10 @@ function Gameplay:render()
             Position = UDim2.fromScale(0.02, 0.02),
             Text = "Quit Out",
             OnClick = function()
-                self.props.history:push("/")
+                self.props.history:push("/results", {
+                    score = self.state.score,
+                    accuracy = self.state.accuracy
+                })
             end
         })
     })
