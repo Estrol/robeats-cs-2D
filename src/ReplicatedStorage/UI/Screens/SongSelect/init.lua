@@ -42,9 +42,14 @@ function SongSelect:init()
         end)
     end)
 
+    local onOptionsKeyPressed = SPUtil:bind_to_key(Enum.KeyCode.O, function()
+        self.props.history:push("/options")
+    end)
+
     self.maid:GiveTask(onConfigurationChanged)
     self.maid:GiveTask(onUprateKeyPressed)
     self.maid:GiveTask(onDownrateKeyPressed)
+    self.maid:GiveTask(onOptionsKeyPressed)
 end
 
 function SongSelect:render()
