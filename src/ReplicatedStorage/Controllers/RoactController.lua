@@ -8,6 +8,8 @@ local Screens = game.ReplicatedStorage.UI.Screens
 
 local SongSelect = require(Screens.SongSelect)
 local Gameplay = require(Screens.Gameplay)
+local Results = require(Screens.Results)
+local Options = require(Screens.Options)
 
 local RoactController = Knit.CreateController({
     Name = "RoactController"
@@ -28,6 +30,16 @@ function RoactController:GetRoutes()
             path = "/play",
             exact = true,
             component = Gameplay
+        }),
+        Results = Roact.createElement(RoactRouter.Route, {
+            path = "/results",
+            exact = true,
+            component = Results
+        }),
+        Options = Roact.createElement(RoactRouter.Route, {
+            path = "/options",
+            exact = true,
+            component = Options
         })
     }
 end
