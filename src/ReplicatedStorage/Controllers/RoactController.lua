@@ -1,6 +1,9 @@
 local Knit = require(game.ReplicatedStorage.Knit)
 local Roact = require(game.ReplicatedStorage.Packages.Roact)
 local RoactRouter = require(game.ReplicatedStorage.Packages.RoactRouter)
+local RoactRodux = require(game.ReplicatedStorage.Packages.RoactRodux)
+
+local State = require(game.ReplicatedStorage.State)
 
 local EnvironmentSetup = require(game.ReplicatedStorage.RobeatsGameCore.EnvironmentSetup)
 
@@ -52,8 +55,14 @@ function RoactController:MountRoactNodes()
         initialIndex = 1
     }, routes)
 
+    local app = Roact.createElement(RoactRodux.StoreProvider, {
+        store = State.Store
+    }, {
+        AppRouter = router
+    })
+
     -- Mount the router to the ScreenGui in PlayerGui
-    Roact.mount(router, EnvironmentSetup:get_player_gui_root())
+    Roact.mount(app, EnvironmentSetup:get_player_gui_root())
 end
 
 return RoactController
