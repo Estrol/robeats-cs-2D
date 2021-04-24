@@ -9,19 +9,20 @@ RoundedTextLabel.defaultProps = {
     Text = "RoundedTextLabel";
     TextSize = 18;
     BackgroundColor3 = Color3.fromRGB(29, 29, 29);
+    CornerRadius = UDim.new(0,4)
 }
 
 function RoundedTextLabel:render()
     local children = Llama.Dictionary.join(self.props[Roact.Children], {
         Corner = Roact.createElement("UICorner", {
-            CornerRadius = UDim.new(0,4);
+            CornerRadius = self.props.CornerRadius;
         });
     })
 
     local props = {}
 
     for i, v in pairs(self.props) do
-        if i ~= Roact.Children then
+        if i ~= Roact.Children and i ~= "CornerRadius" then
             props[i] = v
         end
     end
