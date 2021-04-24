@@ -1,14 +1,7 @@
---[[
-    NOTE: This component will only render properly if the ScreenGui it is childed to has its ZIndexBehavior set to "Global".
-    This is due to the fact that an ImageLabel is DECLARED UNDER THE TEXTLABEL. Normal animated TextLabels will work fine, but those with backgournd images will not.
-]]
-
 local Roact = require(game.ReplicatedStorage.Packages.Roact)
 local Llama = require(game.ReplicatedStorage.Packages.Llama)
 local Flipper = require(game.ReplicatedStorage.Packages.Flipper)
 local RoactFlipper = require(game.ReplicatedStorage.Packages.RoactFlipper)
-
-local RoundedImageLabel = require(game.ReplicatedStorage.UI.Components.Base.RoundedImageLabel)
 
 local RoundedTextButton = Roact.Component:extend("Button")
 
@@ -94,25 +87,11 @@ function RoundedTextButton:render()
         [Roact.Event.MouseButton1Click] = self.props.OnClick;
     }
 
-    local children = {
+    local children = Llama.Dictionary.join(self.props[Roact.Children], {
         Corner = Roact.createElement("UICorner", {
             CornerRadius = UDim.new(0,4);
         });
-    }
-
-    if self.props.BackgroundImage then
-        children.BackgroundImage = Roact.createElement(RoundedImageLabel, {
-            BackgroundTransparency = 1,
-            AnchorPoint = Vector2.new(0.5, 0.5),
-            Position = UDim2.fromScale(0.5, 0.5),
-            Size = UDim2.fromScale(1, 1),
-            Image = self.props.BackgroundImage,
-            ImageColor3 = self.props.BackgroundImageColor3,
-            ZIndex = self.props.ZIndex - 1
-        })
-    end
-
-    children = Llama.Dictionary.join(self.props[Roact.Children], children)
+    })
 
     return Roact.createElement("TextButton", props, children)
 end
