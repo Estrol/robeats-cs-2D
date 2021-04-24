@@ -41,10 +41,12 @@ function RoundedAutoScrollingFrame:render()
         }))
     })
 
-    local props = {}
+    local props = {
+        BackgroundTransparency = 1
+    }
 
     for i, v in pairs(self.props) do
-        if i ~= Roact.Children and i ~= Roact.Ref and i ~= "UIListLayoutProps" then
+        if i ~= Roact.Children and i ~= Roact.Ref and i ~= "UIListLayoutProps" and i ~= "BackgroundTransparency" then
             props[i] = v
         end
     end
