@@ -9,8 +9,6 @@ local TimingPresets = require(game.ReplicatedStorage.TimingPresets)
 local SingleNote = require(game.ReplicatedStorage.RobeatsGameCore.NoteTypes.SingleNote)
 local HeldNote = require(game.ReplicatedStorage.RobeatsGameCore.NoteTypes.HeldNote)
 
-local Configuration = require(game.ReplicatedStorage.Configuration)
-
 local AudioManager = {}
 AudioManager.Mode = {
 	NotLoaded = 0; --No audio is loaded (call AudioManager:load_song)
@@ -35,17 +33,16 @@ function AudioManager:new(_game)
 	function self:get_song_key() return _song_key end
 	
 	--Note timings: millisecond offset (positive is early, negative is late) mapping to what the note result is
-	local window = TimingPresets["Standard"]
-	local _note_bad_max = window.NoteBadMaxMS
-	local _note_good_max = window.NoteGoodMaxMS --Default: 260
-	local _note_great_max = window.NoteGreatMaxMS --Default: 140
-	local _note_perfect_max = window.NotePerfectMaxMS --Default: 40
-	local _note_marvelous_max = window.NoteMarvelousMaxMS --Default: 40
-	local _note_marvelous_min = window.NoteMarvelousMinMS --Default: -20
-	local _note_perfect_min = window.NotePerfectMinMS --Default: -20
-	local _note_great_min = window.NoteGreatMinMS --Default: -70
-	local _note_good_min = window.NoteGoodMinMS
-	local _note_bad_min = window.NoteBadMinMS
+	local _note_bad_max = 300
+	local _note_good_max = 260 --Default: 260
+	local _note_great_max = 140 --Default: 140
+	local _note_perfect_max = 40 --Default: 40
+	local _note_marvelous_max = 20 --Default: 40
+	local _note_marvelous_min = -20 --Default: -20
+	local _note_perfect_min = -40 --Default: -20
+	local _note_great_min = -140 --Default: -70
+	local _note_good_min = -260
+	local _note_bad_min = -300
 	
 	--Called in NoteResult:timedelta_to_result(time_to_end, _game)
 	function self:get_note_result_timing()
@@ -98,28 +95,18 @@ function AudioManager:new(_game)
 		return _note_prebuffer_time
 	end
 
-	function self:load_song(song_key)
+	function self:load_song(song_key, _config)
 		_song_key = song_key
 		_current_mode = AudioManager.Mode.Loading
 		_audio_data_index = 1
 		_current_audio_data = SongDatabase:get_data_for_key(_song_key)
-		_hit_objects = SongDatabase:get_hit_objects_for_key(_song_key, _rate)
 		
-		for i = 1, #_hit_objects do
-			local itr = _hit_objects[i]
-			if itr.Type == 1 then
-				_note_count = _note_count + 1
-			else
-				_note_count = _note_count + 2
-			end
-		end
-
 		local sfxg_id = _current_audio_data.AudioHitSFXGroup
 		_hit_sfx_group = HitSFXGroup:new(_game,sfxg_id)
 		_hit_sfx_group:preload()
-
+		
 		_audio_time_offset = _audio_time_offset + _current_audio_data.AudioTimeOffset
-
+		
 		_bgm.SoundId = _current_audio_data.AudioAssetId
 		_bgm.Playing = true
 		_bgm.Volume = 0
@@ -131,13 +118,41 @@ function AudioManager:new(_game)
 		end
 		
 		--Apply note speed multiplier
-		_note_prebuffer_time = 13720 / Configuration.Preferences.NoteSpeed
+		_note_prebuffer_time = 13720 / _config.NoteSpeed
+		
+		--Apply timing windows
+		local _timing_preset = TimingPresets[_config.TimingPreset]
+		_note_bad_max = _timing_preset.NoteBadMaxMS
+		_note_good_max = _timing_preset.NoteGoodMaxMS
+		_note_great_max = _timing_preset.NoteGreatMaxMS
+		_note_perfect_max =_timing_preset.NotePerfectMaxMS
+		_note_marvelous_max =_timing_preset.NoteMarvelousMaxMS
+		_note_marvelous_min = _timing_preset.NoteMarvelousMinMS
+		_note_perfect_min = _timing_preset.NotePerfectMinMS
+		_note_great_min = _timing_preset.NoteGreatMinMS
+		_note_good_min = _timing_preset.NoteGoodMinMS
+		_note_bad_min = _timing_preset.NoteBadMinMS
+		
+		--Apply song rate
+		self:set_rate(_config.SongRate / 100)
+
+		--Add hit objects and perform note count calculations
+		_hit_objects = SongDatabase:get_hit_objects_for_key(_song_key, _rate)
+		
+		for i = 1, #_hit_objects do
+			local itr = _hit_objects[i]
+			if itr.Type == 1 then
+				_note_count = _note_count + 1
+			else
+				_note_count = _note_count + 2
+			end
+		end
 	end
 
 	function self:teardown()
 		_bgm:Destroy()
 	end
-
+	
 	function self:is_ready_to_play()
 		return _current_audio_data ~= nil and _bgm.IsLoaded == true
 	end
