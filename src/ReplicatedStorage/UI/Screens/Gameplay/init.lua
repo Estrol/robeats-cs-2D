@@ -35,6 +35,18 @@ function Gameplay:init()
     end)
     
     self.everyFrameConnection = SPUtil:bind_to_frame(function(dt)
+        if _game._audio_manager:get_just_finished() then
+            _game:set_mode(RobeatsGame.Mode.GameEnded)
+        end
+
+        if _game:get_mode() == RobeatsGame.Mode.GameEnded then
+            self.props.history:push("/results", {
+                score = self.state.score,
+                accuracy = self.state.accuracy
+            })
+            return
+        end
+
         local dt_scale = CurveUtil:DeltaTimeToTimescale(dt)
         _game:update(dt_scale)
 
@@ -103,10 +115,7 @@ function Gameplay:render()
             Position = UDim2.fromScale(0.02, 0.02),
             Text = "Quit Out",
             OnClick = function()
-                self.props.history:push("/results", {
-                    score = self.state.score,
-                    accuracy = self.state.accuracy
-                })
+                self._game:set_mode(RobeatsGame.Mode.GameEnded)
             end
         })
     })
