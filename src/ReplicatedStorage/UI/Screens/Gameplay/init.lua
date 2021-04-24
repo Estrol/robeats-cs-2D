@@ -1,4 +1,6 @@
 local Roact = require(game.ReplicatedStorage.Packages.Roact)
+local RoactRodux = require(game.ReplicatedStorage.Packages.RoactRodux)
+local Llama = require(game.ReplicatedStorage.Packages.Llama)
 local e = Roact.createElement
 
 local SPUtil = require(game.ReplicatedStorage.Shared.SPUtil)
@@ -19,9 +21,14 @@ function Gameplay:init()
     })
 
     local _game = RobeatsGame:new(EnvironmentSetup:get_game_environment_center_position())
-    _game._audio_manager:set_rate(self.props.location.state.songRate / 100)
+    _game._input:set_keybinds({
+        self.props.options.Keybind1,
+        self.props.options.Keybind2,
+        self.props.options.Keybind3,
+        self.props.options.Keybind4,
+    })
     
-    _game:load(self.props.location.state.songKey, GameSlot.SLOT_1)
+    _game:load(self.props.options.SongKey, GameSlot.SLOT_1, self.props.options)
     
     _game._loaded:Connect(function()
         _game:start_game()
@@ -110,4 +117,8 @@ function Gameplay:willUnmount()
     self.everyFrameConnection:Disconnect() 
 end
 
-return Gameplay
+return RoactRodux.connect(function(state, props)
+    return Llama.Dictionary.join(props, {
+        options = Llama.Dictionary.join(state.options.persistent, state.options.transient)
+    })
+end)(Gameplay)
