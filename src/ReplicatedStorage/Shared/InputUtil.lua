@@ -2,7 +2,6 @@ local SPUtil = require(game.ReplicatedStorage.Shared.SPUtil)
 local SPDict = require(game.ReplicatedStorage.Shared.SPDict)
 local SPList = require(game.ReplicatedStorage.Shared.SPList)
 local SPVector = require(game.ReplicatedStorage.Shared.SPVector)
-local Configuration = require(game.ReplicatedStorage.Configuration)
 
 local InputUtil = {}
 
@@ -53,6 +52,8 @@ function InputUtil:new()
 	local _textbox_focused = false
 	local _do_textbox_unfocus = false
 
+	local keybinds = {}
+
 	function self:cons()
 		userinput_service.TextBoxFocused:connect(function(textbox)
 			_textbox_focused = true
@@ -100,6 +101,10 @@ function InputUtil:new()
 		game.Players.LocalPlayer:GetMouse().WheelBackward:connect(function()
 			self:input_began(InputUtil.KEY_SCROLL_DOWN)
 		end)
+	end
+
+	function self:set_keybinds(_keybinds)
+		keybinds = _keybinds
 	end
 	
 	local _track1_end = 0.25
@@ -258,19 +263,19 @@ function InputUtil:new()
 
 		if control == InputUtil.KEY_TRACK1 then
 			return active_dict:contains(InputUtil.KEYCODE_TOUCH_TRACK1) or
-				active_dict:contains_any(Configuration.Preferences.Keybinds[1])
+				active_dict:contains(keybinds[1])
 
 		elseif control == InputUtil.KEY_TRACK2 then
 			return active_dict:contains(InputUtil.KEYCODE_TOUCH_TRACK2) or
-				active_dict:contains_any(Configuration.Preferences.Keybinds[2])
+				active_dict:contains(keybinds[2])
 
 		elseif control == InputUtil.KEY_TRACK3 then
 			return active_dict:contains(InputUtil.KEYCODE_TOUCH_TRACK3) or
-				active_dict:contains_any(Configuration.Preferences.Keybinds[3])
+				active_dict:contains(keybinds[3])
 
 		elseif control == InputUtil.KEY_TRACK4 then
 			return active_dict:contains(InputUtil.KEYCODE_TOUCH_TRACK4) or
-				active_dict:contains_any(Configuration.Preferences.Keybinds[4])
+				active_dict:contains(keybinds[4])
 
 		elseif control == InputUtil.KEYCODE_TOUCH_TRACK1 then
 			return _down_keys:contains(InputUtil.KEYCODE_TOUCH_TRACK1)
