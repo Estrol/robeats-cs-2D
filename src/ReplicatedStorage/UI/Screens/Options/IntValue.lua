@@ -3,14 +3,14 @@ local e = Roact.createElement
 
 local RoundedFrame = require(game.ReplicatedStorage.UI.Components.Base.RoundedFrame)
 local RoundedTextLabel = require(game.ReplicatedStorage.UI.Components.Base.RoundedTextLabel)
-local RoundedTextButton = require(game.ReplicatedStorage.UI.Components.Base.RoundedTextButton)
+local RoundedImageButton = require(game.ReplicatedStorage.UI.Components.Base.RoundedImageButton)
 
 local function noop() end
 
 local IntValue = Roact.Component:extend("IntValue")
 
 IntValue.defaultProps = {
-    Size = UDim2.new(0.98, 0, 0, 80),
+    Size = UDim2.new(1, 0, 0, 80),
     Value = 0,
     Name = "SettingName",
     OnChanged = noop,
@@ -23,7 +23,7 @@ function IntValue:render()
     return e(RoundedFrame, {
         Size = self.props.Size,
         Position = self.props.Position,
-        BackgroundColor3 =  Color3.fromRGB(24, 68, 78)
+        BackgroundColor3 =  Color3.fromRGB(25, 26, 26)
     }, {
         Name = e(RoundedTextLabel, {
             Size = UDim2.fromScale(0.35, 0.2),
@@ -35,24 +35,32 @@ function IntValue:render()
             TextScaled = true
         }),
         Value = e(RoundedTextLabel, {
-            Size = UDim2.fromScale(0.35, 0.55),
-            Position = UDim2.fromScale(0.05, 0.6),
+            Size = UDim2.fromScale(0.38, 0.55),
+            Position = UDim2.fromScale(0.3, 0.6),
             AnchorPoint = Vector2.new(0, 0.5),
             BackgroundColor3 = Color3.fromRGB(37, 37, 37),
             TextColor3 = Color3.fromRGB(255, 255, 255),
             Text = self.props.FormatValue(self.props.Value),
-            TextScaled = true
+            TextScaled = true,
+            CornerRadius = UDim.new(0, 12),
+        }, {
+            UITextSizeConstraint = e("UITextSizeConstraint", {
+                MaxTextSize = 20,
+                MinTextSize = 12
+            })
         }),
-        Subtract = e(RoundedTextButton, {
+        Subtract = e(RoundedImageButton, {
             OnClick = function()
                 self.props.OnChanged(self.props.Value - 1)
             end,
             BackgroundTransparency = 1,
-            BackgroundImage = "rbxassetid://1588248423",
+            Image = "rbxassetid://1588248423",
             Size = UDim2.fromScale(0.5, 0.5),
+            HoldSize = UDim2.fromScale(0.54, 0.54),
             AnchorPoint = Vector2.new(0.5, 0.5),
-            Position = UDim2.fromScale(0.65, 0.6),
-            BackgroundImageColor3 = Color3.fromRGB(221, 40, 16),
+            Position = UDim2.fromScale(0.2, 0.6),
+            ImageColor3 = Color3.fromRGB(90, 19, 10),
+            HighlightImageColor3 = Color3.fromRGB(168, 42, 25),
             ZIndex = 3,
             TextScaled = true,
             TextColor3 = Color3.fromRGB(255, 255, 255),
@@ -62,16 +70,18 @@ function IntValue:render()
                 AspectRatio = 1
             })
         }),
-        Add = e(RoundedTextButton, {
+        Add = e(RoundedImageButton, {
             OnClick = function()
                 self.props.OnChanged(self.props.Value + 1)
             end,
             BackgroundTransparency = 1,
-            BackgroundImage = "rbxassetid://1588248423",
+            Image = "rbxassetid://1588248423",
             Size = UDim2.fromScale(0.5, 0.5),
+            HoldSize = UDim2.fromScale(0.54, 0.54),
             AnchorPoint = Vector2.new(0.5, 0.5),
-            Position = UDim2.fromScale(0.85, 0.6),
-            BackgroundImageColor3 = Color3.fromRGB(16, 221, 33),
+            Position = UDim2.fromScale(0.78, 0.6),
+            ImageColor3 = Color3.fromRGB(9, 83, 15),
+            HighlightImageColor3 = Color3.fromRGB(20, 189, 34),
             ZIndex = 3,
             TextScaled = true,
             TextColor3 = Color3.fromRGB(255, 255, 255),
@@ -80,6 +90,9 @@ function IntValue:render()
             UIAspectRatioConstraint = e("UIAspectRatioConstraint", {
                 AspectRatio = 1
             })
+        }),
+        UIAspectRatioConstraint = e("UIAspectRatioConstraint", {
+            AspectRatio = 4
         })
     })
 end
