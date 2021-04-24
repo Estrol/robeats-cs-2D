@@ -2,8 +2,6 @@ local DebugOut = require(game.ReplicatedStorage.Shared.DebugOut)
 local SPDict = require(game.ReplicatedStorage.Shared.SPDict)
 local AssertType = require(game.ReplicatedStorage.Shared.AssertType)
 
-local Configuration = require(game.ReplicatedStorage.Configuration)
-
 local EnvironmentSetup = {}
 EnvironmentSetup.Mode = {
 	Menu = 0;
@@ -31,9 +29,6 @@ function EnvironmentSetup:initial_setup()
 	_player_gui.Parent = game.Players.LocalPlayer.PlayerGui
 	_player_gui.IgnoreGuiInset = false
 	_player_gui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-
-	--LOAD SETTINGS
-	Configuration:load_from_save()
 end
 
 function EnvironmentSetup:set_mode(mode)
