@@ -110,11 +110,11 @@ function RobeatsGame:new(_game_environment_center_position)
 		end
 	end
 
-	function self:load(_song_key, _local_player_slot)
+	function self:load(_song_key, _local_player_slot, _config)
 		return Promise.new(function(resolve)
 			EnvironmentSetup:set_mode(EnvironmentSetup.Mode.Game)
 
-			self._audio_manager:load_song(_song_key)
+			self._audio_manager:load_song(_song_key, _config)
 			self:setup_world(_local_player_slot)
 
 			local con
