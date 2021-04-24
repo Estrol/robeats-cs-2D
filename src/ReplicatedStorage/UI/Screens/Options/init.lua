@@ -12,10 +12,11 @@ local RoundedAutoScrollingFrame = require(game.ReplicatedStorage.UI.Components.B
 local RoundedTextButton = require(game.ReplicatedStorage.UI.Components.Base.RoundedTextButton)
 
 local IntValue = require(script.IntValue)
+local KeybindValue = require(script.KeybindValue)
 
 local Options = Roact.Component:extend("Options")
 
-Options.categoryList = { "⚙ General", "🤮 Eww" }
+Options.categoryList = { "⚙ General" }
 
 function Options:init()
     self:setState({
@@ -51,17 +52,19 @@ function Options:getSettingElements()
                 return string.format("%d ms", value)
             end
         })
-    end):case(2, function()
-        elements.Ew = e(IntValue, {
-            Value = self.props.options.AudioOffset,
-            OnChanged = function(value)
-                
-            end,
-            Name = "Ewwww",
-            FormatValue = function(value)
-                return string.format("%d ms", value)
+
+        elements.InGameKeybinds = e(KeybindValue, {
+            Values = {
+                self.props.options.Keybind1,
+                self.props.options.Keybind2,
+                self.props.options.Keybind3,
+                self.props.options.Keybind4
+            },
+            Name = "In-Game Keybinds",
+            OnChanged = function(index, value)
+                self.props.setOption(string.format("Keybind%d", index), value)
             end
-        })
+        }) 
     end)
 
     return elements
@@ -73,10 +76,22 @@ function Options:render()
     local categories = {}
 
     for i, category in ipairs(self.categoryList) do
+        local backgroundColor3
+        local highlightBackgroundColor3
+
+        if i == self.state.selectedCategory then
+            backgroundColor3 = Color3.fromRGB(5, 64, 71)
+            highlightBackgroundColor3 = Color3.fromRGB(17, 110, 121)
+        else
+            backgroundColor3 = Color3.fromRGB(20, 20, 20)
+            highlightBackgroundColor3 = Color3.fromRGB(48, 45, 45)
+        end
+
         local categoryButton = e(RoundedTextButton, {
             Size = UDim2.new(1, 0, 0, 50),
-            HoldSize = UDim2.new(1, 0, 0, 53),
-            BackgroundColor3 = i == self.state.selectedCategory and Color3.fromRGB(48, 168, 184) or Color3.fromRGB(20, 20, 20),
+            HoldSize = UDim2.new(1, 0, 0, 50),
+            BackgroundColor3 = backgroundColor3,
+            HighlightBackgroundColor3 = highlightBackgroundColor3,
             Text = string.format("  - %s", category),
             TextScaled = true,
             TextXAlignment = Enum.TextXAlignment.Left,
@@ -93,7 +108,8 @@ function Options:render()
                 MinTextSize = 12
             }),
             UIAspectRatioConstraint = e("UIAspectRatioConstraint", {
-                AspectRatio = 5
+                AspectRatio = 5,
+                AspectType = Enum.AspectType.ScaleWithParentSize
             })
         })
 
@@ -104,10 +120,10 @@ function Options:render()
         Size = UDim2.fromScale(1, 1)
     }, {
         SettingsContainer = e(RoundedAutoScrollingFrame, {
-            Size = UDim2.fromScale(0.3, 0.8),
+            Size = UDim2.fromScale(0.55, 0.8),
             AnchorPoint = Vector2.new(0, 0.5),
-            Position = UDim2.fromScale(0.44, 0.5),
-            BackgroundColor3 = Color3.fromRGB(36, 36, 36),
+            Position = UDim2.fromScale(0.32, 0.5),
+            BackgroundColor3 = Color3.fromRGB(23, 23, 23),
             UIListLayoutProps = {
                 Padding = UDim.new(0, 4),
             }
@@ -117,8 +133,8 @@ function Options:render()
         SettingsCategoriesContainer = e(RoundedAutoScrollingFrame, {
             Size = UDim2.fromScale(0.2, 0.8),
             AnchorPoint = Vector2.new(0, 0.5),
-            Position = UDim2.fromScale(0.22, 0.5),
-            BackgroundColor3 = Color3.fromRGB(36, 36, 36),
+            Position = UDim2.fromScale(0.1, 0.5),
+            BackgroundColor3 = Color3.fromRGB(23, 23, 23),
             UIListLayoutProps = {
                 Padding = UDim.new(0, 4),
             }
@@ -126,12 +142,12 @@ function Options:render()
             CategoryButtons = f(categories)
         }),
         BackButton = e(RoundedTextButton, {
-            Size = UDim2.fromScale(0.2, 0.05),
-            AnchorPoint = Vector2.new(0, 1),
-            Position = UDim2.fromScale(0.01, 0.99),
+            Size = UDim2.fromScale(0.05, 0.05),
+            HoldSize = UDim2.fromScale(0.06, 0.06),
+            AnchorPoint = Vector2.new(0.5, 0.5),
+            Position = UDim2.fromScale(0.124, 0.95),
             BackgroundColor3 = Color3.fromRGB(212, 23, 23),
             TextColor3 = Color3.fromRGB(255, 255, 255),
-            HoldSize = UDim2.fromScale(0.2, 0.08),
             Text = "Back",
             TextSize = 12,
             OnClick = function()

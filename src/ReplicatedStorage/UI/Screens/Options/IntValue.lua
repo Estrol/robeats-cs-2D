@@ -62,8 +62,8 @@ function IntValue:render()
             ImageColor3 = Color3.fromRGB(90, 19, 10),
             HighlightImageColor3 = Color3.fromRGB(168, 42, 25),
             ZIndex = 3,
-            TextScaled = true,
             TextColor3 = Color3.fromRGB(255, 255, 255),
+            TextSize = 20,
             Text = "-"
         }, {
             UIAspectRatioConstraint = e("UIAspectRatioConstraint", {
@@ -83,8 +83,9 @@ function IntValue:render()
             ImageColor3 = Color3.fromRGB(9, 83, 15),
             HighlightImageColor3 = Color3.fromRGB(20, 189, 34),
             ZIndex = 3,
-            TextScaled = true,
+            TextScaled = false,
             TextColor3 = Color3.fromRGB(255, 255, 255),
+            TextSize = 20,
             Text = "+"
         }, {
             UIAspectRatioConstraint = e("UIAspectRatioConstraint", {
@@ -92,7 +93,8 @@ function IntValue:render()
             })
         }),
         UIAspectRatioConstraint = e("UIAspectRatioConstraint", {
-            AspectRatio = 4
+            AspectRatio = 8,
+            AspectType = Enum.AspectType.ScaleWithParentSize
         })
     })
 end
