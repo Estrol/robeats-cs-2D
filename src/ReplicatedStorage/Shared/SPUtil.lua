@@ -261,4 +261,20 @@ function SPUtil:bind_to_key_release(key_code, _callback)
 	end)
 end
 
+function SPUtil:switch(val)
+	local switchInstance = {}
+
+	local _wasCalled = false
+
+	function switchInstance:case(compar, _callback)
+		if val == compar and not _wasCalled then
+			_wasCalled = true
+			_callback(compar)
+		end
+		return self
+	end
+
+	return switchInstance
+end
+
 return SPUtil
