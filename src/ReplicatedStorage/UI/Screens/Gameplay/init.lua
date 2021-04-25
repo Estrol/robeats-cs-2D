@@ -11,14 +11,17 @@ local GameSlot = require(game.ReplicatedStorage.RobeatsGameCore.Enums.GameSlot)
 
 local RoundedTextLabel = require(game.ReplicatedStorage.UI.Components.Base.RoundedTextLabel)
 local RoundedTextButton = require(game.ReplicatedStorage.UI.Components.Base.RoundedTextButton)
+local LoadingWheel = require(game.ReplicatedStorage.UI.Components.Base.LoadingWheel)
 
 local Gameplay = Roact.Component:extend("Gameplay")
 
 function Gameplay:init()
     self:setState({
         accuracy = 0,
-        score = 0
+        score = 0,
+        loaded = false
     })
+    self.timeLeft, self.setTimeLeft = Roact.createBinding(0)
 
     local _game = RobeatsGame:new(EnvironmentSetup:get_game_environment_center_position())
     _game._input:set_keybinds({
@@ -31,6 +34,9 @@ function Gameplay:init()
     _game:load(self.props.options.SongKey, GameSlot.SLOT_1, self.props.options)
     
     _game._loaded:Connect(function()
+        self:setState({
+            loaded = true
+        })
         _game:start_game()
     end)
     
@@ -40,9 +46,22 @@ function Gameplay:init()
         end
 
         if _game:get_mode() == RobeatsGame.Mode.GameEnded then
+            local marvelouses, perfects, greats, goods, bads, misses, maxChain = _game._score_manager:get_end_records()
+            local hits = _game._score_manager:get_hits()
+
             self.props.history:push("/results", {
                 score = self.state.score,
-                accuracy = self.state.accuracy
+                accuracy = self.state.accuracy,
+                marvelouses = marvelouses,
+                perfects = perfects,
+                greats = greats,
+                goods = goods,
+                bads = bads,
+                misses = misses,
+                maxChain = maxChain,
+                hits = hits,
+                songKey = self.props.options.SongKey,
+                rate = self.props.options.SongRate
             })
             return
         end
@@ -59,13 +78,29 @@ function Gameplay:init()
             accuracy = _game._score_manager:get_accuracy() * 100
         })
     end)
-
-    self.timeLeft, self.setTimeLeft = Roact.createBinding(0)
-
     self._game = _game
 end
 
 function Gameplay:render()
+    if not self.state.loaded then
+        return Roact.createFragment({
+            LoadingWheel = e(LoadingWheel, {
+                AnchorPoint = Vector2.new(0, 0.5),
+                Position = UDim2.fromScale(0.39, 0.5),
+                Size = UDim2.fromScale(0.07, 0.07)
+            }),
+            LoadingText = e(RoundedTextLabel, {
+                AnchorPoint = Vector2.new(0.5, 0.5),
+                Position = UDim2.fromScale(0.54, 0.5),
+                Size = UDim2.fromScale(0.2, 0.2),
+                BackgroundTransparency = 1,
+                TextColor3 = Color3.fromRGB(255, 255, 255),
+                TextSize = 20,
+                Text = "Please wait for the game to load..."
+            })
+        })
+    end
+
     return Roact.createFragment({
         Score = e(RoundedTextLabel, {
             Size = UDim2.fromScale(0.2, 0.07),
