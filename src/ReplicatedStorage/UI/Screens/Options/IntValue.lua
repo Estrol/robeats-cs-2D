@@ -23,7 +23,8 @@ function IntValue:render()
     return e(RoundedFrame, {
         Size = self.props.Size,
         Position = self.props.Position,
-        BackgroundColor3 =  Color3.fromRGB(25, 26, 26)
+        BackgroundColor3 =  Color3.fromRGB(25, 26, 26),
+        LayoutOrder = self.props.LayoutOrder
     }, {
         Name = e(RoundedTextLabel, {
             Size = UDim2.fromScale(0.35, 0.2),

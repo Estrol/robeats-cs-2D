@@ -39,7 +39,8 @@ function Options:getSettingElements()
                 end
                 return string.format("%d", value)
             end,
-            Name = "Note Speed"
+            Name = "Note Speed",
+            LayoutOrder = 3
         })
 
         elements.AudioOffset = e(IntValue, {
@@ -50,7 +51,8 @@ function Options:getSettingElements()
             Name = "Audio Offset",
             FormatValue = function(value)
                 return string.format("%d ms", value)
-            end
+            end,
+            LayoutOrder = 2
         })
 
         elements.InGameKeybinds = e(KeybindValue, {
@@ -63,7 +65,8 @@ function Options:getSettingElements()
             Name = "In-Game Keybinds",
             OnChanged = function(index, value)
                 self.props.setOption(string.format("Keybind%d", index), value)
-            end
+            end,
+            LayoutOrder = 1
         }) 
     end)
 
@@ -126,6 +129,7 @@ function Options:render()
             BackgroundColor3 = Color3.fromRGB(23, 23, 23),
             UIListLayoutProps = {
                 Padding = UDim.new(0, 4),
+                SortOrder = Enum.SortOrder.LayoutOrder,
             }
         }, {
             Options = f(options)

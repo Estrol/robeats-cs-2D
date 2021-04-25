@@ -41,6 +41,13 @@ function KeybindValue:render()
             HighlightBackgroundColor3 = self.state.selectedKeybind == i and Color3.fromRGB(20, 189, 201) or Color3.fromRGB(31, 30, 30),
             TextColor3 = Color3.fromRGB(255, 255, 255),
             OnClick = function()
+                if self.state.selectedKeybind == i then
+                    self:setState({
+                        selectedKeybind = Roact.None
+                    })
+                    return
+                end
+
                 self:setState({
                     selectedKeybind = i
                 })
@@ -54,7 +61,8 @@ function KeybindValue:render()
     return e(RoundedFrame, {
         Size = self.props.Size,
         Position = self.props.Position,
-        BackgroundColor3 =  Color3.fromRGB(25, 26, 26)
+        BackgroundColor3 =  Color3.fromRGB(25, 26, 26),
+        LayoutOrder = self.props.LayoutOrder
     }, {
         Name = e(RoundedTextLabel, {
             Size = UDim2.fromScale(0.35, 0.2),
@@ -68,7 +76,8 @@ function KeybindValue:render()
         KeybindContainer = e(RoundedFrame, {
             Size = UDim2.fromScale(0.8, 0.4),
             Position = UDim2.fromScale(0.5, 0.6),
-            AnchorPoint = Vector2.new(0.5, 0.5)
+            AnchorPoint = Vector2.new(0.5, 0.5),
+            BackgroundTransparency = 1
         }, {
             UIListLayout = e("UIListLayout", {
                 FillDirection = Enum.FillDirection.Horizontal,
