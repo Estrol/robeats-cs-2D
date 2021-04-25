@@ -8,7 +8,16 @@ return function(target)
         score = 900000,
         accuracy = 100,
         rating = 67.85,
-        maxCombo = 0
+        maxChain = 0,
+        marvelouses = 0,
+        perfects = 0,
+        greats = 0,
+        goods = 0,
+        bads = 0,
+        misses = 0,
+        hits = {},
+        rate = 100,
+        songKey = 1
     })
 
     local app = Roact.createElement(RoactRouter.Router, {
