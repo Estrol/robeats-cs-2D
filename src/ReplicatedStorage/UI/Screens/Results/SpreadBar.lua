@@ -4,12 +4,17 @@ local RoactFlipper = require(game.ReplicatedStorage.Packages.RoactFlipper)
 
 local SpreadBar = Roact.Component:extend("SpreadBar")
 
-function SpreadBar:getAlpha()
-    return self.props.total > 0 and self.props.count/self.props.total or 0
-end
+SpreadBar.defaultProps = {
+    Marvelouses = 0,
+    Perfects = 0,
+    Greats = 0,
+    Goods = 0,
+    Bads = 0,
+    Misses = 0
+}
 
 function SpreadBar:didMount()
-    self.motor:setGoal(Flipper.Spring.new(self:getAlpha(), {
+    self.motor:setGoal(Flipper.Spring.new(self.props.total > 0 and self.props.count/self.props.total or 0, {
         frequency = 4;
         dampingRatio = 2.5;
     }))
@@ -22,7 +27,7 @@ function SpreadBar:init()
 end
 
 function SpreadBar:didUpdate()
-    self.motor:setGoal(Flipper.Spring.new(self:getAlpha(), {
+    self.motor:setGoal(Flipper.Spring.new(self.props.total > 0 and self.props.count/self.props.total or 0, {
         frequency = 4;
         dampingRatio = 2.5;
     }))

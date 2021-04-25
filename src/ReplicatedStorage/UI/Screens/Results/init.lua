@@ -1,18 +1,23 @@
 local Roact = require(game.ReplicatedStorage.Packages.Roact)
 local SPUtil = require(game.ReplicatedStorage.Shared.SPUtil)
 
+local SongDatabase = require(game.ReplicatedStorage.RobeatsGameCore.SongDatabase)
+
+local NoteResult = require(game.ReplicatedStorage.RobeatsGameCore.Enums.NoteResult)
 local Grade = require(game.ReplicatedStorage.RobeatsGameCore.Enums.Grade)
+local Rating = require(game.ReplicatedStorage.RobeatsGameCore.Enums.Rating)
 
 local RoundedTextButton = require(game.ReplicatedStorage.UI.Components.Base.RoundedTextButton)
 
 local ResultsScreenMain = Roact.Component:extend("ResultsScreenMain")
 
+local DotGraph = require(game.ReplicatedStorage.UI.Components.Graph.DotGraph)
 local SpreadDisplay = require(script.SpreadDisplay)
 local BannerCard = require(script.BannerCard)
 local DataDisplay = require(script.DataDisplay)
 
 function ResultsScreenMain:init()
-	self.grade_images = {
+	self.gradeImages = {
 		[Grade.SS] = "http://www.roblox.com/asset/?id=5702584062",
 		[Grade.S] = "http://www.roblox.com/asset/?id=5702584273",
 		[Grade.A] = "http://www.roblox.com/asset/?id=5702584488",
@@ -36,48 +41,72 @@ function ResultsScreenMain:render()
 
 	local grade = Grade:get_grade_from_accuracy(state.accuracy)
 
+	local mean = 0
+
+	for _, hit in ipairs(state.hits) do
+		mean += hit.time_left
+	end
+
+	if #state.hits ~= 0 then
+		mean /= #state.hits
+	end
+
     return Roact.createElement("Frame", {
-		BackgroundColor3 = Color3.fromRGB(35, 35, 35),
+		BackgroundColor3 = Color3.fromRGB(255, 255, 255),
 		BorderSizePixel = 0;
 		Size = UDim2.new(1, 0, 1, 0);
 	}, {
-		-- HitGraph = Roact.createElement(DotGraph, {
-		-- 	AnchorPoint = Vector2.new(1, 1),
-		-- 	BackgroundColor3 = Color3.fromRGB(25, 25, 25),
-		-- 	BorderSizePixel = 0,
-		-- 	Position = UDim2.new(0.99, 0, 0.98, 0),
-		-- 	Size = UDim2.new(0.485, 0, 0.5, 0),
-		-- 	bounds = {
-		-- 		min = {
-		-- 			y = -350;
-		-- 		};
-		-- 		max = {
-		-- 			y = 350;
-		-- 		}
-		-- 	};
-		-- 	interval = {
-		-- 		y = 50;
-		-- 	};
-		-- 	points = self.props.state.hitDeviance;
-		-- }),
-		-- SpreadDisplay = Roact.createElement(SpreadDisplay, {
-		-- 	AnchorPoint = Vector2.new(0,1),
-		-- 	Position = UDim2.new(0.01,0,0.98,0),
-		-- 	Size = UDim2.new(0.485,0,0.5,0),
-		-- 	marvelouses = state.marvelouses,
-		-- 	perfects = state.perfects,
-		-- 	greats = state.greats,
-		-- 	goods = state.goods,
-		-- 	bads = state.bads,
-		-- 	misses = state.misses
-		-- }),
+		UIGradient = Roact.createElement("UIGradient", {
+			Color = ColorSequence.new({
+				ColorSequenceKeypoint.new(0, Color3.fromRGB(19, 19, 19)),
+				ColorSequenceKeypoint.new(1, Color3.fromRGB(17, 17, 17)),
+			}),
+			Rotation = 45
+		}),
+		HitGraph = Roact.createElement(DotGraph, {
+			AnchorPoint = Vector2.new(0.5, 0.5),
+			BackgroundColor3 = Color3.fromRGB(22, 22, 22),
+			BorderSizePixel = 0,
+			Position = UDim2.new(0.75, 0, 0.675, 0),
+			Size = UDim2.new(0.4, 0, 0.35, 0),
+			bounds = {
+				min = {
+					y = -350;
+				};
+				max = {
+					y = 350;
+				}
+			};
+			interval = {
+				y = 50;
+			};
+			points = state.hits;
+			formatPoint = function(hit)
+				return {
+					x = (hit.hit_object_time + hit.time_left) / SongDatabase:get_song_length_for_key(state.songKey),
+					y = SPUtil:inverse_lerp(-300, 300, hit.time_left),
+					color = NoteResult:result_to_color(hit.judgement)
+				}
+			end
+		}),
+		SpreadDisplay = Roact.createElement(SpreadDisplay, {
+			AnchorPoint = Vector2.new(0.5, 0.5),
+			Position = UDim2.new(0.25, 0, 0.675, 0),
+			Size = UDim2.new(0.4, 0, 0.35, 0),
+			Marvelouses = state.marvelouses,
+			Perfects = state.perfects,
+			Greats = state.greats,
+			Goods = state.goods,
+			Bads = state.bads,
+			Misses = state.misses
+		}),
 		BannerCard = Roact.createElement(BannerCard, {
 			AnchorPoint = Vector2.new(0.5,0);
-			song_key = self.props.selectedSongKey or 1;
+			SongKey = state.songKey;
 			playername = "kisperal";
-			Position = UDim2.new(0.5,0,0.01,0);
-			Size = UDim2.new(0.98,0,0.3,0);
-			grade_image = self.grade_images[grade];
+			Position = UDim2.new(0.5,0,0.05,0);
+			Size = UDim2.new(0.95,0,0.2,0);
+			GradeImage = self.gradeImages[grade];
 		});
 		DataDisplay = Roact.createElement(DataDisplay, {
 			data = {
@@ -91,25 +120,25 @@ function ResultsScreenMain:render()
 				};
 				{
 					Name = "Play Rating";
-					Value = string.format("%0.2f", state.rating or 0);
+					Value = string.format("%0.2f", Rating:get_rating_from_accuracy(state.songKey, state.accuracy, state.rate / 100));
 				};
 				{
 					Name = "Max Combo";
-					Value = state.maxCombo
+					Value = state.maxChain
 				};
 				{
 					Name = "Mean";
-					Value = string.format("%0d ms", 0);
+					Value = string.format("%0d ms", mean);
 				};
 			};
-			Position = UDim2.new(0.5,0,0.32,0);
-			Size = UDim2.new(0.98,0,0.15,0);
+			Position = UDim2.new(0.5,0,0.28,0);
+			Size = UDim2.new(0.95,0,0.1,0);
 			AnchorPoint = Vector2.new(0.5,0);
 		});
 		GoBack = Roact.createElement(RoundedTextButton, {
 			BackgroundColor3 = Color3.fromRGB(236, 33, 33);
 			AnchorPoint = Vector2.new(0, 1);
-			Position = UDim2.fromScale(0.0135, 0.3);
+			Position = UDim2.fromScale(0.0135, 0.98);
 			Size = UDim2.new(0.07,0,0.065,0);
 			HoldSize = UDim2.fromScale(0.09, 0.065);
 			Text = "Go Back";

@@ -68,8 +68,8 @@ function DataDisplay:render()
                 TextTransparency = self.motorBinding:map(function(a) return 1-a end);
             }, {
                 TextSizeConstraint = Roact.createElement("UITextSizeConstraint", {
-                    MinTextSize = 12;
-                    MaxTextSize = 26;
+                    MinTextSize = 7;
+                    MaxTextSize = 15;
                 })
             });
         })

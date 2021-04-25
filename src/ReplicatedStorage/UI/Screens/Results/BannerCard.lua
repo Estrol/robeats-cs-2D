@@ -2,6 +2,8 @@ local Roact = require(game.ReplicatedStorage.Packages.Roact)
 local Flipper = require(game.ReplicatedStorage.Packages.Flipper)
 local RoactFlipper = require(game.ReplicatedStorage.Packages.RoactFlipper)
 
+local Thread = require(game.ReplicatedStorage.Knit.Util.Thread)
+
 local SongDatabase = require(game.ReplicatedStorage.RobeatsGameCore.SongDatabase)
 
 local BannerCard = Roact.Component:extend("BannerCard")
@@ -35,7 +37,8 @@ function BannerCard:didMount()
             velocity = 0.8;
         });
     })
-    delay(0.9, function()
+
+    Thread.Delay(0.9, function()
         self.motor:setGoal({
             playedat = Flipper.Linear.new(1, {
                 velocity = 2;
@@ -57,7 +60,7 @@ function BannerCard:render()
         ImageTransparency = self.motorBinding:map(function(a)
             return 1-a.bg
         end);
-        Image = SongDatabase:get_image_for_key(self.props.song_key);
+        Image = SongDatabase:get_image_for_key(self.props.SongKey);
     }, {
         Corner = Roact.createElement("UICorner", {
             CornerRadius = UDim.new(0, 4),
@@ -119,7 +122,7 @@ function BannerCard:render()
             --Size = UDim2.new(0.5, 0, 0.15, 0),
             Size = UDim2.new(0.75, 0, 0.25, 0),
             Font = Enum.Font.GothamBold,
-            Text = SongDatabase:get_title_for_key(self.props.song_key),
+            Text = SongDatabase:get_title_for_key(self.props.SongKey),
             TextColor3 = Color3.fromRGB(255, 255, 255),
             TextScaled = true,
             TextStrokeTransparency = 0.5,
@@ -142,7 +145,7 @@ function BannerCard:render()
             end);
             Size = UDim2.new(0.5, 0, 0.15, 0),
             Font = Enum.Font.GothamBold,
-            Text = SongDatabase:get_artist_for_key(self.props.song_key),
+            Text = SongDatabase:get_artist_for_key(self.props.SongKey),
             TextColor3 = Color3.fromRGB(255, 255, 255),
             TextScaled = true,
             TextStrokeTransparency = 0.5,
