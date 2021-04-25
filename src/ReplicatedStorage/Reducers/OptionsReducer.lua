@@ -16,7 +16,7 @@ local defaultState = {
         NoteSpeed = 1;
         
         --Change this to swap the timing preset
-        TimingPreset = "Standard",
+        TimingPreset = "Extreme",
         
         --You probably won't need to modify these
         NoteRemoveTimeMS = -200;
