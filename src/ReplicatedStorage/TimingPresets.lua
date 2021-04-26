@@ -12,24 +12,24 @@ local TimingPresets = {
 		NotePerfectMaxMS = 55;
 		NotePerfectMinMS = -55;
 
-		NoteMarvelousMaxMS = 16;
-		NoteMarvelousMinMS = -16;
+		NoteMarvelousMaxMS = 26;
+		NoteMarvelousMinMS = -26;
 	},
-	["Standard"] = { --Stepmania J4
+	["Standard"] = { --Stepmania J4, slight modification
 		NoteBadMaxMS = 136;
 		NoteBadMinMS = -136;
 		
 		NoteGoodMaxMS = 112;
 		NoteGoodMinMS = -112;
 		
-		NoteGreatMaxMS = 82;
-		NoteGreatMinMS = -82;
+		NoteGreatMaxMS = 85;
+		NoteGreatMinMS = -85;
 		
-		NotePerfectMaxMS = 49;
-		NotePerfectMinMS = -49;
+		NotePerfectMaxMS = 45;
+		NotePerfectMinMS = -45;
 		
-		NoteMarvelousMaxMS = 16;
-		NoteMarvelousMinMS = -16;
+		NoteMarvelousMaxMS = 22;
+		NoteMarvelousMinMS = -22;
 	},
 	["Strict"] = { --Stepmania Judge 5, slight modification
 		NoteBadMaxMS = 130;
