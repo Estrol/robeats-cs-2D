@@ -28,6 +28,8 @@ function Options:getSettingElements()
     local elements = {}
 
     SPUtil:switch(self.state.selectedCategory):case(1, function()
+
+        --Notespeed
         elements.NoteSpeed = e(IntValue, {
             Value = self.props.options.NoteSpeed,
             OnChanged = function(value)
@@ -43,6 +45,7 @@ function Options:getSettingElements()
             LayoutOrder = 3
         })
 
+        --Audio Offset
         elements.AudioOffset = e(IntValue, {
             Value = self.props.options.AudioOffset,
             OnChanged = function(value)
@@ -54,6 +57,7 @@ function Options:getSettingElements()
             end,
             LayoutOrder = 2
         })
+        --Keybinds
 
         elements.InGameKeybinds = e(KeybindValue, {
             Values = {
