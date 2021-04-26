@@ -31,7 +31,7 @@ local TimingPresets = {
 		NoteMarvelousMaxMS = 16;
 		NoteMarvelousMinMS = -16;
 	},
-	["Strict"] = {
+	["Strict"] = { --Stepmania Judge 5, slight modification
 		NoteBadMaxMS = 130;
 		NoteBadMinMS = -130;
 
@@ -41,8 +41,8 @@ local TimingPresets = {
 		NoteGreatMaxMS = 76;
 		NoteGreatMinMS = -76;
 
-		NotePerfectMaxMS = 43;
-		NotePerfectMinMS = -43;
+		NotePerfectMaxMS = 36;
+		NotePerfectMinMS = -36;
 
 		NoteMarvelousMaxMS = 16;
 		NoteMarvelousMinMS = -16;
