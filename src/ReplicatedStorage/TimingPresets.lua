@@ -1,5 +1,5 @@
 local TimingPresets = {
-	["Lenient"] = {
+	["Lenient"] = { ---Robeats Accuracy stage 1
 		NoteBadMaxMS = 142;
 		NoteBadMinMS = -142;
 
@@ -15,7 +15,7 @@ local TimingPresets = {
 		NoteMarvelousMaxMS = 16;
 		NoteMarvelousMinMS = -16;
 	},
-	["Standard"] = {
+	["Standard"] = { --Stepmania J4
 		NoteBadMaxMS = 136;
 		NoteBadMinMS = -136;
 		
@@ -47,21 +47,21 @@ local TimingPresets = {
 		NoteMarvelousMaxMS = 16;
 		NoteMarvelousMinMS = -16;
 	},
-	["Extreme"] = {
-		NoteBadMaxMS = 124;
-		NoteBadMinMS = -124;
+	["Extreme"] = { --Stepmania judge 7
+		NoteBadMaxMS = 90;
+		NoteBadMinMS = -90;
 
-		NoteGoodMaxMS = 100;
-		NoteGoodMinMS = -100;
+		NoteGoodMaxMS = 68;
+		NoteGoodMinMS = -68;
 
-		NoteGreatMaxMS = 70;
-		NoteGreatMinMS = -70;
+		NoteGreatMaxMS = 45;
+		NoteGreatMinMS = -45;
 
-		NotePerfectMaxMS = 37;
-		NotePerfectMinMS = -37;
+		NotePerfectMaxMS = 23;
+		NotePerfectMinMS = -23;
 
-		NoteMarvelousMaxMS = 16;
-		NoteMarvelousMinMS = -16;
+		NoteMarvelousMaxMS = 11;
+		NoteMarvelousMinMS = -11;
 	}
 }
 
