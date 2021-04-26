@@ -16,7 +16,9 @@ local KeybindValue = require(script.KeybindValue)
 
 local Options = Roact.Component:extend("Options")
 
-Options.categoryList = { "⚙ General" }
+Options.categoryList = {"⚙ General", "➕ Extra" }
+
+function noop() end
 
 function Options:init()
     self:setState({
@@ -28,6 +30,21 @@ function Options:getSettingElements()
     local elements = {}
 
     SPUtil:switch(self.state.selectedCategory):case(1, function()
+        --field of view
+        elements.FOV = e(IntValue, {
+            Value = self.props.options.FOV;
+            OnChanged = function(value)
+                self.props.setOption("FOV", value)
+            end;
+
+            Name = "Field of View (FOV)";
+
+            FormatValue = function(value)
+                return string.format("%d", value)
+            end;
+
+            LayoutOrder = 4
+        });
 
         --Notespeed
         elements.NoteSpeed = e(IntValue, {
@@ -71,7 +88,12 @@ function Options:getSettingElements()
                 self.props.setOption(string.format("Keybind%d", index), value)
             end,
             LayoutOrder = 1
-        }) 
+        });
+    end)
+
+    --extras
+    SPUtil:switch(self.state.selectedCategory):case(2, function()
+        return noop
     end)
 
     return elements
