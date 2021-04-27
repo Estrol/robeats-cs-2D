@@ -13,6 +13,8 @@ local RoundedTextLabel = require(game.ReplicatedStorage.UI.Components.Base.Round
 local RoundedTextButton = require(game.ReplicatedStorage.UI.Components.Base.RoundedTextButton)
 local LoadingWheel = require(game.ReplicatedStorage.UI.Components.Base.LoadingWheel)
 
+local Lighting = game:GetService("Lighting")
+
 local Gameplay = Roact.Component:extend("Gameplay")
 
 function Gameplay:init()
@@ -23,6 +25,7 @@ function Gameplay:init()
     })
     self.timeLeft, self.setTimeLeft = Roact.createBinding(0)
     workspace.CurrentCamera.FieldOfView = self.props.options.FOV
+    Lighting.TimeOfDay = self.props.options.TimeOfDay
 
     local _game = RobeatsGame:new(EnvironmentSetup:get_game_environment_center_position())
     _game._input:set_keybinds({
@@ -118,7 +121,7 @@ function Gameplay:render()
             })
         }),
         Accuracy = e(RoundedTextLabel, {
-            Size = UDim2.fromScale(0.2, 0.05),
+            Size = UDim2.fromScale(0.2, 0.085),
             TextColor3 = Color3.fromRGB(255, 255, 255),
             Position = UDim2.fromScale(0.98, 0.07),
             TextXAlignment = Enum.TextXAlignment.Right,
@@ -150,7 +153,7 @@ function Gameplay:render()
             BackgroundColor3 = Color3.fromRGB(230, 19, 19),
             HighlightBackgroundColor3 = Color3.fromRGB(187, 53, 53),
             Position = UDim2.fromScale(0.02, 0.02),
-            Text = "Quit Out",
+            Text = "Back (No save)",
             OnClick = function()
                 self._game:set_mode(RobeatsGame.Mode.GameEnded)
             end

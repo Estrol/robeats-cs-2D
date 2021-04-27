@@ -15,6 +15,8 @@ local defaultState = {
         AudioOffset = 0;
         NoteSpeed = 1;
         FOV = 70;
+
+        TimeOfDay = 24;
         
         --Change this to swap the timing preset
         TimingPreset = "Standard",

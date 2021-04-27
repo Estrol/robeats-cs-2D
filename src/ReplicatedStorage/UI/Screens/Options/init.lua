@@ -93,7 +93,17 @@ function Options:getSettingElements()
 
     --extras
     SPUtil:switch(self.state.selectedCategory):case(2, function()
-        return noop
+        elements.TimeOfDay = e(IntValue, {
+            Value = self.props.options.TimeOfDay,
+            OnChanged = function(value)
+                self.props.setOption("TimeOfDay", value)
+            end,
+            Name = "Time of Day",
+            FormatValue = function(value)
+                return string.format("%d", value)
+            end,
+            LayoutOrder = 1
+        })
     end)
 
     return elements
