@@ -9,6 +9,9 @@ local HitParams = require(game.ReplicatedStorage.RobeatsGameCore.HitParams)
 local HoldingNoteEffect = require(game.ReplicatedStorage.RobeatsGameCore.Effects.HoldingNoteEffect)
 local FlashEvery = require(game.ReplicatedStorage.Shared.FlashEvery)
 local RenderableHit = require(game.ReplicatedStorage.RobeatsGameCore.RenderableHit)
+local TriggerNoteEffect = require(game.ReplicatedStorage.RobeatsGameCore.Effects.TriggerNoteEffect)
+
+local showTriggerEFX = false
 
 local HeldNote = {}
 HeldNote.Type = "HeldNote"
@@ -388,6 +391,14 @@ function HeldNote:new(
 
 	--[[Override--]] function self:on_hit(note_result, i_notes, renderable_hit)
 		if _state == HeldNote.State.Pre then
+			if showTriggerEFX then
+				_game._effects:add_effect(TriggerNoteEffect:new(
+					_game,
+					get_head_position(),
+					note_result
+				))
+			end
+			
 			
 			--Hit the first note
 			_game._score_manager:register_hit(
