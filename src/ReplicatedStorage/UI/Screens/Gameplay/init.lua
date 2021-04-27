@@ -132,12 +132,13 @@ function Gameplay:render()
             })
         }),
         TimeLeft = e(RoundedTextLabel, {
-            Size = UDim2.fromScale(0.2, 0.1),
+            Size = UDim2.fromScale(0.115, 0.035),
             TextXAlignment = Enum.TextXAlignment.Left,
             TextColor3 = Color3.fromRGB(255, 255, 255),
             Position = UDim2.fromScale(0.02, 0.98),
             AnchorPoint = Vector2.new(0, 1),
             BackgroundTransparency = 1,
+            TextScaled = true,
             Text = self.timeLeft:map(function(a)
                 return SPUtil:format_ms_time(a)
             end)
