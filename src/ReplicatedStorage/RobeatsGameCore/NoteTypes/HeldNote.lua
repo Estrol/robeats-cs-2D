@@ -412,6 +412,18 @@ function HeldNote:new(
 			_state = HeldNote.State.Holding
 
 		elseif _state == HeldNote.State.HoldMissedActive then
+			if showTriggerEFX then
+				_game._effects:add_effect(TriggerNoteEffect:new(
+					_game,
+					get_tail_position(),
+					note_result
+				))
+			end
+			_game._effects:add_effect(TriggerNoteEffect:new(
+				_game,
+				get_tail_position(),
+				note_result
+			))
 			--Missed the first note, hit the second note
 			_game._score_manager:register_hit(
 				note_result,
