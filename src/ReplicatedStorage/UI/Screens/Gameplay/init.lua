@@ -22,6 +22,7 @@ function Gameplay:init()
         loaded = false
     })
     self.timeLeft, self.setTimeLeft = Roact.createBinding(0)
+    workspace.CurrentCamera.FieldOfView = self.props.options.FOV
 
     local _game = RobeatsGame:new(EnvironmentSetup:get_game_environment_center_position())
     _game._input:set_keybinds({

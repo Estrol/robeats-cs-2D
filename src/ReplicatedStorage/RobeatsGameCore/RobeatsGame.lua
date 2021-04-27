@@ -17,6 +17,8 @@ local AssertType = require(game.ReplicatedStorage.Shared.AssertType)
 local Signal = require(game.ReplicatedStorage.Knit.Util.Signal)
 local Promise = require(game.ReplicatedStorage.Knit.Util.Promise)
 
+--local Settings = require(game.ReplicatedStorage.)
+
 local RobeatsGame = {}
 RobeatsGame.Mode = {
 	Setup = 1;
@@ -60,6 +62,7 @@ function RobeatsGame:new(_game_environment_center_position)
 		workspace.CurrentCamera.CFrame = GameSlot:slot_to_camera_cframe_offset(self:get_local_game_slot()) + self:get_game_environment_center_position()
 		workspace.CurrentCamera.CameraType = Enum.CameraType.Scriptable
 		workspace.CurrentCamera.CameraSubject = nil
+		--workspace.CurrentCamera.FieldOfView = 
 	end
 
 	function self:start_game()

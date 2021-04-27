@@ -16,8 +16,6 @@ local SongInfoDisplay = require(script.SongInfoDisplay)
 local SongList = require(script.SongList)
 local Leaderboard = require(script.Leaderboard)
 
--- local Configuration = require(game.ReplicatedStorage.Configuration)
-
 local SongSelect = Roact.Component:extend("SongSelect")
 
 function SongSelect:init()
