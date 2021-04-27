@@ -154,11 +154,6 @@ function SingleNote:new(_game, _track_index, _slot_index, _creation_time_ms, _hi
 	end
 
 	--[[Override--]] function self:on_hit(note_result, i_notes, renderable_hit)
-		_game._effects:add_effect(TriggerNoteEffect:new(
-			_game,
-			_position,
-			note_result
-		))
 
 		_game._score_manager:register_hit(
 			note_result,
