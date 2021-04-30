@@ -8,26 +8,48 @@ local CurveUtil = require(game.ReplicatedStorage.Shared.CurveUtil)
 local RobeatsGame = require(game.ReplicatedStorage.RobeatsGameCore.RobeatsGame)
 local EnvironmentSetup = require(game.ReplicatedStorage.RobeatsGameCore.EnvironmentSetup)
 local GameSlot = require(game.ReplicatedStorage.RobeatsGameCore.Enums.GameSlot)
+local Rating = require(game.ReplicatedStorage.RobeatsGameCore.Enums.Rating)
+local SongDatabase = require(game.ReplicatedStorage.RobeatsGameCore.SongDatabase)
+local DebugOut = require(game.ReplicatedStorage.Shared.DebugOut)
 
 local RoundedTextLabel = require(game.ReplicatedStorage.UI.Components.Base.RoundedTextLabel)
 local RoundedTextButton = require(game.ReplicatedStorage.UI.Components.Base.RoundedTextButton)
 local LoadingWheel = require(game.ReplicatedStorage.UI.Components.Base.LoadingWheel)
+
+local Knit = require(game:GetService("ReplicatedStorage").Knit)
 
 local Lighting = game:GetService("Lighting")
 
 local Gameplay = Roact.Component:extend("Gameplay")
 
 function Gameplay:init()
+    -- Get the score service
+
+    local ScoreService = Knit.GetService("ScoreService")
+
+    -- Set gameplay state
+
     self:setState({
         accuracy = 0,
         score = 0,
         loaded = false
     })
+
+    -- Set up time left bib
+
     self.timeLeft, self.setTimeLeft = Roact.createBinding(0)
-    workspace.CurrentCamera.FieldOfView = self.props.options.FOV
+    
+    -- Set up the stage
+
     local stagePlat = EnvironmentSetup:get_robeats_game_stage()
     stagePlat.Transparency = self.props.options.BaseTransparency
+    
+    -- Set FOV and Time of Day
+
+    workspace.CurrentCamera.FieldOfView = self.props.options.FOV
     Lighting.TimeOfDay = self.props.options.TimeOfDay
+
+    -- Create the game instance
 
     local _game = RobeatsGame:new(EnvironmentSetup:get_game_environment_center_position())
     _game._input:set_keybinds({
@@ -37,23 +59,55 @@ function Gameplay:init()
         self.props.options.Keybind4,
     })
     
+    -- Load the map
+
     _game:load(self.props.options.SongKey, GameSlot.SLOT_1, self.props.options)
-    
-    _game._loaded:Connect(function()
-        self:setState({
-            loaded = true
-        })
-        _game:start_game()
-    end)
+
+    -- Bind the game loop to every frame
     
     self.everyFrameConnection = SPUtil:bind_to_frame(function(dt)
         if _game._audio_manager:get_just_finished() then
             _game:set_mode(RobeatsGame.Mode.GameEnded)
         end
 
+        -- Handle starting the game if the audio and its data has loaded!
+
+        if _game._audio_manager:is_ready_to_play() and not self.state.loaded then
+            self:setState({
+                loaded = true
+            })
+            _game:start_game()
+        end
+
+        -- If we have reached the end of the game, trigger cleanup
+
         if _game:get_mode() == RobeatsGame.Mode.GameEnded then
+            self.everyFrameConnection:Disconnect()
+
             local marvelouses, perfects, greats, goods, bads, misses, maxChain = _game._score_manager:get_end_records()
             local hits = _game._score_manager:get_hits()
+            local mean = _game._score_manager:get_mean()
+            local rating = Rating:get_rating_from_accuracy(self.props.options.SongKey, self.state.accuracy, self.props.options.SongRate / 100)
+
+            if not self.forcedQuit then
+                ScoreService:SubmitScorePromise(
+                    SongDatabase:get_md5_hash_for_key(self.props.options.SongKey),
+                    rating,
+                    self.state.score,
+                    marvelouses,
+                    perfects,
+                    greats,
+                    goods,
+                    bads,
+                    misses,
+                    self.state.accuracy,
+                    mean,
+                    self.props.options.SongRate)
+                    :andThen(function()
+                        local moment = DateTime.now():ToLocalTime()
+                        DebugOut:puts("Score submitted at %d:%d:%d", moment.Hour, moment.Minute, moment.Second)
+                    end)
+            end
 
             self.props.history:push("/results", {
                 score = self.state.score,
@@ -66,6 +120,8 @@ function Gameplay:init()
                 misses = misses,
                 maxChain = maxChain,
                 hits = hits,
+                mean = mean,
+                rating = rating,
                 songKey = self.props.options.SongKey,
                 rate = self.props.options.SongRate
             })
@@ -78,12 +134,17 @@ function Gameplay:init()
         self.setTimeLeft(_game._audio_manager:get_song_length_ms() - _game._audio_manager:get_current_time_ms())
     end)
 
+    -- Hook into onStatsChanged to monitor when stats change in ScoreManager
+
     self.onStatsChangedConnection = _game._score_manager:get_on_change():Connect(function()
         self:setState({
             score = _game._score_manager:get_score(),
             accuracy = _game._score_manager:get_accuracy() * 100
         })
     end)
+
+    -- Expose the game instance to the rest of the component
+
     self._game = _game
 end
 
@@ -157,6 +218,7 @@ function Gameplay:render()
             Position = UDim2.fromScale(0.02, 0.02),
             Text = "Back (No save)",
             OnClick = function()
+                self.forcedQuit = true
                 self._game:set_mode(RobeatsGame.Mode.GameEnded)
             end
         })
