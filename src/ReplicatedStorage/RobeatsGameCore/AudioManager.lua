@@ -105,14 +105,33 @@ function AudioManager:new(_game)
 		_hit_sfx_group = HitSFXGroup:new(_game,sfxg_id)
 		_hit_sfx_group:preload()
 		
+		--Apply audio offset
+		_audio_time_offset = _config.AudioOffset
 		_audio_time_offset = _audio_time_offset + _current_audio_data.AudioTimeOffset
+
+		--Apply song rate
+		self:set_rate(_config.SongRate / 100)
+
+		--Add hit objects and perform note count calculations
+		_hit_objects = SongDatabase:get_hit_objects_for_key(_song_key, _rate)
 		
+		for i = 1, #_hit_objects do
+			local itr = _hit_objects[i]
+			if itr.Type == 1 then
+				_note_count = _note_count + 1
+			else
+				_note_count = _note_count + 2
+			end
+		end
+		
+		--Load background music
 		_bgm.SoundId = _current_audio_data.AudioAssetId
 		_bgm.Playing = true
 		_bgm.Volume = 0
 		_bgm.PlaybackSpeed = 0
 		_bgm_time_position = 0
 		
+		--Set default audio volume if it isn't specified
 		if _current_audio_data.AudioVolume ~= nil then
 			_audio_volume = _current_audio_data.AudioVolume
 		end
@@ -132,21 +151,6 @@ function AudioManager:new(_game)
 		_note_great_min = _timing_preset.NoteGreatMinMS
 		_note_good_min = _timing_preset.NoteGoodMinMS
 		_note_bad_min = _timing_preset.NoteBadMinMS
-		
-		--Apply song rate
-		self:set_rate(_config.SongRate / 100)
-
-		--Add hit objects and perform note count calculations
-		_hit_objects = SongDatabase:get_hit_objects_for_key(_song_key, _rate)
-		
-		for i = 1, #_hit_objects do
-			local itr = _hit_objects[i]
-			if itr.Type == 1 then
-				_note_count = _note_count + 1
-			else
-				_note_count = _note_count + 2
-			end
-		end
 	end
 
 	function self:teardown()

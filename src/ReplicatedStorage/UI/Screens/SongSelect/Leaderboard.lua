@@ -1,5 +1,7 @@
 local Roact = require(game.ReplicatedStorage.Packages.Roact)
 
+local RunService = game:GetService("RunService")
+
 local RoundedTextLabel =  require(game.ReplicatedStorage.UI.Components.Base.RoundedTextLabel)
 local RoundedFrame = require(game.ReplicatedStorage.UI.Components.Base.RoundedFrame)
 local RoundedAutoScrollingFrame = require(game.ReplicatedStorage.UI.Components.Base.RoundedAutoScrollingFrame)
@@ -16,6 +18,10 @@ Leaderboard.defaultProps = {
 }
 
 function Leaderboard:init()
+    if RunService:IsRunning() then
+        self.knit = require(game.ReplicatedStorage.Knit)
+    end
+
     self:setState({
         loading = false,
         scores = {} -- List of scores to display. Can be fetched from some external resource. This is the format it follows:
@@ -36,6 +42,30 @@ function Leaderboard:init()
         -- WHEN YOU ARE TESTING THE DATASET PLEASE DO NOT COMMIT THE DATA!!!
         -- I am actually not sure how to do the actual fetching with Knit. Doing something story-based would be coolio
     })
+end
+
+function Leaderboard:performFetch()
+    if self.knit then
+        self:setState({
+            loading = true
+        })
+        self.knit.GetService("ScoreService"):GetScoresPromise(self.props.SongKey):andThen(function(scores)
+            self:setState({
+                scores = scores,
+                loading = false
+            })
+        end)
+    end
+end
+
+function Leaderboard:didMount()
+    self:performFetch()
+end
+
+function Leaderboard:didUpdate(lastProps)
+    if lastProps.SongKey ~= self.props.SongKey then
+        self:performFetch()
+    end
 end
 
 function Leaderboard:render()
@@ -72,7 +102,7 @@ function Leaderboard:render()
                 Size = UDim2.fromScale(0.95, 0.3),
                 AnchorPoint = Vector2.new(0.5, 0.5),
                 Position = UDim2.fromScale(0.5, 0.5),
-                Text = "There are no scores to display! How about setting one?",
+                Text = "🏆 There are no scores to display! How about setting one?",
                 TextColor3 = Color3.fromRGB(255, 255, 255),
                 TextSize = 13,
                 BackgroundTransparency = 1

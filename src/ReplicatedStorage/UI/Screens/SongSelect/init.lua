@@ -60,7 +60,7 @@ function SongSelect:render()
         Leaderboard = e(Leaderboard, {
             Size = UDim2.fromScale(0.325, 0.7),
             Position = UDim2.fromScale(0.02, 0.22),
-            SongKey = self.props.SongKey
+            SongKey = self.props.options.SongKey
         }),
         PlayButton = e(RoundedTextButton, {
             Position = UDim2.fromScale(0.02, 0.935),
