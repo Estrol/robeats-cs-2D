@@ -63,7 +63,7 @@ function SongDatabase:new()
 		if songdata.AudioCoverImageAssetId ~= "" then
 			return songdata.AudioCoverImageAssetId
 		else
-			return "rbxassetid://2832671181"
+			return "rbxassetid://139345983"
 		end
 	end
 
@@ -75,6 +75,11 @@ function SongDatabase:new()
 	function self:get_artist_for_key(key)
 		local songdata = self:get_data_for_key(key)
 		return songdata.AudioArtist
+	end
+
+	function self:get_md5_hash_for_key(key)
+		local songdata = self:get_data_for_key(key)
+		return songdata.AudioMD5Hash
 	end
 
 	function self:get_difficulty_for_key(key)
