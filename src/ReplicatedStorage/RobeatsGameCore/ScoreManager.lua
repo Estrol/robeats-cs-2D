@@ -56,6 +56,20 @@ function ScoreManager:new(_game)
 		return ((_marvelous_count * 1.0) + (_perfect_count * 1.0) + (_great_count * 0.75) + (_good_count * 0.37) + (_bad_count * 0.25)) / total_count
 	end
 
+	function self:get_mean()
+		local mean = 0
+
+		for _, hit in ipairs(_hits) do
+			mean += hit.time_left
+		end
+
+		if #_hits ~= 0 then
+			mean /= #_hits
+		end
+
+		return mean
+	end
+
 	local _frame_has_played_sfx = false
 
 	function self:register_hit(
