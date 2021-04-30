@@ -5,7 +5,6 @@ local SongDatabase = require(game.ReplicatedStorage.RobeatsGameCore.SongDatabase
 
 local NoteResult = require(game.ReplicatedStorage.RobeatsGameCore.Enums.NoteResult)
 local Grade = require(game.ReplicatedStorage.RobeatsGameCore.Enums.Grade)
-local Rating = require(game.ReplicatedStorage.RobeatsGameCore.Enums.Rating)
 
 local RoundedTextButton = require(game.ReplicatedStorage.UI.Components.Base.RoundedTextButton)
 
@@ -28,7 +27,7 @@ function ResultsScreenMain:init()
 	}
 	
 	self.backOutConnection = SPUtil:bind_to_key(Enum.KeyCode.Return, function()
-		self.props.history:push("/select")
+		self.props.history:push("/")
 	end)
 end
 
@@ -41,15 +40,8 @@ function ResultsScreenMain:render()
 
 	local grade = Grade:get_grade_from_accuracy(state.accuracy)
 
-	local mean = 0
-
-	for _, hit in ipairs(state.hits) do
-		mean += hit.time_left
-	end
-
-	if #state.hits ~= 0 then
-		mean /= #state.hits
-	end
+	local hits = state.hits or {}
+	local mean = state.mean or 0
 
     return Roact.createElement("Frame", {
 		BackgroundColor3 = Color3.fromRGB(255, 255, 255),
@@ -80,7 +72,7 @@ function ResultsScreenMain:render()
 			interval = {
 				y = 50;
 			};
-			points = state.hits;
+			points = hits;
 			formatPoint = function(hit)
 				return {
 					x = (hit.hit_object_time + hit.time_left) / SongDatabase:get_song_length_for_key(state.songKey),
@@ -120,7 +112,7 @@ function ResultsScreenMain:render()
 				};
 				{
 					Name = "Play Rating";
-					Value = string.format("%0.2f", Rating:get_rating_from_accuracy(state.songKey, state.accuracy, state.rate / 100));
+					Value = string.format("%0.2f", state.rating);
 				};
 				{
 					Name = "Max Combo";
