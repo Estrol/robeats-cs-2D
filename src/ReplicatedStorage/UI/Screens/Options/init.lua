@@ -93,6 +93,20 @@ function Options:getSettingElements()
 
     --extras
     SPUtil:switch(self.state.selectedCategory):case(2, function()
+        elements.BaseTransparency = e(IntValue, {
+            Name = "Base Transparency",
+            Value = self.props.options.BaseTransparency,
+            OnChanged = function(value)
+                 self.props.setOption("BaseTransparency", value)
+            end,
+
+            FormatValue = function(value)
+                return string.format("%d", value)
+            end,
+            LayoutOrder = 2
+         });
+
+
         elements.TimeOfDay = e(IntValue, {
             Value = self.props.options.TimeOfDay,
             OnChanged = function(value)
@@ -103,7 +117,7 @@ function Options:getSettingElements()
                 return string.format("%d", value)
             end,
             LayoutOrder = 1
-        })
+        });   
     end)
 
     return elements
