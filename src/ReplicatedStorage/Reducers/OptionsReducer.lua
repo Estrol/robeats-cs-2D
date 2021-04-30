@@ -16,7 +16,10 @@ local defaultState = {
         NoteSpeed = 1;
         FOV = 70;
 
+        --Extra settings.
         TimeOfDay = 24;
+        BaseTransparency = 0;
+
         
         --Change this to swap the timing preset
         TimingPreset = "Standard",
