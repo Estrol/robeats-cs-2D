@@ -14,9 +14,15 @@ local defaultState = {
 
         AudioOffset = 0;
         NoteSpeed = 1;
+        FOV = 70;
+
+        --Extra settings.
+        TimeOfDay = 24;
+        BaseTransparency = 1;
+
         
         --Change this to swap the timing preset
-        TimingPreset = "Extreme",
+        TimingPreset = "Standard",
         
         --You probably won't need to modify these
         NoteRemoveTimeMS = -200;

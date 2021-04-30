@@ -16,8 +16,6 @@ local SongInfoDisplay = require(script.SongInfoDisplay)
 local SongList = require(script.SongList)
 local Leaderboard = require(script.Leaderboard)
 
--- local Configuration = require(game.ReplicatedStorage.Configuration)
-
 local SongSelect = Roact.Component:extend("SongSelect")
 
 function SongSelect:init()
@@ -52,7 +50,7 @@ function SongSelect:render()
             SongRate = self.props.options.SongRate
         }),
         SongList = e(SongList, {
-            Size = UDim2.fromScale(0.57, 0.77),
+            Size = UDim2.fromScale(0.36, 0.77),
             AnchorPoint = Vector2.new(1, 1),
             Position = UDim2.fromScale(0.995, 0.985),
             OnSongSelected = function(key)

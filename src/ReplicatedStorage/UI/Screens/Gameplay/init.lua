@@ -13,6 +13,8 @@ local RoundedTextLabel = require(game.ReplicatedStorage.UI.Components.Base.Round
 local RoundedTextButton = require(game.ReplicatedStorage.UI.Components.Base.RoundedTextButton)
 local LoadingWheel = require(game.ReplicatedStorage.UI.Components.Base.LoadingWheel)
 
+local Lighting = game:GetService("Lighting")
+
 local Gameplay = Roact.Component:extend("Gameplay")
 
 function Gameplay:init()
@@ -22,6 +24,10 @@ function Gameplay:init()
         loaded = false
     })
     self.timeLeft, self.setTimeLeft = Roact.createBinding(0)
+    workspace.CurrentCamera.FieldOfView = self.props.options.FOV
+    local stagePlat = EnvironmentSetup:get_robeats_game_stage()
+    stagePlat.Transparency = self.props.options.BaseTransparency
+    Lighting.TimeOfDay = self.props.options.TimeOfDay
 
     local _game = RobeatsGame:new(EnvironmentSetup:get_game_environment_center_position())
     _game._input:set_keybinds({
@@ -117,7 +123,7 @@ function Gameplay:render()
             })
         }),
         Accuracy = e(RoundedTextLabel, {
-            Size = UDim2.fromScale(0.2, 0.05),
+            Size = UDim2.fromScale(0.2, 0.085),
             TextColor3 = Color3.fromRGB(255, 255, 255),
             Position = UDim2.fromScale(0.98, 0.07),
             TextXAlignment = Enum.TextXAlignment.Right,
@@ -131,12 +137,13 @@ function Gameplay:render()
             })
         }),
         TimeLeft = e(RoundedTextLabel, {
-            Size = UDim2.fromScale(0.2, 0.1),
+            Size = UDim2.fromScale(0.115, 0.035),
             TextXAlignment = Enum.TextXAlignment.Left,
             TextColor3 = Color3.fromRGB(255, 255, 255),
             Position = UDim2.fromScale(0.02, 0.98),
             AnchorPoint = Vector2.new(0, 1),
             BackgroundTransparency = 1,
+            TextScaled = true,
             Text = self.timeLeft:map(function(a)
                 return SPUtil:format_ms_time(a)
             end)
@@ -148,7 +155,7 @@ function Gameplay:render()
             BackgroundColor3 = Color3.fromRGB(230, 19, 19),
             HighlightBackgroundColor3 = Color3.fromRGB(187, 53, 53),
             Position = UDim2.fromScale(0.02, 0.02),
-            Text = "Quit Out",
+            Text = "Back (No save)",
             OnClick = function()
                 self._game:set_mode(RobeatsGame.Mode.GameEnded)
             end

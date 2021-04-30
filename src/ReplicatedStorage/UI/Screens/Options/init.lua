@@ -16,7 +16,9 @@ local KeybindValue = require(script.KeybindValue)
 
 local Options = Roact.Component:extend("Options")
 
-Options.categoryList = { "⚙ General" }
+Options.categoryList = {"⚙ General", "➕ Extra" }
+
+function noop() end
 
 function Options:init()
     self:setState({
@@ -28,6 +30,23 @@ function Options:getSettingElements()
     local elements = {}
 
     SPUtil:switch(self.state.selectedCategory):case(1, function()
+        --field of view
+        elements.FOV = e(IntValue, {
+            Value = self.props.options.FOV;
+            OnChanged = function(value)
+                self.props.setOption("FOV", value)
+            end;
+
+            Name = "Field of View (FOV)";
+
+            FormatValue = function(value)
+                return string.format("%d", value)
+            end;
+
+            LayoutOrder = 4
+        });
+
+        --Notespeed
         elements.NoteSpeed = e(IntValue, {
             Value = self.props.options.NoteSpeed,
             OnChanged = function(value)
@@ -43,6 +62,7 @@ function Options:getSettingElements()
             LayoutOrder = 3
         })
 
+        --Audio Offset
         elements.AudioOffset = e(IntValue, {
             Value = self.props.options.AudioOffset,
             OnChanged = function(value)
@@ -54,6 +74,7 @@ function Options:getSettingElements()
             end,
             LayoutOrder = 2
         })
+        --Keybinds
 
         elements.InGameKeybinds = e(KeybindValue, {
             Values = {
@@ -67,7 +88,37 @@ function Options:getSettingElements()
                 self.props.setOption(string.format("Keybind%d", index), value)
             end,
             LayoutOrder = 1
-        }) 
+        });
+    end)
+
+    --extras
+    SPUtil:switch(self.state.selectedCategory):case(2, function()
+        elements.BaseTransparency = e(IntValue, {
+            Name = "Base Transparency",
+            incrementValue = 0.1;
+            Value = self.props.options.BaseTransparency,
+            OnChanged = function(value)
+                 self.props.setOption("BaseTransparency", value)
+            end,
+
+            FormatValue = function(value)
+                return string.format("0.%d", value)
+            end,
+            LayoutOrder = 2
+         });
+
+
+        elements.TimeOfDay = e(IntValue, {
+            Value = self.props.options.TimeOfDay,
+            OnChanged = function(value)
+                self.props.setOption("TimeOfDay", value)
+            end,
+            Name = "Time of Day",
+            FormatValue = function(value)
+                return string.format("%d", value)
+            end,
+            LayoutOrder = 1
+        });   
     end)
 
     return elements

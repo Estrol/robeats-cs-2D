@@ -14,6 +14,7 @@ IntValue.defaultProps = {
     Value = 0,
     Name = "SettingName",
     OnChanged = noop,
+    incrementValue = 1;
     FormatValue = function(value)
         return value
     end
@@ -52,7 +53,7 @@ function IntValue:render()
         }),
         Subtract = e(RoundedImageButton, {
             OnClick = function()
-                self.props.OnChanged(self.props.Value - 1)
+                self.props.OnChanged(self.props.Value - self.props.incrementValue)
             end,
             BackgroundTransparency = 1,
             Image = "rbxassetid://1588248423",
@@ -73,7 +74,7 @@ function IntValue:render()
         }),
         Add = e(RoundedImageButton, {
             OnClick = function()
-                self.props.OnChanged(self.props.Value + 1)
+                self.props.OnChanged(self.props.Value + self.props.incrementValue)
             end,
             BackgroundTransparency = 1,
             Image = "rbxassetid://1588248423",
