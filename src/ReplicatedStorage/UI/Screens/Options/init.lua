@@ -95,13 +95,14 @@ function Options:getSettingElements()
     SPUtil:switch(self.state.selectedCategory):case(2, function()
         elements.BaseTransparency = e(IntValue, {
             Name = "Base Transparency",
+            incrementValue = 0.1;
             Value = self.props.options.BaseTransparency,
             OnChanged = function(value)
                  self.props.setOption("BaseTransparency", value)
             end,
 
             FormatValue = function(value)
-                return string.format("%d", value)
+                return string.format("0.%d", value)
             end,
             LayoutOrder = 2
          });

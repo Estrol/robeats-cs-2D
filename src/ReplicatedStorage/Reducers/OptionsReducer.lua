@@ -18,7 +18,7 @@ local defaultState = {
 
         --Extra settings.
         TimeOfDay = 24;
-        BaseTransparency = 0;
+        BaseTransparency = 1;
 
         
         --Change this to swap the timing preset

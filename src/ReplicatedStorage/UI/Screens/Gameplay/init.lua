@@ -25,6 +25,8 @@ function Gameplay:init()
     })
     self.timeLeft, self.setTimeLeft = Roact.createBinding(0)
     workspace.CurrentCamera.FieldOfView = self.props.options.FOV
+    local stagePlat = EnvironmentSetup:get_robeats_game_stage()
+    stagePlat.Transparency = self.props.options.BaseTransparency
     Lighting.TimeOfDay = self.props.options.TimeOfDay
 
     local _game = RobeatsGame:new(EnvironmentSetup:get_game_environment_center_position())

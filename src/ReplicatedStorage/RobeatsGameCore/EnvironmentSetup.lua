@@ -60,4 +60,8 @@ function EnvironmentSetup:get_player_gui_root()
 	return _player_gui
 end
 
+function EnvironmentSetup:get_robeats_game_stage()
+	return _game_environment.Platform
+end
+
 return EnvironmentSetup
