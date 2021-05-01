@@ -127,6 +127,7 @@ function Gameplay:init()
                 Mean = mean,
                 Rating = rating,
                 SongKey = self.props.options.SongKey,
+                PlayerName = game.Players.LocalPlayer.DisplayName,
                 Rate = self.props.options.SongRate
             })
             return
