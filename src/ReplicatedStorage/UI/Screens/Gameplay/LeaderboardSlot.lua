@@ -31,10 +31,10 @@ function LeaderboardSlot:render()
         }, {
             Place = e(RoundedTextLabel, {
                 BackgroundTransparency = 1,
-                Position = UDim2.fromScale(0, 0.5),
-                Size = UDim2.fromScale(0.65, 0.4),
-                TextXAlignment = Enum.TextXAlignment.Left,
-                TextYAlignment = Enum.TextYAlignment.Top,
+                Position = UDim2.fromScale(-0.185, 0.5),
+                Size = UDim2.fromScale(0.435, 0.4),
+                TextXAlignment = Enum.TextXAlignment.Right,
+                TextYAlignment = Enum.TextYAlignment.Center,
                 Text = string.format("#%d", self.props.Place),
                 TextScaled = true,
                 AnchorPoint = Vector2.new(1, 0.5),
