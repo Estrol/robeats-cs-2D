@@ -10,7 +10,9 @@ local BannerCard = Roact.Component:extend("BannerCard")
 
 BannerCard.defaultProps = {
     PlayerName = "lol",
-    TimePlayed = 0
+    TimePlayed = 0,
+    SongRate = 100,
+    SongKey = 1
 }
 
 function BannerCard:init()
@@ -129,7 +131,7 @@ function BannerCard:render()
             --Size = UDim2.new(0.5, 0, 0.15, 0),
             Size = UDim2.new(0.75, 0, 0.25, 0),
             Font = Enum.Font.GothamBold,
-            Text = SongDatabase:get_title_for_key(self.props.SongKey),
+            Text = string.format("%s (%0.2fx rate)", SongDatabase:get_title_for_key(self.props.SongKey), self.props.SongRate / 100),
             TextColor3 = Color3.fromRGB(255, 255, 255),
             TextScaled = true,
             TextStrokeTransparency = 0.5,
