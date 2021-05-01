@@ -24,6 +24,7 @@ function AudioManager:new(_game)
 
 	local _rate = 1 --Rate multiplier, you may implement some sort of way to modify the rate at runtime.
 	function self:set_rate(rate) _rate = rate end
+	function self:get_rate() return _rate end
 	
 	--Note speed in milliseconds, from time it takes to spawn the note to time the note is hit. Default value is 2000, or 2 seconds.
 	
@@ -283,7 +284,7 @@ function AudioManager:new(_game)
 			self:update_spawn_notes(dt_scale)
 			_bgm_time_position = math.min(
 				_bgm_time_position + CurveUtil:TimescaleToDeltaTime(dt_scale),
-				_bgm.TimeLength
+				_bgm.TimeLength / _rate
 			)
 
 			if _raise_ended_trigger == true then
