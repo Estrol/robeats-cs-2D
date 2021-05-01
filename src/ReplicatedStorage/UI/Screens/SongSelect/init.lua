@@ -3,6 +3,8 @@ local Llama = require(game.ReplicatedStorage.Packages.Llama)
 local RoactRodux = require(game.ReplicatedStorage.Packages.RoactRodux)
 local e = Roact.createElement
 
+local SongDatabase = require(game.ReplicatedStorage.RobeatsGameCore.SongDatabase)
+
 local SPUtil = require(game.ReplicatedStorage.Shared.SPUtil)
 
 local Actions = require(game.ReplicatedStorage.Actions)
@@ -60,7 +62,12 @@ function SongSelect:render()
         Leaderboard = e(Leaderboard, {
             Size = UDim2.fromScale(0.325, 0.7),
             Position = UDim2.fromScale(0.02, 0.22),
-            SongKey = self.props.options.SongKey
+            SongKey = self.props.options.SongKey,
+            OnLeaderboardSlotClicked = function(stats)
+                self.props.history:push("/results", Llama.Dictionary.join(stats, {
+                    SongKey = SongDatabase:get_key_for_hash(stats.SongMD5Hash)
+                }))
+            end
         }),
         PlayButton = e(RoundedTextButton, {
             Position = UDim2.fromScale(0.02, 0.935),
