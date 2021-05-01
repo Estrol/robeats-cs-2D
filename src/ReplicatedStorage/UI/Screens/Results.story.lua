@@ -5,19 +5,20 @@ local Results = require(game.ReplicatedStorage.UI.Screens.Results)
 return function(target)
     local history = RoactRouter.History.new()
     history:push("/", {
-        score = 900000,
-        accuracy = 100,
-        rating = 67.85,
-        maxChain = 0,
-        marvelouses = 0,
-        perfects = 0,
-        greats = 0,
-        goods = 0,
-        bads = 0,
-        misses = 0,
-        hits = {},
-        rate = 100,
-        songKey = 1
+        Score = 900000,
+        Accuracy = 100,
+        Rating = 67.85,
+        MaxChain = 0,
+        Marvelouses = 0,
+        Perfects = 0,
+        Greats = 0,
+        Goods = 0,
+        Bads = 0,
+        Misses = 0,
+        Hits = {},
+        Rate = 100,
+        SongKey = 1,
+        PlayerName = "lol"
     })
 
     local app = Roact.createElement(RoactRouter.Router, {
