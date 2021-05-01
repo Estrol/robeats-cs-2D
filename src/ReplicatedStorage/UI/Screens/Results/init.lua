@@ -75,7 +75,7 @@ function Results:render()
 			points = hits;
 			formatPoint = function(hit)
 				return {
-					x = (hit.hit_object_time + hit.time_left) / SongDatabase:get_song_length_for_key(state.SongKey),
+					x = (hit.hit_object_time + hit.time_left) / SongDatabase:get_song_length_for_key(state.SongKey, state.Rate),
 					y = SPUtil:inverse_lerp(-300, 300, hit.time_left),
 					color = NoteResult:result_to_color(hit.judgement)
 				}
@@ -99,6 +99,7 @@ function Results:render()
 			TimePlayed = state.TimePlayed;
 			Position = UDim2.new(0.5,0,0.05,0);
 			Size = UDim2.new(0.95,0,0.2,0);
+			SongRate = state.Rate;
 			GradeImage = self.gradeImages[grade];
 		});
 		DataDisplay = Roact.createElement(DataDisplay, {
