@@ -176,6 +176,11 @@ function SongDatabase:new()
 		return self:invalid_songkey()
 	end
 
+	function self:get_hash_for_key(key)
+		local songdata = self:get_data_for_key(key)
+		return songdata.AudioMD5Hash
+	end
+
 	function self:get_note_metrics_for_key(key)
 		local total_notes = 0
 		local total_holds = 0
