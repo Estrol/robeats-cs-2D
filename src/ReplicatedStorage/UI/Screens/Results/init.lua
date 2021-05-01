@@ -95,7 +95,8 @@ function Results:render()
 		BannerCard = Roact.createElement(BannerCard, {
 			AnchorPoint = Vector2.new(0.5,0);
 			SongKey = state.SongKey;
-			playername = "kisperal";
+			PlayerName = state.PlayerName;
+			TimePlayed = state.TimePlayed;
 			Position = UDim2.new(0.5,0,0.05,0);
 			Size = UDim2.new(0.95,0,0.2,0);
 			GradeImage = self.gradeImages[grade];
