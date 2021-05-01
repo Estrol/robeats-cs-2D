@@ -1,5 +1,7 @@
 local Knit = require(game.ReplicatedStorage.Knit)
 
+local DebugOut = require(game.ReplicatedStorage.Shared.DebugOut)
+
 local ParseServer = require(game.ReplicatedStorage.Packages.ParseServer)
 local Server
 local Scores
@@ -16,7 +18,13 @@ local ScoreService = Knit.CreateService({
 function ScoreService:KnitInit()
     Server = ParseServer.new()
 
-    baseUrl = (RunService:IsStudio() or (game.ServerScriptService:FindFirstChild("UseReleaseAPI") and game.ServerScriptService.UseReleaseAPI.Value)) and game:GetService("ServerScriptService").URLs.Release.Value or game:GetService("ServerScriptService").URLs.Dev.Value
+    if RunService:IsStudio() then
+        baseUrl = (game.ServerScriptService:FindFirstChild("UseReleaseAPI") and game.ServerScriptService.UseReleaseAPI.Value) and game:GetService("ServerScriptService").URLs.Release.Value or game:GetService("ServerScriptService").URLs.Dev.Value
+    else
+        baseUrl = game:GetService("ServerScriptService").URLs.Release.Value
+    end
+
+    DebugOut:puts("Base API URL: %s", baseUrl)
 end
 
 function ScoreService:KnitStart()
@@ -26,7 +34,7 @@ function ScoreService:KnitStart()
     Server:setAppId(SecretService:GetSecret("ParseAppId")):setBaseUrl(baseUrl)
 end
 
-function ScoreService.Client:SubmitScore(player, songMD5Hash, rating, score, marvelouses, perfects, greats, goods, bads, misses, accuracy, mean, rate)
+function ScoreService.Client:SubmitScore(player, songMD5Hash, rating, score, marvelouses, perfects, greats, goods, bads, misses, accuracy, maxChain, mean, rate)
     local succeeded, documents = Scores
         :query()
         :where({
@@ -54,6 +62,7 @@ function ScoreService.Client:SubmitScore(player, songMD5Hash, rating, score, mar
                 Mean = mean,
                 Accuracy = accuracy,
                 Rate = rate,
+                MaxChain = maxChain,
                 SongMD5Hash = songMD5Hash
             })
             :await()
