@@ -167,6 +167,15 @@ function SongDatabase:new()
 		end
 	end
 
+	function self:get_key_for_hash(hash)
+		for itr_key, itr_audio_data in pairs(_all_keys) do
+			if itr_audio_data.AudioMD5Hash == hash then
+				return itr_key
+			end
+		end
+		return self:invalid_songkey()
+	end
+
 	function self:get_note_metrics_for_key(key)
 		local total_notes = 0
 		local total_holds = 0
