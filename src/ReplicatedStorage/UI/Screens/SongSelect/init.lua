@@ -65,7 +65,8 @@ function SongSelect:render()
             SongKey = self.props.options.SongKey,
             OnLeaderboardSlotClicked = function(stats)
                 self.props.history:push("/results", Llama.Dictionary.join(stats, {
-                    SongKey = SongDatabase:get_key_for_hash(stats.SongMD5Hash)
+                    SongKey = SongDatabase:get_key_for_hash(stats.SongMD5Hash),
+                    TimePlayed = DateTime.fromIsoDate(stats.updatedAt).UnixTimestamp
                 }))
             end
         }),
@@ -86,6 +87,25 @@ function SongSelect:render()
         }, {
             UITextSizeConstraint = e("UITextSizeConstraint", {
                 MaxTextSize = 20
+            })
+        }),
+        OptionsButton = e(RoundedTextButton, {
+            AnchorPoint = Vector2.new(1, 1),
+            Position = UDim2.fromScale(0.9935, 0.205),
+            Size = UDim2.fromScale(0.07, 0.055),
+            HoldSize = UDim2.fromScale(0.065, 0.05),
+            TextScaled = true,
+            TextColor3 = Color3.fromRGB(241, 241, 241),
+            BackgroundColor3 = Color3.fromRGB(6, 97, 10),
+            HighlightBackgroundColor3 = Color3.fromRGB(4, 68, 7),
+            Text = "Options",
+            ZIndex = 2,
+            OnClick = function()
+                self.props.history:push("/options")
+            end
+        }, {
+            UITextSizeConstraint = e("UITextSizeConstraint", {
+                MaxTextSize = 13
             })
         })
     })
