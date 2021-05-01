@@ -12,6 +12,8 @@ local Rating = require(game.ReplicatedStorage.RobeatsGameCore.Enums.Rating)
 local SongDatabase = require(game.ReplicatedStorage.RobeatsGameCore.SongDatabase)
 local DebugOut = require(game.ReplicatedStorage.Shared.DebugOut)
 
+local Leaderboard = require(script.Leaderboard)
+
 local RoundedTextLabel = require(game.ReplicatedStorage.UI.Components.Base.RoundedTextLabel)
 local RoundedTextButton = require(game.ReplicatedStorage.UI.Components.Base.RoundedTextButton)
 local LoadingWheel = require(game.ReplicatedStorage.UI.Components.Base.LoadingWheel)
@@ -167,6 +169,20 @@ function Gameplay:render()
                 TextColor3 = Color3.fromRGB(255, 255, 255),
                 TextSize = 20,
                 Text = "Please wait for the game to load..."
+            }),
+            Back = e(RoundedTextButton, {
+                Size = UDim2.fromScale(0.1, 0.05),
+                AnchorPoint = Vector2.new(0.5, 0.5),
+                HoldSize = UDim2.fromScale(0.08, 0.05),
+                TextColor3 = Color3.fromRGB(255, 255, 255),
+                BackgroundColor3 = Color3.fromRGB(230, 19, 19),
+                HighlightBackgroundColor3 = Color3.fromRGB(187, 53, 53),
+                Position = UDim2.fromScale(0.5, 0.68),
+                Text = "Back out",
+                OnClick = function()
+                    self.forcedQuit = true
+                    self._game:set_mode(RobeatsGame.Mode.GameEnded)
+                end
             })
         })
     end
@@ -212,18 +228,15 @@ function Gameplay:render()
                 return SPUtil:format_ms_time(a)
             end)
         }),
-
         Combo = e(RoundedTextLabel, {
-            Size = UDim2.fromScale(0.115, 0.035),
-            TextXAlignment = Enum.TextXAlignment.Left,
+            Size = UDim2.fromScale(0.13, 0.07),
             TextColor3 = Color3.fromRGB(255, 255, 255),
-            Position = UDim2.fromScale(0.02, 0.5),
-            AnchorPoint = Vector2.new(0, 1),
+            Position = UDim2.fromScale(0.5, 0.57),
+            AnchorPoint = Vector2.new(0.5, 0.5),
             BackgroundTransparency = 1,
             TextScaled = true,
             Text = "x"..self.state.chain
         }),
-
         Back = e(RoundedTextButton, {
             Size = UDim2.fromScale(0.1, 0.05),
             HoldSize = UDim2.fromScale(0.08, 0.05),
@@ -236,6 +249,11 @@ function Gameplay:render()
                 self.forcedQuit = true
                 self._game:set_mode(RobeatsGame.Mode.GameEnded)
             end
+        }),
+        Leaderboard = e(Leaderboard, {
+            SongKey = self.props.options.SongKey,
+            LocalRating = Rating:get_rating_from_accuracy(self.props.options.SongKey, self.state.accuracy, self.props.options.SongRate / 100),
+            LocalAccuracy = self.state.accuracy
         })
     })
 end
