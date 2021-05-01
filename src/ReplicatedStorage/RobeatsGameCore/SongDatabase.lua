@@ -92,10 +92,14 @@ function SongDatabase:new()
 		return songdata.AudioDescription
 	end
 
-	function self:get_song_length_for_key(key)
+	function self:get_song_length_for_key(key, rate)
 		local hit_objects = self:get_hit_objects_for_key(key)
 		local last_hit_ob = hit_objects[#hit_objects]
 
+		if rate then
+			return (last_hit_ob.Time + (last_hit_ob.Duration or 0)) / rate
+		end
+		
 		return last_hit_ob.Time + (last_hit_ob.Duration or 0)
 	end
 
