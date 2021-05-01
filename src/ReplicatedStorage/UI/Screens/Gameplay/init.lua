@@ -101,6 +101,7 @@ function Gameplay:init()
                     bads,
                     misses,
                     self.state.accuracy,
+                    maxChain,
                     mean,
                     self.props.options.SongRate)
                     :andThen(function()
@@ -110,20 +111,20 @@ function Gameplay:init()
             end
 
             self.props.history:push("/results", {
-                score = self.state.score,
-                accuracy = self.state.accuracy,
-                marvelouses = marvelouses,
-                perfects = perfects,
-                greats = greats,
-                goods = goods,
-                bads = bads,
-                misses = misses,
-                maxChain = maxChain,
-                hits = hits,
-                mean = mean,
-                rating = rating,
-                songKey = self.props.options.SongKey,
-                rate = self.props.options.SongRate
+                Score = self.state.score,
+                Accuracy = self.state.accuracy,
+                Marvelouses = marvelouses,
+                Perfects = perfects,
+                Greats = greats,
+                Goods = goods,
+                Bads = bads,
+                Misses = misses,
+                MaxChain = maxChain,
+                Hits = hits,
+                Mean = mean,
+                Rating = rating,
+                SongKey = self.props.options.SongKey,
+                Rate = self.props.options.SongRate
             })
             return
         end
