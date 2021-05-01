@@ -32,6 +32,7 @@ function Gameplay:init()
     self:setState({
         accuracy = 0,
         score = 0,
+        chain = 0,
         loaded = false
     })
 
@@ -140,7 +141,8 @@ function Gameplay:init()
     self.onStatsChangedConnection = _game._score_manager:get_on_change():Connect(function()
         self:setState({
             score = _game._score_manager:get_score(),
-            accuracy = _game._score_manager:get_accuracy() * 100
+            accuracy = _game._score_manager:get_accuracy() * 100,
+            chain = _game._score_manager:get_chain()
         })
     end)
 
@@ -210,6 +212,18 @@ function Gameplay:render()
                 return SPUtil:format_ms_time(a)
             end)
         }),
+
+        Combo = e(RoundedTextLabel, {
+            Size = UDim2.fromScale(0.115, 0.035),
+            TextXAlignment = Enum.TextXAlignment.Left,
+            TextColor3 = Color3.fromRGB(255, 255, 255),
+            Position = UDim2.fromScale(0.02, 0.5),
+            AnchorPoint = Vector2.new(0, 1),
+            BackgroundTransparency = 1,
+            TextScaled = true,
+            Text = "x"..self.state.chain
+        }),
+
         Back = e(RoundedTextButton, {
             Size = UDim2.fromScale(0.1, 0.05),
             HoldSize = UDim2.fromScale(0.08, 0.05),
