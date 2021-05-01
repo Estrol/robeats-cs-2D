@@ -20,6 +20,7 @@ LeaderboardSlot.defaultProps = {
         Goods = 0,
         Bads = 0,
         Misses = 0,
+        Rate = 100,
         PlayerName = "Player1",
     },
     OnClick = function() end
@@ -31,7 +32,7 @@ LeaderboardSlot.PlaceColors = {
 	[3] = Color3.fromRGB(237, 106, 12);
 }
 
-LeaderboardSlot.SpreadString = "<font color=\"rgb(181, 189, 181)\">%d</font> <font color=\"rgb(55, 55, 55)\">/</font> <font color=\"rgb(112, 117, 45)\">%d</font> <font color=\"rgb(55, 55, 55)\">/</font> <font color=\"rgb(45, 117, 47)\">%d</font> <font color=\"rgb(55, 55, 55)\">/</font> <font color=\"rgb(45, 79, 117)\">%d</font> <font color=\"rgb(55, 55, 55)\">/</font> <font color=\"rgb(107, 45, 117)\">%d</font> <font color=\"rgb(55, 55, 55)\">/</font> <font color=\"rgb(120, 31, 13)\">%d</font>"
+LeaderboardSlot.SpreadString = "<font color=\"rgb(125, 125, 125)\">%d</font> <font color=\"rgb(55, 55, 55)\">/</font> <font color=\"rgb(99, 91, 15)\">%d</font> <font color=\"rgb(55, 55, 55)\">/</font> <font color=\"rgb(23, 99, 15)\">%d</font> <font color=\"rgb(55, 55, 55)\">/</font> <font color=\"rgb(15, 39, 99)\">%d</font> <font color=\"rgb(55, 55, 55)\">/</font> <font color=\"rgb(91, 15, 99)\">%d</font> <font color=\"rgb(55, 55, 55)\">/</font> <font color=\"rgb(99, 15, 21)\">%d</font>"
 
 function LeaderboardSlot:render()
     return Roact.createElement(RoundedTextButton, {
@@ -57,15 +58,15 @@ function LeaderboardSlot:render()
                 AspectType = Enum.AspectType.ScaleWithParentSize,
                 DominantAxis = Enum.DominantAxis.Height,
             }),
-            Score = Roact.createElement(RoundedTextLabel, {
+            Rating = Roact.createElement(RoundedTextLabel, {
                 BackgroundColor3 = Color3.fromRGB(255, 255, 255),
                 BackgroundTransparency = 1,
                 BorderSizePixel = 0,
                 Position = UDim2.new(1.25, 0, 0.6, 0),
                 Size = UDim2.new(12.75, 0, 0.35, 0),
                 Font = Enum.Font.GothamSemibold,
-                Text = string.format("Score: %d", self.props.Data.Score),
-                TextColor3 = Color3.fromRGB(167, 167, 167),
+                Text = string.format("Rating: %0.2f", self.props.Data.Rating),
+                TextColor3 = Color3.fromRGB(80, 80, 80),
                 TextScaled = true,
                 TextXAlignment = Enum.TextXAlignment.Left,
             }, {
@@ -78,8 +79,8 @@ function LeaderboardSlot:render()
                 BackgroundColor3 = Color3.fromRGB(255, 255, 255),
                 BackgroundTransparency = 1,
                 BorderSizePixel = 0,
-                Position = UDim2.new(4.15, 0, 0.6, 0),
-                Size = UDim2.new(12.7, 0, 0.35, 0),
+                Position = UDim2.new(4, 0, 0.6, 0),
+                Size = UDim2.new(4.25, 0, 0.35, 0),
                 Font = Enum.Font.GothamSemibold,
                 RichText = true,
                 Text = string.format(self.SpreadString, self.props.Data.Marvelouses, self.props.Data.Perfects, self.props.Data.Greats, self.props.Data.Goods, self.props.Data.Bads, self.props.Data.Misses),
@@ -88,8 +89,8 @@ function LeaderboardSlot:render()
                 TextXAlignment = Enum.TextXAlignment.Left,
             }, {
                 Roact.createElement("UITextSizeConstraint", {
-                    MaxTextSize = 29,
-                    MinTextSize = 3,
+                    MaxTextSize = 12,
+                    MinTextSize = 4,
                 })
             }),
             --self.props.Data.Marvelouses, self.props.Data.Perfects, self.props.Data.Greats, self.props.Data.Goods, self.props.Data.Bads, self.props.Data.Misses
@@ -109,20 +110,21 @@ function LeaderboardSlot:render()
                     MaxTextSize = 49,
                 })
             });
-            Accuracy = Roact.createElement(RoundedTextLabel, {
+            AccuracyRate = Roact.createElement(RoundedTextLabel, {
                 BackgroundColor3 = Color3.fromRGB(255, 255, 255),
                 BackgroundTransparency = 1,
                 BorderSizePixel = 0,
-                Position = UDim2.new(9, 0, 0.22, 0),
-                Size = UDim2.new(1.5, 0, 0.55, 0),
+                Position = UDim2.new(8.6, 0, 0.22, 0),
+                Size = UDim2.new(2.2, 0, 0.55, 0),
                 Font = Enum.Font.GothamSemibold,
-                Text = string.format("%0.2f%%", self.props.Data.Accuracy),
+                Text = string.format("<font color=\"rgb(181, 189, 181)\">%0.2f%%</font> | %0.2fx", self.props.Data.Accuracy, self.props.Data.Rate / 100),
+                RichText = true,
                 TextColor3 = Color3.fromRGB(105, 105, 105),
                 TextScaled = true,
                 TextXAlignment = Enum.TextXAlignment.Left,
             }, {
                 Roact.createElement("UITextSizeConstraint", {
-                    MaxTextSize = 26,
+                    MaxTextSize = 22,
                     MinTextSize = 7;
                 })
             })
