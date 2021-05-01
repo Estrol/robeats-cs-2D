@@ -101,9 +101,12 @@ function Leaderboard:render()
     local children = {}
     
     for i, v in pairs(self.state.scores) do
-        children[i] = Roact.createElement(LeaderboardSlot, join(v, {
-            Place = i
-        }))
+        children[i] = Roact.createElement(LeaderboardSlot, {
+            Data = join(v, {
+                Place = i
+            }),
+            OnClick = self.props.OnLeaderboardSlotClicked
+        })
     end
 
     return Roact.createElement(RoundedAutoScrollingFrame, {
