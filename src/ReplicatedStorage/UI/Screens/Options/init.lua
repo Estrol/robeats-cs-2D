@@ -4,6 +4,7 @@ local RoactRodux = require(game.ReplicatedStorage.Packages.RoactRodux)
 local e = Roact.createElement
 local f = Roact.createFragment
 local SPUtil = require(game.ReplicatedStorage.Shared.SPUtil)
+local RunService = game:GetService("RunService")
 
 local Actions = require(game.ReplicatedStorage.Actions)
 
@@ -24,6 +25,10 @@ function Options:init()
     self:setState({
         selectedCategory = 1
     })
+
+    if RunService:IsRunning() then
+        self.knit = require(game:GetService("ReplicatedStorage").Knit)
+    end
 end
 
 function Options:getSettingElements()
@@ -210,6 +215,13 @@ function Options:render()
             end
         }),
     })
+end
+
+function Options:willUnmount()
+    if self.knit then
+        local SettingsService = self.knit.GetService("SettingsService")
+        SettingsService:SetSettings(self.props.options)
+    end
 end
 
 return RoactRodux.connect(function(state)
