@@ -70,9 +70,15 @@ function SongSelect:render()
             Position = UDim2.fromScale(0.02, 0.22),
             SongKey = self.props.options.SongKey,
             OnLeaderboardSlotClicked = function(stats)
+                local ScoreService = self.knit.GetService("ScoreService")
+
+                local _, hits = ScoreService:GetGraphPromise(stats.UserId, stats.SongMD5Hash)
+                    :await()
+
                 self.props.history:push("/results", Llama.Dictionary.join(stats, {
                     SongKey = SongDatabase:get_key_for_hash(stats.SongMD5Hash),
-                    TimePlayed = DateTime.fromIsoDate(stats.updatedAt).UnixTimestamp
+                    TimePlayed = DateTime.fromIsoDate(stats.updatedAt).UnixTimestamp,
+                    Hits = hits
                 }))
             end
         }),

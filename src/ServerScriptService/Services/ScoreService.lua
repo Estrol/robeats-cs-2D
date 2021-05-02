@@ -1,5 +1,8 @@
 local Knit = require(game.ReplicatedStorage.Knit)
 
+local DataStoreService = game:GetService("DataStoreService")
+local GraphDataStore = DataStoreService:GetDataStore("GraphDataStore")
+
 local DebugOut = require(game.ReplicatedStorage.Shared.DebugOut)
 
 local ParseServer = require(game.ReplicatedStorage.Packages.ParseServer)
@@ -32,6 +35,10 @@ function ScoreService:KnitStart()
 
     Scores = Server.Objects.class("Plays")
     Server:setAppId(SecretService:GetSecret("ParseAppId")):setBaseUrl(baseUrl)
+end
+
+function ScoreService:_GetGraphKey(userId, songMD5Hash)
+    return string.format("Graph(%s%s)", userId, songMD5Hash)
 end
 
 function ScoreService.Client:SubmitScore(player, songMD5Hash, rating, score, marvelouses, perfects, greats, goods, bads, misses, accuracy, maxChain, mean, rate)
@@ -101,6 +108,18 @@ function ScoreService.Client:SubmitScore(player, songMD5Hash, rating, score, mar
     end
     
     return succeeded
+end
+
+function ScoreService.Client:SubmitGraph(player, songMD5Hash, graph)
+    local key = ScoreService:_GetGraphKey(player.UserId, songMD5Hash)
+
+    GraphDataStore:SetAsync(key, graph)
+end
+
+function ScoreService.Client:GetGraph(_, userId, songMD5Hash)
+    local key = ScoreService:_GetGraphKey(userId, songMD5Hash)
+    
+    return GraphDataStore:GetAsync(key)
 end
 
 function ScoreService.Client:GetScores(_, songMD5Hash)
