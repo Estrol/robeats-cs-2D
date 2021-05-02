@@ -9,6 +9,8 @@ local e = Roact.createElement
 
 -- hjsdgrfkhjbsdgfhkjdsfghjbksdfghjbk
 
+local NpsGraph = require(script.Parent.NpsGraph)
+
 local RoundedFrame = require(game.ReplicatedStorage.UI.Components.Base.RoundedFrame)
 local RoundedTextButton = require(game.ReplicatedStorage.UI.Components.Base.RoundedTextButton)
 local RoundedImageLabel = require(game.ReplicatedStorage.UI.Components.Base.RoundedImageLabel)
@@ -142,6 +144,13 @@ function SongInfoDisplay:render()
                 })
             })
         }),
+        NpsGraph = e(NpsGraph, {
+            Size = UDim2.fromScale(0.3, 0.45),
+            Position = UDim2.fromScale(0.25, 0.925),
+            AnchorPoint = Vector2.new(0, 1),
+            SongKey = self.props.SongKey,
+            SongRate = self.props.SongRate
+        }),
         SongMapDataContainer = e(RoundedFrame, {
             BackgroundTransparency = 1,
             Position = UDim2.new(0.025, 0, 0.78, 0),
@@ -228,7 +237,7 @@ function SongInfoDisplay:render()
                 end);
                 Size = UDim2.new(0.18, 0, 0.23, 0),
                 Font = Enum.Font.GothamSemibold,
-                Text = string.format("Total Length: %s", SPUtil:format_ms_time(SongDatabase:get_song_length_for_key(self.props.SongKey))),
+                Text = string.format("Total Length: %s", SPUtil:format_ms_time(SongDatabase:get_song_length_for_key(self.props.SongKey) / (self.props.SongRate / 100))),
                 TextScaled = true,
                 TextSize = 30,
                 TextXAlignment = Enum.TextXAlignment.Left,
