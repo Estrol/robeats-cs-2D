@@ -3,6 +3,8 @@ local Llama = require(game.ReplicatedStorage.Packages.Llama)
 local RoactRodux = require(game.ReplicatedStorage.Packages.RoactRodux)
 local e = Roact.createElement
 
+local RunService = game:GetService("RunService")
+
 local SongDatabase = require(game.ReplicatedStorage.RobeatsGameCore.SongDatabase)
 
 local SPUtil = require(game.ReplicatedStorage.Shared.SPUtil)
@@ -21,6 +23,10 @@ local Leaderboard = require(script.Leaderboard)
 local SongSelect = Roact.Component:extend("SongSelect")
 
 function SongSelect:init()
+    if RunService:IsRunning() then
+        self.knit = require(game:GetService("ReplicatedStorage").Knit)
+    end
+
     self.maid = Maid.new()
 
     local onUprateKeyPressed = SPUtil:bind_to_key(Enum.KeyCode.Equals, function()
@@ -111,7 +117,38 @@ function SongSelect:render()
     })
 end
 
+function SongSelect:didMount()
+    if self.knit then
+        local PreviewController = self.knit.GetController("PreviewController")
+
+        PreviewController:PlayId(SongDatabase:get_data_for_key(self.props.options.SongKey).AudioAssetId, function(audio)
+            audio.TimePosition = audio.TimeLength * 0.33
+        end)
+    end
+end
+
+function SongSelect:didUpdate(oldProps)
+    if self.knit then
+        local PreviewController = self.knit.GetController("PreviewController")
+
+        if self.props.options.SongKey ~= oldProps.options.SongKey then
+            PreviewController:PlayId(SongDatabase:get_data_for_key(self.props.options.SongKey).AudioAssetId, function(audio)
+                audio.TimePosition = audio.TimeLength * 0.33
+            end)
+        end
+
+        if self.props.options.SongRate ~= oldProps.options.SongRate then
+            PreviewController:SetRate(self.props.options.SongRate / 100)
+        end
+    end
+end
+
 function SongSelect:willUnmount()
+    if self.knit then
+        local PreviewController = self.knit.GetController("PreviewController")
+        PreviewController:Silence()
+    end
+
     self.maid:DoCleaning()
 end
 
