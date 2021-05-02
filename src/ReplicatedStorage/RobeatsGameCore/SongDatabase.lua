@@ -108,6 +108,31 @@ function SongDatabase:new()
 		return
 	end
 
+	function self:get_nps_graph_for_key(key, resolution)
+		resolution = resolution or 1
+
+		local hitobjects = self:get_hit_objects_for_key(key)
+
+		local lastTime = 0
+		local nps = 0
+
+		local graph = {}
+
+		for itr_index, itr_hit_object in ipairs(hitobjects) do
+			if itr_hit_object.Time - lastTime > 1000 then
+				if itr_index % resolution == 0 then
+					table.insert(graph, nps)
+				end
+				lastTime = itr_hit_object.Time
+				nps = 0
+				continue
+			end
+			nps += 1
+		end
+
+		return graph
+	end
+
 	function self:get_search_string_for_key(key)
 		local data = self:get_data_for_key(key)
 		if data ~= nil then
