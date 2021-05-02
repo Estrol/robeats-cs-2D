@@ -165,6 +165,8 @@ function ScoreManager:new(_game)
 
 	function self:get_on_change() return _on_change end
 
+	function self:get_chain() return _chain end
+
 	function self:update()
 		_frame_has_played_sfx = false
 	end
