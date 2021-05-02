@@ -19,7 +19,7 @@ function ScoreService:KnitInit()
     Server = ParseServer.new()
 
     if RunService:IsStudio() then
-        baseUrl = (game.ServerScriptService:FindFirstChild("UseReleaseAPI") and game.ServerScriptService.UseReleaseAPI.Value) and game:GetService("ServerScriptService").URLs.Release.Value or game:GetService("ServerScriptService").URLs.Dev.Value
+        baseUrl = game.ServerScriptService:GetAttribute("UseReleaseAPI") and game:GetService("ServerScriptService").URLs.Release.Value or game:GetService("ServerScriptService").URLs.Dev.Value
     else
         baseUrl = game:GetService("ServerScriptService").URLs.Release.Value
     end
