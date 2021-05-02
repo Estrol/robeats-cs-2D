@@ -35,7 +35,7 @@ function SongButton:render()
         BackgroundTransparency = self.motorBinding:map(function(a)
             return math.clamp(1-a, 0, 0.58)
         end);
-        BackgroundColor3 = Color3.fromRGB(15, 15, 15),
+        BackgroundColor3 = Color3.fromRGB(22, 22, 22),
         BorderMode = Enum.BorderMode.Inset,
         BorderSizePixel = 0,
         Position = self.props.Position,
@@ -49,11 +49,7 @@ function SongButton:render()
         ZIndex = 4;
         LayoutOrder = self.props.SongKey;
     }, {
-        -- Roact.createElement("UIAspectRatioConstraint", {
-        --     AspectRatio = 8
-        -- }),
-        Roact.createElement("ImageLabel", {
-            Name = "SongCover",
+        SongCover = Roact.createElement("ImageLabel", {
             AnchorPoint = Vector2.new(1, 0.5),
             BackgroundTransparency = 1;
             BorderSizePixel = 0,
@@ -74,13 +70,12 @@ function SongButton:render()
                 CornerRadius = UDim.new(0, 4),
             }),
         }),
-        Roact.createElement("TextLabel", {
-            Name = "DifficultyDisplay",
+        DifficultyDisplay = Roact.createElement("TextLabel", {
             BackgroundColor3 = Color3.fromRGB(255, 255, 255),
             BackgroundTransparency = 1,
             BorderSizePixel = 0,
-            Position = UDim2.new(0.0199999847, 0, 0.5, 0),
-            Size = UDim2.new(0.462034643, 0, 0.330079168, 0),
+            Position = UDim2.new(0.0199999847, 0, 0.78, 0),
+            Size = UDim2.new(0.462034643, 0, 0.11, 0),
             Font = Enum.Font.GothamSemibold,
             Text = string.format("Difficulty: %d", SongDatabase:get_difficulty_for_key(self.props.SongKey)),
             TextColor3 = Color3.fromRGB(255, 255, 255),
@@ -94,16 +89,34 @@ function SongButton:render()
                 MinTextSize = 10,
             });
         }),
-        Roact.createElement("TextLabel", {
-            Name = "NameDisplay",
+        TitleDisplay = Roact.createElement("TextLabel", {
             BackgroundColor3 = Color3.fromRGB(255, 255, 255),
             BackgroundTransparency = 1,
             BorderSizePixel = 0,
             Position = UDim2.new(0.02, 0, 0.1, 0),
             Selectable = true,
-            Size = UDim2.new(0.45, 0, 0.4, 0),
+            Size = UDim2.new(0.45, 0, 0.3, 0),
             Font = Enum.Font.GothamBold,
-            Text = string.format("%s - %s", SongDatabase:get_title_for_key(self.props.SongKey), SongDatabase:get_artist_for_key(self.props.SongKey)),
+            Text = SongDatabase:get_title_for_key(self.props.SongKey),
+            TextColor3 = Color3.fromRGB(255, 208, 87),
+            TextScaled = true,
+            TextSize = 26,
+            TextWrapped = true,
+            TextXAlignment = Enum.TextXAlignment.Left,
+        }, {
+            Roact.createElement("UITextSizeConstraint", {
+                MaxTextSize = 26,
+            })
+        }),
+        ArtistDisplay = Roact.createElement("TextLabel", {
+            BackgroundColor3 = Color3.fromRGB(255, 255, 255),
+            BackgroundTransparency = 1,
+            BorderSizePixel = 0,
+            Position = UDim2.new(0.02, 0, 0.415, 0),
+            Selectable = true,
+            Size = UDim2.new(0.45, 0, 0.2, 0),
+            Font = Enum.Font.Gotham,
+            Text = SongDatabase:get_artist_for_key(self.props.SongKey),
             TextColor3 = Color3.fromRGB(255, 208, 87),
             TextScaled = true,
             TextSize = 26,
