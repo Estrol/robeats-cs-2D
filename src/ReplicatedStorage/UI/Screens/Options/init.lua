@@ -4,6 +4,7 @@ local RoactRodux = require(game.ReplicatedStorage.Packages.RoactRodux)
 local e = Roact.createElement
 local f = Roact.createFragment
 local SPUtil = require(game.ReplicatedStorage.Shared.SPUtil)
+local DebugOut = require(game.ReplicatedStorage.Shared.DebugOut)
 local RunService = game:GetService("RunService")
 
 local Actions = require(game.ReplicatedStorage.Actions)
@@ -230,7 +231,13 @@ end
 function Options:willUnmount()
     if self.knit then
         local SettingsService = self.knit.GetService("SettingsService")
-        SettingsService:SetSettings(self.props.options)
+        SettingsService:SetSettingsPromise(self.props.options)
+        :andThen(function()
+            DebugOut:puts("Successfully saved settings!")
+        end)
+        :catch(function()
+            DebugOut:warnf("There was an error saving settings!")
+        end)
     end
 end
 
