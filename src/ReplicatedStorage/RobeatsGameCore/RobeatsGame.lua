@@ -31,6 +31,9 @@ function RobeatsGame:new(_game_environment_center_position)
 		_sfx_manager = SFXManager:new();
 		_object_pool = ObjectPool:new();
 	}
+
+	local _show_hit_lighting = false
+
 	self._audio_manager = AudioManager:new(self)
 	self._score_manager = ScoreManager:new(self)
 
@@ -46,6 +49,9 @@ function RobeatsGame:new(_game_environment_center_position)
 		_current_mode = val 
 		self._mode_changed:Fire(_current_mode)
 	end
+
+	function self:set_hit_lighting(val) _show_hit_lighting = val end
+	function self:get_hit_lighting() return _show_hit_lighting end
 
 	function self:get_game_environment_center_position()
 		return _game_environment_center_position

@@ -9,7 +9,6 @@ local HoldingNoteEffect = require(game.ReplicatedStorage.RobeatsGameCore.Effects
 local TriggerNoteEffect = require(game.ReplicatedStorage.RobeatsGameCore.Effects.TriggerNoteEffect)
 local RenderableHit = require(game.ReplicatedStorage.RobeatsGameCore.RenderableHit)
 
-local showTriggerEFX = false
 
 local SingleNote = {}
 SingleNote.Type = "SingleNote"
@@ -28,16 +27,17 @@ local _outline_top_adorn_default
 function SingleNote:new(_game, _track_index, _slot_index, _creation_time_ms, _hit_time_ms)
 	local self = NoteBase:NoteBase()
 	self.ClassName = SingleNote.Type
-
+	
 	local _state = SingleNote.State.Pre
 	
 	--Parametric T: Goes from 0 to 1
 	local _t = 0
-
+	
 	local _note_obj
 	local _body, _outline_top, _outline_bottom
 	local _position = Vector3.new()
 	local _body_adorn, _outline_top_adorn, _outline_bottom_adorn
+	local _show_trigger_fx = _game:get_hit_lighting()
 	
 	function self:cons()
 		_note_obj = _game._object_pool:depool(self.ClassName)
@@ -157,7 +157,7 @@ function SingleNote:new(_game, _track_index, _slot_index, _creation_time_ms, _hi
 
 	--[[Override--]] function self:on_hit(note_result, i_notes, renderable_hit)
 
-		if showTriggerEFX then
+		if _show_trigger_fx then
 			_game._effects:add_effect(TriggerNoteEffect:new(
 					_game,
 					_position,

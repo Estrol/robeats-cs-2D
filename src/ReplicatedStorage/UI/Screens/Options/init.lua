@@ -14,6 +14,7 @@ local RoundedTextButton = require(game.ReplicatedStorage.UI.Components.Base.Roun
 
 local IntValue = require(script.IntValue)
 local KeybindValue = require(script.KeybindValue)
+local BoolValue = require(script.BoolValue)
 
 local Options = Roact.Component:extend("Options")
 
@@ -123,7 +124,16 @@ function Options:getSettingElements()
                 return string.format("%d", value)
             end,
             LayoutOrder = 1
-        });   
+        });
+
+        elements.HitLighting = e(BoolValue, {
+            Value = self.props.options.HitLighting,
+            OnChanged = function(value)
+                self.props.setOption("HitLighting", value)
+            end,
+            Name = "Hit Lighting",
+            LayoutOrder = 3
+        })
     end)
 
     return elements

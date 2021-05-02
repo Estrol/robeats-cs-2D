@@ -61,6 +61,7 @@ function Gameplay:init()
         self.props.options.Keybind3,
         self.props.options.Keybind4,
     })
+    _game:set_hit_lighting(self.props.options.HitLighting)
     
     -- Load the map
 
