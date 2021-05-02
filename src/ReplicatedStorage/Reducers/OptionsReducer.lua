@@ -20,6 +20,7 @@ local defaultState = {
         TimeOfDay = 24;
         BaseTransparency = 1;
         HitLighting = false;
+        HideLNTails = false;
 
         
         --Change this to swap the timing preset

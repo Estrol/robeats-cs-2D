@@ -96,6 +96,15 @@ function Options:getSettingElements()
             end,
             LayoutOrder = 1
         });
+
+        elements.HideLNTails = e(BoolValue, {
+            Value = self.props.options.HideLNTails,
+            OnChanged = function(value)
+                self.props.setOption("HideLNTails", value)
+            end,
+            Name = "Hide LN Tails",
+            LayoutOrder = 4
+        })
     end)
 
     --extras

@@ -33,6 +33,7 @@ function RobeatsGame:new(_game_environment_center_position)
 	}
 
 	local _show_hit_lighting = false
+	local _hide_ln_tails = false
 
 	self._audio_manager = AudioManager:new(self)
 	self._score_manager = ScoreManager:new(self)
@@ -52,6 +53,9 @@ function RobeatsGame:new(_game_environment_center_position)
 
 	function self:set_hit_lighting(val) _show_hit_lighting = val end
 	function self:get_hit_lighting() return _show_hit_lighting end
+
+	function self:get_ln_tails() return _hide_ln_tails end
+	function self:set_ln_tails(val) _hide_ln_tails = val end
 
 	function self:get_game_environment_center_position()
 		return _game_environment_center_position

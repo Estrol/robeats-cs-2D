@@ -189,17 +189,22 @@ function HeldNote:new(
 			_head_outline_adorn.Transparency = 1
 		end
 
-		if _state == HeldNote.State.Passed and _did_trigger_tail then
-			_tail_adorn.Transparency = 1
-			_tail_outline_adorn.Transparency = 1
-		else
-			if tail_visible() then
-				_tail_adorn.Transparency = 0
-				_tail_outline_adorn.Transparency = 0
-			else
+		if _game:get_ln_tails() == false then
+			if _state == HeldNote.State.Passed and _did_trigger_tail then
 				_tail_adorn.Transparency = 1
 				_tail_outline_adorn.Transparency = 1
+			else
+				if tail_visible() then
+					_tail_adorn.Transparency = 0
+					_tail_outline_adorn.Transparency = 0
+				else
+					_tail_adorn.Transparency = 1
+					_tail_outline_adorn.Transparency = 1
+				end
 			end
+		else
+			_tail_adorn.Transparency = 1
+			_tail_outline_adorn.Transparency = 1
 		end
 
 		local head_t = (_game._audio_manager:get_current_time_ms() - _creation_time_ms) / (_hit_time_ms - _creation_time_ms)
