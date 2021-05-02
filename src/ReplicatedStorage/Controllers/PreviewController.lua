@@ -11,6 +11,7 @@ local AudioVolumeMotor
 
 function PreviewController:KnitInit()
     Audio = Instance.new("Sound")
+    Audio.Looped = true
     Audio.Parent = game.SoundService
 
     AudioVolumeMotor = Flipper.SingleMotor.new(0)
@@ -23,7 +24,10 @@ function PreviewController:KnitStart()
 end
 
 function PreviewController:PlayId(id, callback)
-    if Audio.SoundId == id then return end
+    if Audio.SoundId == id then
+        self:Speak()
+        return
+    end
 
     callback = callback or noop
     AudioVolumeMotor:setGoal(Flipper.Instant.new(0))
