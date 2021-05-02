@@ -75,7 +75,7 @@ function Results:render()
 			points = hits;
 			formatPoint = function(hit)
 				return {
-					x = (hit.hit_object_time + hit.time_left) / SongDatabase:get_song_length_for_key(state.SongKey, state.Rate),
+					x = (hit.hit_object_time + hit.time_left) / SongDatabase:get_song_length_for_key(state.SongKey, state.Rate / 100),
 					y = SPUtil:inverse_lerp(-300, 300, hit.time_left),
 					color = NoteResult:result_to_color(hit.judgement)
 				}
