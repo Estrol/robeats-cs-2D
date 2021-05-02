@@ -103,8 +103,9 @@ function Gameplay:init()
             local rating = Rating:get_rating_from_accuracy(self.props.options.SongKey, self.state.accuracy, self.props.options.SongRate / 100)
 
             if not self.forcedQuit then
+                local md5Hash = SongDatabase:get_md5_hash_for_key(self.props.options.SongKey)
                 ScoreService:SubmitScorePromise(
-                    SongDatabase:get_md5_hash_for_key(self.props.options.SongKey),
+                    md5Hash,
                     rating,
                     self.state.score,
                     marvelouses,
@@ -120,6 +121,9 @@ function Gameplay:init()
                     :andThen(function()
                         local moment = DateTime.now():ToLocalTime()
                         DebugOut:puts("Score submitted at %d:%d:%d", moment.Hour, moment.Minute, moment.Second)
+                    end)
+                    :andThen(function()
+                        ScoreService:SubmitGraph(md5Hash, hits)
                     end)
             end
 
