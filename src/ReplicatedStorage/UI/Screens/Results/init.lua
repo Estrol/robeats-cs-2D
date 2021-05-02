@@ -5,18 +5,17 @@ local SongDatabase = require(game.ReplicatedStorage.RobeatsGameCore.SongDatabase
 
 local NoteResult = require(game.ReplicatedStorage.RobeatsGameCore.Enums.NoteResult)
 local Grade = require(game.ReplicatedStorage.RobeatsGameCore.Enums.Grade)
-local Rating = require(game.ReplicatedStorage.RobeatsGameCore.Enums.Rating)
 
 local RoundedTextButton = require(game.ReplicatedStorage.UI.Components.Base.RoundedTextButton)
 
-local ResultsScreenMain = Roact.Component:extend("ResultsScreenMain")
+local Results = Roact.Component:extend("Results")
 
 local DotGraph = require(game.ReplicatedStorage.UI.Components.Graph.DotGraph)
 local SpreadDisplay = require(script.SpreadDisplay)
 local BannerCard = require(script.BannerCard)
 local DataDisplay = require(script.DataDisplay)
 
-function ResultsScreenMain:init()
+function Results:init()
 	self.gradeImages = {
 		[Grade.SS] = "http://www.roblox.com/asset/?id=5702584062",
 		[Grade.S] = "http://www.roblox.com/asset/?id=5702584273",
@@ -28,28 +27,21 @@ function ResultsScreenMain:init()
 	}
 	
 	self.backOutConnection = SPUtil:bind_to_key(Enum.KeyCode.Return, function()
-		self.props.history:push("/select")
+		self.props.history:push("/")
 	end)
 end
 
-function ResultsScreenMain:willUnmount()
+function Results:willUnmount()
 	self.backOutConnection:Disconnect()
 end
 
-function ResultsScreenMain:render()
+function Results:render()
 	local state = self.props.location.state
 
-	local grade = Grade:get_grade_from_accuracy(state.accuracy)
+	local grade = Grade:get_grade_from_accuracy(state.Accuracy)
 
-	local mean = 0
-
-	for _, hit in ipairs(state.hits) do
-		mean += hit.time_left
-	end
-
-	if #state.hits ~= 0 then
-		mean /= #state.hits
-	end
+	local hits = state.Hits or {}
+	local mean = state.Mean or 0
 
     return Roact.createElement("Frame", {
 		BackgroundColor3 = Color3.fromRGB(255, 255, 255),
@@ -80,10 +72,10 @@ function ResultsScreenMain:render()
 			interval = {
 				y = 50;
 			};
-			points = state.hits;
+			points = hits;
 			formatPoint = function(hit)
 				return {
-					x = (hit.hit_object_time + hit.time_left) / SongDatabase:get_song_length_for_key(state.songKey),
+					x = (hit.hit_object_time + hit.time_left) / (SongDatabase:get_song_length_for_key(state.SongKey, state.Rate / 100) + 3300),
 					y = SPUtil:inverse_lerp(-300, 300, hit.time_left),
 					color = NoteResult:result_to_color(hit.judgement)
 				}
@@ -93,38 +85,40 @@ function ResultsScreenMain:render()
 			AnchorPoint = Vector2.new(0.5, 0.5),
 			Position = UDim2.new(0.25, 0, 0.675, 0),
 			Size = UDim2.new(0.4, 0, 0.35, 0),
-			Marvelouses = state.marvelouses,
-			Perfects = state.perfects,
-			Greats = state.greats,
-			Goods = state.goods,
-			Bads = state.bads,
-			Misses = state.misses
+			Marvelouses = state.Marvelouses,
+			Perfects = state.Perfects,
+			Greats = state.Greats,
+			Goods = state.Goods,
+			Bads = state.Bads,
+			Misses = state.Misses
 		}),
 		BannerCard = Roact.createElement(BannerCard, {
 			AnchorPoint = Vector2.new(0.5,0);
-			SongKey = state.songKey;
-			playername = "kisperal";
+			SongKey = state.SongKey;
+			PlayerName = state.PlayerName;
+			TimePlayed = state.TimePlayed;
 			Position = UDim2.new(0.5,0,0.05,0);
 			Size = UDim2.new(0.95,0,0.2,0);
+			SongRate = state.Rate;
 			GradeImage = self.gradeImages[grade];
 		});
 		DataDisplay = Roact.createElement(DataDisplay, {
 			data = {
 				{
 					Name = "Score";
-					Value = string.format("%d", state.score);
+					Value = string.format("%d", state.Score);
 				};
 				{
 					Name = "Accuracy";
-					Value = string.format("%0.2f%%", state.accuracy);
+					Value = string.format("%0.2f%%", state.Accuracy);
 				};
 				{
 					Name = "Play Rating";
-					Value = string.format("%0.2f", Rating:get_rating_from_accuracy(state.songKey, state.accuracy, state.rate / 100));
+					Value = string.format("%0.2f", state.Rating);
 				};
 				{
 					Name = "Max Combo";
-					Value = state.maxChain
+					Value = state.MaxChain
 				};
 				{
 					Name = "Mean";
@@ -152,4 +146,4 @@ function ResultsScreenMain:render()
 	})
 end
 
-return ResultsScreenMain
+return Results

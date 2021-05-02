@@ -1,9 +1,6 @@
 local EnvironmentSetup = require(game.ReplicatedStorage.RobeatsGameCore.EnvironmentSetup)
-local CurveUtil = require(game.ReplicatedStorage.Shared.CurveUtil)
 local InputUtil = require(game.ReplicatedStorage.Shared.InputUtil)
-local SPList = require(game.ReplicatedStorage.Shared.SPList)
 local SPDict = require(game.ReplicatedStorage.Shared.SPDict)
-local SPUtil = require(game.ReplicatedStorage.Shared.SPUtil)
 local AudioManager = require(game.ReplicatedStorage.RobeatsGameCore.AudioManager)
 local ObjectPool = require(game.ReplicatedStorage.RobeatsGameCore.ObjectPool)
 local SFXManager = require(game.ReplicatedStorage.RobeatsGameCore.SFXManager)
@@ -12,10 +9,8 @@ local NoteTrackSystem = require(game.ReplicatedStorage.RobeatsGameCore.NoteTrack
 local EffectSystem = require(game.ReplicatedStorage.RobeatsGameCore.Effects.EffectSystem)
 local GameSlot = require(game.ReplicatedStorage.RobeatsGameCore.Enums.GameSlot)
 local GameTrack = require(game.ReplicatedStorage.RobeatsGameCore.Enums.GameTrack)
-local DebugOut = require(game.ReplicatedStorage.Shared.DebugOut)
 local AssertType = require(game.ReplicatedStorage.Shared.AssertType)
 local Signal = require(game.ReplicatedStorage.Knit.Util.Signal)
-local Promise = require(game.ReplicatedStorage.Knit.Util.Promise)
 
 --local Settings = require(game.ReplicatedStorage.)
 
@@ -36,11 +31,13 @@ function RobeatsGame:new(_game_environment_center_position)
 		_sfx_manager = SFXManager:new();
 		_object_pool = ObjectPool:new();
 	}
+
+	local _show_hit_lighting = false
+
 	self._audio_manager = AudioManager:new(self)
 	self._score_manager = ScoreManager:new(self)
 
 	self._mode_changed = Signal.new()
-	self._loaded = Signal.new()
 	
 	local _local_game_slot = 0
 	function self:get_local_game_slot() return _local_game_slot end
@@ -52,6 +49,9 @@ function RobeatsGame:new(_game_environment_center_position)
 		_current_mode = val 
 		self._mode_changed:Fire(_current_mode)
 	end
+
+	function self:set_hit_lighting(val) _show_hit_lighting = val end
+	function self:get_hit_lighting() return _show_hit_lighting end
 
 	function self:get_game_environment_center_position()
 		return _game_environment_center_position
@@ -79,17 +79,8 @@ function RobeatsGame:new(_game_environment_center_position)
 	function self:tracksystems_itr()
 		return self._tracksystems:key_itr()
 	end
-
-	local _was_loaded = false
-
+	
 	function self:update(dt_scale)
-		local is_loaded = self._audio_manager:is_ready_to_play()
-
-		if _was_loaded ~= is_loaded then
-			_was_loaded = is_loaded
-			self._loaded:Fire(self)
-		end
-
 		if _current_mode == RobeatsGame.Mode.Game then
 			self._audio_manager:update(dt_scale)
 			for itr_key,itr_index in GameTrack:inpututil_key_to_track_index():key_itr() do
@@ -113,18 +104,10 @@ function RobeatsGame:new(_game_environment_center_position)
 	end
 
 	function self:load(_song_key, _local_player_slot, _config)
-		return Promise.new(function(resolve)
-			EnvironmentSetup:set_mode(EnvironmentSetup.Mode.Game)
+		EnvironmentSetup:set_mode(EnvironmentSetup.Mode.Game)
 
-			self._audio_manager:load_song(_song_key, _config)
-			self:setup_world(_local_player_slot)
-
-			local con
-			con = self._loaded:Connect(function()
-				resolve(self)
-				con:Disconnect()
-			end)
-		end)
+		self._audio_manager:load_song(_song_key, _config)
+		self:setup_world(_local_player_slot)
 	end
 	
 	function self:teardown()

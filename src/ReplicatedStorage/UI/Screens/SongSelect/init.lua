@@ -3,6 +3,10 @@ local Llama = require(game.ReplicatedStorage.Packages.Llama)
 local RoactRodux = require(game.ReplicatedStorage.Packages.RoactRodux)
 local e = Roact.createElement
 
+local RunService = game:GetService("RunService")
+
+local SongDatabase = require(game.ReplicatedStorage.RobeatsGameCore.SongDatabase)
+
 local SPUtil = require(game.ReplicatedStorage.Shared.SPUtil)
 
 local Actions = require(game.ReplicatedStorage.Actions)
@@ -19,6 +23,10 @@ local Leaderboard = require(script.Leaderboard)
 local SongSelect = Roact.Component:extend("SongSelect")
 
 function SongSelect:init()
+    if RunService:IsRunning() then
+        self.knit = require(game:GetService("ReplicatedStorage").Knit)
+    end
+
     self.maid = Maid.new()
 
     local onUprateKeyPressed = SPUtil:bind_to_key(Enum.KeyCode.Equals, function()
@@ -60,7 +68,13 @@ function SongSelect:render()
         Leaderboard = e(Leaderboard, {
             Size = UDim2.fromScale(0.325, 0.7),
             Position = UDim2.fromScale(0.02, 0.22),
-            SongKey = self.props.options.SongKey
+            SongKey = self.props.options.SongKey,
+            OnLeaderboardSlotClicked = function(stats)
+                self.props.history:push("/results", Llama.Dictionary.join(stats, {
+                    SongKey = SongDatabase:get_key_for_hash(stats.SongMD5Hash),
+                    TimePlayed = DateTime.fromIsoDate(stats.updatedAt).UnixTimestamp
+                }))
+            end
         }),
         PlayButton = e(RoundedTextButton, {
             Position = UDim2.fromScale(0.02, 0.935),
@@ -80,11 +94,61 @@ function SongSelect:render()
             UITextSizeConstraint = e("UITextSizeConstraint", {
                 MaxTextSize = 20
             })
+        }),
+        OptionsButton = e(RoundedTextButton, {
+            AnchorPoint = Vector2.new(1, 1),
+            Position = UDim2.fromScale(0.9935, 0.205),
+            Size = UDim2.fromScale(0.07, 0.055),
+            HoldSize = UDim2.fromScale(0.065, 0.05),
+            TextScaled = true,
+            TextColor3 = Color3.fromRGB(241, 241, 241),
+            BackgroundColor3 = Color3.fromRGB(6, 97, 10),
+            HighlightBackgroundColor3 = Color3.fromRGB(4, 68, 7),
+            Text = "Options",
+            ZIndex = 2,
+            OnClick = function()
+                self.props.history:push("/options")
+            end
+        }, {
+            UITextSizeConstraint = e("UITextSizeConstraint", {
+                MaxTextSize = 13
+            })
         })
     })
 end
 
+function SongSelect:didMount()
+    if self.knit then
+        local PreviewController = self.knit.GetController("PreviewController")
+
+        PreviewController:PlayId(SongDatabase:get_data_for_key(self.props.options.SongKey).AudioAssetId, function(audio)
+            audio.TimePosition = audio.TimeLength * 0.33
+        end)
+    end
+end
+
+function SongSelect:didUpdate(oldProps)
+    if self.knit then
+        local PreviewController = self.knit.GetController("PreviewController")
+
+        if self.props.options.SongKey ~= oldProps.options.SongKey then
+            PreviewController:PlayId(SongDatabase:get_data_for_key(self.props.options.SongKey).AudioAssetId, function(audio)
+                audio.TimePosition = audio.TimeLength * 0.33
+            end)
+        end
+
+        if self.props.options.SongRate ~= oldProps.options.SongRate then
+            PreviewController:SetRate(self.props.options.SongRate / 100)
+        end
+    end
+end
+
 function SongSelect:willUnmount()
+    if self.knit then
+        local PreviewController = self.knit.GetController("PreviewController")
+        PreviewController:Silence()
+    end
+
     self.maid:DoCleaning()
 end
 

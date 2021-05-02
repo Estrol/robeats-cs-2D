@@ -92,10 +92,14 @@ function SongDatabase:new()
 		return songdata.AudioDescription
 	end
 
-	function self:get_song_length_for_key(key)
+	function self:get_song_length_for_key(key, rate)
 		local hit_objects = self:get_hit_objects_for_key(key)
 		local last_hit_ob = hit_objects[#hit_objects]
 
+		if rate then
+			return (last_hit_ob.Time + (last_hit_ob.Duration or 0)) / rate
+		end
+		
 		return last_hit_ob.Time + (last_hit_ob.Duration or 0)
 	end
 
@@ -165,6 +169,20 @@ function SongDatabase:new()
 
 			return _rate_map_data
 		end
+	end
+
+	function self:get_key_for_hash(hash)
+		for itr_key, itr_audio_data in pairs(_all_keys) do
+			if itr_audio_data.AudioMD5Hash == hash then
+				return itr_key
+			end
+		end
+		return self:invalid_songkey()
+	end
+
+	function self:get_hash_for_key(key)
+		local songdata = self:get_data_for_key(key)
+		return songdata.AudioMD5Hash
 	end
 
 	function self:get_note_metrics_for_key(key)

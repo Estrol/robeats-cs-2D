@@ -8,13 +8,20 @@ local SongDatabase = require(game.ReplicatedStorage.RobeatsGameCore.SongDatabase
 
 local BannerCard = Roact.Component:extend("BannerCard")
 
+BannerCard.defaultProps = {
+    PlayerName = "lol",
+    TimePlayed = 0,
+    SongRate = 100,
+    SongKey = 1
+}
+
 function BannerCard:init()
     self.motor = Flipper.GroupMotor.new({
         bg = 0;
         textTitle = 0;
         textArtist = 0;
         grade = 0;
-        playedat = 0;
+        timePlayed = 0;
     })
     self.motorBinding = RoactFlipper.getBinding(self.motor)
 end
@@ -40,7 +47,7 @@ function BannerCard:didMount()
 
     Thread.Delay(0.9, function()
         self.motor:setGoal({
-            playedat = Flipper.Linear.new(1, {
+            timePlayed = Flipper.Linear.new(1, {
                 velocity = 2;
             })
         })
@@ -48,6 +55,8 @@ function BannerCard:didMount()
 end
 
 function BannerCard:render()
+    local time = DateTime.fromUnixTimestamp(self.props.TimePlayed):ToLocalTime()
+
     return Roact.createElement("ImageLabel", {
         Position = self.props.Position;
         BackgroundColor3 = Color3.fromRGB(15, 15, 15);
@@ -71,14 +80,14 @@ function BannerCard:render()
             BackgroundTransparency = 1,
             BorderSizePixel = 0,
             Position = self.motorBinding:map(function(a)
-                return UDim2.new(0.02, 0, 0.55, 0):Lerp(UDim2.new(0.01, 0, 0.55, 0), a.playedat)
+                return UDim2.new(0.022, 0, 0.92, 0):Lerp(UDim2.new(0.012, 0, 0.92, 0), a.timePlayed)
             end);
             TextTransparency = self.motorBinding:map(function(a)
-                return 1-a.playedat
+                return 1-a.timePlayed
             end);
-            Size = UDim2.new(0.6, 0, 0.085, 0),
+            Size = UDim2.new(0.6, 0, 0.12, 0),
             Font = Enum.Font.GothamSemibold,
-            Text = string.format("Played by %s at %s", self.props.playername, "1PM"),
+            Text = string.format("Played by %s at %s", self.props.PlayerName, string.format("%d/%d/%d %02d:%02d:%02d", time.Month, time.Day, time.Year, time.Hour, time.Minute, time.Second)),
             TextColor3 = Color3.fromRGB(255, 255, 255),
             TextScaled = true,
             TextSize = 18,
@@ -122,7 +131,7 @@ function BannerCard:render()
             --Size = UDim2.new(0.5, 0, 0.15, 0),
             Size = UDim2.new(0.75, 0, 0.25, 0),
             Font = Enum.Font.GothamBold,
-            Text = SongDatabase:get_title_for_key(self.props.SongKey),
+            Text = string.format("%s (%0.2fx rate)", SongDatabase:get_title_for_key(self.props.SongKey), self.props.SongRate / 100),
             TextColor3 = Color3.fromRGB(255, 255, 255),
             TextScaled = true,
             TextStrokeTransparency = 0.5,

@@ -4,6 +4,8 @@ local RoactRodux = require(game.ReplicatedStorage.Packages.RoactRodux)
 local e = Roact.createElement
 local f = Roact.createFragment
 local SPUtil = require(game.ReplicatedStorage.Shared.SPUtil)
+local DebugOut = require(game.ReplicatedStorage.Shared.DebugOut)
+local RunService = game:GetService("RunService")
 
 local Actions = require(game.ReplicatedStorage.Actions)
 
@@ -13,6 +15,7 @@ local RoundedTextButton = require(game.ReplicatedStorage.UI.Components.Base.Roun
 
 local IntValue = require(script.IntValue)
 local KeybindValue = require(script.KeybindValue)
+local BoolValue = require(script.BoolValue)
 
 local Options = Roact.Component:extend("Options")
 
@@ -24,6 +27,10 @@ function Options:init()
     self:setState({
         selectedCategory = 1
     })
+
+    if RunService:IsRunning() then
+        self.knit = require(game:GetService("ReplicatedStorage").Knit)
+    end
 end
 
 function Options:getSettingElements()
@@ -118,7 +125,16 @@ function Options:getSettingElements()
                 return string.format("%d", value)
             end,
             LayoutOrder = 1
-        });   
+        });
+
+        elements.HitLighting = e(BoolValue, {
+            Value = self.props.options.HitLighting,
+            OnChanged = function(value)
+                self.props.setOption("HitLighting", value)
+            end,
+            Name = "Hit Lighting",
+            LayoutOrder = 3
+        })
     end)
 
     return elements
@@ -210,6 +226,19 @@ function Options:render()
             end
         }),
     })
+end
+
+function Options:willUnmount()
+    if self.knit then
+        local SettingsService = self.knit.GetService("SettingsService")
+        SettingsService:SetSettingsPromise(self.props.options)
+        :andThen(function()
+            DebugOut:puts("Successfully saved settings!")
+        end)
+        :catch(function()
+            DebugOut:warnf("There was an error saving settings!")
+        end)
+    end
 end
 
 return RoactRodux.connect(function(state)

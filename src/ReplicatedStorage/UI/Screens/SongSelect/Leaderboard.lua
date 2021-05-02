@@ -1,4 +1,6 @@
 local Roact = require(game.ReplicatedStorage.Packages.Roact)
+local Llama = require(game.ReplicatedStorage.Packages.Llama)
+local join = Llama.Dictionary.join
 
 local RunService = game:GetService("RunService")
 
@@ -6,6 +8,8 @@ local RoundedTextLabel =  require(game.ReplicatedStorage.UI.Components.Base.Roun
 local RoundedFrame = require(game.ReplicatedStorage.UI.Components.Base.RoundedFrame)
 local RoundedAutoScrollingFrame = require(game.ReplicatedStorage.UI.Components.Base.RoundedAutoScrollingFrame)
 local LoadingWheel = require(game.ReplicatedStorage.UI.Components.Base.LoadingWheel)
+
+local SongDatabase = require(game.ReplicatedStorage.RobeatsGameCore.SongDatabase)
 
 local LeaderboardSlot = require(game.ReplicatedStorage.UI.Screens.SongSelect.LeaderboardSlot)
 
@@ -24,23 +28,7 @@ function Leaderboard:init()
 
     self:setState({
         loading = false,
-        scores = {} -- List of scores to display. Can be fetched from some external resource. This is the format it follows:
-        -- {
-        --     UserId = 526993347,
-        --     PlayerName = "kisperal",
-        --     Marvelouses = 6,
-        --     Perfects = 5,
-        --     Greats = 4,
-        --     Goods = 3,
-        --     Bads = 2,
-        --     Misses = 1,
-        --     Time = 1596444113,
-        --     Accuracy = 98.98,
-        --     Place = 1,
-        --     Score = 0
-        -- }
-        -- WHEN YOU ARE TESTING THE DATASET PLEASE DO NOT COMMIT THE DATA!!!
-        -- I am actually not sure how to do the actual fetching with Knit. Doing something story-based would be coolio
+        scores = {}
     })
 end
 
@@ -49,7 +37,7 @@ function Leaderboard:performFetch()
         self:setState({
             loading = true
         })
-        self.knit.GetService("ScoreService"):GetScoresPromise(self.props.SongKey):andThen(function(scores)
+        self.knit.GetService("ScoreService"):GetScoresPromise(SongDatabase:get_md5_hash_for_key(self.props.SongKey)):andThen(function(scores)
             self:setState({
                 scores = scores,
                 loading = false
@@ -113,7 +101,12 @@ function Leaderboard:render()
     local children = {}
     
     for i, v in pairs(self.state.scores) do
-        children[i] = Roact.createElement(LeaderboardSlot, v)
+        children[i] = Roact.createElement(LeaderboardSlot, {
+            Data = join(v, {
+                Place = i
+            }),
+            OnClick = self.props.OnLeaderboardSlotClicked
+        })
     end
 
     return Roact.createElement(RoundedAutoScrollingFrame, {

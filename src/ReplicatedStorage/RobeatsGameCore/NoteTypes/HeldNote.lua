@@ -11,7 +11,6 @@ local FlashEvery = require(game.ReplicatedStorage.Shared.FlashEvery)
 local RenderableHit = require(game.ReplicatedStorage.RobeatsGameCore.RenderableHit)
 local TriggerNoteEffect = require(game.ReplicatedStorage.RobeatsGameCore.Effects.TriggerNoteEffect)
 
-local showTriggerEFX = false
 
 local HeldNote = {}
 HeldNote.Type = "HeldNote"
@@ -44,9 +43,9 @@ function HeldNote:new(
 )
 	local self = NoteBase:NoteBase()
 	self.ClassName = HeldNote.Type
-
+	
 	local _note_obj
-
+	
 	local _body
 	local _head
 	local _tail
@@ -55,10 +54,11 @@ function HeldNote:new(
 	local _body_outline_left
 	local _body_outline_right
 	local _body_adorn, _head_adorn, _tail_adorn, _head_outline_adorn, _tail_outline_adorn, _body_outline_left_adorn, _body_outline_right_adorn
-
+	
 	local _state = HeldNote.State.Pre
 	local _did_trigger_head = false
 	local _did_trigger_tail = false
+	local _show_trigger_fx = _game:get_hit_lighting()
 	
 	function self:cons()
 		_note_obj = _game._object_pool:depool(self.ClassName)
@@ -391,7 +391,7 @@ function HeldNote:new(
 
 	--[[Override--]] function self:on_hit(note_result, i_notes, renderable_hit)
 		if _state == HeldNote.State.Pre then
-			if showTriggerEFX then
+			if _show_trigger_fx then
 				_game._effects:add_effect(TriggerNoteEffect:new(
 					_game,
 					get_head_position(),
@@ -412,7 +412,7 @@ function HeldNote:new(
 			_state = HeldNote.State.Holding
 
 		elseif _state == HeldNote.State.HoldMissedActive then
-			if showTriggerEFX then
+			if _show_trigger_fx then
 				_game._effects:add_effect(TriggerNoteEffect:new(
 					_game,
 					get_tail_position(),
@@ -470,7 +470,7 @@ function HeldNote:new(
 				_state = HeldNote.State.HoldMissedActive
 			else
 
-				if showTriggerEFX then
+				if _show_trigger_fx then
 					_game._effects:add_effect(TriggerNoteEffect:new(
 						_game,
 						get_tail_position(),
