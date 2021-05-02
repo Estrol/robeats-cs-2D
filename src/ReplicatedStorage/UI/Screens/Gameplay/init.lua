@@ -11,12 +11,16 @@ local GameSlot = require(game.ReplicatedStorage.RobeatsGameCore.Enums.GameSlot)
 local Rating = require(game.ReplicatedStorage.RobeatsGameCore.Enums.Rating)
 local SongDatabase = require(game.ReplicatedStorage.RobeatsGameCore.SongDatabase)
 local DebugOut = require(game.ReplicatedStorage.Shared.DebugOut)
+local NoteResult= require(game.ReplicatedStorage.RobeatsGameCore.Enums.NoteResult)
 
 local Leaderboard = require(script.Leaderboard)
 
 local RoundedTextLabel = require(game.ReplicatedStorage.UI.Components.Base.RoundedTextLabel)
+local RoundedFrame = require(game.ReplicatedStorage.UI.Components.Base.RoundedFrame)
 local RoundedTextButton = require(game.ReplicatedStorage.UI.Components.Base.RoundedTextButton)
 local LoadingWheel = require(game.ReplicatedStorage.UI.Components.Base.LoadingWheel)
+
+local withHitDeviancePoint = require(script.Decorators.withHitDeviancePoint)
 
 local Knit = require(game:GetService("ReplicatedStorage").Knit)
 
@@ -41,6 +45,10 @@ function Gameplay:init()
     -- Set up time left bib
 
     self.timeLeft, self.setTimeLeft = Roact.createBinding(0)
+
+    -- Set up hit deviance parent reference
+
+    self.hitDevianceRef = Roact.createRef()
     
     -- Set up the stage
 
@@ -144,7 +152,24 @@ function Gameplay:init()
 
     -- Hook into onStatsChanged to monitor when stats change in ScoreManager
 
-    self.onStatsChangedConnection = _game._score_manager:get_on_change():Connect(function()
+    self.onStatsChangedConnection = _game._score_manager:get_on_change():Connect(function(...)
+        local hit = select(10, ...)
+        
+        if hit then
+            local bar = Instance.new("Frame")
+            bar.AnchorPoint = Vector2.new(0.5, 0)
+            bar.Position = UDim2.fromScale(SPUtil:inverse_lerp(150, -150, hit.time_left), 0)
+            bar.Size = UDim2.fromScale(0.005, 1)
+            bar.BorderSizePixel = 0
+            bar.ZIndex = 20
+            bar.BackgroundTransparency = 1
+            bar.BackgroundColor3 = NoteResult:result_to_color(hit.judgement)
+
+            bar.Parent = self.hitDevianceRef:getValue()
+
+            withHitDeviancePoint(bar)
+        end
+
         self:setState({
             score = _game._score_manager:get_score(),
             accuracy = _game._score_manager:get_accuracy() * 100,
@@ -258,6 +283,12 @@ function Gameplay:render()
             SongKey = self.props.options.SongKey,
             LocalRating = Rating:get_rating_from_accuracy(self.props.options.SongKey, self.state.accuracy, self.props.options.SongRate / 100),
             LocalAccuracy = self.state.accuracy
+        }),
+        HitDeviance = e(RoundedFrame, {
+           Position = UDim2.fromScale(0.5, 0.95),
+           Size = UDim2.fromScale(0.15, 0.05),
+           AnchorPoint = Vector2.new(0.5, 1),
+           [Roact.Ref] = self.hitDevianceRef
         })
     })
 end
