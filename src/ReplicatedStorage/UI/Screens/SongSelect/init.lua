@@ -14,7 +14,7 @@ local Actions = require(game.ReplicatedStorage.Actions)
 local Maid = require(game.ReplicatedStorage.Knit.Util.Maid)
 
 local RoundedFrame = require(game.ReplicatedStorage.UI.Components.Base.RoundedFrame)
-local RoundedTextButton = require(game.ReplicatedStorage.UI.Components.Base.RoundedTextButton)
+local ButtonLayout = require(game.ReplicatedStorage.UI.Components.Base.ButtonLayout)
 
 local SongInfoDisplay = require(script.SongInfoDisplay)
 local SongList = require(script.SongList)
@@ -82,43 +82,34 @@ function SongSelect:render()
                 }))
             end
         }),
-        PlayButton = e(RoundedTextButton, {
-            Position = UDim2.fromScale(0.02, 0.935),
-            Size = UDim2.fromScale(0.325, 0.05),
-            HoldSize = UDim2.fromScale(0.315, 0.045),
-            BackgroundColor3 = Color3.fromRGB(40, 40, 40),
-            HighlightBackgroundColor3 = Color3.fromRGB(93, 221, 33),
-            TextScaled = true,
-            Text = "Play!",
-            TextColor3 = Color3.fromRGB(255, 255, 255),
-            Frequency = 10,
-            dampingRatio = 1.5;
-            OnClick = function()
-                self.props.history:push("/play")
-            end
-        }, {
-            UITextSizeConstraint = e("UITextSizeConstraint", {
-                MaxTextSize = 20
-            })
-        }),
-        OptionsButton = e(RoundedTextButton, {
-            AnchorPoint = Vector2.new(1, 1),
-            Position = UDim2.fromScale(0.9935, 0.205),
-            Size = UDim2.fromScale(0.07, 0.055),
-            HoldSize = UDim2.fromScale(0.065, 0.05),
-            TextScaled = true,
-            TextColor3 = Color3.fromRGB(241, 241, 241),
-            BackgroundColor3 = Color3.fromRGB(6, 97, 10),
-            HighlightBackgroundColor3 = Color3.fromRGB(4, 68, 7),
-            Text = "Options",
-            ZIndex = 2,
-            OnClick = function()
-                self.props.history:push("/options")
-            end
-        }, {
-            UITextSizeConstraint = e("UITextSizeConstraint", {
-                MaxTextSize = 13
-            })
+        ButtonContainer = e(ButtonLayout, {
+            Size = UDim2.fromScale(0.61, 0.042),
+            Position = UDim2.fromScale(0.02, 0.975),
+            AnchorPoint = Vector2.new(0, 1),
+            Padding = UDim.new(0, 8),
+            Buttons = {
+                {
+                    Text = "Play",
+                    Color = Color3.fromRGB(8, 153, 32),
+                    OnClick = function()
+                        self.props.history:push("/play")
+                    end
+                },
+                {
+                    Text = "Options",
+                    Color = Color3.fromRGB(37, 37, 37),
+                    OnClick = function()
+                        self.props.history:push("/options")
+                    end
+                },
+                {
+                    Text = "Main Menu",
+                    Color = Color3.fromRGB(37, 37, 37),
+                    OnClick = function()
+                        self.props.history:push("/")
+                    end
+                }
+            }
         })
     })
 end
