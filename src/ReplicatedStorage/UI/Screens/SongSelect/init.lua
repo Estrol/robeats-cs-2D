@@ -37,7 +37,7 @@ function SongSelect:init()
         self.props.setSongRate(self.props.options.SongRate - 5)
     end)
 
-    local onOptionsKeyPressed = SPUtil:bind_to_key(Enum.KeyCode.O, function()
+    local onOptionsKeyPressed = SPUtil:bind_to_key_combo({Enum.KeyCode.O, Enum.KeyCode.LeftControl}, function()
         self.props.history:push("/options")
     end)
 

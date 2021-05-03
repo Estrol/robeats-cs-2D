@@ -261,6 +261,25 @@ function SPUtil:bind_to_key_release(key_code, _callback)
 	end)
 end
 
+function SPUtil:bind_to_key_combo(key_combo, _callback)
+	return SPUtil:bind_to_key(key_combo[1], function(key_code)
+		local comboPressed = true
+
+		for i, v in ipairs(key_combo) do
+			if i ~= 1 then
+				if not UserInputService:IsKeyDown(v) then
+					comboPressed = false
+					break
+				end
+			end
+		end
+
+		if comboPressed then
+			_callback(key_code)
+		end
+	end)
+end
+
 function SPUtil:switch(val)
 	local switchInstance = {}
 
