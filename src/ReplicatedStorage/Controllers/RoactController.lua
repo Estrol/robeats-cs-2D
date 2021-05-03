@@ -14,6 +14,7 @@ local SongSelect = require(Screens.SongSelect)
 local Gameplay = require(Screens.Gameplay)
 local Results = require(Screens.Results)
 local Options = require(Screens.Options)
+local Rankings = require(Screens.Rankings)
 
 local RoactController = Knit.CreateController({
     Name = "RoactController"
@@ -49,6 +50,11 @@ function RoactController:GetRoutes()
             path = "/options",
             exact = true,
             component = Options
+        }),
+        Rankings = Roact.createElement(RoactRouter.Route, {
+            path = "/rankings",
+            exact = true,
+            component = Rankings
         })
     }
 end
