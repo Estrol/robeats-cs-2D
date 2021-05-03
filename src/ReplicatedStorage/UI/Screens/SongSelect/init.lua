@@ -41,7 +41,6 @@ function SongSelect:init()
         self.props.history:push("/options")
     end)
 
-    -- self.maid:GiveTask(onConfigurationChanged)
     self.maid:GiveTask(onUprateKeyPressed)
     self.maid:GiveTask(onDownrateKeyPressed)
     self.maid:GiveTask(onOptionsKeyPressed)
