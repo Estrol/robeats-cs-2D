@@ -57,7 +57,7 @@ function SongSelect:render()
             SongRate = self.props.options.SongRate
         }),
         SongList = e(SongList, {
-            Size = UDim2.fromScale(0.36, 0.77),
+            Size = UDim2.fromScale(0.64, 0.77),
             AnchorPoint = Vector2.new(1, 1),
             Position = UDim2.fromScale(0.995, 0.985),
             OnSongSelected = function(key)
@@ -82,7 +82,7 @@ function SongSelect:render()
             end
         }),
         ButtonContainer = e(ButtonLayout, {
-            Size = UDim2.fromScale(0.61, 0.042),
+            Size = UDim2.fromScale(0.525, 0.042),
             Position = UDim2.fromScale(0.02, 0.975),
             AnchorPoint = Vector2.new(0, 1),
             Padding = UDim.new(0, 8),
