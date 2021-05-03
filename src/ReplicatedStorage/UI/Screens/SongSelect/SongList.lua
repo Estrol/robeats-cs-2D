@@ -109,7 +109,7 @@ function SongList:render()
             end
         });
         SearchBar = e("Frame", {
-            BackgroundColor3 = Color3.fromRGB(31, 31, 31),
+            BackgroundColor3 = Color3.fromRGB(41, 41, 41),
             Position = UDim2.new(1, 0, 0.04, 0),
             Size = UDim2.fromScale(.74, 0.045),
             AnchorPoint = Vector2.new(1, 1),
