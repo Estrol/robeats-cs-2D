@@ -86,32 +86,10 @@ function SongList:render()
                 return 80
             end
         }),
-
-        PLACEHOLDER_BUTTON = e(RoundedTextButton, {
-            Size = UDim2.fromScale(0.125, .045),
-            Position = UDim2.new(0, 0, 0, 0),
-            HoldSize = UDim2.fromScale(0.125, .05),
-            BackgroundColor3 = Color3.fromRGB(142, 210, 255),
-            Text = "PLACEHOLDER",
-            OnClick = function()
-                return noop
-            end
-        });
-
-        PLACEHOLDER_BUTTON_2 = e(RoundedTextButton, {
-            Size = UDim2.fromScale(0.125, .045),
-            Position = UDim2.new(0.12775, 0, 0, 0),
-            HoldSize = UDim2.fromScale(0.125, .05),
-            BackgroundColor3 = Color3.fromRGB(142, 210, 255),
-            Text = "PLACEHOLDER_2",
-            OnClick = function()
-                return noop
-            end
-        });
         SearchBar = e("Frame", {
             BackgroundColor3 = Color3.fromRGB(41, 41, 41),
             Position = UDim2.new(1, 0, 0.045, 0),
-            Size = UDim2.fromScale(.74, 0.045),
+            Size = UDim2.fromScale(1, 0.045),
             AnchorPoint = Vector2.new(1, 1),
         }, {
             UICorner = e("UICorner", {
