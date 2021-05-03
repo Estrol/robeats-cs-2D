@@ -146,8 +146,8 @@ function SongInfoDisplay:render()
         }),
         NpsGraph = e(NpsGraph, {
             Size = UDim2.fromScale(0.3, 0.45),
-            Position = UDim2.fromScale(0.25, 0.925),
-            AnchorPoint = Vector2.new(0, 1),
+            Position = UDim2.fromScale(0.99, 0.925),
+            AnchorPoint = Vector2.new(1, 1),
             SongKey = self.props.SongKey,
             SongRate = self.props.SongRate
         }),
