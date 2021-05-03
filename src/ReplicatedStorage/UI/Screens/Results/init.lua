@@ -27,7 +27,7 @@ function Results:init()
 	}
 	
 	self.backOutConnection = SPUtil:bind_to_key(Enum.KeyCode.Return, function()
-		self.props.history:push("/")
+		self.props.history:push("/select")
 	end)
 end
 
@@ -140,7 +140,7 @@ function Results:render()
 			TextSize = 16,
 			ZIndex = 5,
 			OnClick = function()
-				self.props.history:push("/")
+				self.props.history:push("/select")
 			end
 		})
 	})
