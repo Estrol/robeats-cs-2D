@@ -258,7 +258,7 @@ function Gameplay:render()
             BackgroundTransparency = 1,
             TextScaled = true,
             Text = self.timeLeft:map(function(a)
-                return SPUtil:format_ms_time(a)
+                return SPUtil:format_ms_time(math.clamp(a, 0, math.huge))
             end)
         }),
         Combo = e(RoundedTextLabel, {
