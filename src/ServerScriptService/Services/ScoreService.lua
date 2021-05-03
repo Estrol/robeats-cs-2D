@@ -1,6 +1,8 @@
 local Knit = require(game.ReplicatedStorage.Knit)
 
 local DataStoreService = game:GetService("DataStoreService")
+local LocalizationService = game:GetService("LocalizationService")
+
 local GraphDataStore = DataStoreService:GetDataStore("GraphDataStore")
 
 local DebugOut = require(game.ReplicatedStorage.Shared.DebugOut)
@@ -89,11 +91,11 @@ function ScoreService:CalculateAverageAccuracy(userId)
     return accuracy / #scores
 end
 
-function ScoreService:RefreshProfile(userId, playerName)
+function ScoreService:RefreshProfile(player)
     local succeeded, slots = Global
             :query()
             :where({
-                UserId = userId
+                UserId = player.UserId
             })
             :execute()
             :await()
@@ -108,26 +110,27 @@ function ScoreService:RefreshProfile(userId, playerName)
                         __op = "Increment",
                         amount = 1
                     },
-                    Rating = ScoreService:CalculateRating(userId),
-                    Accuracy = ScoreService:CalculateAverageAccuracy(userId),
-                    PlayerName = playerName,
-                    UserId = userId
+                    Rating = ScoreService:CalculateRating(player.UserId),
+                    Accuracy = ScoreService:CalculateAverageAccuracy(player.UserId),
+                    PlayerName = player.DisplayName,
+                    UserId = player.UserId
                 })
                 :andThen(function(document)
                     DebugOut:puts("Global leaderboard slot successfully updated!")
                 end)
-        else
-            Global
-                :create({
-                    TotalMapsPlayed = 1,
-                    Rating = ScoreService:CalculateRating(userId),
-                    Accuracy = ScoreService:CalculateAverageAccuracy(userId),
-                    PlayerName = playerName,
-                    UserId = userId
-                })
-                :andThen(function(document)
-                    DebugOut:puts("Global leaderboard slot successfully created!")
-                end)
+            else
+                Global
+                    :create({
+                        TotalMapsPlayed = 1,
+                        Rating = ScoreService:CalculateRating(player.UserId),
+                        Accuracy = ScoreService:CalculateAverageAccuracy(player.UserId),
+                        PlayerName = player.DisplayName,
+                        CountryRegion = LocalizationService:GetCountryRegionForPlayerAsync(player),
+                        UserId = player.UserId
+                    })
+                    :andThen(function(document)
+                        DebugOut:puts("Global leaderboard slot successfully created!")
+                    end)
         end
     end
 end
@@ -164,7 +167,7 @@ function ScoreService.Client:SubmitScore(player, songMD5Hash, rating, score, mar
                 SongMD5Hash = songMD5Hash
             })
             :await()
-            ScoreService:RefreshProfile(player.UserId, player.DisplayName)
+            ScoreService:RefreshProfile(player)
             return succeeded
         end
 
@@ -193,7 +196,7 @@ function ScoreService.Client:SubmitScore(player, songMD5Hash, rating, score, mar
             }):await()
         end
 
-        ScoreService:RefreshProfile(player.UserId, player.DisplayName)
+        ScoreService:RefreshProfile(player)
     else
         return false
     end
