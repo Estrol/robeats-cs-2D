@@ -1,9 +1,12 @@
 local Roact = require(game.ReplicatedStorage.Packages.Roact)
 
+local PlayerProfile = require(script.PlayerProfile)
+
 local RoundedFrame = require(game.ReplicatedStorage.UI.Components.Base.RoundedFrame)
 local RoundedTextButton = require(game.ReplicatedStorage.UI.Components.Base.RoundedTextButton)
 local RoundedImageLabel = require(game.ReplicatedStorage.UI.Components.Base.RoundedImageLabel)
 local RoundedTextLabel = require(game.ReplicatedStorage.UI.Components.Base.RoundedTextLabel)
+
 
 local MainMenuUI = Roact.Component:extend("MainMenuUI")
 
@@ -23,6 +26,9 @@ function MainMenuUI:render()
                 AspectType = Enum.AspectType.ScaleWithParentSize
             })
         });
+        PlayerProfile = Roact.createElement(PlayerProfile, {
+            Size = UDim2.fromScale(0.45, 0.2)
+        }),
         ButtonContainer = Roact.createElement(RoundedFrame, {
             Size = UDim2.fromScale(0.25, 0.6);
             Position = UDim2.fromScale(0.02,0.95);
@@ -85,7 +91,10 @@ function MainMenuUI:render()
                 TextScaled = true;
                 TextColor3 = Color3.fromRGB(255, 255, 255);
                 LayoutOrder = 3;
-                HoldSize = UDim2.fromScale(0.95, 0.125)
+                HoldSize = UDim2.fromScale(0.95, 0.125),
+                OnClick = function()
+                    self.props.history:push("/rankings")
+                end
             }, {
                 UITextSizeConstraint = Roact.createElement("UITextSizeConstraint", {
                     MinTextSize = 8;
