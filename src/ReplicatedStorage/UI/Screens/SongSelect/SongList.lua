@@ -1,9 +1,12 @@
 local Roact = require(game.ReplicatedStorage.Packages.Roact)
+local e = Roact.createElement
+
 local Promise = require(game.ReplicatedStorage.Knit.Util.Promise)
 
 local SongDatabase = require(game.ReplicatedStorage.RobeatsGameCore.SongDatabase)
 
 local RoundedLargeScrollingFrame = require(game.ReplicatedStorage.UI.Components.Base.RoundedLargeScrollingFrame)
+local RoundedTextButton = require(game.ReplicatedStorage.UI.Components.Base.RoundedTextButton)
 
 local SongButton = require(game.ReplicatedStorage.UI.Screens.SongSelect.SongButton)
 
@@ -53,17 +56,17 @@ function SongList:didUpdate(_, prevState)
 end
 
 function SongList:render()
-    return Roact.createElement("Frame", {
+    return e("Frame", {
         AnchorPoint = self.props.AnchorPoint,
         BackgroundTransparency = 1,
         BorderSizePixel = 0,
         Position = self.props.Position,
         Size = self.props.Size,
     }, {
-        UICorner = Roact.createElement("UICorner", {
+        UICorner = e("UICorner", {
             CornerRadius = UDim.new(0, 4),
         }),
-        SongList = Roact.createElement(RoundedLargeScrollingFrame, {
+        SongList = e(RoundedLargeScrollingFrame, {
             BackgroundTransparency = 1,
             Position = UDim2.new(0, 0, 0.05, 0),
             Size = UDim2.new(1, 0, 0.95, 0),
@@ -71,7 +74,7 @@ function SongList:render()
             HorizontalAlignment = "Right",
             items = self.state.found;
             renderItem = function(id)
-                return Roact.createElement(SongButton, {
+                return e(SongButton, {
                     SongKey = id,
                     OnClick = self.props.OnSongSelected
                 })
@@ -83,16 +86,38 @@ function SongList:render()
                 return 80
             end
         }),
-        SearchBar = Roact.createElement("Frame", {
+
+        PLACEHOLDER_BUTTON = e(RoundedTextButton, {
+            Size = UDim2.fromScale(0.125, .045),
+            Position = UDim2.new(0, 0, 0, 0),
+            HoldSize = UDim2.fromScale(0.125, .05),
+            BackgroundColor3 = Color3.fromRGB(142, 210, 255),
+            Text = "PLACEHOLDER",
+            OnClick = function()
+                return noop
+            end
+        });
+
+        PLACEHOLDER_BUTTON_2 = e(RoundedTextButton, {
+            Size = UDim2.fromScale(0.125, .045),
+            Position = UDim2.new(0.1275, 0, 0, 0),
+            HoldSize = UDim2.fromScale(0.125, .05),
+            BackgroundColor3 = Color3.fromRGB(142, 210, 255),
+            Text = "PLACEHOLDER_2",
+            OnClick = function()
+                return noop
+            end
+        });
+        SearchBar = e("Frame", {
             BackgroundColor3 = Color3.fromRGB(31, 31, 31),
             Position = UDim2.new(1, 0, 0.04, 0),
-            Size = UDim2.new(1, 0, 0.04, 0),
+            Size = UDim2.fromScale(.74, 0.045),
             AnchorPoint = Vector2.new(1, 1),
         }, {
-            UICorner = Roact.createElement("UICorner", {
+            UICorner = e("UICorner", {
                 CornerRadius = UDim.new(0, 4),
             }),
-            SearchBox = Roact.createElement("TextBox", {
+            SearchBox = e("TextBox", {
                 BackgroundColor3 = Color3.fromRGB(255, 255, 255),
                 BackgroundTransparency = 1,
                 Position = UDim2.new(0.02, 0, 0, 0),
@@ -112,7 +137,7 @@ function SongList:render()
                 end,
                 [Roact.Change.Text] = self.OnSearchChanged
             }, {
-                UITextSizeConstraint = Roact.createElement("UITextSizeConstraint", {
+                UITextSizeConstraint = e("UITextSizeConstraint", {
                     MaxTextSize = 17,
                     MinTextSize = 7,
                 })
