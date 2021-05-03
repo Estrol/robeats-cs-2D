@@ -9,7 +9,8 @@ local RoundedFrame = require(game.ReplicatedStorage.UI.Components.Base.RoundedFr
 ButtonLayout.defaultProps = {
     Size = UDim2.fromScale(1, 1),
     Buttons = {},
-    ButtonColor = Color3.fromRGB(189, 53, 53)
+    ButtonColor = Color3.fromRGB(189, 53, 53),
+    Padding = UDim.new(0.0025, 0)
 }
 
 function ButtonLayout:init()
@@ -38,11 +39,12 @@ function ButtonLayout:render()
             table.insert(children, e(RoundedTextButton, {
                 AnchorPoint = Vector2.new(0.5, 0.5),
                 Size = UDim2.fromScale(1/num, 0.85),
+                HoldSize = UDim2.fromScale((1/num)-0.01, 0.85),
                 Text = v.Text,
+                TextColor3 = Color3.fromRGB(255, 255, 255),
                 OnClick = v.OnClick,
                 BackgroundColor3 = v.Color or self.props.ButtonColor,
-                HighlightBackgroundColor3 = Color3.fromRGB(128, 6, 6),
-                ShrinkBy = 0.02,
+                HighlightBackgroundColor3 = v.HighlightColor,
                 LayoutOrder = slot
             }))
             slot += 1
@@ -53,6 +55,9 @@ function ButtonLayout:render()
         Size = self.props.Size,
         Position = self.props.Position,
         AnchorPoint = self.props.AnchorPoint,
+        ClipsDescendants = true,
+        ZIndex = self.props.ZIndex,
+        BackgroundColor3 = self.props.BackgroundColor3
     }, {
         Container = e("Frame", {
             Size = UDim2.fromScale(0.985, 1),
@@ -62,7 +67,7 @@ function ButtonLayout:render()
         }, {
             UIListLayout = e("UIListLayout", {
                 VerticalAlignment = Enum.VerticalAlignment.Center,
-                Padding = UDim.new(0.0025, 0),
+                Padding = self.props.Padding,
                 FillDirection = Enum.FillDirection.Horizontal
             }),
             Buttons = Roact.createFragment(children)
