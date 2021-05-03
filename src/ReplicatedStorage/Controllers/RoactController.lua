@@ -9,6 +9,7 @@ local EnvironmentSetup = require(game.ReplicatedStorage.RobeatsGameCore.Environm
 
 local Screens = game.ReplicatedStorage.UI.Screens
 
+local MainMenu = require(Screens.MainMenu)
 local SongSelect = require(Screens.SongSelect)
 local Gameplay = require(Screens.Gameplay)
 local Results = require(Screens.Results)
@@ -26,6 +27,11 @@ function RoactController:GetRoutes()
     return {
         Main = Roact.createElement(RoactRouter.Route, {
             path = "/",
+            exact = true,
+            component = MainMenu
+        }),
+        Select = Roact.createElement(RoactRouter.Route, {
+            path = "/select",
             exact = true,
             component = SongSelect
         }),

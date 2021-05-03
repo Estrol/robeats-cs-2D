@@ -1,34 +1,17 @@
---//Libraries
-
 local Roact = require(game.ReplicatedStorage.Packages.Roact)
-local Flipper = require(game.ReplicatedStorage.Packages.Flipper)
-local RoactFlipper = require(game.ReplicatedStorage.Packages.RoactFlipper)
 
---//VERSION
-
-local version = game.ReplicatedStorage.Shared.Core.Data.version
-
---//Main
+local RoundedFrame = require(game.ReplicatedStorage.UI.Components.Base.RoundedFrame)
+local RoundedTextButton = require(game.ReplicatedStorage.UI.Components.Base.RoundedTextButton)
+local RoundedImageLabel = require(game.ReplicatedStorage.UI.Components.Base.RoundedImageLabel)
+local RoundedTextLabel = require(game.ReplicatedStorage.UI.Components.Base.RoundedTextLabel)
 
 local MainMenuUI = Roact.Component:extend("MainMenuUI")
-local Button = require(game:GetService("ReplicatedStorage"):WaitForChild("Client").Components.Primitive["Button"])
---local PlayerProfile = require(game:GetService("ReplicatedStorage"):WaitForChild("Client").Components.Primitive["PlayerProfile"])
-
-function MainMenuUI:init()
-    self.goToScreen = function(path)
-        self.props.history:push(path)
-    end
-end
 
 function MainMenuUI:render()
-    return Roact.createElement("Frame",{
-        AnchorPoint = Vector2.new(0.5, 0.5),
-        BackgroundColor3 = Color3.fromRGB(20, 20, 20),
-        BorderSizePixel = 0,
-        Position = UDim2.new(0.5, 0, 0.5, 0),
+    return Roact.createElement(RoundedFrame, {
         Size = UDim2.new(1, 0, 1, 0),
     }, {
-        Logo = Roact.createElement("ImageLabel", {
+        Logo = Roact.createElement(RoundedImageLabel, {
             Image = "rbxassetid://6224561143";
             Size = UDim2.fromScale(0.4, 0.9);
             Position = UDim2.fromScale(0.02, 0.57);
@@ -40,93 +23,73 @@ function MainMenuUI:render()
                 AspectType = Enum.AspectType.ScaleWithParentSize
             })
         });
-        ButtonHolder = Roact.createElement("Frame",{
-            Size = UDim2.new(.275,0,.6,0);
-            Position = UDim2.new(0.02,0,0.95,0);
+        ButtonContainer = Roact.createElement(RoundedFrame, {
+            Size = UDim2.fromScale(0.25, 0.6);
+            Position = UDim2.fromScale(0.02,0.95);
             AnchorPoint = Vector2.new(0, 1);
             BackgroundTransparency = 1;
         },{
-            Roact.createElement("UIListLayout", {
+            UIListLayout = Roact.createElement("UIListLayout", {
                 Padding = UDim.new(0.015,0);
                 SortOrder = Enum.SortOrder.LayoutOrder;
                 VerticalAlignment = Enum.VerticalAlignment.Bottom;
             });
 
-            PlayButton = Roact.createElement(Button, {
-                Visible = self.props.visible;
+            PlayButton = Roact.createElement(RoundedTextButton, {
                 TextXAlignment = Enum.TextXAlignment.Left;
-                BackgroundColor3 = Color3.fromRGB(32, 32, 32);
+                BackgroundColor3 = Color3.fromRGB(22, 22, 22);
                 BorderMode = Enum.BorderMode.Inset,
                 BorderSizePixel = 0,
-                Size = UDim2.new(1,0,0.125,0),
+                Size = UDim2.fromScale(1, 0.125),
                 Text = "  Play";
                 TextScaled = true;
                 TextColor3 = Color3.fromRGB(255, 255, 255);
-                LayoutOrder = 0;
-                Font = Enum.Font.SourceSansLight;
-                shrinkBy = 0.01;
-                darkenBy = 10;
-                onActivated = function()
-                    self.goToScreen("/select")
-                end
-            }, {
-                Roact.createElement("UICorner", {
-                    CornerRadius = UDim.new(0, 8)
-                });
-                Roact.createElement("UITextSizeConstraint", {
-                    MinTextSize = 12;
-                    MaxTextSize = 14;
-                })
-            });
-
-            OptionsButton = Roact.createElement(Button, {
-                Visible = self.props.visible;
-                TextXAlignment = Enum.TextXAlignment.Left;
-                BackgroundColor3 = Color3.fromRGB(32, 32, 32);
-                BorderMode = Enum.BorderMode.Inset,
-                BorderSizePixel = 0,
-                Size = UDim2.new(1,0,0.125,0),
-                Text = "  Settings";
-                TextScaled = true;
-                TextColor3 = Color3.fromRGB(255, 255, 255);
                 LayoutOrder = 1;
-                Font = Enum.Font.SourceSansLight;
-                shrinkBy = 0.01;
-                darkenBy = 10;
-                onActivated = function()
-                    self.goToScreen("/settings")
+                HoldSize = UDim2.fromScale(0.95, 0.125),
+                OnClick = function()
+                    self.props.history:push("/select")
                 end
             }, {
-                Roact.createElement("UICorner", {
-                    CornerRadius = UDim.new(0, 8)
-                });
-                Roact.createElement("UITextSizeConstraint", {
-                    MinTextSize = 12;
-                    MaxTextSize = 14;
+                UITextSizeConstraint = Roact.createElement("UITextSizeConstraint", {
+                    MinTextSize = 8;
+                    MaxTextSize = 13;
                 })
             });
-
-            GlobalLBButton = Roact.createElement(Button, {
-                Visible = self.props.visible;
+            OptionsButton = Roact.createElement(RoundedTextButton, {
                 TextXAlignment = Enum.TextXAlignment.Left;
-                BackgroundColor3 = Color3.fromRGB(32, 32, 32);
+                BackgroundColor3 = Color3.fromRGB(22, 22, 22);
                 BorderMode = Enum.BorderMode.Inset,
                 BorderSizePixel = 0,
                 Size = UDim2.new(1,0,0.125,0),
-                Text = "  Global Rankings";
+                Text = "  Options";
                 TextScaled = true;
                 TextColor3 = Color3.fromRGB(255, 255, 255);
                 LayoutOrder = 2;
-                Font = Enum.Font.SourceSansLight;
-                shrinkBy = 0.01;
-                darkenBy = 10;
+                HoldSize = UDim2.fromScale(0.95, 0.125),
+                OnClick = function()
+                    self.props.history:push("/options")
+                end
             }, {
-                Roact.createElement("UICorner", {
-                    CornerRadius = UDim.new(0, 8)
-                });
-                Roact.createElement("UITextSizeConstraint", {
-                    MinTextSize = 12;
-                    MaxTextSize = 14;
+                UITextSizeConstraint = Roact.createElement("UITextSizeConstraint", {
+                    MinTextSize = 8;
+                    MaxTextSize = 13;
+                })
+            });
+            GlobalLeaderboardButton = Roact.createElement(RoundedTextButton, {
+                TextXAlignment = Enum.TextXAlignment.Left;
+                BackgroundColor3 = Color3.fromRGB(22, 22, 22);
+                BorderMode = Enum.BorderMode.Inset,
+                BorderSizePixel = 0,
+                Size = UDim2.new(1,0,0.125,0),
+                Text = "  Global Ranks";
+                TextScaled = true;
+                TextColor3 = Color3.fromRGB(255, 255, 255);
+                LayoutOrder = 3;
+                HoldSize = UDim2.fromScale(0.95, 0.125)
+            }, {
+                UITextSizeConstraint = Roact.createElement("UITextSizeConstraint", {
+                    MinTextSize = 8;
+                    MaxTextSize = 13;
                 })
             });
         });
@@ -134,34 +97,15 @@ function MainMenuUI:render()
         Title = Roact.createElement("TextLabel", {
             BackgroundTransparency = 1;
             BackgroundColor3 = Color3.fromRGB(255, 255, 255);
-            Text = "RoBeats: Community Server";
+            Text = "RoBeats Community Server";
             TextSize = 10;
             TextXAlignment = Enum.TextXAlignment.Right;
             TextColor3 = Color3.fromRGB(255, 255, 255);
-            Size = UDim2.new(0.01,0,0.01,0);
-            Position = UDim2.new(0.99,0,.93,0);
+            Size = UDim2.fromScale(0.01, 0.01);
+            Position = UDim2.fromScale(0.99, 0.93);
             AnchorPoint = Vector2.new(1, 0);
             Font = Enum.Font.GothamBlack;
         });
-
-        Version = Roact.createElement("TextLabel", {
-            BackgroundTransparency = 1;
-            BackgroundColor3 = Color3.fromRGB(255, 255, 255);
-            Text = string.format("build v%s", version.Value);
-            TextSize = 10;
-            TextXAlignment = Enum.TextXAlignment.Right;
-            TextColor3 = Color3.fromRGB(136, 136, 136);
-            Size = UDim2.new(0.01,0,0.01,0);
-            Position = UDim2.new(0.99,0,.96,0);
-            AnchorPoint = Vector2.new(1, 0);
-            Font = Enum.Font.GothamBlack;
-        });
-
-        PlayerData = Roact.createElement(PlayerProfile);
-
-        --MusicPlayer = Roact.createElement(MusicBox,{
-        --     Text = "bobux man - bobux dance";
-        -- });
     });
     
 end
