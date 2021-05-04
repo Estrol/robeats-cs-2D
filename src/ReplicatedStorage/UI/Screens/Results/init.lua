@@ -1,6 +1,8 @@
 local Roact = require(game.ReplicatedStorage.Packages.Roact)
 local SPUtil = require(game.ReplicatedStorage.Shared.SPUtil)
 
+local RunService = game:GetService("RunService")
+
 local SongDatabase = require(game.ReplicatedStorage.RobeatsGameCore.SongDatabase)
 
 local NoteResult = require(game.ReplicatedStorage.RobeatsGameCore.Enums.NoteResult)
@@ -16,6 +18,10 @@ local BannerCard = require(script.BannerCard)
 local DataDisplay = require(script.DataDisplay)
 
 function Results:init()
+	if RunService:IsRunning() then
+		self.knit = require(game:GetService("ReplicatedStorage").Knit)
+	end
+
 	self.gradeImages = {
 		[Grade.SS] = "http://www.roblox.com/asset/?id=5702584062",
 		[Grade.S] = "http://www.roblox.com/asset/?id=5702584273",
@@ -29,6 +35,16 @@ function Results:init()
 	self.backOutConnection = SPUtil:bind_to_key(Enum.KeyCode.Return, function()
 		self.props.history:push("/select")
 	end)
+end
+
+function Results:didMount()
+	if self.knit then
+		local PreviewController = self.knit.GetController("PreviewController")
+
+		PreviewController:PlayId("rbxassetid://6419511015", function(audio)
+			audio.TimePosition = 0
+		end, 0.12)
+	end
 end
 
 function Results:willUnmount()
