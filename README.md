@@ -5,11 +5,11 @@
     <i>RoBeats fork focued on skill.</i>
 </div>
 
+---
+
 <a align=center style="display:block" href="https://discord.gg/XyYK7g54kb">
     <img src="https://img.shields.io/discord/520391631761833988?color=%2334baeb&label=Join%20our%20Discord%20server%21"/>
 </a>
-
----
 
 This game is currently in *alpha* and is subject to *rapid change*. Features may come and go without prior notice.
 
