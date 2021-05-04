@@ -16,6 +16,8 @@ local Results = require(Screens.Results)
 local Options = require(Screens.Options)
 local Rankings = require(Screens.Rankings)
 
+local TopBar = require(game.ReplicatedStorage.UI.Components.TopBar)
+
 local RoactController = Knit.CreateController({
     Name = "RoactController"
 })
@@ -55,6 +57,11 @@ function RoactController:GetRoutes()
             path = "/rankings",
             exact = true,
             component = Rankings
+        }),
+        TopBar = Roact.createElement(RoactRouter.Route, {
+            path = "/",
+            exact = false,
+            component = TopBar
         })
     }
 end
