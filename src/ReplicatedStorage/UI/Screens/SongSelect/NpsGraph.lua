@@ -59,6 +59,7 @@ function NpsGraph:render()
         Size = self.props.Size,
         Position = self.props.Position,
         AnchorPoint = self.props.AnchorPoint,
+        BackgroundTransparency = self.props.BackgroundTransparency,
         ClipsDescendants = true
     }, {
         Points = f(points),
