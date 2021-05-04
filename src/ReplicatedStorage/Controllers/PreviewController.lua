@@ -23,7 +23,7 @@ function PreviewController:KnitStart()
     end)    
 end
 
-function PreviewController:PlayId(id, callback)
+function PreviewController:PlayId(id, callback, volume)
     if Audio.SoundId == id then
         self:Speak()
         return
@@ -42,7 +42,7 @@ function PreviewController:PlayId(id, callback)
         Audio:Play()
 
         -- Start animating the volume
-        self:Speak()
+        self:Speak(volume)
     end)
 
     return Audio
@@ -59,8 +59,9 @@ function PreviewController:Silence()
     }))
 end
 
-function PreviewController:Speak()
-    AudioVolumeMotor:setGoal(Flipper.Spring.new(0.5, {
+function PreviewController:Speak(volume)
+    volume = volume or 0.5
+    AudioVolumeMotor:setGoal(Flipper.Spring.new(volume, {
         frequency = 2.7,
         dampingRatio = 6
     }))
