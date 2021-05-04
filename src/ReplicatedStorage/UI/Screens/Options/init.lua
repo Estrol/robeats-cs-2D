@@ -114,11 +114,11 @@ function Options:getSettingElements()
             incrementValue = 0.1;
             Value = self.props.options.BaseTransparency,
             OnChanged = function(value)
-                 self.props.setOption("BaseTransparency", value)
+                self.props.setOption("BaseTransparency", value)
             end,
 
             FormatValue = function(value)
-                return string.format("0.%d", value)
+                return string.format("%0.1f", value)
             end,
             LayoutOrder = 2
          });
