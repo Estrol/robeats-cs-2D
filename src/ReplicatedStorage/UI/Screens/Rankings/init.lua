@@ -52,13 +52,11 @@ function Rankings:render()
             Size = UDim2.fromScale(0.45, 0.8),
             AnchorPoint = Vector2.new(0.5, 0.5),
             Position = UDim2.fromScale(0.5, 0.5),
-            BackgroundColor3 = Color3.fromRGB(24, 24, 24)
-        }, {
-            UIListLayout = e("UIListLayout", {
+            BackgroundColor3 = Color3.fromRGB(24, 24, 24),
+            UIListLayoutProps = {
                 SortOrder = Enum.SortOrder.LayoutOrder
-            }),
-            RankSlots = f(players)
-        }),
+            }
+        }, players),
         BackButton = e(RoundedTextButton, {
             Size = UDim2.fromScale(0.05, 0.05),
             HoldSize = UDim2.fromScale(0.06, 0.06),
