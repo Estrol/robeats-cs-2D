@@ -1,5 +1,7 @@
 local SongDatabase = require(game.ReplicatedStorage.RobeatsGameCore.SongDatabase)
 
+local SPUtil = require(game.ReplicatedStorage.Shared.SPUtil)
+
 local RoundedFrame = require(game.ReplicatedStorage.UI.Components.Base.RoundedFrame)
 
 local Roact = require(game.ReplicatedStorage.Packages.Roact)
@@ -27,6 +29,31 @@ function NpsGraph:get_ideal_resolution_for_length()
     return math.clamp(math.floor(length / 100000), 1, math.huge)
 end
 
+function NpsGraph:GetNpsGraphColor(nps)
+	local x = 0
+	if nps < 7 then
+		x = nps/7
+		return Color3.new(0.1 + x * 0.1, 0.1 + x * 0.1, 0.8 + x * 0.2)
+	elseif nps < 14 then
+		x = (nps - 7) / 7
+		return Color3.new(0.2 + 0.4 * x, 0.2 + 0.2 * x, 1.0)
+	elseif nps < 21 then
+		x = (nps - 14) / 7
+		return Color3.new(0.6 + 0.4 * x, 0.4 - 0.2 * x, 1.0 - 0.3 * x)
+	elseif nps < 28 then
+		x = (nps - 21) / 7
+		return Color3.new(1.0, 0.2 + 0.2 * x, 0.7 - 0.5 * x)
+	elseif nps < 35 then
+		x = (nps - 28) / 7
+		return Color3.new(1.0, 0.4 - 0.3 * x, 0.2 - 0.15 * x)
+	elseif nps < 42 then
+		x = (nps - 35) / 7
+		return Color3.new(1.0- 0.3 * x, 0.1 - x * 0.1, 0.05 - 0.05 * x)
+	else
+		return Color3.new(0.7, 0.0, 0.0)
+	end
+end
+
 function NpsGraph:didUpdate()
     self.motor:setGoal(Flipper.Spring.new(self.props.SongRate, {
         frequency = 12,
@@ -48,7 +75,7 @@ function NpsGraph:render()
             LayoutOrder = i,
             ZIndex = 2,
             BackgroundColor3 = self.motorBinding:map(function(a)
-                return Color3.fromRGB(15, 194, 155):Lerp(Color3.fromRGB(243, 28, 12), (nps * (a / 100)) / 42)
+                return self:GetNpsGraphColor(nps * (a / 100))
             end)
         })
 
