@@ -131,10 +131,10 @@ function ScoreManager:new(_game)
 			_great_count += 1
 
 		elseif note_result == NoteResult.Good then
-			_chain += 1
 			_good_count += 1
 
 		elseif note_result == NoteResult.Bad then
+			_chain = 0
 			_bad_count = _bad_count + 1
 		else
 			if params.GhostTap then
