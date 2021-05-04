@@ -1,12 +1,12 @@
-<div style="text-align:center; font-size:40px">
+<div align=center style="font-size:40px">
     <b>RoBeats CS</b>
 </div>
-<div style="text-align:center; font-size:18px">
+<div align=center style="font-size:18px">
     <i>RoBeats fork focued on skill.</i>
 </div>
 
-<a href="https://discord.gg/XyYK7g54kb" style="text-align:center; display:block">
-    <img src="https://img.shields.io/discord/520391631761833988?color=%2334baeb&label=Join%20our%20Discord%20server%21">
+<a align=center style="display:block" href="https://discord.gg/XyYK7g54kb">
+    <img src="https://img.shields.io/discord/520391631761833988?color=%2334baeb&label=Join%20our%20Discord%20server%21"/>
 </a>
 
 ---
