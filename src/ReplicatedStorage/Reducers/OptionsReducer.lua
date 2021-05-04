@@ -18,7 +18,7 @@ local defaultState = {
 
         --Extra settings.
         TimeOfDay = 24;
-        BaseTransparency = 1;
+        BaseTransparency = 0;
         HitLighting = false;
         HideLNTails = false;
 
