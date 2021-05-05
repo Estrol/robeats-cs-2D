@@ -19,7 +19,7 @@ local BoolValue = require(script.BoolValue)
 
 local Options = Roact.Component:extend("Options")
 
-Options.categoryList = {"⚙ General", "➕ Extra" }
+Options.categoryList = {"⚙ General", "➕ Extra"}
 
 function noop() end
 
@@ -143,7 +143,7 @@ function Options:getSettingElements()
             end,
             Name = "Hit Lighting",
             LayoutOrder = 3
-        })
+        });
     end)
 
     return elements
