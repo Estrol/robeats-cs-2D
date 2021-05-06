@@ -23,6 +23,10 @@ function PreviewController:KnitStart()
     end)    
 end
 
+function PreviewController:GetSoundInstance()
+    return Audio
+end
+
 function PreviewController:PlayId(id, callback, volume)
     if Audio.SoundId == id then
         self:Speak()
