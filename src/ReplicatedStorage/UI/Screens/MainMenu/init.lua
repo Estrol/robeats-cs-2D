@@ -4,6 +4,7 @@ local e = Roact.createElement
 
 local PlayerProfile = require(script.PlayerProfile)
 local MusicBox = require(script.MusicBox)
+local AudioVisualizer = require(script.AudioVisualizer)
 
 local RoundedFrame = require(game.ReplicatedStorage.UI.Components.Base.RoundedFrame)
 local RoundedTextButton = require(game.ReplicatedStorage.UI.Components.Base.RoundedTextButton)
@@ -32,6 +33,7 @@ function MainMenuUI:render()
         PlayerProfile = e(PlayerProfile, {
             Size = UDim2.fromScale(0.45, 0.2)
         }),
+        AudioVisualizer = e(AudioVisualizer),
         -- SongBox = e(MusicBox, {
         --     Position = UDim2.fromScale(0.25, 0.02),
         --     SongKey = 1;
