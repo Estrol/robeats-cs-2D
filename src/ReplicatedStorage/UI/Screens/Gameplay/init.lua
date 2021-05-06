@@ -20,6 +20,9 @@ local RoundedFrame = require(game.ReplicatedStorage.UI.Components.Base.RoundedFr
 local RoundedTextButton = require(game.ReplicatedStorage.UI.Components.Base.RoundedTextButton)
 local LoadingWheel = require(game.ReplicatedStorage.UI.Components.Base.LoadingWheel)
 
+
+local SpreadDisplay = require(game.ReplicatedStorage.UI.Screens.Results.SpreadDisplay)
+
 local withHitDeviancePoint = require(script.Decorators.withHitDeviancePoint)
 
 local Knit = require(game:GetService("ReplicatedStorage").Knit)
@@ -288,6 +291,10 @@ function Gameplay:render()
             LocalRating = Rating:get_rating_from_accuracy(self.props.options.SongKey, self.state.accuracy, self.props.options.SongRate / 100),
             LocalAccuracy = self.state.accuracy
         }),
+
+        -- SpreadDisplay = e(SpreadDisplay, {
+
+        -- }),
         HitDeviance = e(RoundedFrame, {
            Position = UDim2.fromScale(0.5, 0.95),
            Size = UDim2.fromScale(0.15, 0.05),

@@ -14,6 +14,7 @@ local _local_elements_folder
 local _player_gui
 
 function EnvironmentSetup:initial_setup()
+	game.StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.Backpack, false)
 	workspace.CurrentCamera.CameraType = Enum.CameraType.Scriptable
 
 	_game_environment = game.Workspace.GameEnvironment
