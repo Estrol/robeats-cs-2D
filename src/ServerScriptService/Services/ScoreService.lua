@@ -259,7 +259,8 @@ end
 
 function ScoreService.Client:GetProfile(player)
     local succeeded, profiles = Global
-        :query({
+        :query()
+        :where({
             UserId = player.UserId
         })
         :order("-Rating")
@@ -284,6 +285,7 @@ function ScoreService.Client:GetGlobalLeaderboard()
     local succeeded, ranks = Global
         :query({})
         :order("-Rating")
+        :limit(50)
         :execute()
         :await()
 
