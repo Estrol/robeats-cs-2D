@@ -9,6 +9,12 @@ local function game_init()
     sky.CelestialBodiesShown = false
     sky.Parent = game.Lighting
 
+    game.Players.PlayerAdded:Connect(function(player)
+        if player.AccountAge < 2 then
+            player:Kick(string.format("Your account must be older than 2 days to join this game. %d days left", 2 - player.AccountAge))
+        end
+    end)
+
     Knit.AddServices(game.ServerScriptService.Services)
 
     Knit.Start():Then(function()
