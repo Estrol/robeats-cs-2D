@@ -27,7 +27,7 @@ function NoteResultPopupEffect:new(_game, _position, _result)
 	local _anim_t = 0
 	
 	local _frame
-	local _image
+	local _text_label
 	
 	function self:cons()
 		_anim_t = 0
@@ -38,25 +38,27 @@ function NoteResultPopupEffect:new(_game, _position, _result)
 		end
 		
 		_frame = _effect_obj.Panel.SurfaceGui.Frame
-		_image = _frame.TextLabel
+		_text_label = _frame.TextLabel
 
 		if _result == NoteResult.Miss then
-			_image.Text = "Miss"
+			_text_label.Text = "Miss"
 		elseif _result == NoteResult.Bad then
-			_image.Text = "Bad"
+			_text_label.Text = "Bad"
 		elseif _result == NoteResult.Good then
-			_image.Text = "Good"
+			_text_label.Text = "Good"
 		elseif _result == NoteResult.Great then
-			_image.Text = "Great"
+			_text_label.Text = "Great"
 		elseif _result == NoteResult.Perfect then
-			_image.Text = "Perfect"
+			_text_label.Text = "Perfect"
 		elseif _result == NoteResult.Marvelous then
-			_image.Text = "Marvelous"
+			_text_label.Text = "Marvelous"
 		else
-			_image.Text = ""
+			_text_label.Text = ""
 		end
 
-		_image.TextColor3 = NoteResultPopupEffect.HitColor[_result]
+		_text_label.Font = Enum.Font.Gotham
+		_text_label.TextSize = 50
+		_text_label.TextColor3 = NoteResultPopupEffect.HitColor[_result]
 		
 		_effect_obj:SetPrimaryPartCFrame(
 			SPUtil:lookat_camera_cframe(_position)
@@ -79,7 +81,7 @@ function NoteResultPopupEffect:new(_game, _position, _result)
 			_anim_t
 		)
 		local transparency = SPUtil:tra(alpha)
-		_image.TextTransparency = transparency
+		_text_label.TextTransparency = transparency
 	end
 
 	--[[Override--]] function self:add_to_parent(parent)
