@@ -297,4 +297,8 @@ function ScoreService.Client:GetGlobalLeaderboard()
     return {}
 end
 
+function ScoreService.Client:GetPlayerScores(player, userId)
+    return ScoreService:GetPlayerScores(userId or player.UserId)
+end
+
 return ScoreService

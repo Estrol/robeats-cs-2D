@@ -15,6 +15,7 @@ local Gameplay = require(Screens.Gameplay)
 local Results = require(Screens.Results)
 local Options = require(Screens.Options)
 local Rankings = require(Screens.Rankings)
+local Scores  = require(Screens.Scores)
 
 local TopBar = require(game.ReplicatedStorage.UI.Components.TopBar)
 
@@ -58,11 +59,16 @@ function RoactController:GetRoutes()
             exact = true,
             component = Rankings
         }),
+        Scores = Roact.createElement(RoactRouter.Route, {
+            path = "/scores",
+            exact = true,
+            component = Scores
+        }),
         TopBar = Roact.createElement(RoactRouter.Route, {
             path = "/",
             exact = false,
             component = TopBar
-        })
+        }),
     }
 end
 
