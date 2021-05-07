@@ -15,6 +15,7 @@ local NoteResult= require(game.ReplicatedStorage.RobeatsGameCore.Enums.NoteResul
 
 local Leaderboard = require(script.Leaderboard)
 
+local AnimatedNumberLabel = require(game.ReplicatedStorage.UI.Components.Base.AnimatedNumberLabel)
 local RoundedTextLabel = require(game.ReplicatedStorage.UI.Components.Base.RoundedTextLabel)
 local RoundedFrame = require(game.ReplicatedStorage.UI.Components.Base.RoundedFrame)
 local RoundedTextButton = require(game.ReplicatedStorage.UI.Components.Base.RoundedTextButton)
@@ -224,28 +225,34 @@ function Gameplay:render()
     end
 
     return Roact.createFragment({
-        Score = e(RoundedTextLabel, {
-            Size = UDim2.fromScale(0.2, 0.07),
-            TextColor3 = Color3.fromRGB(255, 255, 255),
+        Score = e(AnimatedNumberLabel, {
+            Size = UDim2.fromScale(0.2, 0.12),
+            TextColor3 = Color3.fromRGB(240, 240, 240),
             Position = UDim2.fromScale(0.98, 0),
             TextXAlignment = Enum.TextXAlignment.Right,
             AnchorPoint = Vector2.new(1, 0),
             BackgroundTransparency = 1,
-            Text = string.format("%0d", self.state.score),
+            Value = self.state.score,
+            FormatValue = function(a)
+                return string.format("%07d", a)
+            end,
             TextScaled = true
         }, {
             UITextSizeConstraint = Roact.createElement("UITextSizeConstraint", {
-                MaxTextSize = 24
+                MaxTextSize = 40
             })
         }),
-        Accuracy = e(RoundedTextLabel, {
+        Accuracy = e(AnimatedNumberLabel, {
             Size = UDim2.fromScale(0.2, 0.085),
-            TextColor3 = Color3.fromRGB(255, 255, 255),
+            TextColor3 = Color3.fromRGB(228, 228, 228),
             Position = UDim2.fromScale(0.98, 0.07),
             TextXAlignment = Enum.TextXAlignment.Right,
             AnchorPoint = Vector2.new(1, 0),
             BackgroundTransparency = 1,
-            Text = string.format("%0.2f%%", self.state.accuracy),
+            Value = self.state.accuracy,
+            FormatValue = function(a)
+                return string.format("%0.2f%%", a)
+            end,
             TextScaled = true
         }, {
             UITextSizeConstraint = Roact.createElement("UITextSizeConstraint", {
