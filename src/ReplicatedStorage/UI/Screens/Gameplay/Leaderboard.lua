@@ -59,7 +59,7 @@ function Leaderboard:render()
             IsLocalProfile = itr_score.UserId == game.Players.LocalPlayer.UserId
         })
 
-        table.insert(children, itr_score_element)
+        children[itr_score.UserId] = itr_score_element
     end
 
     return e(RoundedFrame, {
@@ -67,13 +67,7 @@ function Leaderboard:render()
         AnchorPoint = Vector2.new(0, 0.5),
         Size = UDim2.fromScale(0.175, 0.5),
         BackgroundTransparency = 1
-    }, {
-        UIListLayout = e("UIListLayout", {
-            SortOrder = Enum.SortOrder.LayoutOrder,
-            Padding = UDim.new(0, 5)
-        }),
-        Children = f(children)
-    })
+    }, children)
 end
 
 return Leaderboard

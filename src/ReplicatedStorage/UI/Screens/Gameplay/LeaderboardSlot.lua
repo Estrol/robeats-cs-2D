@@ -1,4 +1,6 @@
 local Roact = require(game.ReplicatedStorage.Packages.Roact)
+local Flipper = require(game.ReplicatedStorage.Packages.Flipper)
+local RoactFlipper = require(game.ReplicatedStorage.Packages.RoactFlipper)
 local e = Roact.createElement
 
 local RoundedFrame = require(game.ReplicatedStorage.UI.Components.Base.RoundedFrame)
@@ -16,11 +18,28 @@ LeaderboardSlot.defaultProps = {
     IsLocalProfile = false
 }
 
+LeaderboardSlot.springProps = {
+    dampingRatio = 2.5,
+    frequency = 4
+}
+
+function LeaderboardSlot:init()
+    self.motor = Flipper.SingleMotor.new(self.props.Place)
+    self.motorBinding = RoactFlipper.getBinding(self.motor)
+end
+
+function LeaderboardSlot:didUpdate()
+    self.motor:setGoal(Flipper.Spring.new(self.props.Place, self.springProps))
+end
 
 function LeaderboardSlot:render()
     return e(RoundedFrame, {
         Size = UDim2.fromScale(1, 0.13),
-        BackgroundColor3 = self.props.IsLocalProfile and Color3.fromRGB(125, 65, 128) or Color3.fromRGB(15, 15, 15),
+        Position = self.motorBinding:map(function(a)
+            return UDim2.fromScale(0, 0.14*(a - 1))
+        end),
+        ZIndex = self.props.IsLocalProfile and 2 or 1,
+        BackgroundColor3 = self.props.IsLocalProfile and Color3.fromRGB(114, 88, 32) or Color3.fromRGB(15, 15, 15),
     }, {
         PlayerAvatar = e(RoundedImageLabel, {
             Size = UDim2.fromScale(0.2, 0.8),
