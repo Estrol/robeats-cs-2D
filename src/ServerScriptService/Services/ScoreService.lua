@@ -216,12 +216,13 @@ function ScoreService.Client:GetGraph(_, userId, songMD5Hash)
     return GraphDataStore:GetAsync(key)
 end
 
-function ScoreService.Client:GetScores(_, songMD5Hash)
+function ScoreService.Client:GetScores(_, songMD5Hash, limit)
     local succeeded, documents = Scores
         :query()
         :where({
             SongMD5Hash = songMD5Hash
         })
+        :limit(limit)
         :order("-Rating")
         :execute()
         :await()
