@@ -115,7 +115,7 @@ function BannerCard:render()
                 Size = self.motorBinding:map(function(a)
                     return UDim2.new(0.99, 0, 0.99, 0):Lerp(UDim2.new(0.7, 0, 0.7, 0), a.grade)
                 end);
-                Image = self.props.grade_image or "http://www.roblox.com/asset/?id=168702873",
+                Image = self.props.GradeImage or "http://www.roblox.com/asset/?id=168702873",
             })
         }),
         SongName = Roact.createElement("TextLabel", {
