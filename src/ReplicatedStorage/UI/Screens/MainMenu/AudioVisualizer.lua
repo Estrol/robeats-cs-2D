@@ -41,7 +41,7 @@ function AudioVisualizer:render()
             Size = self.motorBinding:map(function(a)
                 a += math.random(-20, 20)
 
-                return UDim2.fromScale(1/numOfLines, a/400)
+                return UDim2.fromScale(1/numOfLines, a/650)
             end),
             BackgroundColor3 = Color3.fromRGB(39, 39, 39),
             LayoutOrder = i
