@@ -51,10 +51,10 @@ function PlayerProfile:render()
         }, {
             PlayerIcon = e(RoundedImageLabel, {
                 Image = string.format("https://www.roblox.com/headshot-thumbnail/image?userid=%d&width=420&height=420&format=png", self.state.userId),
+                BackgroundColor3 = Color3.fromRGB(17, 17, 17),
                 Size = UDim2.fromScale(0.25, 0.8),
                 Position = UDim2.fromScale(0.02, 0.5),
-                AnchorPoint = Vector2.new(0, 0.5),
-                BackgroundColor3 = Color3.fromRGB(20,20,20)
+                AnchorPoint = Vector2.new(0, 0.5)
             }, {
                 UIAspectRatioConstraint = e("UIAspectRatioConstraint", {
                     AspectRatio = 1,
@@ -86,6 +86,7 @@ function PlayerProfile:render()
     }, {
         PlayerIcon = e(RoundedImageLabel, {
             Image = string.format("https://www.roblox.com/headshot-thumbnail/image?userid=%d&width=420&height=420&format=png", self.state.userId),
+            BackgroundColor3 = Color3.fromRGB(17, 17, 17),
             Size = UDim2.fromScale(0.22, 0.8),
             Position = UDim2.fromScale(0.02, 0.5),
             AnchorPoint = Vector2.new(0, 0.5),
