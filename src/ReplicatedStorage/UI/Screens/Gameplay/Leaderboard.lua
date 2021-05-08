@@ -38,11 +38,14 @@ function Leaderboard:render()
 
     local scores = Llama.Dictionary.copy(self.state.scores)
 
+    local localSlot = string.format("LocalPlayer(%d)", game.Players.LocalPlayer.UserId)
+
     table.insert(scores, {
         PlayerName = game.Players.LocalPlayer.DisplayName,
         UserId = game.Players.LocalPlayer.UserId,
         Rating = self.props.LocalRating,
-        Accuracy = self.props.LocalAccuracy
+        Accuracy = self.props.LocalAccuracy,
+        objectId = localSlot
     })
 
     table.sort(scores, function(a, b)
@@ -56,10 +59,10 @@ function Leaderboard:render()
             Rating = itr_score.Rating,
             Accuracy = itr_score.Accuracy,
             Place = itr_score_index,
-            IsLocalProfile = itr_score.UserId == game.Players.LocalPlayer.UserId
+            IsLocalProfile = itr_score.objectId == localSlot
         })
 
-        children[itr_score.UserId] = itr_score_element
+        children[itr_score.objectId] = itr_score_element
     end
 
     return e(RoundedFrame, {
