@@ -64,18 +64,14 @@ function Gameplay:init()
     workspace.CurrentCamera.FieldOfView = self.props.options.FOV
     Lighting.TimeOfDay = self.props.options.TimeOfDay
 
-    -- Turn PlayerList & Chat off/on
+    -- Turn PlayerList & Chat off
 
     if self.props.options.HidePlayerList then
         game.StarterGui:SetCoreGuiEnabled("PlayerList", false)
-    else
-        game.StarterGui:SetCoreGuiEnabled("PlayerList", true)
     end
 
     if self.props.options.HideChat then
         game.StarterGui:SetCoreGuiEnabled("Chat", false)
-    else
-        game.StarterGui:SetCoreGuiEnabled("Chat", true)
     end
 
     -- Create the game instance
