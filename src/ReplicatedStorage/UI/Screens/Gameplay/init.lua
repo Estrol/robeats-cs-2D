@@ -65,14 +65,8 @@ function Gameplay:init()
     Lighting.TimeOfDay = self.props.options.TimeOfDay
 
     -- Turn PlayerList & Chat off
-
-    if self.props.options.HidePlayerList then
-        game.StarterGui:SetCoreGuiEnabled("PlayerList", false)
-    end
-    
-    if self.props.options.HideChat then
-        game.StarterGui:SetCoreGuiEnabled("Chat", false)
-    end
+    game.StarterGui:SetCoreGuiEnabled("PlayerList", not self.props.options.HidePlayerList)
+    game.StarterGui:SetCoreGuiEnabled("Chat", not self.props.options.HideChat)
 
     -- Create the game instance
 

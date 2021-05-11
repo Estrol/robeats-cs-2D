@@ -146,18 +146,18 @@ function Options:getSettingElements()
         });
 
         elements.HidePlayerList = e(BoolValue, {
-            Value = self.props.options.HidePlayerList,
+            Value = not self.props.options.HidePlayerList,
             OnChanged = function(value)
-                self.props.setOption("HidePlayerList", value)
+                self.props.setOption("HidePlayerList", not value)
             end,
             Name = "Playerlist Visible",
             LayoutOrder = 4
         });
 
         elements.HideChat = e(BoolValue, {
-            Value = self.props.options.HideChat,
+            Value = not self.props.options.HideChat,
             OnChanged = function(value)
-                self.props.setOption("HideChat", value)
+                self.props.setOption("HideChat", not value)
             end,
             Name = "Chat Visible",
             LayoutOrder = 5
