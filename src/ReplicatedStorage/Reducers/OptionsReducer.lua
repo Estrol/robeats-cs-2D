@@ -21,6 +21,8 @@ local defaultState = {
         BaseTransparency = 0;
         HitLighting = false;
         HideLNTails = false;
+        HidePlayerList = false;
+        HideChat = false;
 
         
         --Change this to swap the timing preset

@@ -64,6 +64,16 @@ function Gameplay:init()
     workspace.CurrentCamera.FieldOfView = self.props.options.FOV
     Lighting.TimeOfDay = self.props.options.TimeOfDay
 
+    -- Turn PlayerList & Chat off
+
+    if self.props.options.HidePlayerList then
+        game.StarterGui:SetCoreGuiEnabled("PlayerList", false)
+    end
+    
+    if self.props.options.HideChat then
+        game.StarterGui:SetCoreGuiEnabled("Chat", false)
+    end
+
     -- Create the game instance
 
     local _game = RobeatsGame:new(EnvironmentSetup:get_game_environment_center_position())
