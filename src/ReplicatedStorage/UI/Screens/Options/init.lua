@@ -150,7 +150,7 @@ function Options:getSettingElements()
             OnChanged = function(value)
                 self.props.setOption("HidePlayerList", value)
             end,
-            Name = "Hide Player List when Playing Song",
+            Name = "Playerlist Visible",
             LayoutOrder = 4
         });
 
@@ -159,7 +159,7 @@ function Options:getSettingElements()
             OnChanged = function(value)
                 self.props.setOption("HideChat", value)
             end,
-            Name = "Hide Chat when Playing Song",
+            Name = "Chat Visible",
             LayoutOrder = 5
         });
     end)
