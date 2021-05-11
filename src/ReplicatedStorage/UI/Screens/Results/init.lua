@@ -9,12 +9,13 @@ local NoteResult = require(game.ReplicatedStorage.RobeatsGameCore.Enums.NoteResu
 local Grade = require(game.ReplicatedStorage.RobeatsGameCore.Enums.Grade)
 
 local RoundedTextButton = require(game.ReplicatedStorage.UI.Components.Base.RoundedTextButton)
+local RoundedTextLabel = require(game.ReplicatedStorage.UI.Components.Base.RoundedTextLabel)
+local RoundedImageLabel = require(game.ReplicatedStorage.UI.Components.Base.RoundedImageLabel)
 
 local Results = Roact.Component:extend("Results")
 
 local DotGraph = require(game.ReplicatedStorage.UI.Components.Graph.DotGraph)
 local SpreadDisplay = require(script.SpreadDisplay)
-local BannerCard = require(script.BannerCard)
 local DataDisplay = require(script.DataDisplay)
 
 function Results:init()
@@ -59,6 +60,8 @@ function Results:render()
 	local hits = state.Hits or {}
 	local mean = state.Mean or 0
 
+	local moment = DateTime.fromUnixTimestamp(state.TimePlayed):ToLocalTime()
+
     return Roact.createElement("Frame", {
 		BackgroundColor3 = Color3.fromRGB(255, 255, 255),
 		BorderSizePixel = 0;
@@ -75,8 +78,8 @@ function Results:render()
 			AnchorPoint = Vector2.new(0.5, 0.5),
 			BackgroundColor3 = Color3.fromRGB(22, 22, 22),
 			BorderSizePixel = 0,
-			Position = UDim2.new(0.75, 0, 0.675, 0),
-			Size = UDim2.new(0.4, 0, 0.35, 0),
+			Position = UDim2.fromScale(0.832, 0.609),
+			Size = UDim2.fromScale(0.279, 0.305),
 			bounds = {
 				min = {
 					y = -350;
@@ -99,8 +102,8 @@ function Results:render()
 		}),
 		SpreadDisplay = Roact.createElement(SpreadDisplay, {
 			AnchorPoint = Vector2.new(0.5, 0.5),
-			Position = UDim2.new(0.25, 0, 0.675, 0),
-			Size = UDim2.new(0.4, 0, 0.35, 0),
+			Position = UDim2.fromScale(0.555, 0.609),
+			Size = UDim2.fromScale(0.279, 0.305),
 			Marvelouses = state.Marvelouses,
 			Perfects = state.Perfects,
 			Greats = state.Greats,
@@ -108,16 +111,6 @@ function Results:render()
 			Bads = state.Bads,
 			Misses = state.Misses
 		}),
-		BannerCard = Roact.createElement(BannerCard, {
-			AnchorPoint = Vector2.new(0.5,0);
-			SongKey = state.SongKey;
-			PlayerName = state.PlayerName;
-			TimePlayed = state.TimePlayed;
-			Position = UDim2.new(0.5,0,0.05,0);
-			Size = UDim2.new(0.95,0,0.2,0);
-			SongRate = state.Rate;
-			GradeImage = self.gradeImages[grade];
-		});
 		DataDisplay = Roact.createElement(DataDisplay, {
 			data = {
 				{
@@ -129,7 +122,7 @@ function Results:render()
 					Value = string.format("%0.2f%%", state.Accuracy);
 				};
 				{
-					Name = "Play Rating";
+					Name = "Rating";
 					Value = string.format("%0.2f", state.Rating);
 				};
 				{
@@ -141,10 +134,68 @@ function Results:render()
 					Value = string.format("%0d ms", mean);
 				};
 			};
-			Position = UDim2.new(0.5,0,0.28,0);
-			Size = UDim2.new(0.95,0,0.1,0);
+			Position = UDim2.fromScale(0.696, 0.34);
+			Size = UDim2.fromScale(0.551, 0.09);
 			AnchorPoint = Vector2.new(0.5,0);
 		});
+		Grade = Roact.createElement("ImageLabel", {
+			AnchorPoint = Vector2.new(0.5, 0.5),
+			BackgroundTransparency = 1,
+			BorderSizePixel = 0,
+			Position = UDim2.fromScale(0.2, 0.522),
+			Selectable = true,
+			Size = UDim2.fromScale(0.331, 0.605),
+			Image = self.gradeImages[grade] or "http://www.roblox.com/asset/?id=168702873",
+		}, {
+			UIAspectRatioConstraint = Roact.createElement("UIAspectRatioConstraint", {
+				AspectRatio = 1
+			})
+		}),
+		SongName = Roact.createElement(RoundedTextLabel, {
+			Position = UDim2.fromScale(0.03, 0.03),
+			Size = UDim2.fromScale(0.879, 0.065),
+			RichText = true,
+			Text = string.format("%s <font color = \"rgb(80, 80, 80)\">\\</font> <font color = \"rgb(150, 150, 150)\">%s</font>  <font color = \"rgb(60, 60, 60)\">[%0.2fx Rate]</font>", SongDatabase:get_title_for_key(state.SongKey), SongDatabase:get_artist_for_key(state.SongKey), state.Rate / 100),
+			TextXAlignment = Enum.TextXAlignment.Left,
+			TextColor3 = Color3.fromRGB(218, 218, 218),
+			BackgroundTransparency = 1,
+			TextScaled = true
+		}, {
+			UITextSizeConstraint = Roact.createElement("UITextSizeConstraint", {
+				MaxTextSize = 40
+			})
+		}),
+		PlayedAt = Roact.createElement(RoundedTextLabel, {
+			Position = UDim2.fromScale(0.787, 0.306),
+			AnchorPoint = Vector2.new(0.5, 0.5),
+			Size = UDim2.fromScale(0.728, 0.046),
+			RichText = true,
+			Text = string.format("Played by %s at %d:%02d:%02d %d/%d/%02d", state.PlayerName, moment.Hour, moment.Minute, moment.Second, moment.Month, moment.Day, moment.Year),
+			TextXAlignment = Enum.TextXAlignment.Left,
+			TextColor3 = Color3.fromRGB(218, 218, 218),
+			BackgroundTransparency = 1,
+			TextScaled = true
+		}, {
+			UITextSizeConstraint = Roact.createElement("UITextSizeConstraint", {
+				MaxTextSize = 18
+			})
+		}),
+		Background = Roact.createElement(RoundedImageLabel, {
+			Position = UDim2.fromScale(1, 0),
+			AnchorPoint = Vector2.new(1, 0),
+			Size = UDim2.fromScale(0.65, 1),
+			BackgroundTransparency = 1,
+			Image = SongDatabase:get_image_for_key(state.SongKey),
+			ZIndex = 0,
+		}, {
+			UIGradient = Roact.createElement("UIGradient", {
+				Transparency = NumberSequence.new({
+					NumberSequenceKeypoint.new(0, 1),
+					NumberSequenceKeypoint.new(0.7, 0.7),
+					NumberSequenceKeypoint.new(1, 0),
+				})
+			})
+		}),
 		GoBack = Roact.createElement(RoundedTextButton, {
 			BackgroundColor3 = Color3.fromRGB(236, 33, 33);
 			AnchorPoint = Vector2.new(0, 1);

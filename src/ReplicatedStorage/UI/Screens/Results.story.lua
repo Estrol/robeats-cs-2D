@@ -18,7 +18,8 @@ return function(target)
         Hits = {},
         Rate = 100,
         SongKey = 1,
-        PlayerName = "lol"
+        PlayerName = "lol",
+        TimePlayed = 0
     })
 
     local app = Roact.createElement(RoactRouter.Router, {
