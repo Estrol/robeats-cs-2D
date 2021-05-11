@@ -68,9 +68,7 @@ function Gameplay:init()
 
     if self.props.options.HidePlayerList then
         game.StarterGui:SetCoreGuiEnabled("PlayerList", false)
-    end
-
-    if self.props.options.HideChat then
+    elseif self.props.options.HideChat then
         game.StarterGui:SetCoreGuiEnabled("Chat", false)
     end
 

@@ -53,9 +53,7 @@ function RobeatsGame:new(_game_environment_center_position)
 		if val == RobeatsGame.Mode.GameEnded then
             if game.StarterGui:GetCoreGuiEnabled("PlayerList") == false then
                 game.StarterGui:SetCoreGuiEnabled("PlayerList", true)
-            end
-
-            if game.StarterGui:GetCoreGuiEnabled("Chat") == false then
+			elseif game.StarterGui:GetCoreGuiEnabled("Chat") == false then
                 game.StarterGui:SetCoreGuiEnabled("Chat", true)
             end
 		end
