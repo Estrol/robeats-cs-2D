@@ -63,7 +63,7 @@ function SongDatabase:new()
 		if songdata.AudioCoverImageAssetId ~= "" then
 			return songdata.AudioCoverImageAssetId
 		else
-			return "rbxassetid://139345983"
+			return "rbxassetid://6799053340"
 		end
 	end
 
