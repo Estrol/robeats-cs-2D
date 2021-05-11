@@ -150,8 +150,8 @@ function Options:getSettingElements()
             OnChanged = function(value)
                 self.props.setOption("HidePlayerList", value)
             end,
-            name = "Hide Player List when Playing Song",
-            LayoutOrder = 5
+            Name = "Hide Player List when Playing Song",
+            LayoutOrder = 4
         });
 
         elements.HideChat = e(BoolValue, {
@@ -159,8 +159,8 @@ function Options:getSettingElements()
             OnChanged = function(value)
                 self.props.setOption("HideChat", value)
             end,
-            name = "Hide Chat when Playing Song",
-            LayoutOrder = 6
+            Name = "Hide Chat when Playing Song",
+            LayoutOrder = 5
         });
     end)
 
