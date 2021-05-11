@@ -1,10 +1,15 @@
 local Roact = require(game.ReplicatedStorage.Packages.Roact)
+local RoactRodux = require(game.ReplicatedStorage.Packages.RoactRodux)
+
+local SongDatabase = require(game.ReplicatedStorage.RobeatsGameCore.SongDatabase)
 
 local e = Roact.createElement
 
 local PlayerProfile = require(script.PlayerProfile)
 local MusicBox = require(script.MusicBox)
 local AudioVisualizer = require(script.AudioVisualizer)
+
+local RunService = game:GetService("RunService")
 
 local RoundedFrame = require(game.ReplicatedStorage.UI.Components.Base.RoundedFrame)
 local RoundedTextButton = require(game.ReplicatedStorage.UI.Components.Base.RoundedTextButton)
@@ -14,6 +19,20 @@ local RoundedTextLabel = require(game.ReplicatedStorage.UI.Components.Base.Round
 
 local MainMenuUI = Roact.Component:extend("MainMenuUI")
 
+function MainMenuUI:init()
+    if RunService:IsRunning() then
+        self.knit = require(game:GetService("ReplicatedStorage").Knit)
+    end
+end
+
+function MainMenuUI:didMount()
+    if self.knit then
+        local PreviewController = self.knit.GetController("PreviewController")
+        
+        PreviewController:PlayId(SongDatabase:get_data_for_key(self.props.songKey).AudioAssetId)
+    end
+end
+
 function MainMenuUI:render()
     return e(RoundedFrame, {
         Size = UDim2.new(1, 0, 1, 0),
@@ -21,7 +40,7 @@ function MainMenuUI:render()
         Logo = e(RoundedImageLabel, {
             Image = "rbxassetid://6224561143";
             Size = UDim2.fromScale(0.4, 0.9);
-            Position = UDim2.fromScale(0.02, 0.57);
+            Position = UDim2.fromScale(0.02, 0.47);
             AnchorPoint = Vector2.new(0.05, 0.5);
             BackgroundTransparency = 1;
         }, {
@@ -92,6 +111,27 @@ function MainMenuUI:render()
             --     })
             -- });
 
+            ScoresButton = e(RoundedTextButton, {
+                TextXAlignment = Enum.TextXAlignment.Left;
+                BackgroundColor3 = Color3.fromRGB(22, 22, 22);
+                BorderMode = Enum.BorderMode.Inset,
+                BorderSizePixel = 0,
+                Size = UDim2.fromScale(1, 0.125),
+                Text = "  Your Scores";
+                TextScaled = true;
+                TextColor3 = Color3.fromRGB(255, 255, 255);
+                LayoutOrder = 3;
+                HoldSize = UDim2.fromScale(0.95, 0.125),
+                OnClick = function()
+                    self.props.history:push("/scores")
+                end
+            }, {
+                UITextSizeConstraint = e("UITextSizeConstraint", {
+                    MinTextSize = 8;
+                    MaxTextSize = 13;
+                })
+            });
+
             OptionsButton = e(RoundedTextButton, {
                 TextXAlignment = Enum.TextXAlignment.Left;
                 BackgroundColor3 = Color3.fromRGB(22, 22, 22);
@@ -121,7 +161,7 @@ function MainMenuUI:render()
                 Text = "  Global Ranks";
                 TextScaled = true;
                 TextColor3 = Color3.fromRGB(255, 255, 255);
-                LayoutOrder = 3;
+                LayoutOrder = 4;
                 HoldSize = UDim2.fromScale(0.95, 0.125),
                 OnClick = function()
                     self.props.history:push("/rankings")
@@ -150,4 +190,8 @@ function MainMenuUI:render()
     
 end
 
-return MainMenuUI
+return RoactRodux.connect(function(state)
+    return {
+        songKey = state.options.transient.SongKey
+    }
+end)(MainMenuUI)
