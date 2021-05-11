@@ -2,7 +2,7 @@
     <b>RoBeats CS</b>
 </div>
 <div align=center style="font-size:18px">
-    <i>RoBeats fork focued on skill.</i>
+    <i>RoBeats fork focused on skill.</i>
 </div>
 
 ---

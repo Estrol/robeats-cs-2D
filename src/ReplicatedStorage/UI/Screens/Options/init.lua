@@ -144,6 +144,24 @@ function Options:getSettingElements()
             Name = "Hit Lighting",
             LayoutOrder = 3
         });
+
+        elements.HidePlayerList = e(BoolValue, {
+            Value = self.props.options.HidePlayerList,
+            OnChanged = function(value)
+                self.props.setOption("HidePlayerList", value)
+            end,
+            Name = "Playerlist Visible",
+            LayoutOrder = 4
+        });
+
+        elements.HideChat = e(BoolValue, {
+            Value = self.props.options.HideChat,
+            OnChanged = function(value)
+                self.props.setOption("HideChat", value)
+            end,
+            Name = "Chat Visible",
+            LayoutOrder = 5
+        });
     end)
 
     return elements
