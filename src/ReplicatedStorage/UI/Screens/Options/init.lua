@@ -105,6 +105,25 @@ function Options:getSettingElements()
             Name = "Hide LN Tails",
             LayoutOrder = 4
         })
+        -- GUI stuff to enable/disable Chat & PlayerList
+
+        elements.HidePlayerList = e(BoolValue, {
+            Value = self.props.options.HidePlayerList,
+            OnChanged = function(value)
+                self.props.setOption("HidePlayerList", value)
+            end,
+            name = "Hide Player List when Playing Song",
+            LayoutOrder = 5
+        })
+
+        elements.HideChat = e(BoolValue, {
+            Value = self.props.options.HideChat,
+            OnChanged = function(value)
+                self.props.setOption("HideChat", value)
+            end,
+            name = "Hide Chat when Playing Song",
+            LayoutOrder = 6
+        })
     end)
 
     --extras
