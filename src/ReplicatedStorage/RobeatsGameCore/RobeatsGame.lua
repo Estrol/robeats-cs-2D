@@ -49,16 +49,6 @@ function RobeatsGame:new(_game_environment_center_position)
 		AssertType:is_enum_member(val, RobeatsGame.Mode)
 		_current_mode = val 
 		self._mode_changed:Fire(_current_mode)
-
-		if val == RobeatsGame.Mode.GameEnded then
-            if game.StarterGui:GetCoreGuiEnabled("PlayerList") == false then
-                game.StarterGui:SetCoreGuiEnabled("PlayerList", true)
-			end
-			
-			if game.StarterGui:GetCoreGuiEnabled("Chat") == false then
-                game.StarterGui:SetCoreGuiEnabled("Chat", true)
-            end
-		end
 	end
 
 	function self:set_hit_lighting(val) _show_hit_lighting = val end
