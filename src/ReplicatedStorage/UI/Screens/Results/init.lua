@@ -185,6 +185,7 @@ function Results:render()
 			BackgroundTransparency = 0,
 			Image = "rbxassetid://6803695820",
 			ZIndex = 0,
+			ScaleType = Enum.ScaleType.Crop
 		}, {
 			UIGradient = Roact.createElement("UIGradient", {
 				Transparency = NumberSequence.new({
@@ -196,7 +197,7 @@ function Results:render()
 		}),
 
 		WatchReplay = Roact.createElement(RoundedTextButton, {
-			BackgroundColor3 = Color3.fromRGB(33, 155, 236);
+			BackgroundColor3 = Color3.fromRGB(61, 61, 61);
 			AnchorPoint = Vector2.new(0, 1);
 			Position = UDim2.fromScale(0.175, 0.98);
 			Size = UDim2.fromScale(0.15,0.065);

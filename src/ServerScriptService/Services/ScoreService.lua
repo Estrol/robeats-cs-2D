@@ -1,6 +1,6 @@
 local Knit = require(game.ReplicatedStorage.Knit)
 
-local DataStoreService = game:GetService("DataStoreService")
+local DataStoreService = require(game.ReplicatedStorage.Packages.DataStoreService)
 local LocalizationService = game:GetService("LocalizationService")
 
 local GraphDataStore = DataStoreService:GetDataStore("GraphDataStore")
