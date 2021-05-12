@@ -81,7 +81,7 @@ function ScoreManager:new(_game)
 	)
 		local track = _game:get_tracksystem(slot_index):get_track(track_index)
 
-		if not params.GhostTap then
+		if (not params.GhostTap) and _game:get_judgement_visibility()[note_result + 1] then
 			_game._effects:add_effect(NoteResultPopupEffect:new(
 				_game,
 				track:get_end_position() + Vector3.new(0,0.25,0),

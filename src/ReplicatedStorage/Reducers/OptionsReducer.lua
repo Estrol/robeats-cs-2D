@@ -27,6 +27,9 @@ local defaultState = {
         
         --Change this to swap the timing preset
         TimingPreset = "Standard",
+
+        --Change this to toggle the visibility of certain judgements
+        JudgementVisibility = { true, true, true, true, true, true },
         
         --You probably won't need to modify these
         NoteRemoveTimeMS = -200;

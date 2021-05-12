@@ -11,6 +11,7 @@ local GameSlot = require(game.ReplicatedStorage.RobeatsGameCore.Enums.GameSlot)
 local GameTrack = require(game.ReplicatedStorage.RobeatsGameCore.Enums.GameTrack)
 local AssertType = require(game.ReplicatedStorage.Shared.AssertType)
 local Signal = require(game.ReplicatedStorage.Knit.Util.Signal)
+local NoteResult = require(game.ReplicatedStorage.RobeatsGameCore.Enums.NoteResult)
 
 --local Settings = require(game.ReplicatedStorage.)
 
@@ -34,6 +35,14 @@ function RobeatsGame:new(_game_environment_center_position)
 
 	local _show_hit_lighting = false
 	local _hide_ln_tails = false
+	local _judgement_visibility = {
+		[NoteResult.Marvelous] = true,
+		[NoteResult.Perfect] = true,
+		[NoteResult.Great] = true,
+		[NoteResult.Good] = true,
+		[NoteResult.Bad] = true,
+		[NoteResult.Miss] = true,
+	}
 
 	self._audio_manager = AudioManager:new(self)
 	self._score_manager = ScoreManager:new(self)
@@ -66,6 +75,9 @@ function RobeatsGame:new(_game_environment_center_position)
 
 	function self:get_ln_tails() return _hide_ln_tails end
 	function self:set_ln_tails(val) _hide_ln_tails = val end
+
+	function self:get_judgement_visibility() return _judgement_visibility end
+	function self:set_judgement_visibility(val) _judgement_visibility = val end
 
 	function self:get_game_environment_center_position()
 		return _game_environment_center_position
