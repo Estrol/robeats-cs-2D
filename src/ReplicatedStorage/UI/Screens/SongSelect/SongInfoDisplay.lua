@@ -70,7 +70,7 @@ end
 
 function SongInfoDisplay:render()
     if self.props.SongKey == nil then
-        return Roact.createElement(RoundedTextLabel, {
+        return e(RoundedTextLabel, {
             Position = self.props.Position,
             Size = self.props.Size,
             AnchorPoint = self.props.AnchorPoint,
@@ -80,19 +80,19 @@ function SongInfoDisplay:render()
     end
     
     local total_notes, total_holds = SongDatabase:get_note_metrics_for_key(self.props.SongKey)
-    return Roact.createElement(RoundedFrame, {
+    return e(RoundedFrame, {
         Position = self.props.Position,
         Size = self.props.Size,
         AnchorPoint = self.props.AnchorPoint,
     }, {
-        SongCover = Roact.createElement(RoundedImageLabel, {
+        SongCover = e(RoundedImageLabel, {
             Size = UDim2.fromScale(1, 1),
             ScaleType = Enum.ScaleType.Crop,
             Image = SongDatabase:get_image_for_key(self.props.SongKey),
             BackgroundTransparency = 1;
             ZIndex = 0
         }, {
-            Gradient = Roact.createElement("UIGradient", {
+            Gradient = e("UIGradient", {
                 Transparency = NumberSequence.new({
                     NumberSequenceKeypoint.new(0, 0),
                     NumberSequenceKeypoint.new(0.75, 0.9),
@@ -101,16 +101,16 @@ function SongInfoDisplay:render()
                 Rotation = -180;
             }),
         }),
-        Corner = Roact.createElement("UICorner", {
+        Corner = e("UICorner", {
             CornerRadius = UDim.new(0, 4),
         }),
-        SongDataContainer = Roact.createElement(RoundedFrame, {
+        SongDataContainer = e(RoundedFrame, {
             BackgroundTransparency = 1,
             Position = UDim2.new(0.02, 0, 0.035, 0),
             Size = UDim2.new(1, 0, 0.5, 0),
         }, {
             UIListLayout = e("UIListLayout"),
-            ArtistDisplay = Roact.createElement(RoundedTextLabel, {
+            ArtistDisplay = e(RoundedTextLabel, {
                 BackgroundTransparency = 1,
                 BorderSizePixel = 0,
                 LayoutOrder = 1,
@@ -124,11 +124,11 @@ function SongInfoDisplay:render()
                 TextScaled = true,
                 TextXAlignment = Enum.TextXAlignment.Left,
             }, {
-                TextSizeConstraint = Roact.createElement("UITextSizeConstraint", {
+                TextSizeConstraint = e("UITextSizeConstraint", {
                     MaxTextSize = 60,
                 })
             }),
-            TitleDisplay = Roact.createElement(RoundedTextLabel, {
+            TitleDisplay = e(RoundedTextLabel, {
                 BackgroundTransparency = 1,
                 Size = UDim2.new(0.75, 0, 0.3, 0);
                 TextTransparency = self.motorBinding:map(function(a)
@@ -139,7 +139,7 @@ function SongInfoDisplay:render()
                 TextScaled = true,
                 TextXAlignment = Enum.TextXAlignment.Left,
             }, {
-                UITextSizeConstraint = Roact.createElement("UITextSizeConstraint", {
+                UITextSizeConstraint = e("UITextSizeConstraint", {
                     MaxTextSize = 40,
                 })
             })
@@ -164,7 +164,7 @@ function SongInfoDisplay:render()
                 FillDirectionMaxCells = 2,
                 CellSize = UDim2.fromScale(0.1, 0.3)
             }),
-            DifficultyDisplay = Roact.createElement(RoundedTextLabel, {
+            DifficultyDisplay = e(RoundedTextLabel, {
                 BackgroundColor3 = Color3.fromRGB(255, 255, 255),
                 BackgroundTransparency = 1,
                 BorderSizePixel = 0,
@@ -180,11 +180,11 @@ function SongInfoDisplay:render()
                 TextSize = 30,
                 TextXAlignment = Enum.TextXAlignment.Left,
             }, {
-                UITextSizeConstraint = Roact.createElement("UITextSizeConstraint", {
+                UITextSizeConstraint = e("UITextSizeConstraint", {
                     MaxTextSize = 22,
                 })
             }),
-            TotalNotesDisplay = Roact.createElement(RoundedTextLabel, {
+            TotalNotesDisplay = e(RoundedTextLabel, {
                 TextColor3 = Color3.fromRGB(216, 216, 216),
                 BackgroundTransparency = 1,
                 BorderSizePixel = 0,
@@ -199,11 +199,11 @@ function SongInfoDisplay:render()
                 TextSize = 30,
                 TextXAlignment = Enum.TextXAlignment.Left,
             }, {
-                UITextSizeConstraint = Roact.createElement("UITextSizeConstraint", {
+                UITextSizeConstraint = e("UITextSizeConstraint", {
                     MaxTextSize = 22,
                 })
             }),
-            TotalHoldsDisplay = Roact.createElement(RoundedTextLabel, {
+            TotalHoldsDisplay = e(RoundedTextLabel, {
                 TextColor3 = Color3.fromRGB(216, 216, 216),
                 BackgroundTransparency = 1,
                 BorderSizePixel = 0,
@@ -221,11 +221,11 @@ function SongInfoDisplay:render()
                 TextSize = 30,
                 TextXAlignment = Enum.TextXAlignment.Left,
             }, {
-                UITextSizeConstraint = Roact.createElement("UITextSizeConstraint", {
+                UITextSizeConstraint = e("UITextSizeConstraint", {
                     MaxTextSize = 22,
                 })
             }),
-            TotalLengthDisplay = Roact.createElement(RoundedTextLabel, {
+            TotalLengthDisplay = e(RoundedTextLabel, {
                 TextColor3 = Color3.fromRGB(216, 216, 216),
                 BackgroundTransparency = 1,
                 BorderSizePixel = 0,
@@ -243,7 +243,7 @@ function SongInfoDisplay:render()
                 TextSize = 30,
                 TextXAlignment = Enum.TextXAlignment.Left,
             }, {
-                UITextSizeConstraint = Roact.createElement("UITextSizeConstraint", {
+                UITextSizeConstraint = e("UITextSizeConstraint", {
                     MaxTextSize = 22,
                 })
             });
