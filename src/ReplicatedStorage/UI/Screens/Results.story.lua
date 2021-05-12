@@ -6,7 +6,7 @@ return function(target)
     local history = RoactRouter.History.new()
     history:push("/", {
         Score = 900000,
-        Accuracy = 100,
+        Accuracy = 96,
         Rating = 67.85,
         MaxChain = 0,
         Marvelouses = 0,
