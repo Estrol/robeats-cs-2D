@@ -1,5 +1,6 @@
 local Roact = require(game.ReplicatedStorage.Packages.Roact)
 local Rodux = require(game.ReplicatedStorage.Packages.Rodux)
+local Llama = require(game.ReplicatedStorage.Packages.Llama)
 local RoactRodux = require(game.ReplicatedStorage.Packages.RoactRodux)
 local e = Roact.createElement
 local f = Roact.createFragment
@@ -16,6 +17,7 @@ local RoundedTextButton = require(game.ReplicatedStorage.UI.Components.Base.Roun
 local IntValue = require(script.IntValue)
 local KeybindValue = require(script.KeybindValue)
 local BoolValue = require(script.BoolValue)
+local MultipleChoiceValue = require(script.MultipleChoiceValue)
 
 local Options = Roact.Component:extend("Options")
 
@@ -104,6 +106,19 @@ function Options:getSettingElements()
             end,
             Name = "Hide LN Tails",
             LayoutOrder = 4
+        })
+
+        elements.JudgementVisibility = e(MultipleChoiceValue, {
+            Values = self.props.options.JudgementVisibility,
+            ValueNames = { "Miss", "Bad", "Good", "Great", "Perfect", "Marvelous" },
+            OnChanged = function(noteResult, value)
+                local judgements = Llama.Dictionary.copy(self.props.options.JudgementVisibility)
+                judgements[noteResult] = value
+
+                self.props.setOption("JudgementVisibility", judgements)
+            end,
+            Name = "Judgement Visibility",
+            LayoutOrder = 5
         })
     end)
 
