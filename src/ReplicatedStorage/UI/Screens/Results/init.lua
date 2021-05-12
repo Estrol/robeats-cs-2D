@@ -21,6 +21,9 @@ local SpreadDisplay = require(script.SpreadDisplay)
 local DataDisplay = require(script.DataDisplay)
 local SongInfoDisplay = require(game.ReplicatedStorage.UI.Screens.SongSelect.SongInfoDisplay)
 
+function noop() end
+
+
 function Results:init()
 	if RunService:IsRunning() then
 		self.knit = require(game:GetService("ReplicatedStorage").Knit)
@@ -160,20 +163,6 @@ function Results:render()
 				AspectRatio = 1
 			})
 		}),
-		-- SongName = Roact.createElement(RoundedTextLabel, {
-		-- 	Position = UDim2.fromScale(0.03, 0.03),
-		-- 	Size = UDim2.fromScale(0.879, 0.065),
-		-- 	RichText = true,
-		-- 	Text = string.format("%s <font color = \"rgb(80, 80, 80)\">\\</font> <font color = \"rgb(150, 150, 150)\">%s</font>  <font color = \"rgb(60, 60, 60)\">[%0.2fx Rate]</font>", SongDatabase:get_title_for_key(state.SongKey), SongDatabase:get_artist_for_key(state.SongKey), state.Rate / 100),
-		-- 	TextXAlignment = Enum.TextXAlignment.Left,
-		-- 	TextColor3 = Color3.fromRGB(218, 218, 218),
-		-- 	BackgroundTransparency = 1,
-		-- 	TextScaled = true
-		-- }, {
-		-- 	UITextSizeConstraint = Roact.createElement("UITextSizeConstraint", {
-		-- 		MaxTextSize = 40
-		-- 	})
-		-- }),
 		PlayedAt = Roact.createElement(RoundedTextLabel, {
 			Position = UDim2.fromScale(0.787, 0.306),
 			AnchorPoint = Vector2.new(0.5, 0.5),
@@ -186,7 +175,7 @@ function Results:render()
 			TextScaled = true
 		}, {
 			UITextSizeConstraint = Roact.createElement("UITextSizeConstraint", {
-				MaxTextSize = 18
+				MaxTextSize = 25
 			})
 		}),
 		Background = Roact.createElement(RoundedImageLabel, {
@@ -204,6 +193,21 @@ function Results:render()
 					NumberSequenceKeypoint.new(1, 0),
 				})
 			})
+		}),
+
+		WatchReplay = Roact.createElement(RoundedTextButton, {
+			BackgroundColor3 = Color3.fromRGB(33, 155, 236);
+			AnchorPoint = Vector2.new(0, 1);
+			Position = UDim2.fromScale(0.175, 0.98);
+			Size = UDim2.fromScale(0.15,0.065);
+			HoldSize = UDim2.fromScale(0.14, 0.065);
+			Text = "Watch Replay";
+			TextColor3 = Color3.fromRGB(255, 255, 255);
+			TextSize = 16,
+			ZIndex = 5,
+			OnClick = function()
+				noop()
+			end
 		}),
 		GoBack = Roact.createElement(RoundedTextButton, {
 			BackgroundColor3 = Color3.fromRGB(236, 33, 33);
