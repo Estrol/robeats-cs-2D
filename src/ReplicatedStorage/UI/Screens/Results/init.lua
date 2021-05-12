@@ -1,4 +1,6 @@
 local Roact = require(game.ReplicatedStorage.Packages.Roact)
+local e = Roact.createElement
+
 local SPUtil = require(game.ReplicatedStorage.Shared.SPUtil)
 
 local RunService = game:GetService("RunService")
@@ -17,6 +19,7 @@ local Results = Roact.Component:extend("Results")
 local DotGraph = require(game.ReplicatedStorage.UI.Components.Graph.DotGraph)
 local SpreadDisplay = require(script.SpreadDisplay)
 local DataDisplay = require(script.DataDisplay)
+local SongInfoDisplay = require(game.ReplicatedStorage.UI.Screens.SongSelect.SongInfoDisplay)
 
 function Results:init()
 	if RunService:IsRunning() then
@@ -25,12 +28,12 @@ function Results:init()
 
 	self.gradeImages = {
 		[Grade.SS] = "http://www.roblox.com/asset/?id=5702584062",
-		[Grade.S] = "http://www.roblox.com/asset/?id=5702584273",
-		[Grade.A] = "http://www.roblox.com/asset/?id=5702584488",
-		[Grade.B] = "http://www.roblox.com/asset/?id=5702584846",
-		[Grade.C] = "http://www.roblox.com/asset/?id=5702585057",
-		[Grade.D] = "http://www.roblox.com/asset/?id=5702585272",
-		[Grade.F] = "http://www.roblox.com/asset/?id=5702585272"
+		[Grade.S] = "http://www.roblox.com/asset/?id=5856075566",
+		[Grade.A] = "http://www.roblox.com/asset/?id=5856075367",
+		[Grade.B] = "http://www.roblox.com/asset/?id=5856075113",
+		[Grade.C] = "http://www.roblox.com/asset/?id=5856074951",
+		[Grade.D] = "http://www.roblox.com/asset/?id=5896147796",
+		[Grade.F] = "http://www.roblox.com/asset/?id=5896148143"
 	}
 	
 	self.backOutConnection = SPUtil:bind_to_key(Enum.KeyCode.Return, function()
@@ -63,17 +66,23 @@ function Results:render()
 	local moment = DateTime.fromUnixTimestamp(state.TimePlayed):ToLocalTime()
 
     return Roact.createElement("Frame", {
-		BackgroundColor3 = Color3.fromRGB(255, 255, 255),
+		BackgroundColor3 = Color3.fromRGB(0,0,0),
 		BorderSizePixel = 0;
 		Size = UDim2.new(1, 0, 1, 0);
 	}, {
-		UIGradient = Roact.createElement("UIGradient", {
-			Color = ColorSequence.new({
-				ColorSequenceKeypoint.new(0, Color3.fromRGB(19, 19, 19)),
-				ColorSequenceKeypoint.new(1, Color3.fromRGB(17, 17, 17)),
-			}),
-			Rotation = 45
-		}),
+		-- UIGradient = Roact.createElement("UIGradient", {
+		-- 	Color = ColorSequence.new({
+		-- 		ColorSequenceKeypoint.new(0, Color3.fromRGB(19, 19, 19)),
+		-- 		ColorSequenceKeypoint.new(1, Color3.fromRGB(17, 17, 17)),
+		-- 	}),
+		-- 	Rotation = 0
+		-- }),
+		SongInfoDisplay = e(SongInfoDisplay, {
+            Size = UDim2.fromScale(0.985, 0.2),
+            Position = UDim2.fromScale(0.01, 0.01),
+            SongKey = state.SongKey,
+            SongRate = state.Rate
+        }),
 		HitGraph = Roact.createElement(DotGraph, {
 			AnchorPoint = Vector2.new(0.5, 0.5),
 			BackgroundColor3 = Color3.fromRGB(22, 22, 22),
@@ -151,20 +160,20 @@ function Results:render()
 				AspectRatio = 1
 			})
 		}),
-		SongName = Roact.createElement(RoundedTextLabel, {
-			Position = UDim2.fromScale(0.03, 0.03),
-			Size = UDim2.fromScale(0.879, 0.065),
-			RichText = true,
-			Text = string.format("%s <font color = \"rgb(80, 80, 80)\">\\</font> <font color = \"rgb(150, 150, 150)\">%s</font>  <font color = \"rgb(60, 60, 60)\">[%0.2fx Rate]</font>", SongDatabase:get_title_for_key(state.SongKey), SongDatabase:get_artist_for_key(state.SongKey), state.Rate / 100),
-			TextXAlignment = Enum.TextXAlignment.Left,
-			TextColor3 = Color3.fromRGB(218, 218, 218),
-			BackgroundTransparency = 1,
-			TextScaled = true
-		}, {
-			UITextSizeConstraint = Roact.createElement("UITextSizeConstraint", {
-				MaxTextSize = 40
-			})
-		}),
+		-- SongName = Roact.createElement(RoundedTextLabel, {
+		-- 	Position = UDim2.fromScale(0.03, 0.03),
+		-- 	Size = UDim2.fromScale(0.879, 0.065),
+		-- 	RichText = true,
+		-- 	Text = string.format("%s <font color = \"rgb(80, 80, 80)\">\\</font> <font color = \"rgb(150, 150, 150)\">%s</font>  <font color = \"rgb(60, 60, 60)\">[%0.2fx Rate]</font>", SongDatabase:get_title_for_key(state.SongKey), SongDatabase:get_artist_for_key(state.SongKey), state.Rate / 100),
+		-- 	TextXAlignment = Enum.TextXAlignment.Left,
+		-- 	TextColor3 = Color3.fromRGB(218, 218, 218),
+		-- 	BackgroundTransparency = 1,
+		-- 	TextScaled = true
+		-- }, {
+		-- 	UITextSizeConstraint = Roact.createElement("UITextSizeConstraint", {
+		-- 		MaxTextSize = 40
+		-- 	})
+		-- }),
 		PlayedAt = Roact.createElement(RoundedTextLabel, {
 			Position = UDim2.fromScale(0.787, 0.306),
 			AnchorPoint = Vector2.new(0.5, 0.5),
@@ -183,15 +192,15 @@ function Results:render()
 		Background = Roact.createElement(RoundedImageLabel, {
 			Position = UDim2.fromScale(1, 0),
 			AnchorPoint = Vector2.new(1, 0),
-			Size = UDim2.fromScale(0.65, 1),
-			BackgroundTransparency = 1,
-			Image = SongDatabase:get_image_for_key(state.SongKey),
+			Size = UDim2.fromScale(1, 1),
+			BackgroundTransparency = 0,
+			Image = "rbxassetid://6803695820",
 			ZIndex = 0,
 		}, {
 			UIGradient = Roact.createElement("UIGradient", {
 				Transparency = NumberSequence.new({
-					NumberSequenceKeypoint.new(0, 1),
-					NumberSequenceKeypoint.new(0.7, 0.7),
+					NumberSequenceKeypoint.new(0, .75),
+					NumberSequenceKeypoint.new(0.5, 0.75),
 					NumberSequenceKeypoint.new(1, 0),
 				})
 			})
@@ -200,9 +209,9 @@ function Results:render()
 			BackgroundColor3 = Color3.fromRGB(236, 33, 33);
 			AnchorPoint = Vector2.new(0, 1);
 			Position = UDim2.fromScale(0.0135, 0.98);
-			Size = UDim2.new(0.07,0,0.065,0);
-			HoldSize = UDim2.fromScale(0.09, 0.065);
-			Text = "Go Back";
+			Size = UDim2.fromScale(0.15,0.065);
+			HoldSize = UDim2.fromScale(0.14, 0.065);
+			Text = "Return to Menu";
 			TextColor3 = Color3.fromRGB(255, 255, 255);
 			TextSize = 16,
 			ZIndex = 5,
