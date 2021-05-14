@@ -33,6 +33,9 @@ function AudioManager:new(_game)
 	local _song_key = 0
 	function self:get_song_key() return _song_key end
 	
+	local _timing_preset
+	function self:get_timing_preset() return _timing_preset end
+
 	--Note timings: millisecond offset (positive is early, negative is late) mapping to what the note result is
 	local _note_bad_max = 300
 	local _note_good_max = 260 --Default: 260
@@ -141,7 +144,7 @@ function AudioManager:new(_game)
 		_note_prebuffer_time = 13720 / _config.NoteSpeed
 		
 		--Apply timing windows
-		local _timing_preset = TimingPresets[_config.TimingPreset]
+		_timing_preset = TimingPresets[_config.TimingPreset]
 		_note_bad_max = _timing_preset.NoteBadMaxMS
 		_note_good_max = _timing_preset.NoteGoodMaxMS
 		_note_great_max = _timing_preset.NoteGreatMaxMS
