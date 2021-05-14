@@ -220,7 +220,10 @@ function ScoreService.Client:GetScores(_, songMD5Hash, limit)
     local succeeded, documents = Scores
         :query()
         :where({
-            SongMD5Hash = songMD5Hash
+            SongMD5Hash = songMD5Hash,
+            Banned = {
+                ["$nin"] = { true }
+            }
         })
         :limit(limit)
         :order("-Rating")
