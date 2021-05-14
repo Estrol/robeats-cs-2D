@@ -18,6 +18,7 @@ local IntValue = require(script.IntValue)
 local KeybindValue = require(script.KeybindValue)
 local BoolValue = require(script.BoolValue)
 local MultipleChoiceValue = require(script.MultipleChoiceValue)
+local EnumValue = require(script.EnumValue)
 
 local Options = Roact.Component:extend("Options")
 
@@ -119,6 +120,16 @@ function Options:getSettingElements()
             end,
             Name = "Judgement Visibility",
             LayoutOrder = 5
+        })
+
+        elements.TimingPreset = e(EnumValue, {
+            Value = self.props.options.TimingPreset,
+            ValueNames = { "Lenient", "Standard", "Strict", "Extreme" },
+            OnChanged = function(name)
+                self.props.setOption("TimingPreset", name)
+            end,
+            Name = "Timing Preset",
+            LayoutOrder = 6
         })
     end)
 

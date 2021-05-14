@@ -23,18 +23,18 @@ EnumValue.defaultProps = {
 function EnumValue:render()
     local keybinds = {}
 
-    for i in pairs(self.props.ValueNames) do
+    for i, name in pairs(self.props.ValueNames) do
         local buttonElement = e(RoundedTextButton, {
             Size = UDim2.fromScale(1/#self.props.ValueNames, 1),
             HoldSize = UDim2.fromScale(1/#self.props.ValueNames, 0.8),
-            BackgroundColor3 = i == self.props.Value and Color3.fromRGB(24, 180, 207) or Color3.fromRGB(41, 40, 40),
-            HighlightBackgroundColor3 = i == self.props.Value and Color3.fromRGB(20, 189, 201) or Color3.fromRGB(31, 30, 30),
+            BackgroundColor3 = name == self.props.Value and Color3.fromRGB(24, 180, 207) or Color3.fromRGB(41, 40, 40),
+            HighlightBackgroundColor3 = name == self.props.Value and Color3.fromRGB(20, 189, 201) or Color3.fromRGB(31, 30, 30),
             TextColor3 = Color3.fromRGB(255, 255, 255),
             OnClick = function()
-                self.props.OnChanged(i)
+                self.props.OnChanged(name, i)
             end,
             LayoutOrder = i,
-            Text = self.props.ValueNames[i]
+            Text = name
         })
 
         table.insert(keybinds, buttonElement)

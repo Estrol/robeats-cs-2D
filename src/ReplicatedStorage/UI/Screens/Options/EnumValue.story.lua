@@ -6,7 +6,7 @@ return function(target)
 
     function TestComponent:init()
         self:setState({
-            Value = 1
+            Value = "big"
         })
     end
 
