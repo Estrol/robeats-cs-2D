@@ -84,6 +84,7 @@ function SongInfoDisplay:render()
         Position = self.props.Position,
         Size = self.props.Size,
         AnchorPoint = self.props.AnchorPoint,
+        BackgroundColor3 = self.props.BackgroundColor3
     }, {
         SongCover = e(RoundedImageLabel, {
             Size = UDim2.fromScale(1, 1),
