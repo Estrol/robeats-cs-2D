@@ -424,11 +424,16 @@ function HeldNote:new(
 					note_result
 				))
 			end
-			_game._effects:add_effect(TriggerNoteEffect:new(
-				_game,
-				get_tail_position(),
-				note_result
-			))
+
+			if _show_trigger_fx then
+				_game._effects:add_effect(TriggerNoteEffect:new(
+					_game,
+					get_tail_position(),
+					note_result
+				))
+
+			end
+			
 			--Missed the first note, hit the second note
 			_game._score_manager:register_hit(
 				note_result,
