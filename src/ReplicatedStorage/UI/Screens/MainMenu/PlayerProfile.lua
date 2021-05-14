@@ -79,7 +79,7 @@ function PlayerProfile:render()
     end
 
     return e(RoundedFrame, {
-        Size = UDim2.fromScale(0.35, 0.17),
+        Size = UDim2.fromScale(0.4, 0.17),
         AnchorPoint = Vector2.new(1, 0),
         Position = UDim2.fromScale(0.98, 0.02),
         BackgroundColor3 = Color3.fromRGB(22, 22, 22)
