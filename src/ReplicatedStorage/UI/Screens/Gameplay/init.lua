@@ -111,7 +111,7 @@ function Gameplay:init()
             local mean = _game._score_manager:get_mean()
             local rating = Rating:get_rating_from_accuracy(self.props.options.SongKey, self.state.accuracy, self.props.options.SongRate / 100)
 
-            if not self.forcedQuit then
+            if (not self.forcedQuit) and (self.props.options.TimingPreset == "Standard") then
                 local md5Hash = SongDatabase:get_md5_hash_for_key(self.props.options.SongKey)
                 ScoreService:SubmitScorePromise(
                     md5Hash,
