@@ -73,16 +73,10 @@ function Results:render()
 		BorderSizePixel = 0;
 		Size = UDim2.new(1, 0, 1, 0);
 	}, {
-		-- UIGradient = Roact.createElement("UIGradient", {
-		-- 	Color = ColorSequence.new({
-		-- 		ColorSequenceKeypoint.new(0, Color3.fromRGB(19, 19, 19)),
-		-- 		ColorSequenceKeypoint.new(1, Color3.fromRGB(17, 17, 17)),
-		-- 	}),
-		-- 	Rotation = 0
-		-- }),
 		SongInfoDisplay = e(SongInfoDisplay, {
             Size = UDim2.fromScale(0.985, 0.2),
             Position = UDim2.fromScale(0.01, 0.01),
+			BackgroundColor3 = Color3.fromRGB(10, 10, 10),
             SongKey = state.SongKey,
             SongRate = state.Rate
         }),
