@@ -17,7 +17,7 @@ local defaultState = {
         FOV = 70;
 
         --interface settings
-        ComboPosition = Middle; 
+        ComboPosition = "Middle"; 
 
         --Extra settings.
         TimeOfDay = 24;
