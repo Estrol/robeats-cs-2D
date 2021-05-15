@@ -16,6 +16,9 @@ local defaultState = {
         NoteSpeed = 1;
         FOV = 70;
 
+        --interface settings
+        ComboPosition = Middle; 
+
         --Extra settings.
         TimeOfDay = 24;
         BaseTransparency = 0;
