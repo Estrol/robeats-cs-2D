@@ -124,7 +124,7 @@ function Options:getSettingElements()
 
         elements.TimingPreset = e(EnumValue, {
             Value = self.props.options.TimingPreset,
-            ValueNames = { "Lenient", "Standard", "Strict", "Extreme" },
+            ValueNames = { "Lenient", "Standard", "Strict", "ROFAST GAMER" },
             OnChanged = function(name)
                 self.props.setOption("TimingPreset", name)
             end,

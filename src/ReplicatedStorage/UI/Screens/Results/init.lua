@@ -190,20 +190,7 @@ function Results:render()
 			})
 		}),
 
-		WatchReplay = Roact.createElement(RoundedTextButton, {
-			BackgroundColor3 = Color3.fromRGB(61, 61, 61);
-			AnchorPoint = Vector2.new(0, 1);
-			Position = UDim2.fromScale(0.175, 0.98);
-			Size = UDim2.fromScale(0.15,0.065);
-			HoldSize = UDim2.fromScale(0.14, 0.065);
-			Text = "Watch Replay";
-			TextColor3 = Color3.fromRGB(255, 255, 255);
-			TextSize = 16,
-			ZIndex = 5,
-			OnClick = function()
-				noop()
-			end
-		}),
+
 		GoBack = Roact.createElement(RoundedTextButton, {
 			BackgroundColor3 = Color3.fromRGB(236, 33, 33);
 			AnchorPoint = Vector2.new(0, 1);

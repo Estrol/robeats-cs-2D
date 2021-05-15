@@ -47,7 +47,7 @@ local TimingPresets = {
 		NoteMarvelousMaxMS = 16;
 		NoteMarvelousMinMS = -16;
 	},
-	["Extreme"] = { --Stepmania judge 7
+	["ROFAST GAMER"] = { --Stepmania judge 7
 		NoteBadMaxMS = 90;
 		NoteBadMinMS = -90;
 
