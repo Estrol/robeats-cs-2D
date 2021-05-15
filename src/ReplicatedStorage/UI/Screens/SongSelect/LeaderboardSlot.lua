@@ -35,6 +35,8 @@ LeaderboardSlot.PlaceColors = {
 LeaderboardSlot.SpreadString = "<font color=\"rgb(125, 125, 125)\">%d</font> <font color=\"rgb(55, 55, 55)\">/</font> <font color=\"rgb(99, 91, 15)\">%d</font> <font color=\"rgb(55, 55, 55)\">/</font> <font color=\"rgb(23, 99, 15)\">%d</font> <font color=\"rgb(55, 55, 55)\">/</font> <font color=\"rgb(15, 39, 99)\">%d</font> <font color=\"rgb(55, 55, 55)\">/</font> <font color=\"rgb(91, 15, 99)\">%d</font> <font color=\"rgb(55, 55, 55)\">/</font> <font color=\"rgb(99, 15, 21)\">%d</font>"
 
 function LeaderboardSlot:render()
+    local localUserId = game.Players.LocalPlayer and game.Players.LocalPlayer.UserId or 0
+
     return Roact.createElement(RoundedTextButton, {
         BackgroundColor3 = Color3.fromRGB(15, 15, 15),
         BorderMode = Enum.BorderMode.Inset,
@@ -102,7 +104,7 @@ function LeaderboardSlot:render()
                 Size = UDim2.new(15.3, 0, 0.55, 0),
                 Font = Enum.Font.GothamSemibold,
                 Text = self.props.Data.PlayerName,
-                TextColor3 = Color3.fromRGB(94, 94, 94),
+                TextColor3 = (self.props.Data.UserId == localUserId) and Color3.fromRGB(25, 207, 231) or Color3.fromRGB(94, 94, 94),
                 TextScaled = true,
                 TextXAlignment = Enum.TextXAlignment.Left,
             }, {
