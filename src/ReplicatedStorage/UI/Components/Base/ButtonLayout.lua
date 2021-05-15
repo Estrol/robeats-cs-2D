@@ -41,6 +41,7 @@ function ButtonLayout:render()
                 Size = UDim2.fromScale(1/num, 0.85),
                 HoldSize = UDim2.fromScale((1/num)-0.01, 0.85),
                 Text = v.Text,
+                TextScaled = true,
                 TextColor3 = Color3.fromRGB(255, 255, 255),
                 OnClick = v.OnClick,
                 BackgroundColor3 = v.Color or self.props.ButtonColor,
