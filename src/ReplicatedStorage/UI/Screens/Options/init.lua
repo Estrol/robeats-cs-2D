@@ -22,7 +22,7 @@ local EnumValue = require(script.EnumValue)
 
 local Options = Roact.Component:extend("Options")
 
-Options.categoryList = {"⚙ General", "➕ Extra"}
+Options.categoryList = {"⚙ General", "🖥️ Interface", "➕ Extra"}
 
 function noop() end
 
@@ -53,7 +53,7 @@ function Options:getSettingElements()
                 return string.format("%d", value)
             end;
 
-            LayoutOrder = 4
+            LayoutOrder = 5
         });
 
         --Notespeed
@@ -82,7 +82,7 @@ function Options:getSettingElements()
             FormatValue = function(value)
                 return string.format("%d ms", value)
             end,
-            LayoutOrder = 2
+            LayoutOrder = 4
         })
         --Keybinds
 
@@ -100,14 +100,6 @@ function Options:getSettingElements()
             LayoutOrder = 1
         });
 
-        elements.HideLNTails = e(BoolValue, {
-            Value = self.props.options.HideLNTails,
-            OnChanged = function(value)
-                self.props.setOption("HideLNTails", value)
-            end,
-            Name = "Hide LN Tails",
-            LayoutOrder = 4
-        })
 
         elements.JudgementVisibility = e(MultipleChoiceValue, {
             Values = self.props.options.JudgementVisibility,
@@ -119,7 +111,7 @@ function Options:getSettingElements()
                 self.props.setOption("JudgementVisibility", judgements)
             end,
             Name = "Judgement Visibility",
-            LayoutOrder = 5
+            LayoutOrder = 3
         })
 
         elements.TimingPreset = e(EnumValue, {
@@ -129,12 +121,25 @@ function Options:getSettingElements()
                 self.props.setOption("TimingPreset", name)
             end,
             Name = "Timing Preset",
-            LayoutOrder = 6
+            LayoutOrder = 2
         })
     end)
-
-    --extras
+    
+    --UI settings
     SPUtil:switch(self.state.selectedCategory):case(2, function()
+        elements.ComboPosition = e(EnumValue,{
+            Value = self.props.options.ComboPosition,
+            ValueNames = {"Left", "Middle", "Right"},
+            OnChanged = function(value)
+                self.props.setOption("ComboPosition", value)
+            end,
+            Name = "Combo Position",
+            LayoutOrder = 0;
+        });
+    end)
+    --extras
+
+    SPUtil:switch(self.state.selectedCategory):case(3, function()
         elements.BaseTransparency = e(IntValue, {
             Name = "Base Transparency",
             incrementValue = 0.1;
@@ -188,7 +193,17 @@ function Options:getSettingElements()
             Name = "Chat Visible",
             LayoutOrder = 5
         });
+
+        elements.HideLNTails = e(BoolValue, {
+            Value = self.props.options.HideLNTails,
+            OnChanged = function(value)
+                self.props.setOption("HideLNTails", value)
+            end,
+            Name = "Hide LN Tails",
+            LayoutOrder = 6
+        })
     end)
+    
 
     return elements
 end
