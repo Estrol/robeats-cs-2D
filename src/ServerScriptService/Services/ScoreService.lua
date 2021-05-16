@@ -228,7 +228,10 @@ end
 
 function ScoreService.Client:GetRank(player)
     local succeeded, ranks = Global
-        :query({})
+        :query()
+        :where({
+            Allowed = true
+        })
         :order("-Rating")
         :execute()
         :await()
