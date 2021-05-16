@@ -1,0 +1,78 @@
+local Knit = require(game:GetService("ReplicatedStorage").Knit)
+
+local DebugOut = require(game.ReplicatedStorage.Shared.DebugOut)
+
+local BanService = Knit.CreateService {
+    Name = "BanService";
+    Client = {};
+}
+
+local PermissionsService
+
+local ParseServer
+local Bans
+
+function BanService:OnPlayerAdded(player)
+    -- Check if the user's account age is too young to join the game
+
+    if player.AccountAge < 2 then
+        player:Kick(string.format("Your account must be older than 2 days to join this game. %d days left", 2 - player.AccountAge))
+    end
+
+    -- Query Parse to see if the user is banned
+
+    Bans
+        :query()
+        :where({
+            UserId = player.UserId
+        })
+        :execute()
+        :andThen(function(documents)
+            local ban = documents[1]
+
+            if ban then
+                player:Kick(ban.Reason)
+            end
+        end)
+end
+
+function BanService:BanUser(moderator, userId, reason)
+    if PermissionsService:HasModPermissions(moderator) then
+        local success, result = ParseServer.Functions.call("", {
+            userid = userId,
+            reason = reason
+        })
+        :await()
+
+        if success then
+            DebugOut:puts("Successfully banned user %d", userId)
+        else
+            warn("An error occured!\n", result) 
+        end
+
+        local player = game.Players:GetPlayerByUserId(userId)
+
+        if player then
+            player:Kick(reason)
+        end
+    end
+end
+
+function BanService:KnitStart()
+    PermissionsService = Knit.GetService("PermissionsService")
+
+    local ParseServerService = Knit.GetService("ParseServerService")
+    ParseServer = ParseServerService:GetParse()
+
+    Bans = ParseServer.Objects.class("Bans")
+
+    game.Players.PlayerAdded:Connect(function(player)
+        self:OnPlayerAdded(player)
+    end)
+
+    for _, player in pairs(game.Players:GetPlayers()) do
+        self:OnPlayerAdded(player)
+    end
+end
+
+return BanService

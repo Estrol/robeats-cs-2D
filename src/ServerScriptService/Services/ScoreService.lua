@@ -7,36 +7,24 @@ local GraphDataStore = DataStoreService:GetDataStore("GraphDataStore")
 
 local DebugOut = require(game.ReplicatedStorage.Shared.DebugOut)
 
-local ParseServer = require(game.ReplicatedStorage.Packages.ParseServer)
-local Server
+local PermissionsService
+
 local Scores
 local Global
-
-local baseUrl
-
-local RunService = game:GetService("RunService")
 
 local ScoreService = Knit.CreateService({
     Name = "ScoreService",
     Client = {}
 })
 
-function ScoreService:KnitInit()
-    Server = ParseServer.new()
+function ScoreService:KnitStart()
+    PermissionsService = Knit.GetService("PermissionsService")
 
-    if RunService:IsStudio() then
-        baseUrl = game.ServerScriptService:GetAttribute("UseReleaseAPI") and game:GetService("ServerScriptService").URLs.Release.Value or game:GetService("ServerScriptService").URLs.Dev.Value
-    else
-        baseUrl = game:GetService("ServerScriptService").URLs.Release.Value
-    end
+    local ParseServerService = Knit.GetService("ParseServerService")
+    local ParseServer = ParseServerService:GetParse()
 
-    local SecretService = Knit.GetService("SecretService")
-    
-    Scores = Server.Objects.class("Plays")
-    Global = Server.Objects.class("Global")
-    Server:setAppId(SecretService:GetSecret("ParseAppId")):setBaseUrl(baseUrl)
-
-    DebugOut:puts("Base API URL: %s", baseUrl)
+    Scores = ParseServer.Objects.class("Plays")
+    Global = ParseServer.Objects.class("Global")
 end
 
 function ScoreService:_GetGraphKey(userId, songMD5Hash)
@@ -126,6 +114,7 @@ function ScoreService:RefreshProfile(player)
                         Accuracy = ScoreService:CalculateAverageAccuracy(player.UserId),
                         PlayerName = player.DisplayName,
                         CountryRegion = LocalizationService:GetCountryRegionForPlayerAsync(player),
+                        Allowed = true,
                         UserId = player.UserId
                     })
                     :andThen(function(document)
@@ -164,7 +153,8 @@ function ScoreService.Client:SubmitScore(player, songMD5Hash, rating, score, mar
                 Accuracy = accuracy,
                 Rate = rate,
                 MaxChain = maxChain,
-                SongMD5Hash = songMD5Hash
+                SongMD5Hash = songMD5Hash,
+                Allowed = true
             })
             :await()
             ScoreService:RefreshProfile(player)
@@ -192,7 +182,7 @@ function ScoreService.Client:SubmitScore(player, songMD5Hash, rating, score, mar
                 Misses = misses,
                 Mean = mean,
                 Accuracy = accuracy,
-                Rate = rate,
+                Rate = rate
             }):await()
         end
 
@@ -221,9 +211,7 @@ function ScoreService.Client:GetScores(_, songMD5Hash, limit)
         :query()
         :where({
             SongMD5Hash = songMD5Hash,
-            Banned = {
-                ["$nin"] = { true }
-            }
+            Allowed = true
         })
         :limit(limit)
         :order("-Rating")
