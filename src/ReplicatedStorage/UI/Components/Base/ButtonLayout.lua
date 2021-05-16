@@ -10,7 +10,8 @@ ButtonLayout.defaultProps = {
     Size = UDim2.fromScale(1, 1),
     Buttons = {},
     ButtonColor = Color3.fromRGB(189, 53, 53),
-    Padding = UDim.new(0.0025, 0)
+    Padding = UDim.new(0.0025, 0),
+    DefaultSpace = 5,
 }
 
 function ButtonLayout:init()
@@ -20,7 +21,7 @@ end
 function ButtonLayout:render()
     local children = {}
     
-    local num = math.max(5, #self.props.Buttons)
+    local num = math.max(self.props.DefaultSpace, #self.props.Buttons)
 
     local slot = 0
 
@@ -38,7 +39,7 @@ function ButtonLayout:render()
         else
             table.insert(children, e(RoundedTextButton, {
                 AnchorPoint = Vector2.new(0.5, 0.5),
-                Size = UDim2.fromScale(1/num, 0.85),
+                Size = UDim2.fromScale(1/num, 0.85) - UDim2.new(self.props.Padding.Scale, self.props.Padding.Offset, 0, 0),
                 HoldSize = UDim2.fromScale((1/num)-0.01, 0.85),
                 Text = v.Text,
                 TextScaled = true,
@@ -47,6 +48,11 @@ function ButtonLayout:render()
                 BackgroundColor3 = v.Color or self.props.ButtonColor,
                 HighlightBackgroundColor3 = v.HighlightColor,
                 LayoutOrder = slot
+            }, {
+                UITextSizeConstraint = e("UITextSizeConstraint", {
+                    MaxTextSize = self.props.MaxTextSize,
+                    MinTextSize = self.props.MinTextSize,
+                })
             }))
             slot += 1
         end
