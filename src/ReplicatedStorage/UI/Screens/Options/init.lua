@@ -130,8 +130,8 @@ function Options:getSettingElements()
         elements.ComboPosition = e(EnumValue,{
             Value = self.props.options.ComboPosition,
             ValueNames = {"Left", "Middle", "Right"},
-            OnChanged = function(value)
-                self.props.setOption("ComboPosition", value)
+            OnChanged = function(name)
+                self.props.setOption("ComboPosition", name)
             end,
             Name = "Combo Position",
             LayoutOrder = 0;
