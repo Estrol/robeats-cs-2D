@@ -21,6 +21,8 @@ local RoundedFrame = require(game.ReplicatedStorage.UI.Components.Base.RoundedFr
 local RoundedTextButton = require(game.ReplicatedStorage.UI.Components.Base.RoundedTextButton)
 local LoadingWheel = require(game.ReplicatedStorage.UI.Components.Base.LoadingWheel)
 
+local ComboPositions = require(game.ReplicatedStorage.ComboPositions)
+
 
 local SpreadDisplay = require(game.ReplicatedStorage.UI.Screens.Results.SpreadDisplay)
 
@@ -279,7 +281,7 @@ function Gameplay:render()
         Combo = e(RoundedTextLabel, {
             Size = UDim2.fromScale(0.13, 0.07),
             TextColor3 = Color3.fromRGB(255, 255, 255),
-            Position = UDim2.fromScale(0.5, 0.57),
+            Position = ComboPositions[self.props.options.ComboPosition],
             AnchorPoint = Vector2.new(0.5, 0.5),
             BackgroundTransparency = 1,
             TextScaled = true,
