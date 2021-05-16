@@ -18,6 +18,7 @@ local Results = require(Screens.Results)
 local Options = require(Screens.Options)
 local Rankings = require(Screens.Rankings)
 local Scores  = require(Screens.Scores)
+local Moderation = require(Screens.Moderation)
 
 local TopBar = require(game.ReplicatedStorage.UI.Components.TopBar)
 
@@ -71,12 +72,19 @@ function RoactController:GetRoutes()
             exact = false,
             component = TopBar
         }),
+        Moderation = Roact.createElement(RoactRouter.Route, {
+            path = "/moderation/:path",
+            exact = true,
+            component = Moderation
+        }),
     }
 end
 
 function RoactController:GetDependencies()
     return {
-        ScoreService = Knit.GetService("ScoreService")
+        ScoreService = Knit.GetService("ScoreService"),
+        BanService = Knit.GetService("BanService"),
+        PreviewController = Knit.GetController("PreviewController")
     }
 end
 

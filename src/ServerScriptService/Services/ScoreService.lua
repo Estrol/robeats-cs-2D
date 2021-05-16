@@ -275,7 +275,10 @@ end
 
 function ScoreService.Client:GetGlobalLeaderboard()
     local succeeded, ranks = Global
-        :query({})
+        :query()
+        :where({
+            Allowed = true
+        })
         :order("-Rating")
         :limit(50)
         :execute()
@@ -291,6 +294,17 @@ end
 
 function ScoreService.Client:GetPlayerScores(player, userId)
     return ScoreService:GetPlayerScores(userId or player.UserId)
+end
+
+function ScoreService.Client:DeleteScore(moderator, objectId)
+    if PermissionsService:HasModPermissions(moderator) then
+        local succeeded, result = Scores:delete(objectId)
+            :await()
+        
+        if not succeeded then
+            warn(result)
+        end
+    end
 end
 
 return ScoreService

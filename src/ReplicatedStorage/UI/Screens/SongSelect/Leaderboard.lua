@@ -25,6 +25,7 @@ Leaderboard.defaultProps = {
 
 function Leaderboard:init()
     self.scoreService = self.props.scoreService
+    self.banService = self.props.banService
 
     self:setState({
         loading = false,
@@ -106,7 +107,10 @@ function Leaderboard:render()
             Data = join(v, {
                 Place = i
             }),
-            OnClick = self.props.OnLeaderboardSlotClicked
+            OnClick = self.props.OnLeaderboardSlotClicked,
+            IsAdmin = self.props.IsAdmin,
+            OnDelete = self.props.OnDelete,
+            OnBan = self.props.OnBan
         })
     end
 
@@ -132,5 +136,6 @@ function Leaderboard:render()
 end
 
 return withInjection(Leaderboard, {
-    scoreService = "ScoreService"
+    scoreService = "ScoreService",
+    banService = "BanService"
 })

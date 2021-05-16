@@ -1,11 +1,14 @@
 local Roact = require(game.ReplicatedStorage.Packages.Roact)
 local Llama = require(game.ReplicatedStorage.Packages.Llama)
+local RoactRodux = require(game.ReplicatedStorage.Packages.RoactRodux)
 local e = Roact.createElement
 local f = Roact.createFragment
 
 local RunService = game:GetService("RunService")
 
 local RankSlot = require(script.RankSlot)
+
+local withInjection = require(game.ReplicatedStorage.UI.Components.HOCs.withInjection)
 
 local RoundedTextButton = require(game.ReplicatedStorage.UI.Components.Base.RoundedTextButton)
 local RoundedAutoScrollingFrame = require(game.ReplicatedStorage.UI.Components.Base.RoundedAutoScrollingFrame)
@@ -18,17 +21,13 @@ function Rankings:init()
         players = {}
     })
 
-    if RunService:IsRunning() then
-        local Knit = require(game:GetService("ReplicatedStorage").Knit)
+    self.scoreService = self.props.scoreService
 
-        local ScoreService = Knit.GetService("ScoreService")
-
-        local players = ScoreService:GetGlobalLeaderboard()
-
+    self.scoreService:GetGlobalLeaderboardPromise():andThen(function(players)
         self:setState({
             players = players
         })
-    end
+    end)
 end
 
 function Rankings:render()
@@ -39,7 +38,9 @@ function Rankings:render()
             Data = Llama.Dictionary.join(playerSlot, {
                 Place = i
             }),
-            Size = UDim2.new(1, 0, 0, 50)
+            Size = UDim2.new(1, 0, 0, 50),
+            HoldSize = UDim2.new(0.98, 0, 0, 50),
+            IsAdmin = self.props.permissions.isAdmin
         })
 
         table.insert(players, rankSlot)
@@ -54,7 +55,8 @@ function Rankings:render()
             Position = UDim2.fromScale(0.5, 0.5),
             BackgroundColor3 = Color3.fromRGB(24, 24, 24),
             UIListLayoutProps = {
-                SortOrder = Enum.SortOrder.LayoutOrder
+                SortOrder = Enum.SortOrder.LayoutOrder,
+                HorizontalAlignment = Enum.HorizontalAlignment.Center
             }
         }, players),
         BackButton = e(RoundedTextButton, {
@@ -73,4 +75,12 @@ function Rankings:render()
     })
 end
 
-return Rankings
+local Injected = withInjection(Rankings, {
+    scoreService = "ScoreService"
+})
+
+return RoactRodux.connect(function(state)
+    return {
+        permissions = state.permissions
+    }
+end)(Injected)

@@ -13,6 +13,8 @@ local Actions = require(game.ReplicatedStorage.Actions)
 
 local Maid = require(game.ReplicatedStorage.Knit.Util.Maid)
 
+local withInjection = require(game.ReplicatedStorage.UI.Components.HOCs.withInjection)
+
 local RoundedFrame = require(game.ReplicatedStorage.UI.Components.Base.RoundedFrame)
 local ButtonLayout = require(game.ReplicatedStorage.UI.Components.Base.ButtonLayout)
 
@@ -23,9 +25,8 @@ local Leaderboard = require(script.Leaderboard)
 local SongSelect = Roact.Component:extend("SongSelect")
 
 function SongSelect:init()
-    if RunService:IsRunning() then
-        self.knit = require(game:GetService("ReplicatedStorage").Knit)
-    end
+    self.scoreService = self.props.scoreService
+    self.previewController = self.props.previewController
 
     self.maid = Maid.new()
 
@@ -68,10 +69,9 @@ function SongSelect:render()
             Size = UDim2.fromScale(0.325, 0.7),
             Position = UDim2.fromScale(0.02, 0.22),
             SongKey = self.props.options.SongKey,
+            IsAdmin = self.props.permissions.isAdmin,
             OnLeaderboardSlotClicked = function(stats)
-                local ScoreService = self.knit.GetService("ScoreService")
-
-                local _, hits = ScoreService:GetGraphPromise(stats.UserId, stats.SongMD5Hash)
+                local _, hits = self.scoreService:GetGraphPromise(stats.UserId, stats.SongMD5Hash)
                     :await()
 
                 self.props.history:push("/results", Llama.Dictionary.join(stats, {
@@ -79,6 +79,15 @@ function SongSelect:render()
                     TimePlayed = DateTime.fromIsoDate(stats.updatedAt).UnixTimestamp,
                     Hits = hits
                 }))
+            end,
+            OnDelete = function(id)
+                self.scoreService:DeleteScore(id)
+            end,
+            OnBan = function(userId, playerName)
+                self.props.history:push("/moderation/ban", {
+                    userId = userId,
+                    playerName = playerName
+                })
             end
         }),
         ButtonContainer = e(ButtonLayout, {
@@ -114,43 +123,37 @@ function SongSelect:render()
 end
 
 function SongSelect:didMount()
-    if self.knit then
-        local PreviewController = self.knit.GetController("PreviewController")
-
-        PreviewController:PlayId(SongDatabase:get_data_for_key(self.props.options.SongKey).AudioAssetId, function(audio)
-            audio.TimePosition = audio.TimeLength * 0.33
-        end)
-    end
+    self.previewController:PlayId(SongDatabase:get_data_for_key(self.props.options.SongKey).AudioAssetId, function(audio)
+        audio.TimePosition = audio.TimeLength * 0.33
+    end)
 end
 
 function SongSelect:didUpdate(oldProps)
-    if self.knit then
-        local PreviewController = self.knit.GetController("PreviewController")
+    if self.props.options.SongKey ~= oldProps.options.SongKey then
+        self.previewController:PlayId(SongDatabase:get_data_for_key(self.props.options.SongKey).AudioAssetId, function(audio)
+            audio.TimePosition = audio.TimeLength * 0.33
+        end)
+    end
 
-        if self.props.options.SongKey ~= oldProps.options.SongKey then
-            PreviewController:PlayId(SongDatabase:get_data_for_key(self.props.options.SongKey).AudioAssetId, function(audio)
-                audio.TimePosition = audio.TimeLength * 0.33
-            end)
-        end
-
-        if self.props.options.SongRate ~= oldProps.options.SongRate then
-            PreviewController:SetRate(self.props.options.SongRate / 100)
-        end
+    if self.props.options.SongRate ~= oldProps.options.SongRate then
+        self.previewController:SetRate(self.props.options.SongRate / 100)
     end
 end
 
 function SongSelect:willUnmount()
-    if self.knit then
-        local PreviewController = self.knit.GetController("PreviewController")
-        PreviewController:Silence()
-    end
-
+    self.previewController:Silence()
     self.maid:DoCleaning()
 end
 
+local Injected = withInjection(SongSelect, {
+    scoreService = "ScoreService",
+    previewController = "PreviewController"
+})
+
 return RoactRodux.connect(function(state, props)
     return Llama.Dictionary.join(props, {
-        options = Llama.Dictionary.join(state.options.persistent, state.options.transient)
+        options = Llama.Dictionary.join(state.options.persistent, state.options.transient),
+        permissions = state.permissions
     })
 end, function(dispatch)
     return {
@@ -161,4 +164,4 @@ end, function(dispatch)
             dispatch(Actions.setTransientOption("SongRate", songRate))
         end
     }
-end)(SongSelect)
+end)(Injected)

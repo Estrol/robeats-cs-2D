@@ -1,9 +1,15 @@
 local Roact = require(game.ReplicatedStorage.Packages.Roact)
+local Flipper = require(game.ReplicatedStorage.Packages.Flipper)
+local RoactFlipper = require(game.ReplicatedStorage.Packages.RoactFlipper)
 local e = Roact.createElement
 
+local withInjection = require(game.ReplicatedStorage.UI.Components.HOCs.withInjection)
+
 local RoundedFrame = require(game.ReplicatedStorage.UI.Components.Base.RoundedFrame)
+local RoundedTextButton = require(game.ReplicatedStorage.UI.Components.Base.RoundedTextButton)
 local RoundedTextLabel = require(game.ReplicatedStorage.UI.Components.Base.RoundedTextLabel)
 local RoundedImageLabel = require(game.ReplicatedStorage.UI.Components.Base.RoundedImageLabel)
+local ButtonLayout = require(game.ReplicatedStorage.UI.Components.Base.ButtonLayout)
 
 local RankSlot = Roact.Component:extend("RankSlot")
 
@@ -19,14 +25,78 @@ RankSlot.defaultProps = {
     }
 }
 
+function RankSlot:init()
+    self.banService = self.props.banService
+
+    self.motor = Flipper.SingleMotor.new(0)
+    self.motorBinding = RoactFlipper.getBinding(self.motor)
+
+    self:setState({
+        dialogOpen = false
+    })
+end
+
+function RankSlot:didUpdate()
+    self.motor:setGoal(Flipper.Spring.new(self.state.dialogOpen and 1 or 0, {
+        dampingRatio = 2.5,
+        frequency = 12
+    }))
+end
+
 function RankSlot:render()
-    return Roact.createElement(RoundedFrame, {
+    local dialog
+    
+    if self.state.dialogOpen then
+        dialog = e(ButtonLayout, {
+            Size = UDim2.fromScale(1, 1),
+            Position = self.motorBinding:map(function(a)
+                return UDim2.fromScale(2, 0):Lerp(UDim2.fromScale(0, 0), a)
+            end),
+            Padding = UDim.new(0, 8),
+            DefaultSpace = 2,
+            MaxTextSize = 15,
+            Buttons = {
+                {
+                    Text = "Ban user",
+                    Color = Color3.fromRGB(240, 184, 0),
+                    OnClick = function()
+                        self.banService:BanUser(self.props.Data.UserId)
+                    end
+                },
+                {
+                    Text = "Back",
+                    Color = Color3.fromRGB(37, 37, 37),
+                    OnClick = function()
+                        self:setState(function(state)
+                            return {
+                                dialogOpen = not state.dialogOpen
+                            }
+                        end)
+                    end
+                }
+            }
+        })
+    end
+    
+    return Roact.createElement(RoundedTextButton, {
         BackgroundColor3 = Color3.fromRGB(15, 15, 15),
         BorderMode = Enum.BorderMode.Inset,
         BorderSizePixel = 0,
         Size = self.props.Size,
-        LayoutOrder = self.props.Data.Place
+        HoldSize = self.props.HoldSize,
+        Text = "",
+        LayoutOrder = self.props.Data.Place,
+        OnRightClick = function()
+            if self.props.IsAdmin then
+                self:setState(function(state)
+                    return {
+                        dialogOpen = not state.dialogOpen
+                    }
+                end)
+            end
+        end;
     }, {
+        Dialog = dialog,
         UserThumbnail = Roact.createElement(RoundedImageLabel, {
             AnchorPoint = Vector2.new(0, 0.5),
             BackgroundColor3 = Color3.fromRGB(255, 255, 255),
@@ -97,4 +167,6 @@ function RankSlot:render()
     })
 end
 
-return RankSlot
+return withInjection(RankSlot, {
+    banService = "BanService"
+})

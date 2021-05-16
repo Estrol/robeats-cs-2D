@@ -36,9 +36,27 @@ function BanService:OnPlayerAdded(player)
         end)
 end
 
-function BanService:BanUser(moderator, userId, reason)
+
+function BanService:KnitStart()
+    PermissionsService = Knit.GetService("PermissionsService")
+    
+    local ParseServerService = Knit.GetService("ParseServerService")
+    ParseServer = ParseServerService:GetParse()
+    
+    Bans = ParseServer.Objects.class("Bans")
+    
+    game.Players.PlayerAdded:Connect(function(player)
+        self:OnPlayerAdded(player)
+    end)
+    
+    for _, player in pairs(game.Players:GetPlayers()) do
+        self:OnPlayerAdded(player)
+    end
+end
+
+function BanService.Client:BanUser(moderator, userId, reason)
     if PermissionsService:HasModPermissions(moderator) then
-        local success, result = ParseServer.Functions.call("", {
+        local success, result = ParseServer.Functions.call("ban", {
             userid = userId,
             reason = reason
         })
@@ -55,23 +73,6 @@ function BanService:BanUser(moderator, userId, reason)
         if player then
             player:Kick(reason)
         end
-    end
-end
-
-function BanService:KnitStart()
-    PermissionsService = Knit.GetService("PermissionsService")
-
-    local ParseServerService = Knit.GetService("ParseServerService")
-    ParseServer = ParseServerService:GetParse()
-
-    Bans = ParseServer.Objects.class("Bans")
-
-    game.Players.PlayerAdded:Connect(function(player)
-        self:OnPlayerAdded(player)
-    end)
-
-    for _, player in pairs(game.Players:GetPlayers()) do
-        self:OnPlayerAdded(player)
     end
 end
 

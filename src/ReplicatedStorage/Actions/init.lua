@@ -11,4 +11,8 @@ actions.setTransientOption = makeActionCreator("setTransientOption", function(op
     return { option = option, value = value }
 end)
 
+actions.setAdmin = makeActionCreator("setAdmin", function(value)
+    return { value = value }
+end)
+
 return actions

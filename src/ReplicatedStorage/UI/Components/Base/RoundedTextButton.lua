@@ -17,6 +17,7 @@ RoundedTextButton.defaultProps = {
     HighlightBackgroundColor3 = Color3.fromRGB(17, 17, 17);
     OnPress = noop;
     OnRelease = noop;
+    OnRightPress = noop;
     Frequency = 13;
     dampingRatio = 2.5;
     ZIndex = 1
@@ -85,6 +86,7 @@ function RoundedTextButton:render()
             })
         end;
         [Roact.Event.MouseButton1Click] = self.props.OnClick;
+        [Roact.Event.MouseButton2Click] = self.props.OnRightClick;
     }
 
     local children = Llama.Dictionary.join(self.props[Roact.Children], {

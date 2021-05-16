@@ -5,6 +5,7 @@ local SongButton = require(game.ReplicatedStorage.UI.Screens.SongSelect.SongButt
 return function(target)
     local testApp = Roact.createElement(SongButton, {
         SongKey = 1,
+        Size = UDim2.new(0.5, 0, 0, 100),
         OnClick = function(song_key)
             print(song_key)
         end

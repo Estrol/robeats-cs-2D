@@ -1,36 +1,33 @@
 local Roact = require(game.ReplicatedStorage.Packages.Roact)
-local Flipper = require(game.ReplicatedStorage.Packages.Flipper)
-local RoactFlipper = require(game.ReplicatedStorage.Packages.RoactFlipper)
+local Llama = require(game.ReplicatedStorage.Packages.Llama)
 
-local e = Roact.createElement
-local f = Roact.createFragment
-
-local function noop() end
-
-local RoundedTextBox = Roact.Component:extend("RoundedTextBox")\
-
+local RoundedTextBox = Roact.Component:extend("Button")
 
 RoundedTextBox.defaultProps = {
     Size = UDim2.fromScale(1, 1),
     Font = Enum.Font.GothamSemibold;
-    Text = "RoundedTextButton";
+    Text = "RoundedTextBox";
     TextSize = 18;
     BackgroundColor3 = Color3.fromRGB(29, 29, 29);
-    HoldSize = UDim2.fromScale(0.8, 0.8);
-    HighlightBackgroundColor3 = Color3.fromRGB(17, 17, 17);
-    OnPress = noop;
-    OnRelease = noop;
-    Frequency = 13;
-    dampingRatio = 2.5;
-
+    CornerRadius = UDim.new(0,4)
 }
 
-function RoundedTextBox:init()
-    return noop()
+function RoundedTextBox:render()
+    local children = Llama.Dictionary.join(self.props[Roact.Children], {
+        Corner = Roact.createElement("UICorner", {
+            CornerRadius = self.props.CornerRadius;
+        });
+    })
+
+    local props = {}
+
+    for i, v in pairs(self.props) do
+        if i ~= Roact.Children and i ~= "CornerRadius" then
+            props[i] = v
+        end
+    end
+
+    return Roact.createElement("TextBox", props, children)
 end
 
-function RoundedTextBox:render()
-    local props = {
-        
-    }
-end
+return RoundedTextBox

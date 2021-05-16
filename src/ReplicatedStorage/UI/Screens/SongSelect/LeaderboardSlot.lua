@@ -1,8 +1,16 @@
 local Roact = require(game.ReplicatedStorage.Packages.Roact)
+local e = Roact.createElement
+local Flipper = require(game.ReplicatedStorage.Packages.Flipper)
+local RoactFlipper = require(game.ReplicatedStorage.Packages.RoactFlipper)
+
+local withInjection = require(game.ReplicatedStorage.UI.Components.HOCs.withInjection)
 
 local RoundedTextLabel =  require(game.ReplicatedStorage.UI.Components.Base.RoundedTextLabel)
 local RoundedImageLabel = require(game.ReplicatedStorage.UI.Components.Base.RoundedImageLabel)
 local RoundedTextButton = require(game.ReplicatedStorage.UI.Components.Base.RoundedTextButton)
+local ButtonLayout = require(game.ReplicatedStorage.UI.Components.Base.ButtonLayout)
+
+local RunService = game:GetService("RunService")
 
 local LeaderboardSlot = Roact.Component:extend("LeaderboardSlot")
 
@@ -23,7 +31,9 @@ LeaderboardSlot.defaultProps = {
         Rate = 100,
         PlayerName = "Player1",
     },
-    OnClick = function() end
+    OnClick = function() end,
+    OnBan = function() end,
+    OnDelete = function() end
 }
 
 LeaderboardSlot.PlaceColors = {
@@ -34,10 +44,69 @@ LeaderboardSlot.PlaceColors = {
 
 LeaderboardSlot.SpreadString = "<font color=\"rgb(125, 125, 125)\">%d</font> <font color=\"rgb(55, 55, 55)\">/</font> <font color=\"rgb(99, 91, 15)\">%d</font> <font color=\"rgb(55, 55, 55)\">/</font> <font color=\"rgb(23, 99, 15)\">%d</font> <font color=\"rgb(55, 55, 55)\">/</font> <font color=\"rgb(15, 39, 99)\">%d</font> <font color=\"rgb(55, 55, 55)\">/</font> <font color=\"rgb(91, 15, 99)\">%d</font> <font color=\"rgb(55, 55, 55)\">/</font> <font color=\"rgb(99, 15, 21)\">%d</font>"
 
+function LeaderboardSlot:init()
+    self.scoreService = self.props.scoreService
+
+    self.motor = Flipper.SingleMotor.new(0)
+    self.motorBinding = RoactFlipper.getBinding(self.motor)
+
+    self:setState({
+        dialogOpen = false
+    })
+end
+
+function LeaderboardSlot:didUpdate()
+    self.motor:setGoal(Flipper.Spring.new(self.state.dialogOpen and 1 or 0, {
+        dampingRatio = 2.5,
+        frequency = 12
+    }))
+end
+
 function LeaderboardSlot:render()
     local localUserId = game.Players.LocalPlayer and game.Players.LocalPlayer.UserId or 0
 
-    return Roact.createElement(RoundedTextButton, {
+    local dialog
+    
+    if self.state.dialogOpen then
+        dialog = e(ButtonLayout, {
+            Size = UDim2.fromScale(1, 1),
+            Position = self.motorBinding:map(function(a)
+                return UDim2.fromScale(2, 0):Lerp(UDim2.fromScale(0, 0), a)
+            end),
+            Padding = UDim.new(0, 8),
+            DefaultSpace = 3,
+            MaxTextSize = 15,
+            Buttons = {
+                {
+                    Text = "Delete score",
+                    Color = Color3.fromRGB(238, 8, 8),
+                    OnClick = function()
+                        self.props.OnDelete(self.props.Data.objectId)
+                    end
+                },
+                {
+                    Text = "Ban user",
+                    Color = Color3.fromRGB(240, 184, 0),
+                    OnClick = function()
+                        self.props.OnBan(self.props.Data.UserId, self.props.Data.PlayerName)
+                    end
+                },
+                {
+                    Text = "Back",
+                    Color = Color3.fromRGB(37, 37, 37),
+                    OnClick = function()
+                        self:setState(function(state)
+                            return {
+                                dialogOpen = not state.dialogOpen
+                            }
+                        end)
+                    end
+                }
+            }
+        })
+    end
+
+    return e(RoundedTextButton, {
         BackgroundColor3 = Color3.fromRGB(15, 15, 15),
         BorderMode = Enum.BorderMode.Inset,
         BorderSizePixel = 0,
@@ -47,20 +116,30 @@ function LeaderboardSlot:render()
         LayoutOrder = self.props.Data.Place,
         OnClick = function()
             self.props.OnClick(self.props.Data)
-        end
+        end,
+        OnRightClick = function()
+            if self.props.IsAdmin then
+                self:setState(function(state)
+                    return {
+                        dialogOpen = not state.dialogOpen
+                    }
+                end)
+            end
+        end;
     }, {
-        UserThumbnail = Roact.createElement(RoundedImageLabel, {
+        Dialog = dialog,
+        UserThumbnail = e(RoundedImageLabel, {
             AnchorPoint = Vector2.new(0, 0.5),
             BackgroundColor3 = Color3.fromRGB(13, 13, 13),
             Position = UDim2.new(0.09, 0, 0.5, 0),
             Size = UDim2.new(0.07, 0, 0.75, 0),
             Image = string.format("https://www.roblox.com/headshot-thumbnail/image?userid=%d&width=420&height=420&format=png", self.props.Data.UserId)
         }, {
-            Roact.createElement("UIAspectRatioConstraint", {
+            e("UIAspectRatioConstraint", {
                 AspectType = Enum.AspectType.ScaleWithParentSize,
                 DominantAxis = Enum.DominantAxis.Height,
             }),
-            Rating = Roact.createElement(RoundedTextLabel, {
+            Rating = e(RoundedTextLabel, {
                 BackgroundColor3 = Color3.fromRGB(255, 255, 255),
                 BackgroundTransparency = 1,
                 BorderSizePixel = 0,
@@ -72,12 +151,12 @@ function LeaderboardSlot:render()
                 TextScaled = true,
                 TextXAlignment = Enum.TextXAlignment.Left,
             }, {
-                Roact.createElement("UITextSizeConstraint", {
+                e("UITextSizeConstraint", {
                     MaxTextSize = 29,
                     MinTextSize = 3,
                 })
             }),
-            Spread = Roact.createElement(RoundedTextLabel, {
+            Spread = e(RoundedTextLabel, {
                 BackgroundColor3 = Color3.fromRGB(255, 255, 255),
                 BackgroundTransparency = 1,
                 BorderSizePixel = 0,
@@ -90,13 +169,13 @@ function LeaderboardSlot:render()
                 TextScaled = true,
                 TextXAlignment = Enum.TextXAlignment.Left,
             }, {
-                Roact.createElement("UITextSizeConstraint", {
+                e("UITextSizeConstraint", {
                     MaxTextSize = 12,
                     MinTextSize = 4,
                 })
             }),
             --self.props.Data.Marvelouses, self.props.Data.Perfects, self.props.Data.Greats, self.props.Data.Goods, self.props.Data.Bads, self.props.Data.Misses
-            Player = Roact.createElement(RoundedTextLabel, {
+            Player = e(RoundedTextLabel, {
                 BackgroundColor3 = Color3.fromRGB(255, 255, 255),
                 BackgroundTransparency = 1,
                 BorderSizePixel = 0,
@@ -108,11 +187,11 @@ function LeaderboardSlot:render()
                 TextScaled = true,
                 TextXAlignment = Enum.TextXAlignment.Left,
             }, {
-                Roact.createElement("UITextSizeConstraint", {
+                e("UITextSizeConstraint", {
                     MaxTextSize = 49,
                 })
             });
-            AccuracyRate = Roact.createElement(RoundedTextLabel, {
+            AccuracyRate = e(RoundedTextLabel, {
                 BackgroundColor3 = Color3.fromRGB(255, 255, 255),
                 BackgroundTransparency = 1,
                 BorderSizePixel = 0,
@@ -125,14 +204,14 @@ function LeaderboardSlot:render()
                 TextScaled = true,
                 TextXAlignment = Enum.TextXAlignment.Left,
             }, {
-                Roact.createElement("UITextSizeConstraint", {
+                e("UITextSizeConstraint", {
                     MaxTextSize = 22,
                     MinTextSize = 7;
                 })
             })
         }),
 
-        Place = Roact.createElement(RoundedTextLabel, {
+        Place = e(RoundedTextLabel, {
             BackgroundColor3 = Color3.fromRGB(54, 54, 54),
             BorderSizePixel = 0,
             Position = UDim2.fromScale(0.0075, 0.1),
@@ -143,12 +222,12 @@ function LeaderboardSlot:render()
             TextScaled = true,
             BackgroundTransparency = 1;
         }, {
-            Roact.createElement("UITextSizeConstraint", {
+            e("UITextSizeConstraint", {
                 MaxTextSize = 19,
                 MinTextSize = 7,
             }),
         }),
-        UIAspectRatioConstraint = Roact.createElement("UIAspectRatioConstraint", {
+        UIAspectRatioConstraint = e("UIAspectRatioConstraint", {
             AspectRatio = 9,
             AspectType = Enum.AspectType.ScaleWithParentSize,
         })
