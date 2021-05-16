@@ -7,6 +7,8 @@ local State = require(game.ReplicatedStorage.State)
 
 local EnvironmentSetup = require(game.ReplicatedStorage.RobeatsGameCore.EnvironmentSetup)
 
+local DIContext = require(game.ReplicatedStorage.Contexts.DIContext)
+
 local Screens = game.ReplicatedStorage.UI.Screens
 
 local MainMenu = require(Screens.MainMenu)
@@ -72,6 +74,12 @@ function RoactController:GetRoutes()
     }
 end
 
+function RoactController:GetDependencies()
+    return {
+        ScoreService = Knit.GetService("ScoreService")
+    }
+end
+
 function RoactController:MountRoactNodes()
     local routes = self:GetRoutes()
 
@@ -80,10 +88,16 @@ function RoactController:MountRoactNodes()
         initialIndex = 1
     }, routes)
 
-    local app = Roact.createElement(RoactRodux.StoreProvider, {
+    local storeProvider = Roact.createElement(RoactRodux.StoreProvider, {
         store = State.Store
     }, {
         AppRouter = router
+    })
+
+    local app = Roact.createElement(DIContext.Provider, {
+        value = self:GetDependencies()
+    }, {
+        StoreProvider = storeProvider
     })
 
     -- Mount the router to the ScreenGui in PlayerGui
