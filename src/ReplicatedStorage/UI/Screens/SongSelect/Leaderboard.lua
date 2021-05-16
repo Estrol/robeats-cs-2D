@@ -9,6 +9,8 @@ local RoundedFrame = require(game.ReplicatedStorage.UI.Components.Base.RoundedFr
 local RoundedAutoScrollingFrame = require(game.ReplicatedStorage.UI.Components.Base.RoundedAutoScrollingFrame)
 local LoadingWheel = require(game.ReplicatedStorage.UI.Components.Base.LoadingWheel)
 
+local withInjection = require(game.ReplicatedStorage.UI.Components.HOCs.withInjection)
+
 local SongDatabase = require(game.ReplicatedStorage.RobeatsGameCore.SongDatabase)
 
 local LeaderboardSlot = require(game.ReplicatedStorage.UI.Screens.SongSelect.LeaderboardSlot)
@@ -22,9 +24,7 @@ Leaderboard.defaultProps = {
 }
 
 function Leaderboard:init()
-    if RunService:IsRunning() then
-        self.knit = require(game.ReplicatedStorage.Knit)
-    end
+    self.scoreService = self.props.scoreService
 
     self:setState({
         loading = false,
@@ -33,17 +33,18 @@ function Leaderboard:init()
 end
 
 function Leaderboard:performFetch()
-    if self.knit then
+    local songMD5Hash = SongDatabase:get_md5_hash_for_key(self.props.SongKey)
+
+    self:setState({
+        loading = true
+    })
+
+    self.scoreService:GetScoresPromise(songMD5Hash):andThen(function(scores)
         self:setState({
-            loading = true
+            scores = scores,
+            loading = false
         })
-        self.knit.GetService("ScoreService"):GetScoresPromise(SongDatabase:get_md5_hash_for_key(self.props.SongKey)):andThen(function(scores)
-            self:setState({
-                scores = scores,
-                loading = false
-            })
-        end)
-    end
+    end)
 end
 
 function Leaderboard:didMount()
@@ -130,4 +131,6 @@ function Leaderboard:render()
     });
 end
 
-return Leaderboard
+return withInjection(Leaderboard, {
+    scoreService = "ScoreService"
+})
