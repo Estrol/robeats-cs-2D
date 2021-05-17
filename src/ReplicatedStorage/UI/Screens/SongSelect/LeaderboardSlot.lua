@@ -65,17 +65,39 @@ end
 function LeaderboardSlot:render()
     local localUserId = game.Players.LocalPlayer and game.Players.LocalPlayer.UserId or 0
 
-    local dialog
-    
-    if self.state.dialogOpen then
-        dialog = e(ButtonLayout, {
+    return e(RoundedTextButton, {
+        BackgroundColor3 = Color3.fromRGB(15, 15, 15),
+        HighlightBackgroundColor3 = Color3.fromRGB(24, 24, 24),
+        BorderMode = Enum.BorderMode.Inset,
+        BorderSizePixel = 0,
+        Size = UDim2.new(0.9835, 0, 0, 25),
+        HoldSize = UDim2.new(0.96, 0, 0, 25),
+        Text = "",
+        LayoutOrder = self.props.Data.Place,
+        OnClick = function()
+            self.props.OnClick(self.props.Data)
+        end,
+        OnRightClick = function()
+            if self.props.IsAdmin then
+                self:setState(function(state)
+                    return {
+                        dialogOpen = not state.dialogOpen
+                    }
+                end)
+            end
+        end;
+    }, {
+        Dialog = e(ButtonLayout, {
             Size = UDim2.fromScale(1, 1),
             Position = self.motorBinding:map(function(a)
-                return UDim2.fromScale(2, 0):Lerp(UDim2.fromScale(0, 0), a)
+                return UDim2.fromScale(1, 0):Lerp(UDim2.fromScale(0, 0), a)
             end),
             Padding = UDim.new(0, 8),
             DefaultSpace = 3,
             MaxTextSize = 15,
+            Visible = self.motorBinding:map(function(a)
+                return a > 0
+            end),
             Buttons = {
                 {
                     Text = "Delete score",
@@ -103,31 +125,7 @@ function LeaderboardSlot:render()
                     end
                 }
             }
-        })
-    end
-
-    return e(RoundedTextButton, {
-        BackgroundColor3 = Color3.fromRGB(15, 15, 15),
-        BorderMode = Enum.BorderMode.Inset,
-        BorderSizePixel = 0,
-        Size = UDim2.new(0.982, 0, 0, 25),
-        HoldSize = UDim2.new(0.92, 0, 0, 25),
-        Text = "",
-        LayoutOrder = self.props.Data.Place,
-        OnClick = function()
-            self.props.OnClick(self.props.Data)
-        end,
-        OnRightClick = function()
-            if self.props.IsAdmin then
-                self:setState(function(state)
-                    return {
-                        dialogOpen = not state.dialogOpen
-                    }
-                end)
-            end
-        end;
-    }, {
-        Dialog = dialog,
+        }),
         UserThumbnail = e(RoundedImageLabel, {
             AnchorPoint = Vector2.new(0, 0.5),
             BackgroundColor3 = Color3.fromRGB(13, 13, 13),
