@@ -28,8 +28,6 @@ SongList.defaultProps = {
 ]]
 
 function SongList:init()
-    self._songbuttons = {}
-    self._list_layout_ref = Roact.createRef()
     self:setState({
         search = "";
         found = SongDatabase:filter_keys();
@@ -110,9 +108,6 @@ function SongList:render()
                 TextSize = 14,
                 TextWrapped = true,
                 TextXAlignment = Enum.TextXAlignment.Left,
-                [Roact.Event.Focused] = function()
-                    
-                end,
                 [Roact.Change.Text] = self.OnSearchChanged
             }, {
                 UITextSizeConstraint = e("UITextSizeConstraint", {
