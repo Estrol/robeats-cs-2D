@@ -64,6 +64,7 @@ function ButtonLayout:render()
         AnchorPoint = self.props.AnchorPoint,
         ClipsDescendants = true,
         ZIndex = self.props.ZIndex,
+        Visible = self.props.Visible,
         BackgroundColor3 = self.props.BackgroundColor3
     }, {
         Container = e("Frame", {
