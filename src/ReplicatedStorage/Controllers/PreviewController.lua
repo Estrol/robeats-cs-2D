@@ -3,6 +3,7 @@ local Flipper = require(game.ReplicatedStorage.Packages.Flipper)
 local Knit = require(game:GetService("ReplicatedStorage").Knit)
 
 local PreviewController = Knit.CreateController { Name = "PreviewController" }
+PreviewController.CanSpeakOnPlay = true
 
 local function noop() end
 
@@ -27,7 +28,7 @@ function PreviewController:GetSoundInstance()
     return Audio
 end
 
-function PreviewController:PlayId(id, callback, volume)
+function PreviewController:PlayId(id, callback, volume, override)
     if Audio.SoundId == id then
         self:Speak()
         return
@@ -45,8 +46,10 @@ function PreviewController:PlayId(id, callback, volume)
 
         Audio:Play()
 
-        -- Start animating the volume
-        self:Speak(volume)
+        if self.CanSpeakOnPlay or override then
+            -- Start animating the volume
+            self:Speak(volume)
+        end
     end)
 
     return Audio
@@ -57,6 +60,8 @@ function PreviewController:SetRate(rate)
 end
 
 function PreviewController:Silence()
+    self.CanSpeakOnPlay = false
+
     AudioVolumeMotor:setGoal(Flipper.Spring.new(0, {
         frequency = 7,
         dampingRatio = 6
@@ -64,6 +69,8 @@ function PreviewController:Silence()
 end
 
 function PreviewController:Speak(volume)
+    self.CanSpeakOnPlay = true
+
     volume = volume or 0.5
     AudioVolumeMotor:setGoal(Flipper.Spring.new(volume, {
         frequency = 2.7,
