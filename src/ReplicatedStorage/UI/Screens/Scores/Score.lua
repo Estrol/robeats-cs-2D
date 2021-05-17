@@ -31,17 +31,17 @@ function Score:render()
         OnClick = self.props.OnClick
     }, {
         Grade = e(RoundedTextLabel, {
-            Size = UDim2.fromScale(0.35, 1),
-            Position = UDim2.fromScale(0.02, 0),
+            Size = UDim2.fromScale(0.035, 1),
+            Position = UDim2.fromScale(0.01, 0),
             TextColor3 = gradeColor,
-            TextXAlignment = Enum.TextXAlignment.Left,
+            TextXAlignment = Enum.TextXAlignment.Center,
             BackgroundTransparency = 1,
             RichText = true,
             Text = gradeName
         }),
         Data = e(RoundedTextLabel, {
             Size = UDim2.fromScale(0.3, 1),
-            Position = UDim2.fromScale(0.05, 0),
+            Position = UDim2.fromScale(0.055, 0),
             TextColor3 = Color3.fromRGB(255, 255, 255),
             TextXAlignment = Enum.TextXAlignment.Left,
             BackgroundTransparency = 1,
