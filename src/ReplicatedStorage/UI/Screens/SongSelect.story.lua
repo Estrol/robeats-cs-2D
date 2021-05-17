@@ -18,25 +18,37 @@ return function(target)
 
     local fakeScoreService = a.fake()
 
-    a.callTo(fakeScoreService.GetScoresPromise, fakeScoreService, Fitumi.wildcard)
+    a.callTo(fakeScoreService.GetScoresPromise, fakeScoreService, Fitumi.wildcard, Fitumi.wildcard)
         :returns(Promise.new(function(resolve)
-            resolve({
-                {
-                    UserId = 526993347,
-                    PlayerName = "kisperal",
-                    Marvelouses = 6,
-                    Perfects = 5,
-                    Greats = 4,
-                    Goods = 3,
-                    Bads = 2,
-                    Misses = 1,
-                    Accuracy = 98.98,
-                    Place = 1,
-                    Rating = 56.75,
-                    Score = 0,
-                    Rate = 100
+            local fakeLeaderboard = {}
+
+            for i = 1, 50 do
+                local randomPlayerName = ""
+
+                for _ = 1, math.random(4, 13) do
+                    randomPlayerName ..= string.char(math.random(97, 122))
+                end
+
+                local fakeLeaderboardSlot = {
+                    UserId = math.random(1000, 100000),
+                    PlayerName = randomPlayerName,
+                    Marvelouses = math.random(1230, 2340),
+                    Perfects = math.random(678, 890),
+                    Greats = math.random(145, 300),
+                    Goods = math.random(3, 78),
+                    Bads = math.random(0, 17),
+                    Misses = math.random(1, 57),
+                    Accuracy = math.random(52, 100),
+                    Place = i,
+                    Rating = math.random(0.2, 54),
+                    Score = math.random(50, 190),
+                    Rate = math.floor(math.random(50, 190))
                 }
-            })
+
+                table.insert(fakeLeaderboard, fakeLeaderboardSlot)
+            end
+
+            resolve(fakeLeaderboard)
         end))
 
     local fakePreviewController = a.fake()
