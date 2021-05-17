@@ -91,10 +91,11 @@ function SongSelect:render()
             end
         }),
         ButtonContainer = e(ButtonLayout, {
-            Size = UDim2.fromScale(0.525, 0.042),
+            Size = UDim2.fromScale(0.55, 0.042),
             Position = UDim2.fromScale(0.02, 0.975),
             AnchorPoint = Vector2.new(0, 1),
             Padding = UDim.new(0, 8),
+            MaxTextSize = 14,
             Buttons = {
                 {
                     Text = "Play",
@@ -125,7 +126,7 @@ end
 function SongSelect:didMount()
     self.previewController:PlayId(SongDatabase:get_data_for_key(self.props.options.SongKey).AudioAssetId, function(audio)
         audio.TimePosition = audio.TimeLength * 0.33
-    end)
+    end, 0.5, true)
 end
 
 function SongSelect:didUpdate(oldProps)
