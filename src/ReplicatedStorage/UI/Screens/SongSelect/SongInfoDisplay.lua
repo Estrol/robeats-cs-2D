@@ -110,8 +110,11 @@ function SongInfoDisplay:render()
             Position = UDim2.new(0.02, 0, 0.035, 0),
             Size = UDim2.new(1, 0, 0.5, 0),
         }, {
-            UIListLayout = e("UIListLayout"),
-            ArtistDisplay = e(RoundedTextLabel, {
+            UIListLayout = e("UIListLayout", {
+                SortOrder = Enum.SortOrder.LayoutOrder,
+                Padding = UDim.new(0.04, 0)
+            }),
+            TitleDisplay = e(RoundedTextLabel, {
                 BackgroundTransparency = 1,
                 BorderSizePixel = 0,
                 LayoutOrder = 1,
@@ -120,7 +123,8 @@ function SongInfoDisplay:render()
                     return 1-a.artist
                 end);
                 Font = Enum.Font.Gotham,
-                Text = SongDatabase:get_artist_for_key(self.props.SongKey),
+                Text = string.format("%s [%0.2fx Rate]", SongDatabase:get_title_for_key(self.props.SongKey), self.props.SongRate / 100),
+                
                 TextColor3 = Color3.fromRGB(255, 187, 14),
                 TextScaled = true,
                 TextXAlignment = Enum.TextXAlignment.Left,
@@ -129,15 +133,16 @@ function SongInfoDisplay:render()
                     MaxTextSize = 60,
                 })
             }),
-            TitleDisplay = e(RoundedTextLabel, {
+            ArtistDisplay = e(RoundedTextLabel, {
                 BackgroundTransparency = 1,
                 Size = UDim2.new(0.75, 0, 0.3, 0);
                 TextTransparency = self.motorBinding:map(function(a)
                     return 1-a.title
                 end);
-                Text = string.format("%s [%0.2fx Rate]", SongDatabase:get_title_for_key(self.props.SongKey), self.props.SongRate / 100),
+                Text = SongDatabase:get_artist_for_key(self.props.SongKey),
                 TextColor3 = Color3.fromRGB(255, 187, 14),
                 TextScaled = true,
+                LayoutOrder = 1,
                 TextXAlignment = Enum.TextXAlignment.Left,
             }, {
                 UITextSizeConstraint = e("UITextSizeConstraint", {
