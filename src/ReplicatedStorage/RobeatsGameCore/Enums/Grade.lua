@@ -32,7 +32,7 @@ function Grade:get_grade_from_accuracy(accuracy)
     for enum_member = 1, #accuracy_to_grade do
         local grade_acc = accuracy_to_grade[enum_member]
         
-        if accuracy >= grade_acc then
+        if (accuracy >= grade_acc) or (enum_member == Grade.F) then
             local name
 
             for itr_name, value in pairs(self) do
