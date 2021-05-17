@@ -20,7 +20,8 @@ local Leaderboard = Roact.Component:extend("LeaderboardDisplay")
 Leaderboard.defaultProps = {
     Leaderboard = {},
     Position = UDim2.fromScale(0, 0),
-    Size = UDim2.fromScale(1, 1)
+    Size = UDim2.fromScale(1, 1),
+    ScoreLimit = 50
 }
 
 function Leaderboard:init()
@@ -40,7 +41,7 @@ function Leaderboard:performFetch()
         loading = true
     })
 
-    self.scoreService:GetScoresPromise(songMD5Hash):andThen(function(scores)
+    self.scoreService:GetScoresPromise(songMD5Hash, self.props.ScoreLimit):andThen(function(scores)
         self:setState({
             scores = scores,
             loading = false
@@ -63,7 +64,7 @@ function Leaderboard:render()
         return Roact.createElement(RoundedFrame, {
             Active = true,
             BackgroundColor3 = Color3.fromRGB(25, 25, 25),
-            BackgroundTransparency = 0,
+            BackgroundTransparency = 1,
             BorderColor3 = Color3.fromRGB(25, 25, 25),
             BorderSizePixel = 0,
             Position = self.props.Position,
@@ -81,7 +82,7 @@ function Leaderboard:render()
         return Roact.createElement(RoundedFrame, {
             Active = true,
             BackgroundColor3 = Color3.fromRGB(25, 25, 25),
-            BackgroundTransparency = 0,
+            BackgroundTransparency = 1,
             BorderColor3 = Color3.fromRGB(25, 25, 25),
             BorderSizePixel = 0,
             Position = self.props.Position,
@@ -117,7 +118,7 @@ function Leaderboard:render()
     return Roact.createElement(RoundedAutoScrollingFrame, {
         Active = true,
         BackgroundColor3 = Color3.fromRGB(25, 25, 25),
-        BackgroundTransparency = 0,
+        BackgroundTransparency = 1,
         BorderColor3 = Color3.fromRGB(25, 25, 25),
         BorderSizePixel = 0,
         Position = self.props.Position,
@@ -128,7 +129,7 @@ function Leaderboard:render()
         UIListLayoutProps = {
             SortOrder = Enum.SortOrder.LayoutOrder,
             HorizontalAlignment = Enum.HorizontalAlignment.Center,
-            Padding = UDim.new(0, 4),
+            Padding = UDim.new(0, 2),
         }
     }, {
         Children = Roact.createFragment(children)
