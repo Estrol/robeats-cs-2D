@@ -22,6 +22,7 @@ function Rankings:init()
     })
 
     self.scoreService = self.props.scoreService
+    self.banService = self.props.banService
 
     self.scoreService:GetGlobalLeaderboardPromise():andThen(function(players)
         self:setState({
@@ -40,7 +41,13 @@ function Rankings:render()
             }),
             Size = UDim2.new(1, 0, 0, 50),
             HoldSize = UDim2.new(0.98, 0, 0, 50),
-            IsAdmin = self.props.permissions.isAdmin
+            IsAdmin = self.props.permissions.isAdmin,
+            OnBan = function(userId, playerName)
+                self.props.history:push("/moderation/ban", {
+                    userId = userId,
+                    playerName = playerName
+                })
+            end
         })
 
         table.insert(players, rankSlot)
@@ -76,7 +83,8 @@ function Rankings:render()
 end
 
 local Injected = withInjection(Rankings, {
-    scoreService = "ScoreService"
+    scoreService = "ScoreService",
+    banService = "BanService"
 })
 
 return RoactRodux.connect(function(state)

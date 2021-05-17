@@ -22,7 +22,8 @@ RankSlot.defaultProps = {
         UserId = 0,
         Accuracy = 0,
         Place = 1
-    }
+    },
+    OnBan = function() end
 }
 
 function RankSlot:init()
@@ -43,41 +44,7 @@ function RankSlot:didUpdate()
     }))
 end
 
-function RankSlot:render()
-    local dialog
-    
-    if self.state.dialogOpen then
-        dialog = e(ButtonLayout, {
-            Size = UDim2.fromScale(1, 1),
-            Position = self.motorBinding:map(function(a)
-                return UDim2.fromScale(2, 0):Lerp(UDim2.fromScale(0, 0), a)
-            end),
-            Padding = UDim.new(0, 8),
-            DefaultSpace = 2,
-            MaxTextSize = 15,
-            Buttons = {
-                {
-                    Text = "Ban user",
-                    Color = Color3.fromRGB(240, 184, 0),
-                    OnClick = function()
-                        self.banService:BanUser(self.props.Data.UserId)
-                    end
-                },
-                {
-                    Text = "Back",
-                    Color = Color3.fromRGB(37, 37, 37),
-                    OnClick = function()
-                        self:setState(function(state)
-                            return {
-                                dialogOpen = not state.dialogOpen
-                            }
-                        end)
-                    end
-                }
-            }
-        })
-    end
-    
+function RankSlot:render()    
     return Roact.createElement(RoundedTextButton, {
         BackgroundColor3 = Color3.fromRGB(15, 15, 15),
         BorderMode = Enum.BorderMode.Inset,
@@ -96,7 +63,38 @@ function RankSlot:render()
             end
         end;
     }, {
-        Dialog = dialog,
+        Dialog = e(ButtonLayout, {
+            Size = UDim2.fromScale(1, 1),
+            Position = self.motorBinding:map(function(a)
+                return UDim2.fromScale(1, 0):Lerp(UDim2.fromScale(0, 0), a)
+            end),
+            Padding = UDim.new(0, 8),
+            DefaultSpace = 2,
+            MaxTextSize = 15,
+            Visible = self.motorBinding:map(function(a)
+                return a > 0
+            end),
+            Buttons = {
+                {
+                    Text = "Ban user",
+                    Color = Color3.fromRGB(240, 184, 0),
+                    OnClick = function()
+                        self.props.OnBan(self.props.Data.UserId, self.props.Data.PlayerName)
+                    end
+                },
+                {
+                    Text = "Back",
+                    Color = Color3.fromRGB(37, 37, 37),
+                    OnClick = function()
+                        self:setState(function(state)
+                            return {
+                                dialogOpen = not state.dialogOpen
+                            }
+                        end)
+                    end
+                }
+            }
+        }),
         UserThumbnail = Roact.createElement(RoundedImageLabel, {
             AnchorPoint = Vector2.new(0, 0.5),
             BackgroundColor3 = Color3.fromRGB(255, 255, 255),
