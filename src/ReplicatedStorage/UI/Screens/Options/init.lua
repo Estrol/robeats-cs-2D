@@ -126,7 +126,7 @@ function Options:getSettingElements()
     end)
     
     --UI settings
-    SPUtil:switch(self.state.selectedCategory):case(2, function()
+    :case(2, function()
         elements.ComboPosition = e(EnumValue,{
             Value = self.props.options.ComboPosition,
             ValueNames = {"Left", "Middle", "Right"},
@@ -135,11 +135,25 @@ function Options:getSettingElements()
             end,
             Name = "Combo Position",
             LayoutOrder = 0;
-        });
+        })
+
+        elements.LaneCover = e(IntValue, {
+            Value = self.props.options.LaneCover,
+            OnChanged = function(value)
+                self.props.setOption("LaneCover", value)
+            end,
+            FormatValue = function(value)
+                return string.format("%0d%%", value)
+            end,
+            Name = "Lane Cover",
+            incrementValue = 5,
+            MinValue = 0,
+            MaxValue = 100,
+            LayoutOrder = 3
+        })
     end)
     --extras
-
-    SPUtil:switch(self.state.selectedCategory):case(3, function()
+    :case(3, function()
         elements.BaseTransparency = e(IntValue, {
             Name = "Base Transparency",
             incrementValue = 0.1;
