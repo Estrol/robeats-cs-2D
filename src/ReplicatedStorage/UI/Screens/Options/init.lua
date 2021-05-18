@@ -46,13 +46,12 @@ function Options:getSettingElements()
             OnChanged = function(value)
                 self.props.setOption("FOV", value)
             end;
-
             Name = "Field of View (FOV)";
-
             FormatValue = function(value)
                 return string.format("%d", value)
             end;
-
+            MaxValue = 120,
+            MinValue = 1,
             LayoutOrder = 5
         });
 
@@ -69,6 +68,7 @@ function Options:getSettingElements()
                 return string.format("%d", value)
             end,
             Name = "Note Speed",
+            MinValue = 0,
             LayoutOrder = 3
         })
 
@@ -147,10 +147,11 @@ function Options:getSettingElements()
             OnChanged = function(value)
                 self.props.setOption("BaseTransparency", value)
             end,
-
             FormatValue = function(value)
                 return string.format("%0.1f", value)
             end,
+            MaxValue = 1,
+            MinValue = 0,
             LayoutOrder = 2
          });
 
@@ -164,6 +165,8 @@ function Options:getSettingElements()
             FormatValue = function(value)
                 return string.format("%d", value)
             end,
+            MaxValue = 24,
+            MinValue = 0,
             LayoutOrder = 1
         });
 
