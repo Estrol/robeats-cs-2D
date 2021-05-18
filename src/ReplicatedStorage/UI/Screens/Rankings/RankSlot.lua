@@ -27,7 +27,7 @@ RankSlot.defaultProps = {
 }
 
 function RankSlot:init()
-    self.banService = self.props.banService
+    self.moderationService = self.props.moderationService
 
     self.motor = Flipper.SingleMotor.new(0)
     self.motorBinding = RoactFlipper.getBinding(self.motor)
@@ -166,5 +166,5 @@ function RankSlot:render()
 end
 
 return withInjection(RankSlot, {
-    banService = "BanService"
+    moderationService = "ModerationService"
 })

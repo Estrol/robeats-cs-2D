@@ -26,7 +26,7 @@ Leaderboard.defaultProps = {
 
 function Leaderboard:init()
     self.scoreService = self.props.scoreService
-    self.banService = self.props.banService
+    self.moderationService = self.props.moderationService
 
     self:setState({
         loading = false,
@@ -138,5 +138,5 @@ end
 
 return withInjection(Leaderboard, {
     scoreService = "ScoreService",
-    banService = "BanService"
+    moderationService = "ModerationService"
 })

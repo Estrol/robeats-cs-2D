@@ -2,8 +2,8 @@ local Knit = require(game:GetService("ReplicatedStorage").Knit)
 
 local DebugOut = require(game.ReplicatedStorage.Shared.DebugOut)
 
-local BanService = Knit.CreateService {
-    Name = "BanService";
+local ModerationService = Knit.CreateService {
+    Name = "ModerationService";
     Client = {};
 }
 
@@ -12,7 +12,7 @@ local PermissionsService
 local ParseServer
 local Bans
 
-function BanService:OnPlayerAdded(player)
+function ModerationService:OnPlayerAdded(player)
     -- Check if the user's account age is too young to join the game
 
     if player.AccountAge < 2 then
@@ -37,7 +37,7 @@ function BanService:OnPlayerAdded(player)
 end
 
 
-function BanService:KnitStart()
+function ModerationService:KnitStart()
     PermissionsService = Knit.GetService("PermissionsService")
     
     local ParseServerService = Knit.GetService("ParseServerService")
@@ -54,7 +54,7 @@ function BanService:KnitStart()
     end
 end
 
-function BanService.Client:BanUser(moderator, userId, reason)
+function ModerationService.Client:BanUser(moderator, userId, reason)
     if PermissionsService:HasModPermissions(moderator) then
         local success, result = ParseServer.Functions.call("ban", {
             userid = userId,
@@ -76,4 +76,14 @@ function BanService.Client:BanUser(moderator, userId, reason)
     end
 end
 
-return BanService
+function ModerationService.Client:KickUser(moderator, userId, reason)
+    if PermissionsService:HasModPermissions(moderator) then
+        local player = game.Players:GetPlayerByUserId(userId)
+
+        if player then
+            player:Kick(reason)
+        end
+    end
+end
+
+return ModerationService

@@ -22,7 +22,7 @@ function Rankings:init()
     })
 
     self.scoreService = self.props.scoreService
-    self.banService = self.props.banService
+    self.moderationService = self.props.moderationService
 
     self.scoreService:GetGlobalLeaderboardPromise():andThen(function(players)
         self:setState({
@@ -84,7 +84,7 @@ end
 
 local Injected = withInjection(Rankings, {
     scoreService = "ScoreService",
-    banService = "BanService"
+    moderationService = "ModerationService"
 })
 
 return RoactRodux.connect(function(state)

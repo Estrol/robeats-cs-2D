@@ -2,11 +2,17 @@ local Roact = require(game.ReplicatedStorage.Packages.Roact)
 local e = Roact.createElement
 
 local Ban = require(script.Ban)
+local Kick = require(script.Kick)
+local Users = require(script.Users)
+local Home = require(script.Home)
 
 local Moderation = Roact.Component:extend("Moderation")
 
 Moderation.routes = {
-    ban = Ban
+    ban = Ban,
+    kick = Kick,
+    users = Users,
+    home = Home
 }
 
 function Moderation:render()

@@ -83,7 +83,7 @@ end
 function RoactController:GetDependencies()
     return {
         ScoreService = Knit.GetService("ScoreService"),
-        BanService = Knit.GetService("BanService"),
+        ModerationService = Knit.GetService("ModerationService"),
         PreviewController = Knit.GetController("PreviewController")
     }
 end
