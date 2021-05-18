@@ -202,6 +202,15 @@ function Options:getSettingElements()
             Name = "Hide LN Tails",
             LayoutOrder = 6
         })
+
+        elements.HideLeaderboard = e(BoolValue, {
+            Value = self.props.options.HideLeaderboard,
+            OnChanged = function(value)
+                self.props.setOption("HideLeaderboard", value)
+            end,
+            Name = "Hide In-Game Leaderboard",
+            LayoutOrder = 7
+        })
     end)
     
 

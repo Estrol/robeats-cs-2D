@@ -23,9 +23,6 @@ local LoadingWheel = require(game.ReplicatedStorage.UI.Components.Base.LoadingWh
 
 local ComboPositions = require(game.ReplicatedStorage.ComboPositions)
 
-
-local SpreadDisplay = require(game.ReplicatedStorage.UI.Screens.Results.SpreadDisplay)
-
 local withHitDeviancePoint = require(script.Decorators.withHitDeviancePoint)
 
 local Knit = require(game:GetService("ReplicatedStorage").Knit)
@@ -33,6 +30,8 @@ local Knit = require(game:GetService("ReplicatedStorage").Knit)
 local Lighting = game:GetService("Lighting")
 
 local Gameplay = Roact.Component:extend("Gameplay")
+
+Gameplay.SpreadString = "<font color=\"rgb(125, 125, 125)\">%d</font> <font color=\"rgb(55, 55, 55)\">/</font> <font color=\"rgb(99, 91, 15)\">%d</font> <font color=\"rgb(55, 55, 55)\">/</font> <font color=\"rgb(23, 99, 15)\">%d</font> <font color=\"rgb(55, 55, 55)\">/</font> <font color=\"rgb(15, 39, 99)\">%d</font> <font color=\"rgb(55, 55, 55)\">/</font> <font color=\"rgb(91, 15, 99)\">%d</font> <font color=\"rgb(55, 55, 55)\">/</font> <font color=\"rgb(99, 15, 21)\">%d</font> | %0.1f M/P"
 
 function Gameplay:init()
     -- Get the score service
@@ -45,6 +44,12 @@ function Gameplay:init()
         accuracy = 0,
         score = 0,
         chain = 0,
+        marvelouses = 0,
+        perfects = 0,
+        greats = 0,
+        goods = 0,
+        bads = 0,
+        misses = 0,
         loaded = false
     })
 
@@ -168,7 +173,9 @@ function Gameplay:init()
     -- Hook into onStatsChanged to monitor when stats change in ScoreManager
 
     self.onStatsChangedConnection = _game._score_manager:get_on_change():Connect(function(...)
-        local hit = select(10, ...)
+        local args = {...}
+
+        local hit = args[10]
         
         if hit then
             local bar = Instance.new("Frame")
@@ -188,7 +195,13 @@ function Gameplay:init()
         self:setState({
             score = _game._score_manager:get_score(),
             accuracy = _game._score_manager:get_accuracy() * 100,
-            chain = _game._score_manager:get_chain()
+            chain = _game._score_manager:get_chain(),
+            marvelouses = args[1],
+            perfects = args[2],
+            greats = args[3],
+            goods = args[4],
+            bads = args[5],
+            misses = args[6]
         })
     end)
 
@@ -228,6 +241,18 @@ function Gameplay:render()
                     self._game:set_mode(RobeatsGame.Mode.GameEnded)
                 end
             })
+        })
+    end
+
+    local MA = (self.state.perfects) == 0 and 0 or self.state.marvelouses / self.state.perfects
+
+    local leaderboard
+
+    if not self.props.options.HideLeaderboard then
+        leaderboard = e(Leaderboard, {
+            SongKey = self.props.options.SongKey,
+            LocalRating = Rating:get_rating_from_accuracy(self.props.options.SongKey, self.state.accuracy, self.props.options.SongRate / 100),
+            LocalAccuracy = self.state.accuracy
         })
     end
 
@@ -301,11 +326,24 @@ function Gameplay:render()
                 self._game:set_mode(RobeatsGame.Mode.GameEnded)
             end
         }),
-        Leaderboard = e(Leaderboard, {
-            SongKey = self.props.options.SongKey,
-            LocalRating = Rating:get_rating_from_accuracy(self.props.options.SongKey, self.state.accuracy, self.props.options.SongRate / 100),
-            LocalAccuracy = self.state.accuracy
+        Spread = e(RoundedTextLabel, {
+            RichText = true,
+            Size = UDim2.fromScale(0.3, 0.08),
+            TextYAlignment = Enum.TextYAlignment.Bottom,
+            TextXAlignment = Enum.TextXAlignment.Right,
+            AnchorPoint = Vector2.new(1, 0),
+            TextColor3 = Color3.fromRGB(255, 255, 255),
+            BackgroundTransparency = 1,
+            Position = UDim2.fromScale(0.98, 0.89),
+            TextScaled = true,
+            Text = string.format(self.SpreadString,
+                self.state.marvelouses, self.state.perfects, self.state.greats, self.state.goods, self.state.bads, self.state.misses, MA)
+        }, {
+            UITextSizeConstraint = e("UITextSizeConstraint", {
+                MaxTextSize = 15
+            })
         }),
+        Leaderboard = leaderboard,
 
         -- SpreadDisplay = e(SpreadDisplay, {
 
