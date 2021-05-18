@@ -10,13 +10,6 @@ SongDatabase.SongStatus = {
 	UNRANKED = "UNRANKED";
 }
 
-SongDatabase.SongType = {
-	Normal = 0;
-	Light = 1;
-	Heavy = 2;
-	Extra = 3;
-}
-
 function SongDatabase:new()
 	local self = {}
 	self.SongMode = SongDatabase.SongMode
