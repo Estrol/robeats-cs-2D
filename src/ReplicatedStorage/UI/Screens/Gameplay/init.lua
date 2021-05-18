@@ -295,6 +295,7 @@ function Gameplay:render()
             HighlightBackgroundColor3 = Color3.fromRGB(187, 53, 53),
             Position = UDim2.fromScale(0.02, 0.02),
             Text = "Back (No save)",
+            TextSize = 11,
             OnClick = function()
                 self.forcedQuit = true
                 self._game:set_mode(RobeatsGame.Mode.GameEnded)
