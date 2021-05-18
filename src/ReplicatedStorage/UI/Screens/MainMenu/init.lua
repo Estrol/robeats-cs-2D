@@ -11,6 +11,8 @@ local AudioVisualizer = require(script.AudioVisualizer)
 
 local RunService = game:GetService("RunService")
 
+local withInjection = require(game.ReplicatedStorage.UI.Components.HOCs.withInjection)
+
 local RoundedFrame = require(game.ReplicatedStorage.UI.Components.Base.RoundedFrame)
 local RoundedTextButton = require(game.ReplicatedStorage.UI.Components.Base.RoundedTextButton)
 local RoundedImageLabel = require(game.ReplicatedStorage.UI.Components.Base.RoundedImageLabel)
@@ -20,20 +22,40 @@ local RoundedTextLabel = require(game.ReplicatedStorage.UI.Components.Base.Round
 local MainMenuUI = Roact.Component:extend("MainMenuUI")
 
 function MainMenuUI:init()
-    if RunService:IsRunning() then
-        self.knit = require(game:GetService("ReplicatedStorage").Knit)
-    end
+    self.previewController = self.props.previewController
 end
 
 function MainMenuUI:didMount()
-    if self.knit then
-        local PreviewController = self.knit.GetController("PreviewController")
-        
-        PreviewController:PlayId(SongDatabase:get_data_for_key(self.props.songKey).AudioAssetId)
-    end
+    self.previewController:PlayId(SongDatabase:get_data_for_key(self.props.songKey).AudioAssetId)
 end
 
 function MainMenuUI:render()
+    local moderation
+
+    if self.props.permissions.isAdmin then
+        moderation = e(RoundedTextButton, {
+            BackgroundColor3 = Color3.fromRGB(22, 22, 22);
+            BorderMode = Enum.BorderMode.Inset,
+            BorderSizePixel = 0,
+            Size = UDim2.new(0.1,0,0.075,0),
+            HoldSize = UDim2.new(0.1,-3,0.075,0),
+            Position = UDim2.fromScale(0.975, 0.85),
+            AnchorPoint = Vector2.new(1, 0.5),
+            Text = "Moderator";
+            TextScaled = true;
+            TextColor3 = Color3.fromRGB(255, 255, 255);
+            LayoutOrder = 4;
+            OnClick = function()
+                self.props.history:push("/moderation/home")
+            end
+        }, {
+            UITextSizeConstraint = e("UITextSizeConstraint", {
+                MinTextSize = 8;
+                MaxTextSize = 13;
+            })
+        });
+    end
+
     return e(RoundedFrame, {
         Size = UDim2.new(1, 0, 1, 0),
     }, {
@@ -173,7 +195,6 @@ function MainMenuUI:render()
                 })
             });
         });
-
         Title = e("TextLabel", {
             BackgroundTransparency = 1;
             BackgroundColor3 = Color3.fromRGB(255, 255, 255);
@@ -186,12 +207,18 @@ function MainMenuUI:render()
             AnchorPoint = Vector2.new(1, 0);
             Font = Enum.Font.GothamBlack;
         });
+        Moderation = moderation
     });
     
 end
 
+local Injected = withInjection(MainMenuUI, {
+    previewController = "PreviewController"
+})
+
 return RoactRodux.connect(function(state)
     return {
-        songKey = state.options.transient.SongKey
+        songKey = state.options.transient.SongKey,
+        permissions = state.permissions
     }
-end)(MainMenuUI)
+end)(Injected)

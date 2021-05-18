@@ -8,27 +8,26 @@ local RunService = game:GetService("RunService")
 
 local SPUtil = require(game.ReplicatedStorage.Shared.SPUtil)
 
+local withInjection = require(game.ReplicatedStorage.UI.Components.HOCs.withInjection)
+
 local RoundedFrame = require(game.ReplicatedStorage.UI.Components.Base.RoundedFrame)
 
 local AudioVisualizer = Roact.Component:extend("AudioVisualizer")
 
 function AudioVisualizer:init()
-    if RunService:IsRunning() then
-        self.motor = Flipper.SingleMotor.new(0)
-        self.motorBinding = RoactFlipper.getBinding(self.motor)
+    self.motor = Flipper.SingleMotor.new(0)
+    self.motorBinding = RoactFlipper.getBinding(self.motor)
 
-        local Knit = require(game:GetService("ReplicatedStorage").Knit)
-        local PreviewController = Knit.GetController("PreviewController")
+    self.previewController = self.props.previewController
 
-        local SoundInstance = PreviewController:GetSoundInstance()
+    local SoundInstance = self.previewController:GetSoundInstance()
 
-        self.animateLinesPerFrame = SPUtil:bind_to_frame(function()
-            self.motor:setGoal(Flipper.Spring.new(SoundInstance.PlaybackLoudness, {
-                dampingRatio = 2.75,
-                frequency = 8.5
-            }))
-        end)
-    end
+    self.animateLinesPerFrame = SPUtil:bind_to_frame(function()
+        self.motor:setGoal(Flipper.Spring.new(SoundInstance.PlaybackLoudness, {
+            dampingRatio = 2.75,
+            frequency = 8.5
+        }))
+    end)
 end
 
 function AudioVisualizer:render()
@@ -72,4 +71,6 @@ function AudioVisualizer:willUnmount()
     end
 end
 
-return AudioVisualizer
+return withInjection(AudioVisualizer, {
+    previewController = "PreviewController"
+})
