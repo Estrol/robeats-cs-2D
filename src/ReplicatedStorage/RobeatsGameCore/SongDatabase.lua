@@ -102,12 +102,7 @@ function SongDatabase:new()
 		
 		return last_hit_ob.Time + (last_hit_ob.Duration or 0)
 	end
-
-	function self:get_song_type_for_key(key)
-		--hey regen leave this method empty, i'll keep workin on it - astral
-		return
-	end
-
+	
 	function self:get_nps_graph_for_key(key, resolution)
 		resolution = resolution or 1
 
