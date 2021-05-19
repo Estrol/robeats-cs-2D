@@ -19,6 +19,7 @@ local KeybindValue = require(script.KeybindValue)
 local BoolValue = require(script.BoolValue)
 local MultipleChoiceValue = require(script.MultipleChoiceValue)
 local EnumValue = require(script.EnumValue)
+local ColorValue = require(script.ColorValue)
 
 local Options = Roact.Component:extend("Options")
 
@@ -150,6 +151,15 @@ function Options:getSettingElements()
             MinValue = 0,
             MaxValue = 100,
             LayoutOrder = 3
+        })
+
+        elements.NoteColor = e(ColorValue, {
+            Value = self.props.options.NoteColor,
+            OnChanged = function(value)
+                self.props.setOption("NoteColor", value)
+            end,
+            Name = "Note Color",
+            LayoutOrder = 4
         })
     end)
     --extras

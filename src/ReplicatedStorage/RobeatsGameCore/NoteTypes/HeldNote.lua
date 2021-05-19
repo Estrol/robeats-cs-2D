@@ -104,6 +104,12 @@ function HeldNote:new(
 		_body_outline_right = _note_obj.Body.BodyOutlineRight
 		_body_outline_right_adorn = _body_outline_right.Adorn
 
+		local _note_color = _game:get_note_color()
+
+		_body_adorn.Color3 = _note_color
+		_head_adorn.Color3 = _note_color
+		_tail_adorn.Color3 = _note_color
+
 		_state = HeldNote.State.Pre
 		self:update_visual(1)
 	end

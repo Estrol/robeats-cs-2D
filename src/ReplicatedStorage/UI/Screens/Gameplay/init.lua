@@ -87,6 +87,7 @@ function Gameplay:init()
     _game:set_hit_lighting(self.props.options.HitLighting)
     _game:set_ln_tails(self.props.options.HideLNTails)
     _game:set_judgement_visibility(self.props.options.JudgementVisibility)
+    _game:set_note_color(self.props.options.NoteColor)
     
     -- Load the map
 

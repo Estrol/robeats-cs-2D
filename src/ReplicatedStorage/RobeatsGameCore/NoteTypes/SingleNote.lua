@@ -66,6 +66,8 @@ function SingleNote:new(_game, _track_index, _slot_index, _creation_time_ms, _hi
 		_body_adorn = _body.Adorn
 		_outline_top_adorn = _outline_top.Adorn
 		_outline_bottom_adorn = _outline_bottom.Adorn
+
+		_body.Adorn.Color3 = _game:get_note_color()
 		
 		self:update_visual(1)
 	end
