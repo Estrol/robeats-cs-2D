@@ -12,6 +12,8 @@ local IntValue = Roact.Component:extend("IntValue")
 IntValue.defaultProps = {
     Size = UDim2.new(1, 0, 0, 80),
     Value = 0,
+    MaxValue = math.huge,
+    MinValue = -math.huge,
     Name = "SettingName",
     OnChanged = noop,
     incrementValue = 1;
@@ -53,7 +55,9 @@ function IntValue:render()
         }),
         Subtract = e(RoundedImageButton, {
             OnClick = function()
-                self.props.OnChanged(self.props.Value - self.props.incrementValue)
+                if (self.props.Value - self.props.incrementValue) >= self.props.MinValue then
+                    self.props.OnChanged(self.props.Value - self.props.incrementValue)
+                end
             end,
             BackgroundTransparency = 1,
             Image = "rbxassetid://1588248423",
@@ -74,7 +78,9 @@ function IntValue:render()
         }),
         Add = e(RoundedImageButton, {
             OnClick = function()
-                self.props.OnChanged(self.props.Value + self.props.incrementValue)
+                if (self.props.Value + self.props.incrementValue) <= self.props.MaxValue then
+                    self.props.OnChanged(self.props.Value + self.props.incrementValue)
+                end
             end,
             BackgroundTransparency = 1,
             Image = "rbxassetid://1588248423",

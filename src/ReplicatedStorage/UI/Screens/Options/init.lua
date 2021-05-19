@@ -46,13 +46,12 @@ function Options:getSettingElements()
             OnChanged = function(value)
                 self.props.setOption("FOV", value)
             end;
-
             Name = "Field of View (FOV)";
-
             FormatValue = function(value)
                 return string.format("%d", value)
             end;
-
+            MaxValue = 120,
+            MinValue = 1,
             LayoutOrder = 5
         });
 
@@ -69,6 +68,7 @@ function Options:getSettingElements()
                 return string.format("%d", value)
             end,
             Name = "Note Speed",
+            MinValue = 0,
             LayoutOrder = 3
         })
 
@@ -126,7 +126,7 @@ function Options:getSettingElements()
     end)
     
     --UI settings
-    SPUtil:switch(self.state.selectedCategory):case(2, function()
+    :case(2, function()
         elements.ComboPosition = e(EnumValue,{
             Value = self.props.options.ComboPosition,
             ValueNames = {"Left", "Middle", "Right"},
@@ -135,11 +135,25 @@ function Options:getSettingElements()
             end,
             Name = "Combo Position",
             LayoutOrder = 0;
-        });
+        })
+
+        elements.LaneCover = e(IntValue, {
+            Value = self.props.options.LaneCover,
+            OnChanged = function(value)
+                self.props.setOption("LaneCover", value)
+            end,
+            FormatValue = function(value)
+                return string.format("%0d%%", value)
+            end,
+            Name = "Lane Cover",
+            incrementValue = 5,
+            MinValue = 0,
+            MaxValue = 100,
+            LayoutOrder = 3
+        })
     end)
     --extras
-
-    SPUtil:switch(self.state.selectedCategory):case(3, function()
+    :case(3, function()
         elements.BaseTransparency = e(IntValue, {
             Name = "Base Transparency",
             incrementValue = 0.1;
@@ -147,10 +161,11 @@ function Options:getSettingElements()
             OnChanged = function(value)
                 self.props.setOption("BaseTransparency", value)
             end,
-
             FormatValue = function(value)
                 return string.format("%0.1f", value)
             end,
+            MaxValue = 1,
+            MinValue = 0,
             LayoutOrder = 2
          });
 
@@ -164,6 +179,8 @@ function Options:getSettingElements()
             FormatValue = function(value)
                 return string.format("%d", value)
             end,
+            MaxValue = 24,
+            MinValue = 0,
             LayoutOrder = 1
         });
 

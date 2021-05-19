@@ -15,6 +15,7 @@ local defaultState = {
         AudioOffset = 0;
         NoteSpeed = 1;
         FOV = 70;
+        LaneCover = 0;
 
         --interface settings
         ComboPosition = "Middle"; 

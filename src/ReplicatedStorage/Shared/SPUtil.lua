@@ -1,5 +1,7 @@
 local UserInputService = game:GetService("UserInputService")
 
+local Llama = require(game.ReplicatedStorage.Packages.Llama)
+
 local RandomLua = require(game.ReplicatedStorage.Shared.RandomLua)
 local RunService = game:GetService("RunService")
 
@@ -294,6 +296,20 @@ function SPUtil:switch(val)
 	end
 
 	return switchInstance
+end
+
+function SPUtil:filter(tbl, filter)
+	local rtv = {}
+
+	for i, v in ipairs(tbl) do
+		if filter(v) then
+			table.insert(rtv, Llama.Dictionary.join({
+				_id = i
+			}, v))
+		end
+	end
+
+	return rtv
 end
 
 return SPUtil

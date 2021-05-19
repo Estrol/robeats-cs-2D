@@ -353,6 +353,21 @@ function Gameplay:render()
            Size = UDim2.fromScale(0.15, 0.05),
            AnchorPoint = Vector2.new(0.5, 1),
            [Roact.Ref] = self.hitDevianceRef
+        }),
+        LaneCover = e(RoundedFrame, {
+            Size = UDim2.fromScale(1, (self.props.options.LaneCover / 100) * 0.8),
+            ZIndex = 0,
+            BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+        }, {
+            UIGradient = e("UIGradient", {
+                Transparency = NumberSequence.new({
+                    NumberSequenceKeypoint.new(0, 0),
+                    NumberSequenceKeypoint.new(0.87, 0),
+                    NumberSequenceKeypoint.new(0.93, 0.85),
+                    NumberSequenceKeypoint.new(1, 1),
+                }),
+                Rotation = 90
+            })
         })
     })
 end
