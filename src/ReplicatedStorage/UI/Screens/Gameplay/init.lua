@@ -247,6 +247,16 @@ function Gameplay:render()
 
     local MA = (self.state.perfects) == 0 and 0 or self.state.marvelouses / self.state.perfects
 
+    local laneCoverY
+
+    if self.props.options.LaneCover > 0 then
+        laneCoverY = SPUtil:lerp(0.32, 0.8, self.props.options.LaneCover / 100)
+    else
+        laneCoverY = 0
+    end
+
+    print(self.props.options.LaneCover, laneCoverY)
+
     local leaderboard
 
     if not self.props.options.HideLeaderboard then
@@ -356,7 +366,7 @@ function Gameplay:render()
            [Roact.Ref] = self.hitDevianceRef
         }),
         LaneCover = e(RoundedFrame, {
-            Size = UDim2.fromScale(1, (self.props.options.LaneCover / 100) * 0.8),
+            Size = UDim2.fromScale(1, laneCoverY),
             ZIndex = 0,
             BackgroundColor3 = Color3.fromRGB(0, 0, 0)
         }, {
