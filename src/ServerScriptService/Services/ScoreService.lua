@@ -52,9 +52,7 @@ function ScoreService:GetPlayerScores(userId, limit)
     end
 end
 
-function ScoreService:CalculateRating(userId)
-    local scores = self:GetPlayerScores(userId)
-
+function ScoreService:CalculateRating(scores)
     local rating = 0;
     local maxNumOfScores = math.min(#scores, 25);
 
@@ -69,9 +67,7 @@ function ScoreService:CalculateRating(userId)
     return math.floor((100 * rating) / 30) / 100
 end
 
-function ScoreService:CalculateAverageAccuracy(userId)
-    local scores = self:GetPlayerScores(userId)
-
+function ScoreService:CalculateAverageAccuracy(scores)
     local accuracy = 0
 
     for _, score in ipairs(scores) do
@@ -82,47 +78,53 @@ function ScoreService:CalculateAverageAccuracy(userId)
 end
 
 function ScoreService:RefreshProfile(player)
-    local succeeded, slots = Global
-            :query()
-            :where({
-                UserId = player.UserId
-            })
-            :execute()
-            :await()
+    local scores, succeeded = self:GetPlayerScores(player.UserId)
 
     if succeeded then
-        local slot = slots[1]
-
-        if slot then
-            Global
-                :update(slot.objectId, {
-                    TotalMapsPlayed = {
-                        __op = "Increment",
-                        amount = 1
-                    },
-                    Rating = ScoreService:CalculateRating(player.UserId),
-                    Accuracy = ScoreService:CalculateAverageAccuracy(player.UserId),
-                    PlayerName = player.DisplayName,
+        local _succeeded, slots = Global
+                :query()
+                :where({
                     UserId = player.UserId
                 })
-                :andThen(function(document)
-                    DebugOut:puts("Global leaderboard slot successfully updated!")
-                end)
-            else
+                :execute()
+                :await()
+
+        if _succeeded then
+            local slot = slots[1]
+
+            if slot then
                 Global
-                    :create({
-                        TotalMapsPlayed = 1,
-                        Rating = ScoreService:CalculateRating(player.UserId),
-                        Accuracy = ScoreService:CalculateAverageAccuracy(player.UserId),
+                    :update(slot.objectId, {
+                        TotalMapsPlayed = {
+                            __op = "Increment",
+                            amount = 1
+                        },
+                        Rating = ScoreService:CalculateRating(scores),
+                        Accuracy = ScoreService:CalculateAverageAccuracy(scores),
                         PlayerName = player.DisplayName,
-                        CountryRegion = LocalizationService:GetCountryRegionForPlayerAsync(player),
-                        Allowed = true,
                         UserId = player.UserId
                     })
                     :andThen(function(document)
-                        DebugOut:puts("Global leaderboard slot successfully created!")
+                        DebugOut:puts("Global leaderboard slot successfully updated!")
                     end)
+                else
+                    Global
+                        :create({
+                            TotalMapsPlayed = 1,
+                            Rating = ScoreService:CalculateRating(scores),
+                            Accuracy = ScoreService:CalculateAverageAccuracy(scores),
+                            PlayerName = player.DisplayName,
+                            CountryRegion = LocalizationService:GetCountryRegionForPlayerAsync(player),
+                            Allowed = true,
+                            UserId = player.UserId
+                        })
+                        :andThen(function(document)
+                            DebugOut:puts("Global leaderboard slot successfully created!")
+                        end)
+            end
         end
+    else
+        warn("Global leaderboard slot could not be updated because retrieving user scores failed! Error:", scores)
     end
 end
 
