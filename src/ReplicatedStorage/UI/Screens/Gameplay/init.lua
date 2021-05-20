@@ -255,8 +255,6 @@ function Gameplay:render()
         laneCoverY = 0
     end
 
-    print(self.props.options.LaneCover, laneCoverY)
-
     local leaderboard
 
     if not self.props.options.HideLeaderboard then
