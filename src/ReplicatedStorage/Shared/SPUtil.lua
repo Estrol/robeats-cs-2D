@@ -237,6 +237,17 @@ function SPUtil:get_user_thumbnail(u_id)
 	return game.Players:GetUserThumbnailAsync(u_id, Enum.ThumbnailType.HeadShot, Enum.ThumbnailSize.Size420x420)
 end
 
+function SPUtil:find_distance(x1, y1, x2, y2)
+	return math.sqrt((x2-x1)^2 + (y2-y1)^2)
+end
+
+function SPUtil:get_vec2_angle(vec1, vec2)
+	local x = vec1.X - vec2.X
+	local y = vec1.Y - vec2.Y
+
+	return math.deg(math.atan2(y, x))
+end
+
 function SPUtil:bind_to_frame(_callback)
 	return RunService.Heartbeat:Connect(_callback)
 end

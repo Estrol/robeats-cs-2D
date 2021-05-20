@@ -56,6 +56,7 @@ function RoundedImageButton:render()
             return self.props.BackgroundColor3:Lerp(self.props.HighlightBackgroundColor3, a.tap)
         end);
         BackgroundTransparency = self.props.BackgroundTransparency;
+        [Roact.Event.MouseMoved] = self.props.OnMoved;
         [Roact.Event.MouseEnter] = function()
             self.motor:setGoal({
                 tap = Flipper.Spring.new(0.7, {
@@ -91,6 +92,7 @@ function RoundedImageButton:render()
             })
         end;
         [Roact.Event.MouseButton1Click] = self.props.OnClick;
+        [Roact.Ref] = self.props[Roact.Ref]
     }
 
     local children = Llama.Dictionary.join(self.props[Roact.Children], {

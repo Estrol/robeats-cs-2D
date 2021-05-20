@@ -43,6 +43,7 @@ function RobeatsGame:new(_game_environment_center_position)
 		[NoteResult.Bad] = true,
 		[NoteResult.Miss] = true,
 	}
+	local _note_color = Color3.fromRGB(255, 175, 0)
 
 	self._audio_manager = AudioManager:new(self)
 	self._score_manager = ScoreManager:new(self)
@@ -78,6 +79,9 @@ function RobeatsGame:new(_game_environment_center_position)
 
 	function self:get_judgement_visibility() return _judgement_visibility end
 	function self:set_judgement_visibility(val) _judgement_visibility = val end
+
+	function self:get_note_color() return _note_color end
+	function self:set_note_color(val) _note_color = val end
 
 	function self:get_game_environment_center_position()
 		return _game_environment_center_position

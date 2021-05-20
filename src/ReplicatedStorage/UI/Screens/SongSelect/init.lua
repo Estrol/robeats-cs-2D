@@ -31,11 +31,15 @@ function SongSelect:init()
     self.maid = Maid.new()
 
     local onUprateKeyPressed = SPUtil:bind_to_key(Enum.KeyCode.Equals, function()
-        self.props.setSongRate(self.props.options.SongRate + 5)
+        if self.props.options.SongRate < 500 then
+            self.props.setSongRate(self.props.options.SongRate + 5)
+        end
     end)
 
     local onDownrateKeyPressed = SPUtil:bind_to_key(Enum.KeyCode.Minus, function()
-        self.props.setSongRate(self.props.options.SongRate - 5)
+        if self.props.options.SongRate > 5 then
+            self.props.setSongRate(self.props.options.SongRate - 5)
+        end
     end)
 
     local onOptionsKeyPressed = SPUtil:bind_to_key_combo({Enum.KeyCode.O, Enum.KeyCode.LeftControl}, function()
