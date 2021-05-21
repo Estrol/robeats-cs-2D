@@ -45,7 +45,8 @@ local defaultState = {
     transient = {
         --This is used to determine the speed of the song
         SongRate = 100,
-        SongKey = 1
+        SongKey = 1,
+        Mods = {}
     }
 }
 

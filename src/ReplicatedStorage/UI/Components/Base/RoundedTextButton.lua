@@ -50,6 +50,7 @@ function RoundedTextButton:render()
         BackgroundColor3 = self.motorBinding:map(function(a)
             return self.props.BackgroundColor3:Lerp(self.props.HighlightBackgroundColor3, a.tap)
         end);
+        ClipsDescendants = self.props.ClipsDescendants;
         BackgroundTransparency = self.props.BackgroundTransparency;
         [Roact.Event.MouseMoved] = self.props.OnMoved;
         [Roact.Event.MouseEnter] = function()

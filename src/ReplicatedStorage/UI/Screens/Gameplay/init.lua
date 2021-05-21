@@ -134,7 +134,8 @@ function Gameplay:init()
                     self.state.accuracy,
                     maxChain,
                     mean,
-                    self.props.options.SongRate)
+                    self.props.options.SongRate,
+                    self.props.options.Mods)
                     :andThen(function()
                         local moment = DateTime.now():ToLocalTime()
                         DebugOut:puts("Score submitted at %d:%d:%d", moment.Hour, moment.Minute, moment.Second)
@@ -254,8 +255,6 @@ function Gameplay:render()
     else
         laneCoverY = 0
     end
-
-    print(self.props.options.LaneCover, laneCoverY)
 
     local leaderboard
 

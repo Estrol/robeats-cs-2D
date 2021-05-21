@@ -44,6 +44,7 @@ function RobeatsGame:new(_game_environment_center_position)
 		[NoteResult.Miss] = true,
 	}
 	local _note_color = Color3.fromRGB(255, 175, 0)
+	local _mods = {}
 
 	self._audio_manager = AudioManager:new(self)
 	self._score_manager = ScoreManager:new(self)
@@ -82,6 +83,18 @@ function RobeatsGame:new(_game_environment_center_position)
 
 	function self:get_note_color() return _note_color end
 	function self:set_note_color(val) _note_color = val end
+
+	function self:get_mods() return _mods end
+	function self:set_mods(val) _mods = val end
+	function self:is_mod_active(mod)
+		for _, itr_mod in ipairs(_mods) do
+			if mod == itr_mod then
+				return true
+			end
+
+			return false
+		end
+	end
 
 	function self:get_game_environment_center_position()
 		return _game_environment_center_position
@@ -134,6 +147,8 @@ function RobeatsGame:new(_game_environment_center_position)
 	end
 
 	function self:load(_song_key, _local_player_slot, _config)
+		self:set_mods(_config.Mods)
+
 		EnvironmentSetup:set_mode(EnvironmentSetup.Mode.Game)
 
 		self._audio_manager:load_song(_song_key, _config)

@@ -23,12 +23,12 @@ MultipleChoiceValue.defaultProps = {
 function MultipleChoiceValue:render()
     local keybinds = {}
 
-    for i in pairs(self.props.Values) do
+    for i, value in pairs(self.props.Values) do
         local buttonElement = e(RoundedTextButton, {
             Size = UDim2.fromScale(1/#self.props.Values, 1),
             HoldSize = UDim2.fromScale(1/#self.props.Values, 0.8),
-            BackgroundColor3 = self.props.Values[i] and Color3.fromRGB(24, 180, 207) or Color3.fromRGB(41, 40, 40),
-            HighlightBackgroundColor3 = self.props.Values[i] and Color3.fromRGB(20, 189, 201) or Color3.fromRGB(31, 30, 30),
+            BackgroundColor3 = value and Color3.fromRGB(24, 180, 207) or Color3.fromRGB(41, 40, 40),
+            HighlightBackgroundColor3 = value and Color3.fromRGB(20, 189, 201) or Color3.fromRGB(31, 30, 30),
             TextColor3 = Color3.fromRGB(255, 255, 255),
             OnClick = function()
                 self.props.OnChanged(i, not self.props.Values[i])

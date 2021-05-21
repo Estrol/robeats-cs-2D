@@ -6,6 +6,7 @@ local e = Roact.createElement
 local RunService = game:GetService("RunService")
 
 local SongDatabase = require(game.ReplicatedStorage.RobeatsGameCore.SongDatabase)
+local Mods = require(game.ReplicatedStorage.RobeatsGameCore.Enums.Mods)
 
 local SPUtil = require(game.ReplicatedStorage.Shared.SPUtil)
 
@@ -21,12 +22,17 @@ local ButtonLayout = require(game.ReplicatedStorage.UI.Components.Base.ButtonLay
 local SongInfoDisplay = require(script.SongInfoDisplay)
 local SongList = require(script.SongList)
 local Leaderboard = require(script.Leaderboard)
+local ModSelection = require(script.ModSelection)
 
 local SongSelect = Roact.Component:extend("SongSelect")
 
 function SongSelect:init()
     self.scoreService = self.props.scoreService
     self.previewController = self.props.previewController
+
+    self:setState({
+        modSelectionVisible = false
+    })
 
     self.maid = Maid.new()
 
@@ -95,11 +101,12 @@ function SongSelect:render()
             end
         }),
         ButtonContainer = e(ButtonLayout, {
-            Size = UDim2.fromScale(0.55, 0.042),
+            Size = UDim2.fromScale(0.3325, 0.042),
             Position = UDim2.fromScale(0.02, 0.975),
             AnchorPoint = Vector2.new(0, 1),
             Padding = UDim.new(0, 8),
             MaxTextSize = 14,
+            DefaultSpace = 4,
             Buttons = {
                 {
                     Text = "Play",
@@ -116,6 +123,15 @@ function SongSelect:render()
                     end
                 },
                 {
+                    Text = "Mods",
+                    Color = Color3.fromRGB(33, 126, 83),
+                    OnClick = function()
+                        self:setState({
+                            modSelectionVisible = not self.state.modSelectionVisible
+                        })
+                    end
+                },
+                {
                     Text = "Main Menu",
                     Color = Color3.fromRGB(37, 37, 37),
                     OnClick = function()
@@ -123,6 +139,20 @@ function SongSelect:render()
                     end
                 }
             }
+        }),
+        ModSelection = e(ModSelection, {
+            ActiveMods = self.props.options.Mods,
+            OnModSelected = function(mods)
+                print(Mods:get_string_for_mods(mods))
+
+                self.props.setMods(mods)
+            end,
+            Visible = self.state.modSelectionVisible,
+            OnBackClicked = function()
+                self:setState({
+                    modSelectionVisible = false
+                })
+            end
         })
     })
 end
@@ -167,6 +197,9 @@ end, function(dispatch)
         end,
         setSongRate = function(songRate)
             dispatch(Actions.setTransientOption("SongRate", songRate))
+        end,
+        setMods = function(mods)
+            dispatch(Actions.setTransientOption("Mods", mods))
         end
     }
 end)(Injected)

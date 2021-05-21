@@ -3,6 +3,8 @@ local e = Roact.createElement
 local Flipper = require(game.ReplicatedStorage.Packages.Flipper)
 local RoactFlipper = require(game.ReplicatedStorage.Packages.RoactFlipper)
 
+local Mods = require(game.ReplicatedStorage.RobeatsGameCore.Enums.Mods)
+
 local withInjection = require(game.ReplicatedStorage.UI.Components.HOCs.withInjection)
 
 local RoundedTextLabel =  require(game.ReplicatedStorage.UI.Components.Base.RoundedTextLabel)
@@ -189,6 +191,24 @@ function LeaderboardSlot:render()
                     MaxTextSize = 49,
                 })
             });
+            Mods = e(RoundedTextLabel, {
+                BackgroundColor3 = Color3.fromRGB(255, 255, 255),
+                BackgroundTransparency = 1,
+                BorderSizePixel = 0,
+                Position = UDim2.new(8.6, 0, -0.1, 0),
+                Size = UDim2.new(2.2, 0, 0.55, 0),
+                Font = Enum.Font.GothamSemibold,
+                Text = Mods:get_string_for_mods(self.props.Data.Mods or {}),
+                RichText = true,
+                TextColor3 = Color3.fromRGB(105, 105, 105),
+                TextScaled = true,
+                TextXAlignment = Enum.TextXAlignment.Left,
+            }, {
+                e("UITextSizeConstraint", {
+                    MaxTextSize = 13,
+                    MinTextSize = 7;
+                })
+            });
             AccuracyRate = e(RoundedTextLabel, {
                 BackgroundColor3 = Color3.fromRGB(255, 255, 255),
                 BackgroundTransparency = 1,
@@ -203,7 +223,7 @@ function LeaderboardSlot:render()
                 TextXAlignment = Enum.TextXAlignment.Left,
             }, {
                 e("UITextSizeConstraint", {
-                    MaxTextSize = 22,
+                    MaxTextSize = 13,
                     MinTextSize = 7;
                 })
             })
