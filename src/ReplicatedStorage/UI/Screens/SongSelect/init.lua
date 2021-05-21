@@ -96,7 +96,9 @@ function SongSelect:render()
                 }))
             end,
             OnDelete = function(id)
-                self.scoreService:DeleteScore(id)
+                self.props.history:push("/moderation/delete", {
+                    scoreId = id
+                })
             end,
             OnBan = function(userId, playerName)
                 self.props.history:push("/moderation/ban", {
