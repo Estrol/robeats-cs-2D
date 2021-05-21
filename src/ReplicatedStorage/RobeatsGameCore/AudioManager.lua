@@ -2,6 +2,7 @@ local CurveUtil = require(game.ReplicatedStorage.Shared.CurveUtil)
 local HitSFXGroup = require(game.ReplicatedStorage.RobeatsGameCore.HitSFXGroup)
 local SongDatabase = require(game.ReplicatedStorage.RobeatsGameCore.SongDatabase)
 local EnvironmentSetup = require(game.ReplicatedStorage.RobeatsGameCore.EnvironmentSetup)
+local Mods = require(game.ReplicatedStorage.RobeatsGameCore.Enums.Mods)
 local AssertType = require(game.ReplicatedStorage.Shared.AssertType)
 
 local TimingPresets = require(game.ReplicatedStorage.TimingPresets)
@@ -117,7 +118,7 @@ function AudioManager:new(_game)
 		self:set_rate(_config.SongRate / 100)
 
 		--Add hit objects and perform note count calculations
-		_hit_objects = SongDatabase:get_hit_objects_for_key(_song_key, _rate)
+		_hit_objects = SongDatabase:get_hit_objects_for_key(_song_key, _rate, _game:is_mod_active(Mods.Mirror))
 		
 		for i = 1, #_hit_objects do
 			local itr = _hit_objects[i]

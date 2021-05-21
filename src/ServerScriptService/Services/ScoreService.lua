@@ -128,7 +128,7 @@ function ScoreService:RefreshProfile(player)
     end
 end
 
-function ScoreService.Client:SubmitScore(player, songMD5Hash, rating, score, marvelouses, perfects, greats, goods, bads, misses, accuracy, maxChain, mean, rate)
+function ScoreService.Client:SubmitScore(player, songMD5Hash, rating, score, marvelouses, perfects, greats, goods, bads, misses, accuracy, maxChain, mean, rate, mods)
     if RateLimitService:CanProcessRequestWithRateLimit(player, "SubmitScore", 1) then
         local succeeded, documents = Scores
             :query()
@@ -159,6 +159,7 @@ function ScoreService.Client:SubmitScore(player, songMD5Hash, rating, score, mar
                     Rate = rate,
                     MaxChain = maxChain,
                     SongMD5Hash = songMD5Hash,
+                    Mods = mods,
                     Allowed = true
                 })
                 :await()
@@ -187,7 +188,8 @@ function ScoreService.Client:SubmitScore(player, songMD5Hash, rating, score, mar
                     Misses = misses,
                     Mean = mean,
                     Accuracy = accuracy,
-                    Rate = rate
+                    Rate = rate,
+                    Mods = mods
                 }):await()
             end
 

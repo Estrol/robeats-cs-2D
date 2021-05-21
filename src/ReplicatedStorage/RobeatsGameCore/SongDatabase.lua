@@ -164,11 +164,11 @@ function SongDatabase:new()
 		return ret
 	end
 
-	function self:get_hit_objects_for_key(key, rate)
+	function self:get_hit_objects_for_key(key, rate, mirror)
 		local data = self:get_data_for_key(key)
 		local map_data = require(data.AudioMapData)
 
-		if rate == 1 or rate == nil then
+		if (rate == 1 or rate == nil) and (not mirror) then
 			return map_data
 		else
 			local _rate_map_data = {}
@@ -179,13 +179,13 @@ function SongDatabase:new()
 				if itr_hit_object.Type == 1 then
 					_rate_map_data[i] = {
 						Time = itr_hit_object.Time / rate,
-						Track = itr_hit_object.Track,
+						Track = mirror and 5 - itr_hit_object.Track or itr_hit_object.Track,
 						Type = itr_hit_object.Type
 					}
 				elseif itr_hit_object.Type == 2 then
 					_rate_map_data[i] = {
 						Time = itr_hit_object.Time / rate,
-						Track = itr_hit_object.Track,
+						Track = mirror and 5 - itr_hit_object.Track or itr_hit_object.Track,
 						Duration = itr_hit_object.Duration / rate,
 						Type = itr_hit_object.Type
 					}
