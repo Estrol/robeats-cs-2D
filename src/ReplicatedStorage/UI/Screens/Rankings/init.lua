@@ -47,6 +47,11 @@ function Rankings:render()
                     userId = userId,
                     playerName = playerName
                 })
+            end,
+            OnView = function(userId)
+                self.props.history:push("/scores", {
+                    userId = userId
+                })
             end
         })
 

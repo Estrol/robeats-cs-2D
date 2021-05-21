@@ -24,7 +24,7 @@ function Scores:init()
 
         local ScoreService = Knit.GetService("ScoreService")
 
-        ScoreService:GetPlayerScoresPromise():andThen(function(scores)
+        ScoreService:GetPlayerScoresPromise(self.props.location.state.userId):andThen(function(scores)
             self:setState({
                 scores = scores
             })

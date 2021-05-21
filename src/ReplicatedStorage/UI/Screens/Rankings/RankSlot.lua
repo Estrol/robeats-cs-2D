@@ -23,7 +23,8 @@ RankSlot.defaultProps = {
         Accuracy = 0,
         Place = 1
     },
-    OnBan = function() end
+    OnBan = function() end,
+    OnView = function() end
 }
 
 function RankSlot:init()
@@ -44,7 +45,38 @@ function RankSlot:didUpdate()
     }))
 end
 
-function RankSlot:render()    
+function RankSlot:render()
+    local buttons = {
+        {
+            Text = "View Scores",
+            Color = Color3.fromRGB(21, 148, 180),
+            OnClick = function()
+                self.props.OnView(self.props.Data.UserId)
+            end
+        },
+        {
+            Text = "Back",
+            Color = Color3.fromRGB(37, 37, 37),
+            OnClick = function()
+                self:setState(function(state)
+                    return {
+                        dialogOpen = not state.dialogOpen
+                    }
+                end)
+            end
+        }
+    }
+
+    if self.props.IsAdmin then
+        table.insert(buttons, 1, {
+            Text = "Ban user",
+            Color = Color3.fromRGB(240, 184, 0),
+            OnClick = function()
+                self.props.OnBan(self.props.Data.UserId, self.props.Data.PlayerName)
+            end
+        })
+    end
+
     return Roact.createElement(RoundedTextButton, {
         BackgroundColor3 = Color3.fromRGB(15, 15, 15),
         BorderMode = Enum.BorderMode.Inset,
@@ -54,13 +86,11 @@ function RankSlot:render()
         Text = "",
         LayoutOrder = self.props.Data.Place,
         OnRightClick = function()
-            if self.props.IsAdmin then
-                self:setState(function(state)
-                    return {
-                        dialogOpen = not state.dialogOpen
-                    }
-                end)
-            end
+            self:setState(function(state)
+                return {
+                    dialogOpen = not state.dialogOpen
+                }
+            end)
         end;
     }, {
         Dialog = e(ButtonLayout, {
@@ -74,26 +104,7 @@ function RankSlot:render()
             Visible = self.motorBinding:map(function(a)
                 return a > 0
             end),
-            Buttons = {
-                {
-                    Text = "Ban user",
-                    Color = Color3.fromRGB(240, 184, 0),
-                    OnClick = function()
-                        self.props.OnBan(self.props.Data.UserId, self.props.Data.PlayerName)
-                    end
-                },
-                {
-                    Text = "Back",
-                    Color = Color3.fromRGB(37, 37, 37),
-                    OnClick = function()
-                        self:setState(function(state)
-                            return {
-                                dialogOpen = not state.dialogOpen
-                            }
-                        end)
-                    end
-                }
-            }
+            Buttons = buttons
         }),
         UserThumbnail = Roact.createElement(RoundedImageLabel, {
             AnchorPoint = Vector2.new(0, 0.5),
