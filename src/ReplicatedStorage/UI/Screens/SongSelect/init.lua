@@ -36,17 +36,20 @@ function SongSelect:init()
 
     self.maid = Maid.new()
 
-    local onUprateKeyPressed = SPUtil:bind_to_key(Enum.KeyCode.Equals, function()
+    self.uprate = function()
         if self.props.options.SongRate < 500 then
             self.props.setSongRate(self.props.options.SongRate + 5)
         end
-    end)
+    end
 
-    local onDownrateKeyPressed = SPUtil:bind_to_key(Enum.KeyCode.Minus, function()
+    self.downrate = function()
         if self.props.options.SongRate > 5 then
             self.props.setSongRate(self.props.options.SongRate - 5)
         end
-    end)
+    end
+
+    local onUprateKeyPressed = SPUtil:bind_to_key(Enum.KeyCode.Equals, self.uprate)
+    local onDownrateKeyPressed = SPUtil:bind_to_key(Enum.KeyCode.Minus, self.downrate)
 
     local onOptionsKeyPressed = SPUtil:bind_to_key_combo({Enum.KeyCode.O, Enum.KeyCode.LeftControl}, function()
         self.props.history:push("/options")
@@ -65,7 +68,9 @@ function SongSelect:render()
             Size = UDim2.fromScale(0.985, 0.2),
             Position = UDim2.fromScale(0.01, 0.01),
             SongKey = self.props.options.SongKey,
-            SongRate = self.props.options.SongRate
+            SongRate = self.props.options.SongRate,
+            OnUprate = self.uprate,
+            OnDownrate = self.downrate
         }),
         SongList = e(SongList, {
             Size = UDim2.fromScale(0.64, 0.77),
