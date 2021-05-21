@@ -150,8 +150,6 @@ function SongSelect:render()
         ModSelection = e(ModSelection, {
             ActiveMods = self.props.options.Mods,
             OnModSelected = function(mods)
-                print(Mods:get_string_for_mods(mods))
-
                 self.props.setMods(mods)
             end,
             Visible = self.state.modSelectionVisible,
