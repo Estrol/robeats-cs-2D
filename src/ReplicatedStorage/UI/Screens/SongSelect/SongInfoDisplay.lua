@@ -283,7 +283,26 @@ function SongInfoDisplay:render()
                 })
             });
         }),
-        RateButtons = rateButtons
+        RateDown = e(RoundedTextButton, {
+            Text = "-",
+            TextColor3 = Color3.fromRGB(255, 255, 255),
+            BackgroundColor3 = Color3.fromRGB(90, 27, 27),
+            Size = UDim2.fromScale(0.05, 0.2),
+            HoldSize = UDim2.fromScale(0.055, 0.2),
+            Position = UDim2.fromScale(0.55, 0.935),
+            AnchorPoint = Vector2.new(0, 1),
+            OnClick = self.props.OnDownrate
+        }),
+        RateUp = e(RoundedTextButton, {
+            Text = "+",
+            TextColor3 = Color3.fromRGB(255, 255, 255),
+            BackgroundColor3 = Color3.fromRGB(55, 105, 40),
+            Size = UDim2.fromScale(0.05, 0.2),
+            HoldSize = UDim2.fromScale(0.055, 0.2),
+            Position = UDim2.fromScale(0.61, 0.935),
+            AnchorPoint = Vector2.new(0, 1),
+            OnClick = self.props.OnUprate
+        })
     })
 end
 
