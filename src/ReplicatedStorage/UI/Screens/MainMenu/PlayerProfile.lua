@@ -1,7 +1,7 @@
 local Roact = require(game.ReplicatedStorage.Packages.Roact)
 local e = Roact.createElement
 
-local RunService = game:GetService("RunService")
+local withInjection = require(game.ReplicatedStorage.UI.Components.HOCs.withInjection)
 
 local RoundedFrame = require(game.ReplicatedStorage.UI.Components.Base.RoundedFrame)
 local RoundedTextLabel = require(game.ReplicatedStorage.UI.Components.Base.RoundedTextLabel)
@@ -11,6 +11,8 @@ local LoadingWheel = require(game.ReplicatedStorage.UI.Components.Base.LoadingWh
 local PlayerProfile = Roact.Component:extend("PlayerProfile")
 
 function PlayerProfile:init()
+    self.scoreService = self.props.scoreService
+
     self:setState({
         rank = 0,
         rating = 0,
@@ -21,24 +23,17 @@ function PlayerProfile:init()
         loaded = false
     })
 
-    if RunService:IsRunning() then
-        local Knit = require(game:GetService("ReplicatedStorage").Knit)
-
-        local ScoreService = Knit.GetService("ScoreService")
-
-        ScoreService:GetProfilePromise():andThen(function(profile)
-            local rank = ScoreService:GetRank()
-            self:setState({
-                rank = rank,
-                rating = profile.Rating,
-                accuracy = profile.Accuracy,
-                totalMapsPlayed = profile.TotalMapsPlayed,
-                userId = game.Players.LocalPlayer.UserId,
-                playerName = game.Players.LocalPlayer.DisplayName,
-                loaded = true
-            })
-        end)
-    end
+    self.scoreService:GetProfilePromise():andThen(function(profile)
+        self:setState({
+            rank = profile.Rank or Roact.None,
+            rating = profile.Rating or 0,
+            accuracy = profile.Accuracy or 0,
+            totalMapsPlayed = profile.TotalMapsPlayed or 0,
+            userId = game.Players.LocalPlayer.UserId,
+            playerName = game.Players.LocalPlayer.DisplayName,
+            loaded = true
+        })
+    end)
 end
 
 function PlayerProfile:render()
@@ -132,7 +127,7 @@ function PlayerProfile:render()
                BackgroundTransparency = 1
            }),
         }),
-        Rank = e(RoundedTextLabel, {
+        Rank = self.state.rank and e(RoundedTextLabel, {
             Position = UDim2.fromScale(0.97, 0.92),
             Size = UDim2.fromScale(0.17, 0.4),
             AnchorPoint = Vector2.new(1, 1),
@@ -146,4 +141,6 @@ function PlayerProfile:render()
     })
 end
 
-return PlayerProfile
+return withInjection(PlayerProfile, {
+    scoreService = "ScoreService"
+})
