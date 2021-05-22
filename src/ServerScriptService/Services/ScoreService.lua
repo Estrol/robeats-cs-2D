@@ -12,6 +12,7 @@ local RateLimitService
 
 local Scores
 local Global
+local Bans
 
 local ScoreService = Knit.CreateService({
     Name = "ScoreService",
@@ -27,6 +28,7 @@ function ScoreService:KnitStart()
 
     Scores = ParseServer.Objects.class("Plays")
     Global = ParseServer.Objects.class("Global")
+    Bans = ParseServer.Objects.class("Bans")
 end
 
 function ScoreService:_GetGraphKey(userId, songMD5Hash)
@@ -128,8 +130,35 @@ function ScoreService:RefreshProfile(player)
     end
 end
 
+function ScoreService:IsBanned(player)
+    local succeeded, documents = Bans
+        :query()
+        :where({
+            UserId = player.UserId
+        })
+        :execute()
+        :await()
+
+    if succeeded then
+        local ban = documents[1]
+
+        if ban then
+            return true, ban.Reason
+        end
+    end
+
+    return false
+end
+
 function ScoreService.Client:SubmitScore(player, songMD5Hash, rating, score, marvelouses, perfects, greats, goods, bads, misses, accuracy, maxChain, mean, rate, mods)
     if RateLimitService:CanProcessRequestWithRateLimit(player, "SubmitScore", 1) then
+        local banned, reason = ScoreService:IsBanned(player)
+
+        if banned then
+            player:Kick(reason)
+            return
+        end
+
         local succeeded, documents = Scores
             :query()
             :where({
