@@ -18,21 +18,26 @@ function PlayerProfile:init()
         rating = 0,
         accuracy = 0,
         totalMapsPlayed = 0,
-        userId = 0,
-        playerName = "Player1",
+        userId = game.Players.LocalPlayer and game.Players.LocalPlayer.UserId,
+        playerName = game.Players.LocalPlayer and game.Players.LocalPlayer.DisplayName,
         loaded = false
     })
 
     self.scoreService:GetProfilePromise():andThen(function(profile)
-        self:setState({
-            rank = profile.Rank or Roact.None,
-            rating = profile.Rating or 0,
-            accuracy = profile.Accuracy or 0,
-            totalMapsPlayed = profile.TotalMapsPlayed or 0,
-            userId = game.Players.LocalPlayer.UserId,
-            playerName = game.Players.LocalPlayer.DisplayName,
-            loaded = true
-        })
+        if profile then
+            self:setState({
+                rank = profile.Rank,
+                rating = profile.Rating or 0,
+                accuracy = profile.Accuracy or 0,
+                totalMapsPlayed = profile.TotalMapsPlayed or 0,
+                loaded = true
+            })
+        else
+            self:setState({
+                rank = Roact.None,
+                loaded = true
+            })
+        end
     end)
 end
 
@@ -129,14 +134,20 @@ function PlayerProfile:render()
         }),
         Rank = self.state.rank and e(RoundedTextLabel, {
             Position = UDim2.fromScale(0.97, 0.92),
-            Size = UDim2.fromScale(0.17, 0.4),
+            Size = UDim2.fromScale(0.75, 0.85),
             AnchorPoint = Vector2.new(1, 1),
             TextYAlignment = Enum.TextYAlignment.Bottom,
             TextXAlignment = Enum.TextXAlignment.Right,
             TextColor3 = Color3.fromRGB(85, 85, 85),
             Text = string.format("#%d", self.state.rank),
             TextScaled = true,
-            BackgroundTransparency = 1
+            BackgroundTransparency = 1,
+            TextTransparency = 0.4,
+            ZIndex = 0
+        }, {
+            UITextSizeConstraint = e("UITextSizeConstraint", {
+                MaxTextSize = 42
+            })
         })
     })
 end
