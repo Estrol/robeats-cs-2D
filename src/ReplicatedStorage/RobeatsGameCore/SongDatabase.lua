@@ -23,6 +23,12 @@ function SongDatabase:new()
 
 	local _all_keys = SongMetadata
 
+	function self:cons()
+		for itr_key, data in self:key_itr() do
+			data.SongKey = itr_key
+		end
+	end
+
 	function self:key_itr()
 		return ipairs(_all_keys)
 	end
@@ -150,13 +156,13 @@ function SongDatabase:new()
 	function self:filter_keys(str)
 		local ret = {}
 
-		for key in self:key_itr() do
+		for key, data in self:key_itr() do
 			if not str or str == "" then
-				table.insert(ret, key)
+				table.insert(ret, data)
 			else
 				local search_str = self:get_search_string_for_key(key)
 				if string.find(search_str, str:lower()) ~= nil then
-					table.insert(ret, key)
+					table.insert(ret, data)
 				end
 			end
 		end
@@ -226,6 +232,8 @@ function SongDatabase:new()
 	end
 	
 	function self:invalid_songkey() return -1 end
+
+	self:cons()
 
 	return self
 end

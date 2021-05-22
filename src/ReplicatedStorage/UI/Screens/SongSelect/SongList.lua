@@ -1,5 +1,6 @@
 local Roact = require(game.ReplicatedStorage.Packages.Roact)
 local e = Roact.createElement
+local Llama = require(game.ReplicatedStorage.Packages.Llama)
 
 local Promise = require(game.ReplicatedStorage.Knit.Util.Promise)
 
@@ -31,6 +32,7 @@ function SongList:init()
     self:setState({
         search = "";
         found = SongDatabase:filter_keys();
+        sortByDifficulty = false
     })
 
     self.OnSearchChanged = function(o)
@@ -42,12 +44,21 @@ end
 
 
 function SongList:didUpdate(_, prevState)
-    if self.state.search ~= prevState.search then
-        Promise.new(function(resolve)
+    if (self.state.search ~= prevState.search) or (self.state.sortByDifficulty ~= prevState.sortByDifficulty) then
+        Promise.new(function(resolve)    
+            if self.state.sortByDifficulty then
+                local found = SongDatabase:filter_keys(self.state.search)
+
+                resolve(Llama.List.sort(found, function(a, b)
+                    return a.AudioDifficulty > b.AudioDifficulty
+                end))
+                return
+            end
+
             resolve(SongDatabase:filter_keys(self.state.search))
-        end):andThen(function(found)
+        end):andThen(function(sorted)
             self:setState({
-                found = found
+                found = sorted
             })
         end)
     end
@@ -71,14 +82,15 @@ function SongList:render()
             Padding = UDim.new(0, 4),
             HorizontalAlignment = "Right",
             items = self.state.found;
-            renderItem = function(id)
+            renderItem = function(item, i)
                 return e(SongButton, {
-                    SongKey = id,
-                    OnClick = self.props.OnSongSelected
+                    SongKey = item.SongKey,
+                    OnClick = self.props.OnSongSelected,
+                    LayoutOrder = i
                 })
             end,
-            getStableId = function(id)
-                return id
+            getStableId = function(item)
+                return item and item.SongKey or "???"
             end,
             getItemSize = function()
                 return 80
@@ -87,7 +99,7 @@ function SongList:render()
         SearchBar = e("Frame", {
             BackgroundColor3 = Color3.fromRGB(41, 41, 41),
             Position = UDim2.new(1, 0, 0.045, 0),
-            Size = UDim2.fromScale(1, 0.045),
+            Size = UDim2.fromScale(0.85, 0.045),
             AnchorPoint = Vector2.new(1, 1),
         }, {
             UICorner = e("UICorner", {
@@ -114,6 +126,25 @@ function SongList:render()
                     MaxTextSize = 17,
                     MinTextSize = 7,
                 })
+            })
+        }),
+        SortByDifficulty = e(RoundedTextButton, {
+            BackgroundColor3 = self.state.sortByDifficulty and Color3.fromRGB(41, 176, 194) or Color3.fromRGB(41, 41, 41),
+            Position = UDim2.fromScale(0, 0.045),
+            Size = UDim2.fromScale(0.14, 0.045),
+            HoldSize = UDim2.fromScale(0.14, 0.045),
+            AnchorPoint = Vector2.new(0, 1),
+            TextScaled = true,
+            TextColor3 = Color3.fromRGB(255, 255, 255),
+            Text = "Sort By Difficulty",
+            OnClick = function()
+                self:setState({
+                    sortByDifficulty = not self.state.sortByDifficulty
+                })
+            end
+        }, {
+            UITextSizeConstraint = e("UITextSizeConstraint", {
+                MaxTextSize = 13
             })
         })
     })

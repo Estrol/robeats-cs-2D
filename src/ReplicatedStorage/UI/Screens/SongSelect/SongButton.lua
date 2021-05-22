@@ -13,7 +13,8 @@ local function noop() end
 
 SongButton.defaultProps = {
     Size = UDim2.new(1, 0, 0, 75),
-    OnClick = noop
+    OnClick = noop,
+    LayoutOrder = 1
 }
 
 function SongButton:init()
@@ -49,7 +50,7 @@ function SongButton:render()
         Text = "";
         HoldSize = UDim2.new(0.98, 0, 0, 72);
         ZIndex = 4;
-        LayoutOrder = self.props.SongKey;
+        LayoutOrder = self.props.LayoutOrder;
     }, {
         SongCover = e("ImageLabel", {
             AnchorPoint = Vector2.new(1, 0.5),

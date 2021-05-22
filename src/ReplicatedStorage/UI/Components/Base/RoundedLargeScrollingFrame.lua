@@ -70,7 +70,9 @@ function RoundedLargeScrollingFrame:render()
 
         key = key or i
 
-        children[string.format("[%s]", key)] = self.props.renderItem(self.props.items[i], i)
+        if self.props.items[i] ~= nil then
+            children[string.format("[%s]", key)] = self.props.renderItem(self.props.items[i], i)
+        end
     end
 
     return Roact.createElement(RoundedScrollingFrame, {
