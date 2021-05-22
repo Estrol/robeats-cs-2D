@@ -5,6 +5,8 @@ local Flipper = require(game.ReplicatedStorage.Packages.Flipper)
 local RoactFlipper = require(game.ReplicatedStorage.Packages.RoactFlipper)
 local Llama = require(game.ReplicatedStorage.Packages.Llama)
 
+local Rating = require(game.ReplicatedStorage.RobeatsGameCore.Enums.Rating)
+
 local e = Roact.createElement
 local f = Roact.createFragment
 
@@ -83,31 +85,6 @@ function SongInfoDisplay:render()
     end
     
     local total_notes, total_holds = SongDatabase:get_note_metrics_for_key(self.props.SongKey)
-
-    local rateButtons
-
-    if SPUtil:is_mobile() then
-        rateButtons = f({
-            RateDown = e(RoundedTextButton, {
-                Text = "-",
-                TextColor3 = Color3.fromRGB(255, 255, 255),
-                Size = UDim2.fromScale(0.05, 0.2),
-                HoldSize = UDim2.fromScale(0.05, 0.25),
-                Position = UDim2.fromScale(0.55, 0.95),
-                AnchorPoint = Vector2.new(0, 1),
-                OnClick = self.props.OnDownrate
-            }),
-            RateUp = e(RoundedTextButton, {
-                Text = "+",
-                TextColor3 = Color3.fromRGB(255, 255, 255),
-                Size = UDim2.fromScale(0.05, 0.2),
-                HoldSize = UDim2.fromScale(0.05, 0.25),
-                Position = UDim2.fromScale(0.61, 0.95),
-                AnchorPoint = Vector2.new(0, 1),
-                OnClick = self.props.OnUprate
-            })
-        })
-    end
 
     return e(RoundedFrame, {
         Position = self.props.Position,
@@ -209,7 +186,7 @@ function SongInfoDisplay:render()
                 end);
                 Size = UDim2.new(0.18, 0, 0.23, 0),
                 Font = Enum.Font.GothamSemibold,
-                Text = string.format("Difficulty: %d", SongDatabase:get_difficulty_for_key(self.props.SongKey)),
+                Text = string.format("Difficulty: %d", Rating:get_rating_from_accuracy(self.props.SongKey, 97, self.props.SongRate / 100)),
                 TextColor3 = Color3.fromRGB(216, 216, 216),
                 TextScaled = true,
                 TextSize = 30,
