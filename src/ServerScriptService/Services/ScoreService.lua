@@ -10,6 +10,8 @@ local DebugOut = require(game.ReplicatedStorage.Shared.DebugOut)
 local PermissionsService
 local RateLimitService
 
+local ParseServer
+
 local Scores
 local Global
 local Bans
@@ -24,7 +26,7 @@ function ScoreService:KnitStart()
     RateLimitService = Knit.GetService("RateLimitService")
 
     local ParseServerService = Knit.GetService("ParseServerService")
-    local ParseServer = ParseServerService:GetParse()
+    ParseServer = ParseServerService:GetParse()
 
     Scores = ParseServer.Objects.class("Plays")
     Global = ParseServer.Objects.class("Global")
@@ -272,59 +274,19 @@ function ScoreService.Client:GetScores(player, songMD5Hash, limit)
     return {}, false
 end
 
-function ScoreService.Client:GetRank(player)
-    if RateLimitService:CanProcessRequestWithRateLimit(player, "GetRank", 2) then
-        local succeeded, ranks = Global
-            :query()
-            :where({
-                Allowed = true
-            })
-            :order("-Rating")
-            :execute()
-            :await()
-
-        if not succeeded then
-            warn(ranks)
-            return
-        end
-        
-        for rank = 1, #ranks do
-            local profile = ranks[rank]
-
-            if profile.UserId == player.UserId then
-                return rank
-            end
-        end
-
-        return -1
-    end
-
-    return -2
-end
-
 function ScoreService.Client:GetProfile(player)
     if RateLimitService:CanProcessRequestWithRateLimit(player, "GetProfile", 2) then
-        local succeeded, profiles = Global
-            :query()
-            :where({
-                UserId = player.UserId
-            })
-            :order("-Rating")
-            :execute()
-            :await()
+        local succeeded, profile = ParseServer.Functions.call("profile", {
+            userid = player.UserId
+        })
+        :await()
 
-        if not succeeded then
-            warn(profiles)
-            return
-        end
-
-        local profile = profiles[1]
-
-        if profile then
+        if succeeded then
             return profile
+        else
+            warn(profile)
+            return {}
         end
-
-        return {}
     end
 
     return {}
