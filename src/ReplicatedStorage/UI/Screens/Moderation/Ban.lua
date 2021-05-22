@@ -71,7 +71,7 @@ function Ban:render()
         BackButton = e(RoundedTextButton, {
             Position = UDim2.fromScale(0.25, 0.65),
             Size = UDim2.fromScale(0.245, 0.05),
-            HoldSize = UDim2.fromScale(0.25, 0.05),
+            HoldSize = UDim2.fromScale(0.245, 0.05),
             BackgroundColor3 = Color3.fromRGB(78, 78, 78),
             TextColor3 = Color3.fromRGB(255, 255, 255),
             Text = "Back",

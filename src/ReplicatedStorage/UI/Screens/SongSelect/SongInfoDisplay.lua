@@ -6,6 +6,7 @@ local RoactFlipper = require(game.ReplicatedStorage.Packages.RoactFlipper)
 local Llama = require(game.ReplicatedStorage.Packages.Llama)
 
 local e = Roact.createElement
+local f = Roact.createFragment
 
 -- hjsdgrfkhjbsdgfhkjdsfghjbksdfghjbk
 
@@ -20,7 +21,9 @@ local SongInfoDisplay = Roact.Component:extend("SongInfoDisplay")
 
 SongInfoDisplay.defaultProps = {
     Size = UDim2.fromScale(1, 1),
-    SongRate = 100
+    SongRate = 100,
+    OnUprate = function() end,
+    OnDownrate = function() end
 }
 
 local function noop() end
@@ -80,6 +83,32 @@ function SongInfoDisplay:render()
     end
     
     local total_notes, total_holds = SongDatabase:get_note_metrics_for_key(self.props.SongKey)
+
+    local rateButtons
+
+    if SPUtil:is_mobile() then
+        rateButtons = f({
+            RateDown = e(RoundedTextButton, {
+                Text = "-",
+                TextColor3 = Color3.fromRGB(255, 255, 255),
+                Size = UDim2.fromScale(0.05, 0.2),
+                HoldSize = UDim2.fromScale(0.05, 0.25),
+                Position = UDim2.fromScale(0.55, 0.95),
+                AnchorPoint = Vector2.new(0, 1),
+                OnClick = self.props.OnDownrate
+            }),
+            RateUp = e(RoundedTextButton, {
+                Text = "+",
+                TextColor3 = Color3.fromRGB(255, 255, 255),
+                Size = UDim2.fromScale(0.05, 0.2),
+                HoldSize = UDim2.fromScale(0.05, 0.25),
+                Position = UDim2.fromScale(0.61, 0.95),
+                AnchorPoint = Vector2.new(0, 1),
+                OnClick = self.props.OnUprate
+            })
+        })
+    end
+
     return e(RoundedFrame, {
         Position = self.props.Position,
         Size = self.props.Size,
@@ -253,7 +282,8 @@ function SongInfoDisplay:render()
                     MaxTextSize = 22,
                 })
             });
-        })
+        }),
+        RateButtons = rateButtons
     })
 end
 

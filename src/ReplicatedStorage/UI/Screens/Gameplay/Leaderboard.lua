@@ -26,7 +26,7 @@ function Leaderboard:init()
 
     local ScoreService = Knit.GetService("ScoreService")
 
-    ScoreService:GetScoresPromise(SongDatabase:get_hash_for_key(self.props.SongKey)):andThen(function(scores)
+    ScoreService:GetScoresPromise(SongDatabase:get_hash_for_key(self.props.SongKey), 8):andThen(function(scores)
         self:setState({
             scores = scores
         })

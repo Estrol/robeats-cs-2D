@@ -4,6 +4,7 @@ local e = Roact.createElement
 local Ban = require(script.Ban)
 local Kick = require(script.Kick)
 local Users = require(script.Users)
+local Delete = require(script.Delete)
 local Home = require(script.Home)
 
 local Moderation = Roact.Component:extend("Moderation")
@@ -12,6 +13,7 @@ Moderation.routes = {
     ban = Ban,
     kick = Kick,
     users = Users,
+    delete = Delete,
     home = Home
 }
 
