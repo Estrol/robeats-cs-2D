@@ -25,7 +25,8 @@ SongInfoDisplay.defaultProps = {
     Size = UDim2.fromScale(1, 1),
     SongRate = 100,
     OnUprate = function() end,
-    OnDownrate = function() end
+    OnDownrate = function() end,
+    ShowRateButtons = true
 }
 
 local function noop() end
@@ -260,7 +261,7 @@ function SongInfoDisplay:render()
                 })
             });
         }),
-        RateDown = e(RoundedTextButton, {
+        RateDown = self.props.ShowRateButtons and e(RoundedTextButton, {
             Text = "-",
             TextColor3 = Color3.fromRGB(255, 255, 255),
             BackgroundColor3 = Color3.fromRGB(90, 27, 27),
@@ -270,7 +271,7 @@ function SongInfoDisplay:render()
             AnchorPoint = Vector2.new(0, 1),
             OnClick = self.props.OnDownrate
         }),
-        RateUp = e(RoundedTextButton, {
+        RateUp = self.props.ShowRateButtons and e(RoundedTextButton, {
             Text = "+",
             TextColor3 = Color3.fromRGB(255, 255, 255),
             BackgroundColor3 = Color3.fromRGB(55, 105, 40),

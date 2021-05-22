@@ -78,7 +78,8 @@ function Results:render()
             Position = UDim2.fromScale(0.01, 0.01),
 			BackgroundColor3 = Color3.fromRGB(10, 10, 10),
             SongKey = state.SongKey,
-            SongRate = state.Rate
+            SongRate = state.Rate,
+			ShowRateButtons = false
         }),
 		HitGraph = Roact.createElement(DotGraph, {
 			AnchorPoint = Vector2.new(0.5, 0.5),
