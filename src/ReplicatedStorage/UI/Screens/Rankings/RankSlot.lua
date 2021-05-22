@@ -92,6 +92,15 @@ function RankSlot:render()
                 }
             end)
         end;
+        OnLongPress = function()
+            if self.props.IsAdmin then
+                self:setState(function(state)
+                    return {
+                        dialogOpen = not state.dialogOpen
+                    }
+                end)
+            end
+        end
     }, {
         Dialog = e(ButtonLayout, {
             Size = UDim2.fromScale(1, 1),

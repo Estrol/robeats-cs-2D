@@ -89,6 +89,7 @@ function RoundedTextButton:render()
         end;
         [Roact.Event.MouseButton1Click] = self.props.OnClick;
         [Roact.Event.MouseButton2Click] = self.props.OnRightClick;
+        [Roact.Event.TouchLongPress] = self.props.OnLongPress;
         [Roact.Ref] = self.props[Roact.Ref]
     }
 
