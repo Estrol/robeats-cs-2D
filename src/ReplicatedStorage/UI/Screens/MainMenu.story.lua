@@ -3,6 +3,8 @@ local RoactRodux = require(game.ReplicatedStorage.Packages.RoactRodux)
 local e = Roact.createElement
 local State = require(game.ReplicatedStorage.State)
 
+local Promise = require(game.ReplicatedStorage.Knit.Util.Promise)
+
 local Actions = require(game.ReplicatedStorage.Actions)
 
 local DIContext = require(game.ReplicatedStorage.Contexts.DIContext)
@@ -22,13 +24,18 @@ return function(target)
     })
 
     local fakePreviewController = a.fake()
+    local fakeScoreService = a.fake()
 
     a.callTo(fakePreviewController.GetSoundInstance, fakePreviewController)
         :returns(Instance.new("Sound"))
 
+    a.callTo(fakeScoreService.GetProfilePromise, fakeScoreService)
+        :returns(Promise.Resolve({Rank = 13}))
+
     local app = Roact.createElement(DIContext.Provider, {
         value = {
-            PreviewController = fakePreviewController
+            PreviewController = fakePreviewController,
+            ScoreService = fakeScoreService
         }
     }, {
         StoreProvider = storeProvider

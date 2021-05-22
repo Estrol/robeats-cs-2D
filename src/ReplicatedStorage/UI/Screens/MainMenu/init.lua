@@ -6,7 +6,6 @@ local SongDatabase = require(game.ReplicatedStorage.RobeatsGameCore.SongDatabase
 local e = Roact.createElement
 
 local PlayerProfile = require(script.PlayerProfile)
-local MusicBox = require(script.MusicBox)
 local AudioVisualizer = require(script.AudioVisualizer)
 
 local RunService = game:GetService("RunService")
