@@ -34,7 +34,12 @@ function MultipleChoiceValue:render()
                 self.props.OnChanged(i, not self.props.Values[i])
             end,
             LayoutOrder = i,
-            Text = self.props.ValueNames[i]
+            Text = self.props.ValueNames[i],
+            TextScaled = true
+        }, {
+            UITextSizeContstraint = e("UITextSizeConstraint", {
+                MaxTextSize = 13
+            })
         })
 
         table.insert(keybinds, buttonElement)

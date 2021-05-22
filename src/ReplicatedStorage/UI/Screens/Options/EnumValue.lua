@@ -34,7 +34,12 @@ function EnumValue:render()
                 self.props.OnChanged(name, i)
             end,
             LayoutOrder = i,
-            Text = name
+            Text = name,
+            TextScaled = true
+        }, {
+            UITextSizeContstraint = e("UITextSizeConstraint", {
+                MaxTextSize = 13
+            })
         })
 
         table.insert(keybinds, buttonElement)
