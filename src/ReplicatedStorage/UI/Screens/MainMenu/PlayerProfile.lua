@@ -134,7 +134,7 @@ function PlayerProfile:render()
         }),
         Rank = self.state.rank and e(RoundedTextLabel, {
             Position = UDim2.fromScale(0.97, 0.92),
-            Size = UDim2.fromScale(0.75, 0.85),
+            Size = UDim2.fromScale(0.5, 0.45),
             AnchorPoint = Vector2.new(1, 1),
             TextYAlignment = Enum.TextYAlignment.Bottom,
             TextXAlignment = Enum.TextXAlignment.Right,
@@ -144,10 +144,6 @@ function PlayerProfile:render()
             BackgroundTransparency = 1,
             TextTransparency = 0.4,
             ZIndex = 0
-        }, {
-            UITextSizeConstraint = e("UITextSizeConstraint", {
-                MaxTextSize = 42
-            })
         })
     })
 end
