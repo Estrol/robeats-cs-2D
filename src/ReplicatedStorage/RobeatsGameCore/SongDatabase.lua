@@ -26,6 +26,10 @@ function SongDatabase:new()
 		return ipairs(_all_keys)
 	end
 
+	function self:get_key_count()
+		return #_all_keys
+	end
+
 	function self:get_data_for_key(key)
 		return _all_keys[key]
 	end
