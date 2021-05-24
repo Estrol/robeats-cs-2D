@@ -17,6 +17,8 @@ local RoundedTextButton = require(game.ReplicatedStorage.UI.Components.Base.Roun
 local RoundedImageLabel = require(game.ReplicatedStorage.UI.Components.Base.RoundedImageLabel)
 local RoundedTextLabel = require(game.ReplicatedStorage.UI.Components.Base.RoundedTextLabel)
 
+local MusicBox = require(game.ReplicatedStorage.UI.Screens.MainMenu.MusicBox)
+
 
 local MainMenuUI = Roact.Component:extend("MainMenuUI")
 
@@ -55,8 +57,11 @@ function MainMenuUI:render()
         });
     end
 
-    return e(RoundedFrame, {
+    return e(RoundedImageLabel, {
         Size = UDim2.new(1, 0, 1, 0),
+        Position = UDim2.fromScale(0.5,0.5),
+        AnchorPoint = Vector2.new(0.5,0.5),
+        Image = "http://www.roblox.com/asset/?id=6800827231"
     }, {
         Logo = e(RoundedImageLabel, {
             Image = "rbxassetid://6224561143";
