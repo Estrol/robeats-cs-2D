@@ -8,16 +8,12 @@ local e = Roact.createElement
 local PlayerProfile = require(script.PlayerProfile)
 local AudioVisualizer = require(script.AudioVisualizer)
 
-local RunService = game:GetService("RunService")
-
 local withInjection = require(game.ReplicatedStorage.UI.Components.HOCs.withInjection)
 
 local RoundedFrame = require(game.ReplicatedStorage.UI.Components.Base.RoundedFrame)
 local RoundedTextButton = require(game.ReplicatedStorage.UI.Components.Base.RoundedTextButton)
 local RoundedImageLabel = require(game.ReplicatedStorage.UI.Components.Base.RoundedImageLabel)
-local RoundedTextLabel = require(game.ReplicatedStorage.UI.Components.Base.RoundedTextLabel)
 
-local MusicBox = require(game.ReplicatedStorage.UI.Screens.MainMenu.MusicBox)
 
 
 local MainMenuUI = Roact.Component:extend("MainMenuUI")
@@ -79,10 +75,6 @@ function MainMenuUI:render()
             Size = UDim2.fromScale(0.45, 0.2)
         }),
         AudioVisualizer = e(AudioVisualizer),
-        -- SongBox = e(MusicBox, {
-        --     Position = UDim2.fromScale(0.25, 0.02),
-        --     SongKey = 1;
-        -- }),
         ButtonContainer = e(RoundedFrame, {
             Size = UDim2.fromScale(0.25, 0.6);
             Position = UDim2.fromScale(0.02,0.95);
