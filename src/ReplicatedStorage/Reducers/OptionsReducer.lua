@@ -19,6 +19,7 @@ local defaultState = {
 
         --interface settings
         ComboPosition = "Middle"; 
+        InGameLeaderboardPosition = "Left";
         NoteColor = Color3.fromRGB(255, 255, 255);
 
         --Extra settings.

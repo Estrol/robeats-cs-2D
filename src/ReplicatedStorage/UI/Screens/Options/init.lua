@@ -138,6 +138,16 @@ function Options:getSettingElements()
             LayoutOrder = 0;
         })
 
+        elements.InGameLeaderboardPosition = e(EnumValue, {
+            Value = self.props.options.InGameLeaderboardPosition,
+            ValueNames = {"Left", "Right"},
+            OnChanged = function(name)
+                self.props.setOption("InGameLeaderboardPosition", name)
+            end,
+            Name = "In-Game Leaderboard Position",
+            LayoutOrder = 1;
+        })
+
         elements.LaneCover = e(IntValue, {
             Value = self.props.options.LaneCover,
             OnChanged = function(value)
