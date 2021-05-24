@@ -66,7 +66,7 @@ function Leaderboard:render()
     end
 
     return e(RoundedFrame, {
-        Position = UDim2.fromScale(0.01, 0.5),
+        Position = self.props.Position,
         AnchorPoint = Vector2.new(0, 0.5),
         Size = UDim2.fromScale(0.175, 0.5),
         BackgroundTransparency = 1
