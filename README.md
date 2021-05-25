@@ -1,3 +1,7 @@
+# About fork
+this fork is focused for 2D of the gameplay
+
+
 <div align=center style="font-size:40px">
     <b>RoBeats CS</b>
 </div>
