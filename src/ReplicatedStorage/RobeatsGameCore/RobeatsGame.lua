@@ -6,6 +6,7 @@ local ObjectPool = require(game.ReplicatedStorage.RobeatsGameCore.ObjectPool)
 local SFXManager = require(game.ReplicatedStorage.RobeatsGameCore.SFXManager)
 local ScoreManager = require(game.ReplicatedStorage.RobeatsGameCore.ScoreManager)
 local NoteTrackSystem = require(game.ReplicatedStorage.RobeatsGameCore.NoteTrack.NoteTrackSystem)
+local NoteTrackSystem2D = require(game.ReplicatedStorage.RobeatsGameCore.NoteTrack.NoteTrackSystem2D)
 local EffectSystem = require(game.ReplicatedStorage.RobeatsGameCore.Effects.EffectSystem)
 local GameSlot = require(game.ReplicatedStorage.RobeatsGameCore.Enums.GameSlot)
 local GameTrack = require(game.ReplicatedStorage.RobeatsGameCore.Enums.GameTrack)
@@ -33,6 +34,8 @@ function RobeatsGame:new(_game_environment_center_position)
 		_object_pool = ObjectPool:new();
 	}
 
+	local _is_2d_mode = false
+	local _is_upscroll = false
 	local _show_hit_lighting = false
 	local _hide_ln_tails = false
 	local _judgement_visibility = {
@@ -72,6 +75,14 @@ function RobeatsGame:new(_game_environment_center_position)
 		end
 	end
 
+	--[[ 2D Implementations ]]
+	function self:is_2d_mode() return _is_2d_mode end
+	function self:set_2d_mode(val) _is_2d_mode = val end
+
+	function self:is_upscroll() return _is_upscroll end
+	function self:set_upscroll_mode(val) _is_upscroll = val end
+	--[[ END of 2D Implementations ]]
+
 	function self:set_hit_lighting(val) _show_hit_lighting = val end
 	function self:get_hit_lighting() return _show_hit_lighting end
 
@@ -108,7 +119,12 @@ function RobeatsGame:new(_game_environment_center_position)
 	end
 
 	function self:start_game()
-		self._tracksystems:add(self:get_local_game_slot(),NoteTrackSystem:new(self,self:get_local_game_slot()))
+		if self:is_2d_mode() then
+			self._tracksystems:add(self:get_local_game_slot(), NoteTrackSystem2D:new(self,self:get_local_game_slot()))
+		else
+			self._tracksystems:add(self:get_local_game_slot(), NoteTrackSystem:new(self,self:get_local_game_slot()))
+		end
+
 		self._audio_manager:start_play()
 		_current_mode = RobeatsGame.Mode.Game
 	end

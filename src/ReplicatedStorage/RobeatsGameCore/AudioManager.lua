@@ -10,6 +10,9 @@ local TimingPresets = require(game.ReplicatedStorage.TimingPresets)
 local SingleNote = require(game.ReplicatedStorage.RobeatsGameCore.NoteTypes.SingleNote)
 local HeldNote = require(game.ReplicatedStorage.RobeatsGameCore.NoteTypes.HeldNote)
 
+local SingleNote2D = require(game.ReplicatedStorage.RobeatsGameCore.NoteTypes.SingleNote2D)
+local HeldNote2D = require(game.ReplicatedStorage.RobeatsGameCore.NoteTypes.HeldNote2D)
+
 local AudioManager = {}
 AudioManager.Mode = {
 	NotLoaded = 0; --No audio is loaded (call AudioManager:load_song)
@@ -180,8 +183,15 @@ function AudioManager:new(_game)
 		AssertType:is_int(track_number)
 
 		for _,tracksystem in _game:tracksystems_itr() do
+			local NoteProto
+			if _game:is_2d_mode() then
+				NoteProto = SingleNote2D
+			else
+				NoteProto = SingleNote
+			end
+
 			tracksystem:get_notes():push_back(
-				SingleNote:new(
+				NoteProto:new(
 					_game,
 					track_number,
 					tracksystem:get_game_slot(),
@@ -203,8 +213,15 @@ function AudioManager:new(_game)
 		AssertType:is_int(track_number)
 
 		for _,tracksystem in _game:tracksystems_itr() do
+			local NoteProto
+			if _game:is_2d_mode() then
+				NoteProto = HeldNote2D
+			else
+				NoteProto = HeldNote
+			end
+
 			tracksystem:get_notes():push_back(
-				HeldNote:new(
+				NoteProto:new(
 					_game,
 					track_number,
 					tracksystem:get_game_slot(),

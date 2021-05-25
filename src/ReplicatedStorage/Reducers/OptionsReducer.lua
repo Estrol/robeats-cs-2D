@@ -18,6 +18,8 @@ local defaultState = {
         LaneCover = 0;
 
         --interface settings
+        Use2DLane = true;
+        Lane2DScrollDirection = "Downscroll";
         ComboPosition = "Middle"; 
         InGameLeaderboardPosition = "Left";
         NoteColor = Color3.fromRGB(255, 255, 255);

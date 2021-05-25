@@ -63,9 +63,18 @@ function Gameplay:init()
     self.hitDevianceRef = Roact.createRef()
     
     -- Set up the stage
+    local rc = EnvironmentSetup:set_skin("Redish Arrow v2")
+    if not rc then
+        DebugOut:errf('Cannot find the skin called "Redish Arrow v2"')
+    end
 
-    local stagePlat = EnvironmentSetup:get_robeats_game_stage()
-    stagePlat.Transparency = self.props.options.BaseTransparency
+    local lane_2D = self.props.options.Use2DLane
+    if lane_2D then
+        EnvironmentSetup:setup_2d_environment()
+    else
+        local stagePlat = EnvironmentSetup:get_robeats_game_stage()
+        stagePlat.Transparency = self.props.options.BaseTransparency
+    end
     
     -- Set FOV and Time of Day
 
@@ -89,6 +98,7 @@ function Gameplay:init()
     _game:set_ln_tails(self.props.options.HideLNTails)
     _game:set_judgement_visibility(self.props.options.JudgementVisibility)
     _game:set_note_color(self.props.options.NoteColor)
+    _game:set_2d_mode(lane_2D)
     
     -- Load the map
 
@@ -114,6 +124,9 @@ function Gameplay:init()
 
         if _game:get_mode() == RobeatsGame.Mode.GameEnded then
             self.everyFrameConnection:Disconnect()
+            if lane_2D then
+                EnvironmentSetup:reset_2d_environment()
+            end
 
             local marvelouses, perfects, greats, goods, bads, misses, maxChain = _game._score_manager:get_end_records()
             local hits = _game._score_manager:get_hits()
@@ -179,7 +192,7 @@ function Gameplay:init()
         local args = {...}
 
         local hit = args[10]
-        
+
         if hit then
             local bar = Instance.new("Frame")
             bar.AnchorPoint = Vector2.new(0.5, 0)
@@ -193,6 +206,11 @@ function Gameplay:init()
             bar.Parent = self.hitDevianceRef:getValue()
 
             withHitDeviancePoint(bar)
+        end
+
+        if lane_2D then
+            local combo_frame = EnvironmentSetup:get_player_gui_root().GameplayFrame.Combo
+            combo_frame.Text = _game._score_manager:get_chain()
         end
 
         self:setState({
@@ -364,6 +382,7 @@ function Gameplay:render()
            Position = UDim2.fromScale(0.5, 0.95),
            Size = UDim2.fromScale(0.15, 0.05),
            AnchorPoint = Vector2.new(0.5, 1),
+           ZIndex = 5, -- This needed to overlap the 2D Lane's ZIndex
            [Roact.Ref] = self.hitDevianceRef
         }),
         LaneCover = e(RoundedFrame, {

@@ -1,5 +1,5 @@
 local SPList = require(game.ReplicatedStorage.Shared.SPList)
-local NoteTrack = require(game.ReplicatedStorage.RobeatsGameCore.NoteTrack.NoteTrack)
+local NoteTrack2D = require(game.ReplicatedStorage.RobeatsGameCore.NoteTrack.NoteTrack2D)
 local GameSlot = require(game.ReplicatedStorage.RobeatsGameCore.Enums.GameSlot)
 local DebugOut = require(game.ReplicatedStorage.Shared.DebugOut)
 local NoteResult = require(game.ReplicatedStorage.RobeatsGameCore.Enums.NoteResult)
@@ -22,25 +22,9 @@ function NoteTrackSystem:new(_game, _game_slot)
 	local _tracks = SPList:new()
 
 	function self:cons()
-		--Clone "NoteTrackSystemProto" and use the elements in-game
-		_obj = EnvironmentSetup:get_element_protos_folder().NoteTrackSystemProto:Clone()
-		_obj:SetPrimaryPartCFrame(SPUtil:look_at(
-			_game:get_game_environment_center_position(),
-			_game:get_game_environment_center_position() + GameSlot:slot_to_world_position_offset(_game_slot)
-		))
-		_obj.Parent = EnvironmentSetup:get_local_elements_folder()
-		
 		--For every defined enum value in GameTrack, create a NoteTrack for it
 		for track_enum_name,track_enum_value in GameTrack:track_itr() do
-			if _game:is_2d_mode() then
-				_tracks:push_back(NoteTrack2D:new(_game, self, track_enum_value))
-			else
-				local tar_track_obj = _obj:FindFirstChild(track_enum_name)
-				if tar_track_obj == nil then
-					return DebugOut:errf("%s (Enum member of GameTrack) not found as child under NoteTrackSystemProto", track_enum_name)
-				end
-				_tracks:push_back(NoteTrack:new(_game, self, tar_track_obj, track_enum_value))
-			end
+			_tracks:push_back(NoteTrack2D:new(_game, self, track_enum_value))
 		end
 	end
 	
@@ -54,7 +38,8 @@ function NoteTrackSystem:new(_game, _game_slot)
 		for i=1,_tracks:count() do
 			_tracks:get(i):teardown()
 		end
-		_obj:Destroy()
+
+		_tracks:clear()
 	end
 
 	function self:update(dt_scale)

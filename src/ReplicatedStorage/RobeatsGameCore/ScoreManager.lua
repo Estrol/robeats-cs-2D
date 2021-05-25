@@ -4,7 +4,9 @@ local NoteResult = require(game.ReplicatedStorage.RobeatsGameCore.Enums.NoteResu
 local SFXManager = require(game.ReplicatedStorage.RobeatsGameCore.SFXManager)
 local InputUtil = require(game.ReplicatedStorage.Shared.InputUtil)
 local NoteResultPopupEffect = require(game.ReplicatedStorage.RobeatsGameCore.Effects.NoteResultPopupEffect)
+local NoteResultPopupEffect2D = require(game.ReplicatedStorage.RobeatsGameCore.Effects.NoteResultPopupEffect2D)
 local HoldingNoteEffect = require(game.ReplicatedStorage.RobeatsGameCore.Effects.HoldingNoteEffect)
+local HoldingNoteEffect2D = require(game.ReplicatedStorage.RobeatsGameCore.Effects.HoldingNoteEffect2D)
 local RenderableHit = require(game.ReplicatedStorage.RobeatsGameCore.RenderableHit)
 local DebugOut = require(game.ReplicatedStorage.Shared.DebugOut)
 
@@ -82,11 +84,18 @@ function ScoreManager:new(_game)
 		local track = _game:get_tracksystem(slot_index):get_track(track_index)
 
 		if (not params.GhostTap) and _game:get_judgement_visibility()[note_result + 1] then
-			_game._effects:add_effect(NoteResultPopupEffect:new(
-				_game,
-				track:get_end_position() + Vector3.new(0,0.25,0),
-				note_result
-			))
+			if _game:is_2d_mode() then
+				_game._effects:add_effect(NoteResultPopupEffect2D:new(
+					_game,
+					note_result
+				))
+			else
+				_game._effects:add_effect(NoteResultPopupEffect:new(
+					_game,
+					track:get_end_position() + Vector3.new(0,0.25,0),
+					note_result
+				))
+			end
 		end
 
 		if params.PlaySFX == true and (not params.GhostTap) then
@@ -108,11 +117,18 @@ function ScoreManager:new(_game)
 			--Create an effect at HoldEffectPosition if PlayHoldEffect is true
 			if params.PlayHoldEffect then
 				if note_result ~= NoteResult.Miss then
-					_game._effects:add_effect(HoldingNoteEffect:new(
-						_game,
-						params.HoldEffectPosition,
-						note_result
-					))
+					if _game:is_2d_mode() then
+						_game._effects:add_effect(HoldingNoteEffect2D:new(
+							_game,
+							track_index
+						))
+					else
+						_game._effects:add_effect(HoldingNoteEffect:new(
+							_game,
+							params.HoldEffectPosition,
+							note_result
+						))
+					end
 				end
 			end
 		end
