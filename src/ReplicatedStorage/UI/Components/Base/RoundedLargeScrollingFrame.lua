@@ -80,6 +80,7 @@ function RoundedLargeScrollingFrame:render()
         Position = self.props.Position,
         Size = self.props.Size,
         CanvasSize = UDim2.fromOffset(0, (self.props.getItemSize() * #self.props.items) + self.props.Padding.Offset),
+        ScrollBarThickness = self.props.ScrollBarThickness,
         [Roact.Ref] = self.listRef,
         [Roact.Change.CanvasPosition] = self.recalcIndexes;
         [Roact.Change.AbsoluteSize] = self.recalcIndexes;

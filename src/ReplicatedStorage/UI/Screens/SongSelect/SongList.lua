@@ -82,6 +82,7 @@ function SongList:render()
             Size = UDim2.new(1, 0, 0.95, 0),
             Padding = UDim.new(0, 4),
             HorizontalAlignment = "Right",
+            ScrollBarThickness = 5,
             items = self.state.found;
             renderItem = function(item, i)
                 return e(SongButton, {
