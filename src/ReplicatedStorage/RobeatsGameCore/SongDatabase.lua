@@ -211,6 +211,8 @@ function SongDatabase:new()
 	function self:get_note_metrics_for_key(key)
 		local total_notes = 0
 		local total_holds = 0
+		local total_left_hand_objects = 0
+		local total_right_hand_objects = 0
 
 		for _, hit_object in pairs(self:get_hit_objects_for_key(key)) do
 			if hit_object.Type == 1 then
@@ -218,9 +220,15 @@ function SongDatabase:new()
 			elseif hit_object.Type == 2 then
 				total_holds += 1
 			end
+
+			if hit_object.Track > 2 then
+				total_right_hand_objects += 1
+			else
+				total_left_hand_objects += 1
+			end
 		end
 
-		return total_notes, total_holds
+		return total_notes, total_holds, total_left_hand_objects, total_right_hand_objects
 	end
 	
 	function self:invalid_songkey() return -1 end
