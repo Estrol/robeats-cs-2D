@@ -78,7 +78,8 @@ function SongSelect:render()
             Position = UDim2.fromScale(0.995, 0.985),
             OnSongSelected = function(key)
                 self.props.setSongKey(key)
-            end
+            end,
+            SelectedSongKey = self.props.options.SongKey
         }),
         Leaderboard = e(Leaderboard, {
             Size = UDim2.fromScale(0.325, 0.7),
