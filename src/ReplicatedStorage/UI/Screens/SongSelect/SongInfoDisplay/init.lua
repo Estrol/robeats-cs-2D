@@ -175,8 +175,8 @@ function SongInfoDisplay:render()
             UIListLayout = e("UIGridLayout", {
                 SortOrder = Enum.SortOrder.LayoutOrder,
                 FillDirection = Enum.FillDirection.Horizontal,
-                FillDirectionMaxCells = 3,
-                CellSize = UDim2.fromScale(0.135, 0.33)
+                FillDirectionMaxCells = 4,
+                CellSize = UDim2.fromScale(0.1165, 0.33)
             }),
             DifficultyDisplay = e(GridInfoDisplay, {
                 Value = Rating:get_rating_from_accuracy(self.props.SongKey, 97, self.props.SongRate / 100),
@@ -219,6 +219,20 @@ function SongInfoDisplay:render()
                     return string.format("RH Objects: %s", value)
                 end,
                 LayoutOrder = 6
+            });
+            LeftRightHandRatioDisplay = e(GridInfoDisplay, {
+                Value = total_left_hand_objects / total_right_hand_objects,
+                FormatValue = function(value)
+                    return string.format("L/R Ratio: %0.2f", value)
+                end,
+                LayoutOrder = 7
+            });
+            TotalLengthDisplay = e(GridInfoDisplay, {
+                Value = SongDatabase:get_song_length_for_key(self.props.SongKey) / (self.props.SongRate / 100),
+                FormatValue = function(value)
+                    return string.format("Total Length: %s", SPUtil:format_ms_time(value))
+                end,
+                LayoutOrder = 8
             });
         }),
         RateDown = self.props.ShowRateButtons and e(RoundedTextButton, {
