@@ -22,6 +22,7 @@ local RoundedTextButton = require(game.ReplicatedStorage.UI.Components.Base.Roun
 local LoadingWheel = require(game.ReplicatedStorage.UI.Components.Base.LoadingWheel)
 
 local ComboPositions = require(game.ReplicatedStorage.ComboPositions)
+local LeaderboardPositions = require(game.ReplicatedStorage.LeaderboardPositions)
 
 local withHitDeviancePoint = require(script.Decorators.withHitDeviancePoint)
 
@@ -262,7 +263,8 @@ function Gameplay:render()
         leaderboard = e(Leaderboard, {
             SongKey = self.props.options.SongKey,
             LocalRating = Rating:get_rating_from_accuracy(self.props.options.SongKey, self.state.accuracy, self.props.options.SongRate / 100),
-            LocalAccuracy = self.state.accuracy
+            LocalAccuracy = self.state.accuracy, 
+            Position = LeaderboardPositions[self.props.options.InGameLeaderboardPosition]
         })
     end
 

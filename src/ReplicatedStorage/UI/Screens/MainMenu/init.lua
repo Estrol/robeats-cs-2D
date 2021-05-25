@@ -8,14 +8,12 @@ local e = Roact.createElement
 local PlayerProfile = require(script.PlayerProfile)
 local AudioVisualizer = require(script.AudioVisualizer)
 
-local RunService = game:GetService("RunService")
-
 local withInjection = require(game.ReplicatedStorage.UI.Components.HOCs.withInjection)
 
 local RoundedFrame = require(game.ReplicatedStorage.UI.Components.Base.RoundedFrame)
 local RoundedTextButton = require(game.ReplicatedStorage.UI.Components.Base.RoundedTextButton)
 local RoundedImageLabel = require(game.ReplicatedStorage.UI.Components.Base.RoundedImageLabel)
-local RoundedTextLabel = require(game.ReplicatedStorage.UI.Components.Base.RoundedTextLabel)
+
 
 
 local MainMenuUI = Roact.Component:extend("MainMenuUI")
@@ -55,8 +53,11 @@ function MainMenuUI:render()
         });
     end
 
-    return e(RoundedFrame, {
+    return e(RoundedImageLabel, {
         Size = UDim2.new(1, 0, 1, 0),
+        Position = UDim2.fromScale(0.5,0.5),
+        AnchorPoint = Vector2.new(0.5,0.5),
+        Image = "http://www.roblox.com/asset/?id=6800827231"
     }, {
         Logo = e(RoundedImageLabel, {
             Image = "rbxassetid://6224561143";
@@ -74,10 +75,6 @@ function MainMenuUI:render()
             Size = UDim2.fromScale(0.45, 0.2)
         }),
         AudioVisualizer = e(AudioVisualizer),
-        -- SongBox = e(MusicBox, {
-        --     Position = UDim2.fromScale(0.25, 0.02),
-        --     SongKey = 1;
-        -- }),
         ButtonContainer = e(RoundedFrame, {
             Size = UDim2.fromScale(0.25, 0.6);
             Position = UDim2.fromScale(0.02,0.95);
