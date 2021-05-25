@@ -100,7 +100,7 @@ function SongButton:render()
             BorderSizePixel = 0,
             Position = UDim2.new(0.02, 0, 0.1, 0),
             Selectable = true,
-            Size = UDim2.new(0.45, 0, 0.3, 0),
+            Size = UDim2.new(0.7, 0, 0.3, 0),
             Font = Enum.Font.GothamBold,
             Text = SongDatabase:get_title_for_key(self.props.SongKey),
             TextColor3 = Color3.fromRGB(255, 208, 87),
