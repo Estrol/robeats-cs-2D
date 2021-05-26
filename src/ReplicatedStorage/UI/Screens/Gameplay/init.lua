@@ -63,7 +63,7 @@ function Gameplay:init()
     self.hitDevianceRef = Roact.createRef()
     
     -- Set up the stage
-    local rc = EnvironmentSetup:set_skin("Redish Arrow v2")
+    local rc = EnvironmentSetup:set_skin("ATTANG's skin")
     if not rc then
         DebugOut:errf('Cannot find the skin called "Redish Arrow v2"')
     end
