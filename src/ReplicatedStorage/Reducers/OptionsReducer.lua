@@ -20,7 +20,7 @@ local defaultState = {
         LaneCover = 0;
 
         --interface settings
-        Use2DLane = true;
+        Use2DLane = false;
         Skin2D = Skins:key_list():get(1);
         Lane2DScrollDirection = "Downscroll";
         ComboPosition = "Middle"; 
