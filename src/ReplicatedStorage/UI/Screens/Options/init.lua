@@ -8,6 +8,7 @@ local SPUtil = require(game.ReplicatedStorage.Shared.SPUtil)
 local DebugOut = require(game.ReplicatedStorage.Shared.DebugOut)
 local RunService = game:GetService("RunService")
 
+local Skins = require(game.ReplicatedStorage.Skins)
 local Actions = require(game.ReplicatedStorage.Actions)
 
 local RoundedFrame = require(game.ReplicatedStorage.UI.Components.Base.RoundedFrame)
@@ -23,7 +24,7 @@ local ColorValue = require(script.ColorValue)
 
 local Options = Roact.Component:extend("Options")
 
-Options.categoryList = {"⚙ General", "🖥️ Interface", "➕ Extra"}
+Options.categoryList = {"⚙ General", "🖥️ Interface", "➕ Extra", "⬜ 2D"}
 
 function noop() end
 
@@ -247,6 +248,27 @@ function Options:getSettingElements()
             end,
             Name = "Hide In-Game Leaderboard",
             LayoutOrder = 7
+        })
+    end)
+    -- 2D related
+    :case(4, function()
+        elements.Use2DLane = e(BoolValue, {
+            Value = self.props.options.Use2DLane,
+            OnChanged = function(value)
+                self.props.setOption("Use2DLane", value)
+            end,
+            Name = "Use 2D Lane",
+            LayoutOrder = 1
+        })
+
+        elements.JudgementVisibility = e(EnumValue, {
+            Value = self.props.options.Skin2D,
+            ValueNames = Skins:key_list()._table,
+            OnChanged = function(value)
+                self.props.setOption("Skin2D", value)
+            end,
+            Name = "Skin",
+            LayoutOrder = 2
         })
     end)
     

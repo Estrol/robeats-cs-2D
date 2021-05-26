@@ -11,30 +11,21 @@ local HoldingNoteEffect2D = require(game.ReplicatedStorage.RobeatsGameCore.Effec
 local FlashEvery = require(game.ReplicatedStorage.Shared.FlashEvery)
 local RenderableHit = require(game.ReplicatedStorage.RobeatsGameCore.RenderableHit)
 local TriggerNoteEffect2D = require(game.ReplicatedStorage.RobeatsGameCore.Effects.TriggerNoteEffect2D)
+local Skins = require(game.ReplicatedStorage.Skins)
 
 
-local HeldNote = {}
-HeldNote.Type = "HeldNote"
+local HeldNote2D = {}
+HeldNote2D.Type = "HeldNote2D"
 
-HeldNote.State = {
-	Pre = 0; --HeldNote first hit arriving
-	Holding = 1; --HeldNote first hit success, currently holding
-	HoldMissedActive = 2; --HeldNote first hit failed, second hit arriving
-	Passed = 3; --HeldNote second hit passed
+HeldNote2D.State = {
+	Pre = 0; --HeldNote2D first hit arriving
+	Holding = 1; --HeldNote2D first hit success, currently holding
+	HoldMissedActive = 2; --HeldNote2D first hit failed, second hit arriving
+	Passed = 3; --HeldNote2D second hit passed
 	DoRemove = 4;
 }
 
-local _head_outline_position_offset_default
-local _tail_outline_position_offset_default
-local _head_adorn_default
-local _head_outline_adorn_default
-local _tail_adorn_default
-local _tail_outline_adorn_default
-local _body_adorn_default
-local _body_outline_left_adorn_default
-local _body_outline_right_adorn_default
-
-function HeldNote:new(
+function HeldNote2D:new(
 	_game,
 	_track_index,
 	_slot_index,
@@ -43,7 +34,7 @@ function HeldNote:new(
 	_duration_time_ms
 )
 	local self = NoteBase:NoteBase()
-	self.ClassName = HeldNote.Type
+	self.ClassName = HeldNote2D.Type
 	
 	local _game_audio_manager_get_current_time_ms = 0
 	local _note_obj
@@ -51,21 +42,18 @@ function HeldNote:new(
 	local _body
 	local _head
 	local _tail
-	local _head_outline
-	local _tail_outline
-	local _body_outline_left
-	local _body_outline_right
-	local _body_adorn, _head_adorn, _tail_adorn, _head_outline_adorn, _tail_outline_adorn, _body_outline_left_adorn, _body_outline_right_adorn
 	
-	local _state = HeldNote.State.Pre
+	local _state = HeldNote2D.State.Pre
 	local _did_trigger_head = false
 	local _did_trigger_tail = false
 	local _show_trigger_fx = _game:get_hit_lighting()
 	
 	function self:cons()
-		local gameplayframe = EnvironmentSetup:get_player_gui_root().GameplayFrame
-		local tracks = gameplayframe.Tracks
-		local proto = EnvironmentSetup:get_2d_skin().HeldNoteProto
+		local _gameplay_frame = EnvironmentSetup:get_player_gui_root().GameplayFrame
+		local tracks = _gameplay_frame.Tracks
+
+		local _skin = _game:get_skin()
+		local proto = _skin.HeldNoteProto
 
 		_note_obj = _game._object_pool:depool(self.ClassName)
 		if _note_obj == nil then
@@ -82,28 +70,10 @@ function HeldNote:new(
 		_head = _note_obj.Head
 		_tail = _note_obj.Tail
 
-		_state = HeldNote.State.Pre
+		_state = HeldNote2D.State.Pre
 		self:update_visual(1)
 		_note_obj.Parent = tracks['Track'.._track_index]
-	end
-	
-	--Cache start and end position since they are used every frame
-	local __get_start_position = nil
-	local function get_start_position()
-		if __get_start_position == nil then
-			__get_start_position = _game:get_tracksystem(_slot_index):get_track(_track_index):get_start_position()
-		end
-		return __get_start_position
-	end
-	
-	local __get_end_position = nil
-	local function get_end_position()
-		if __get_end_position == nil then
-			__get_end_position = _game:get_tracksystem(_slot_index):get_track(_track_index):get_end_position()
-		end
-		return __get_end_position
-	end
-	
+	end	
 	
 	local function get_head_position()
 		return (_game_audio_manager_get_current_time_ms - _creation_time_ms) / (_hit_time_ms - _creation_time_ms)
@@ -146,13 +116,13 @@ function HeldNote:new(
 
 		local tail_to_head = (_head.Position.Y.Scale-_tail.Position.Y.Scale)
 		
-		if _state == HeldNote.State.Pre then
+		if _state == HeldNote2D.State.Pre then
 			_head.Visible = true
 		else
 			_head.Visible = false
 		end
 		
-		if _state == HeldNote.State.Passed and _did_trigger_tail then
+		if _state == HeldNote2D.State.Passed and _did_trigger_tail then
 			_tail.Visible = false
 		else
 			if tail_visible() then
@@ -162,7 +132,6 @@ function HeldNote:new(
 			end
 		end
 		
-		local head_t = (_game_audio_manager_get_current_time_ms - _creation_time_ms) / (_hit_time_ms - _creation_time_ms)
 		do
 			local _body_pos = (tail_to_head * 0.5) + tail_pos
 			_body.Position = UDim2.new(0.5, 0, _body_pos, 0)
@@ -171,10 +140,10 @@ function HeldNote:new(
 		
 		local target_transparency = 0
 		local imm = false
-		if _state == HeldNote.State.HoldMissedActive then
+		if _state == HeldNote2D.State.HoldMissedActive then
 			target_transparency = 0.9
 
-		elseif _state == HeldNote.State.Passed and _did_trigger_tail then
+		elseif _state == HeldNote2D.State.Passed and _did_trigger_tail then
 			target_transparency = 1
 			imm = true
 
@@ -209,11 +178,11 @@ function HeldNote:new(
 			end
 		end
 		
-		--if _state == HeldNote.State.Holding then
+		--if _state == HeldNote2D.State.Holding then
 		--	_game._world_effect_manager:notify_frame_hold(_game, _slot_index, _track_index)
 		--end
 		
-		if _state == HeldNote.State.Pre then
+		if _state == HeldNote2D.State.Pre then
 			if _game_audio_manager_get_current_time_ms > (_hit_time_ms - _game._audio_manager:get_note_remove_time()) then
 				_game._score_manager:register_hit(
 					NoteResult.Miss,
@@ -222,10 +191,10 @@ function HeldNote:new(
 					HitParams:new():set_play_sfx(false):set_play_hold_effect(false):set_time_miss(true)
 				)
 				
-				_state = HeldNote.State.HoldMissedActive
+				_state = HeldNote2D.State.HoldMissedActive
 			end
-		elseif _state == HeldNote.State.Holding or _state == HeldNote.State.HoldMissedActive or _state == HeldNote.State.Passed then
-			if _state == HeldNote.State.Holding then
+		elseif _state == HeldNote2D.State.Holding or _state == HeldNote2D.State.HoldMissedActive or _state == HeldNote2D.State.Passed then
+			if _state == HeldNote2D.State.Holding then
 				_hold_flash:update(dt_scale)
 				if _hold_flash:do_flash() then
 					_game._effects:add_effect(HoldingNoteEffect2D:new(_game, _track_index))
@@ -233,7 +202,7 @@ function HeldNote:new(
 			end
 			
 			if _game_audio_manager_get_current_time_ms > (get_tail_hit_time() - _game._audio_manager:get_note_remove_time()) then
-				if _state == HeldNote.State.Holding or _state == HeldNote.State.HoldMissedActive then
+				if _state == HeldNote2D.State.Holding or _state == HeldNote2D.State.HoldMissedActive then
 					_game._score_manager:register_hit(
 						NoteResult.Miss,
 						_slot_index,
@@ -242,13 +211,13 @@ function HeldNote:new(
 					)
 				end
 				
-				_state = HeldNote.State.DoRemove
+				_state = HeldNote2D.State.DoRemove
 			end
 		end
 	end
 
 	--[[Override--]] function self:should_remove()
-		return _state == HeldNote.State.DoRemove
+		return _state == HeldNote2D.State.DoRemove
 	end
 
 	--[[Override--]] function self:do_remove()
@@ -256,7 +225,7 @@ function HeldNote:new(
 	end
 
 	--[[Override--]] function self:test_hit()
-		if _state == HeldNote.State.Pre then
+		if _state == HeldNote2D.State.Pre then
 			local time_to_end = _game._audio_manager:get_current_time_ms() - _hit_time_ms
 			local did_hit, note_result = NoteResult:timedelta_to_result(time_to_end, _game)
 
@@ -266,7 +235,7 @@ function HeldNote:new(
 
 			return false, NoteResult.Miss
 
-		elseif _state == HeldNote.State.HoldMissedActive then
+		elseif _state == HeldNote2D.State.HoldMissedActive then
 			local time_to_end = _game._audio_manager:get_current_time_ms() - get_tail_hit_time()
 			local did_hit, note_result = NoteResult:timedelta_to_result(time_to_end, _game)
 
@@ -282,7 +251,7 @@ function HeldNote:new(
 	end
 
 	--[[Override--]] function self:on_hit(note_result, i_notes, renderable_hit)
-		if _state == HeldNote.State.Pre then
+		if _state == HeldNote2D.State.Pre then
 			if _show_trigger_fx then
 				_game._effects:add_effect(TriggerNoteEffect2D:new(
 					_game,
@@ -300,9 +269,9 @@ function HeldNote:new(
 			)
 
 			_did_trigger_head = true
-			_state = HeldNote.State.Holding
+			_state = HeldNote2D.State.Holding
 
-		elseif _state == HeldNote.State.HoldMissedActive then
+		elseif _state == HeldNote2D.State.HoldMissedActive then
 			if _show_trigger_fx then
 				_game._effects:add_effect(TriggerNoteEffect2D:new(
 					_game,
@@ -328,12 +297,12 @@ function HeldNote:new(
 			)
 
 			_did_trigger_tail = true
-			_state = HeldNote.State.Passed
+			_state = HeldNote2D.State.Passed
 		end
 	end
 
 	--[[Override--]] function self:test_release()
-		if _state == HeldNote.State.Holding or _state == HeldNote.State.HoldMissedActive then
+		if _state == HeldNote2D.State.Holding or _state == HeldNote2D.State.HoldMissedActive then
 			local time_to_end = _game._audio_manager:get_current_time_ms() - get_tail_hit_time()
 			local did_hit, note_result = NoteResult:timedelta_to_result(time_to_end, _game)
 
@@ -341,7 +310,7 @@ function HeldNote:new(
 				return did_hit, note_result, RenderableHit:new(get_tail_hit_time(), time_to_end, note_result)
 			end
 
-			if _state == HeldNote.State.HoldMissedActive then
+			if _state == HeldNote2D.State.HoldMissedActive then
 				return false, NoteResult.Miss
 			else
 				return true, NoteResult.Miss
@@ -351,7 +320,7 @@ function HeldNote:new(
 		return false, NoteResult.Miss
 	end
 	--[[Override--]] function self:on_release(note_result, i_notes, renderable_hit)
-		if _state == HeldNote.State.Holding or _state == HeldNote.State.HoldMissedActive then
+		if _state == HeldNote2D.State.Holding or _state == HeldNote2D.State.HoldMissedActive then
 			if note_result == NoteResult.Miss then
 				--Holding or missed first hit, missed second hit
 				_game._score_manager:register_hit(
@@ -361,7 +330,7 @@ function HeldNote:new(
 					HitParams:new():set_play_hold_effect(false),
 					renderable_hit
 				)
-				_state = HeldNote.State.HoldMissedActive
+				_state = HeldNote2D.State.HoldMissedActive
 			else
 
 				if _show_trigger_fx then
@@ -380,7 +349,7 @@ function HeldNote:new(
 					renderable_hit
 				)
 				_did_trigger_tail = true
-				_state = HeldNote.State.Passed
+				_state = HeldNote2D.State.Passed
 			end
 		end
 
@@ -395,4 +364,4 @@ function HeldNote:new(
 	return self
 end
 
-return HeldNote
+return HeldNote2D

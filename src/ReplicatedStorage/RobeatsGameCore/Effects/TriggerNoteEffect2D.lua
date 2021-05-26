@@ -4,12 +4,12 @@ local CurveUtil = require(game.ReplicatedStorage.Shared.CurveUtil)
 local NoteResult = require(game.ReplicatedStorage.RobeatsGameCore.Enums.NoteResult)
 local EnvironmentSetup = require(game.ReplicatedStorage.RobeatsGameCore.EnvironmentSetup)
 
-local TriggerNoteEffect = {}
-TriggerNoteEffect.Type = "TriggerNoteEffect"
+local TriggerNoteEffect2D = {}
+TriggerNoteEffect2D.Type = "TriggerNoteEffect2D"
 
-function TriggerNoteEffect:new(_game, _position, _result)
+function TriggerNoteEffect2D:new(_game, _position, _result)
 	local self = EffectSystem:EffectBase()
-	self.ClassName = TriggerNoteEffect.Type
+	self.ClassName = TriggerNoteEffect2D.Type
 
 	local _effect_obj = nil
 	local _anim_t = 0
@@ -24,7 +24,7 @@ function TriggerNoteEffect:new(_game, _position, _result)
 
 		_effect_obj = _game._object_pool:depool(self.ClassName)
 		if _effect_obj == nil then
-			_effect_obj = EffectProto:Clone()
+			_effect_obj = proto:Clone()
 			_effect_obj.ImageTransparency = .5
 		end
 
@@ -53,4 +53,4 @@ function TriggerNoteEffect:new(_game, _position, _result)
 	return self
 end
 
-return TriggerNoteEffect
+return TriggerNoteEffect2D

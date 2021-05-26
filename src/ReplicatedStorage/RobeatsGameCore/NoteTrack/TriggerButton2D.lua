@@ -2,9 +2,9 @@ local SPUtil = require(game.ReplicatedStorage.Shared.SPUtil)
 local CurveUtil = require(game.ReplicatedStorage.Shared.CurveUtil)
 local EnvironmentSetup = require(game.ReplicatedStorage.RobeatsGameCore.EnvironmentSetup)
 
-local TriggerButton = {}
+local TriggerButton2D = {}
 
-function TriggerButton:new(_game, _parent_note_track, _position)
+function TriggerButton2D:new(_game, _parent_note_track, _position)
 	local self = {}
 
 	local _triggerbutton_obj
@@ -47,4 +47,4 @@ function TriggerButton:new(_game, _parent_note_track, _position)
 	return self
 end
 
-return TriggerButton
+return TriggerButton2D

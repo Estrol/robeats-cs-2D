@@ -5,8 +5,8 @@ local NoteResult = require(game.ReplicatedStorage.RobeatsGameCore.Enums.NoteResu
 local DebugOut = require(game.ReplicatedStorage.Shared.DebugOut)
 local EnvironmentSetup = require(game.ReplicatedStorage.RobeatsGameCore.EnvironmentSetup)
 
-local NoteResultPopupEffect = {}
-NoteResultPopupEffect.HitColor = {
+local NoteResultPopupEffect2D = {}
+NoteResultPopupEffect2D.HitColor = {
 	[0] = Color3.fromRGB(255, 0, 0);
 	[1] = Color3.fromRGB(190, 10, 240);
 	[2] = Color3.fromRGB(56, 10, 240);
@@ -14,11 +14,11 @@ NoteResultPopupEffect.HitColor = {
 	[4] = Color3.fromRGB(252, 244, 5);
 	[5] = Color3.fromRGB(255, 255, 255);
 }
-NoteResultPopupEffect.Type = "NoteResultPopupEffect"
+NoteResultPopupEffect2D.Type = "NoteResultPopupEffect2D"
 
-function NoteResultPopupEffect:new(_game, _result)
+function NoteResultPopupEffect2D:new(_game, _result)
 	local self = EffectSystem:EffectBase()
-	self.ClassName = NoteResultPopupEffect.Type
+	self.ClassName = NoteResultPopupEffect2D.Type
 
 	local rng = Random.new(tick())
 	local startorg = UDim2.new(0,0,0.025,0)
@@ -78,7 +78,7 @@ function NoteResultPopupEffect:new(_game, _result)
 			_text_label.Text = ""
 		end
 
-		_text_label.TextColor3 = NoteResultPopupEffect.HitColor[_result]
+		_text_label.TextColor3 = NoteResultPopupEffect2D.HitColor[_result]
 
 		if _result == NoteResult.Miss then
 			local _rotation_inc = 0
@@ -135,4 +135,4 @@ function NoteResultPopupEffect:new(_game, _result)
 	return self
 end
 
-return NoteResultPopupEffect
+return NoteResultPopupEffect2D

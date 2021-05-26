@@ -184,7 +184,7 @@ function AudioManager:new(_game)
 
 		for _,tracksystem in _game:tracksystems_itr() do
 			local NoteProto
-			if _game:is_2d_mode() then
+			if _game:get_2d_mode() then
 				NoteProto = SingleNote2D
 			else
 				NoteProto = SingleNote
@@ -214,7 +214,7 @@ function AudioManager:new(_game)
 
 		for _,tracksystem in _game:tracksystems_itr() do
 			local NoteProto
-			if _game:is_2d_mode() then
+			if _game:get_2d_mode() then
 				NoteProto = HeldNote2D
 			else
 				NoteProto = HeldNote

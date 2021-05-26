@@ -8,9 +8,9 @@ local SPUtil = require(game.ReplicatedStorage.Shared.SPUtil)
 local EnvironmentSetup = require(game.ReplicatedStorage.RobeatsGameCore.EnvironmentSetup)
 local HitParams = require(game.ReplicatedStorage.RobeatsGameCore.HitParams)
 
-local NoteTrackSystem = {}
+local NoteTrackSystem2D = {}
 
-function NoteTrackSystem:new(_game, _game_slot)
+function NoteTrackSystem2D:new(_game, _game_slot)
 	local self = {}
 	
 	local _obj
@@ -112,4 +112,4 @@ function NoteTrackSystem:new(_game, _game_slot)
 	return self
 end
 
-return NoteTrackSystem
+return NoteTrackSystem2D

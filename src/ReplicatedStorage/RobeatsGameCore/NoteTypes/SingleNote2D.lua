@@ -8,53 +8,48 @@ local HitParams = require(game.ReplicatedStorage.RobeatsGameCore.HitParams)
 local HoldingNoteEffect2D = require(game.ReplicatedStorage.RobeatsGameCore.Effects.HoldingNoteEffect2D)
 local TriggerNoteEffect2D = require(game.ReplicatedStorage.RobeatsGameCore.Effects.TriggerNoteEffect2D)
 local RenderableHit = require(game.ReplicatedStorage.RobeatsGameCore.RenderableHit)
+local Skins = require(game.ReplicatedStorage.Skins)
 
+local SingleNote2D = {}
+SingleNote2D.Type = "SingleNote2D"
 
-local SingleNote = {}
-SingleNote.Type = "SingleNote"
-
-SingleNote.State = {
+SingleNote2D.State = {
 	Pre = 0;
 	DoRemove = 1;
 }
 
-local _outline_top_position_offset_default
-local _outline_bottom_position_offset_default
-local _body_adorn_default
-local _outline_bottom_adorn_default
-local _outline_top_adorn_default
-
-function SingleNote:new(_game, _track_index, _slot_index, _creation_time_ms, _hit_time_ms)
+function SingleNote2D:new(_game, _track_index, _slot_index, _creation_time_ms, _hit_time_ms)
 	local self = NoteBase:NoteBase()
-	self.ClassName = SingleNote.Type
+	self.ClassName = SingleNote2D.Type
 	
-	local _state = SingleNote.State.Pre
+	local _state = SingleNote2D.State.Pre
 	
 	--Parametric T: Goes from 0 to 1
 	local _t = 0
 	
 	local _note_obj
-	local _body, _outline_top, _outline_bottom
+	local _body
 	local _position = Vector3.new()
-	local _body_adorn, _outline_top_adorn, _outline_bottom_adorn
 	local _show_trigger_fx = _game:get_hit_lighting()
 	
 	function self:cons()
-		local gameplayframe = EnvironmentSetup:get_player_gui_root().GameplayFrame
-		local tracks = gameplayframe.Tracks
-		local proto = EnvironmentSetup:get_2d_skin().NoteProto
+		local _gameplay_frame = EnvironmentSetup:get_player_gui_root().GameplayFrame
+		local tracks = _gameplay_frame.Tracks
+
+		local _skin = _game:get_skin()
+		local proto = _skin.NoteProto
 
 		_note_obj = _game._object_pool:depool(self.ClassName)
-		if _object_pool == nil then
+		if not _note_obj then
 			_note_obj = proto:Clone()
 			_note_obj.Position = UDim2.new(0.5,0,-1,0);
 			_note_obj.ZIndex = 2
 		end
-
+		
 		_body = _note_obj
 		_t = 0
 		self:update_visual(1)
-
+		
 		_note_obj.Parent = tracks["Track".._track_index]
 	end
 	
@@ -63,12 +58,12 @@ function SingleNote:new(_game, _track_index, _slot_index, _creation_time_ms, _hi
 	end
 	
 	--[[Override--]] function self:update(dt_scale)
-		if _state == SingleNote.State.Pre then
+		if _state == SingleNote2D.State.Pre then
 			_t = (_game._audio_manager:get_current_time_ms() - _creation_time_ms) / (_hit_time_ms - _creation_time_ms)
 			
 			self:update_visual(_t)
 			
-			if self:should_remove(_game) then
+			if self:should_remove() then
 				_game._score_manager:register_hit(
 					NoteResult.Miss,
 					_slot_index,
@@ -81,7 +76,7 @@ function SingleNote:new(_game, _track_index, _slot_index, _creation_time_ms, _hi
 
 	--[[Override--]] function self:should_remove()
 		--Remove if state is DoRemove (set on hit), or if NOTE_REMOVE_TIME past the hit time
-		return _state == SingleNote.State.DoRemove or self:get_time_to_end() < _game._audio_manager:get_note_remove_time()
+		return _state == SingleNote2D.State.DoRemove or self:get_time_to_end() < _game._audio_manager:get_note_remove_time()
 	end
 	
 	function self:get_time_to_end()
@@ -120,7 +115,7 @@ function SingleNote:new(_game, _track_index, _slot_index, _creation_time_ms, _hi
 			renderable_hit
 		)
 
-		_state = SingleNote.State.DoRemove
+		_state = SingleNote2D.State.DoRemove
 	end
 
 	--[[Override--]] function self:test_release()
@@ -138,4 +133,4 @@ function SingleNote:new(_game, _track_index, _slot_index, _creation_time_ms, _hi
 	return self
 end
 
-return SingleNote
+return SingleNote2D

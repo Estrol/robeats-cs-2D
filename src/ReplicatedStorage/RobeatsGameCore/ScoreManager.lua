@@ -84,7 +84,7 @@ function ScoreManager:new(_game)
 		local track = _game:get_tracksystem(slot_index):get_track(track_index)
 
 		if (not params.GhostTap) and _game:get_judgement_visibility()[note_result + 1] then
-			if _game:is_2d_mode() then
+			if _game:get_2d_mode() then
 				_game._effects:add_effect(NoteResultPopupEffect2D:new(
 					_game,
 					note_result
@@ -117,7 +117,7 @@ function ScoreManager:new(_game)
 			--Create an effect at HoldEffectPosition if PlayHoldEffect is true
 			if params.PlayHoldEffect then
 				if note_result ~= NoteResult.Miss then
-					if _game:is_2d_mode() then
+					if _game:get_2d_mode() then
 						_game._effects:add_effect(HoldingNoteEffect2D:new(
 							_game,
 							track_index

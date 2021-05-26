@@ -13,6 +13,8 @@ local GameTrack = require(game.ReplicatedStorage.RobeatsGameCore.Enums.GameTrack
 local AssertType = require(game.ReplicatedStorage.Shared.AssertType)
 local Signal = require(game.ReplicatedStorage.Knit.Util.Signal)
 local NoteResult = require(game.ReplicatedStorage.RobeatsGameCore.Enums.NoteResult)
+local Skins = require(game.ReplicatedStorage.Skins)
+local DebugOut = require(game.ReplicatedStorage.Shared.DebugOut)
 
 --local Settings = require(game.ReplicatedStorage.)
 
@@ -34,7 +36,8 @@ function RobeatsGame:new(_game_environment_center_position)
 		_object_pool = ObjectPool:new();
 	}
 
-	local _is_2d_mode = false
+	local _skin
+	local _get_2d_mode = false
 	local _is_upscroll = false
 	local _show_hit_lighting = false
 	local _hide_ln_tails = false
@@ -76,8 +79,11 @@ function RobeatsGame:new(_game_environment_center_position)
 	end
 
 	--[[ 2D Implementations ]]
-	function self:is_2d_mode() return _is_2d_mode end
-	function self:set_2d_mode(val) _is_2d_mode = val end
+	function self:get_skin() return _skin end
+	function self:set_skin(val) _skin = val end
+
+	function self:get_2d_mode() return _get_2d_mode end
+	function self:set_2d_mode(val) _get_2d_mode = val end
 
 	function self:is_upscroll() return _is_upscroll end
 	function self:set_upscroll_mode(val) _is_upscroll = val end
@@ -119,7 +125,7 @@ function RobeatsGame:new(_game_environment_center_position)
 	end
 
 	function self:start_game()
-		if self:is_2d_mode() then
+		if self:get_2d_mode() then
 			self._tracksystems:add(self:get_local_game_slot(), NoteTrackSystem2D:new(self,self:get_local_game_slot()))
 		else
 			self._tracksystems:add(self:get_local_game_slot(), NoteTrackSystem:new(self,self:get_local_game_slot()))
@@ -167,6 +173,22 @@ function RobeatsGame:new(_game_environment_center_position)
 
 		EnvironmentSetup:set_mode(EnvironmentSetup.Mode.Game)
 
+		if _config.Use2DLane then
+			local skin_name = _config.Skin2D
+			local skin = Skins:get_skin(_config.Skin2D)
+
+			if not skin then
+				DebugOut:puts("No skin specified, defaulting to first usable skin...")
+
+				skin_name = Skins:key_list():get(1)
+				skin = Skins:get_skin(skin_name)
+			end
+
+			self:set_skin(skin)
+
+			EnvironmentSetup:setup_2d_environment(_skin)
+		end
+
 		self._audio_manager:load_song(_song_key, _config)
 		self:setup_world(_local_player_slot)
 	end
@@ -176,7 +198,11 @@ function RobeatsGame:new(_game_environment_center_position)
 			val:teardown()
 		end
 		self._audio_manager:teardown()
-		self._effects:teardown() 
+		self._effects:teardown()
+
+		if self:get_2d_mode() then
+			EnvironmentSetup:teardown_2d_environment()
+		end
 
 		EnvironmentSetup:set_mode(EnvironmentSetup.Mode.Menu)
 	end

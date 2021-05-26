@@ -3,16 +3,17 @@ local SPUtil = require(game.ReplicatedStorage.Shared.SPUtil)
 local CurveUtil = require(game.ReplicatedStorage.Shared.CurveUtil)
 local NoteResult = require(game.ReplicatedStorage.RobeatsGameCore.Enums.NoteResult)
 local EnvironmentSetup = require(game.ReplicatedStorage.RobeatsGameCore.EnvironmentSetup)
+local Skins = require(game.ReplicatedStorage.Skins)
 
-local HoldingNoteEffect = {}
-HoldingNoteEffect.Type = "HoldingNoteEffect"
+local HoldingNoteEffect2D = {}
+HoldingNoteEffect2D.Type = "HoldingNoteEffect2D"
 
 local STARTING_ALPHA = 0.1
 local ENDING_ALPHA = 0
 
-function HoldingNoteEffect:new(_game, _track_index)
+function HoldingNoteEffect2D:new(_game, _track_index)
 	local self = EffectSystem:EffectBase()
-	self.ClassName = HoldingNoteEffect.Type
+	self.ClassName = HoldingNoteEffect2D.Type
 	
 	local _effect_obj = nil;
 	local _anim_t = 0
@@ -22,7 +23,8 @@ function HoldingNoteEffect:new(_game, _track_index)
 	end	
 	
 	function self:cons()
-		local proto = EnvironmentSetup:get_2d_skin().EffectProto
+		local _skin = _game:get_skin()
+		local proto = _skin.EffectProto
 
 		_effect_obj = _game._object_pool:depool(self.ClassName)
 		if _effect_obj == nil then
@@ -54,4 +56,4 @@ function HoldingNoteEffect:new(_game, _track_index)
 	return self
 end
 
-return HoldingNoteEffect
+return HoldingNoteEffect2D

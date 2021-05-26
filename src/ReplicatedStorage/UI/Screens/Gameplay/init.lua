@@ -61,17 +61,8 @@ function Gameplay:init()
     -- Set up hit deviance parent reference
 
     self.hitDevianceRef = Roact.createRef()
-    
-    -- Set up the stage
-    local rc = EnvironmentSetup:set_skin("Redish Arrow v2")
-    if not rc then
-        DebugOut:errf('Cannot find the skin called "Redish Arrow v2"')
-    end
 
-    local lane_2D = self.props.options.Use2DLane
-    if lane_2D then
-        EnvironmentSetup:setup_2d_environment()
-    else
+    if not self.props.options.Use2DLane then
         local stagePlat = EnvironmentSetup:get_robeats_game_stage()
         stagePlat.Transparency = self.props.options.BaseTransparency
     end
@@ -98,7 +89,7 @@ function Gameplay:init()
     _game:set_ln_tails(self.props.options.HideLNTails)
     _game:set_judgement_visibility(self.props.options.JudgementVisibility)
     _game:set_note_color(self.props.options.NoteColor)
-    _game:set_2d_mode(lane_2D)
+    _game:set_2d_mode(self.props.options.Use2DLane)
     
     -- Load the map
 
@@ -340,7 +331,8 @@ function Gameplay:render()
             AnchorPoint = Vector2.new(0.5, 0.5),
             BackgroundTransparency = 1,
             TextScaled = true,
-            Text = "x"..self.state.chain
+            Text = "x"..self.state.chain,
+            ZIndex = 2
         }),
         Back = e(RoundedTextButton, {
             Size = UDim2.fromScale(0.1, 0.05),
@@ -379,8 +371,9 @@ function Gameplay:render()
 
         -- }),
         HitDeviance = e(RoundedFrame, {
-           Position = UDim2.fromScale(0.5, 0.95),
-           Size = UDim2.fromScale(0.15, 0.05),
+           Position = self.props.options.Use2DLane and UDim2.fromScale(0.5, 0.635) or UDim2.fromScale(0.5, 0.95),
+           Size = self.props.options.Use2DLane and UDim2.fromScale(0.15, 0.014) or UDim2.fromScale(0.15, 0.05),
+           BackgroundTransparency = self.props.options.Use2DLane and 1,
            AnchorPoint = Vector2.new(0.5, 1),
            ZIndex = 5, -- This needed to overlap the 2D Lane's ZIndex
            [Roact.Ref] = self.hitDevianceRef

@@ -32,7 +32,7 @@ function NoteTrackSystem:new(_game, _game_slot)
 		
 		--For every defined enum value in GameTrack, create a NoteTrack for it
 		for track_enum_name,track_enum_value in GameTrack:track_itr() do
-			if _game:is_2d_mode() then
+			if _game:get_2d_mode() then
 				_tracks:push_back(NoteTrack2D:new(_game, self, track_enum_value))
 			else
 				local tar_track_obj = _obj:FindFirstChild(track_enum_name)
