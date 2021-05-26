@@ -41,6 +41,8 @@ function ParseServerService:KnitInit()
     SPUtil:try(function()
         appId = SecretStore:GetAsync("ParseAppId")
     end)
+
+    if appId == nil then appId = "1" end
     
     self._parse:setAppId(appId):setBaseUrl(baseUrl)
 end

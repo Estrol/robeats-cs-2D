@@ -1,6 +1,6 @@
 local SPUtil = require(game.ReplicatedStorage.Shared.SPUtil)
 local CurveUtil = require(game.ReplicatedStorage.Shared.CurveUtil)
-local TriggerButton = require(game.ReplicatedStorage.RobeatsGameCore.NoteTrack.TriggerButton)
+local TriggerButton2D = require(game.ReplicatedStorage.RobeatsGameCore.NoteTrack.TriggerButton2D)
 local GameSlot = require(game.ReplicatedStorage.RobeatsGameCore.Enums.GameSlot)
 local EnvironmentSetup = require(game.ReplicatedStorage.RobeatsGameCore.EnvironmentSetup)
 local GameTrack = require(game.ReplicatedStorage.RobeatsGameCore.Enums.GameTrack)
@@ -9,7 +9,7 @@ local DebugOut = require(game.ReplicatedStorage.Shared.DebugOut)
 
 local NoteTrack = {}
 
-function NoteTrack:new(_game, _parent_track_system, _track_obj, _game_track)
+function NoteTrack:new(_game, _parent_track_system, _game_track)
 	AssertType:is_enum_member(_game_track, GameTrack)
 	local self = {}
 	
@@ -18,22 +18,10 @@ function NoteTrack:new(_game, _parent_track_system, _track_obj, _game_track)
 	local _end_position
 	
 	function self:cons(player_info)
-		local start_position_marker = _track_obj:FindFirstChild("StartPosition")
-		if start_position_marker == nil then
-			return DebugOut:errf("StartPosition marker not found under _track_obj(%s)", _track_obj.Name)
-		end
-		_start_position = start_position_marker.Position
-		
-		local end_position_marker = _track_obj:FindFirstChild("EndPosition")
-		if end_position_marker == nil then
-			return DebugOut:errf("EndPosition marker not found under _track_obj(%s)", _track_obj.Name)
-		end
-		_end_position = end_position_marker.Position
-
-		_trigger_button = TriggerButton:new(
+		_trigger_button = TriggerButton2D:new(
 			_game,
 			self,
-			self:get_end_position()
+			_game_track
 		)
 	end
 	
@@ -54,7 +42,6 @@ function NoteTrack:new(_game, _parent_track_system, _track_obj, _game_track)
 	
 	function self:teardown()
 		_trigger_button:teardown()
-		_track_obj:Destroy()
 	end
 	
 	self:cons()
