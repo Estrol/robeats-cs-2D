@@ -17,7 +17,8 @@ local function noop() end
 
 SongList.defaultProps = {
     Size = UDim2.fromScale(1, 1),
-    OnSongSelected = noop
+    OnSongSelected = noop,
+    SelectedSongKey = 1
 }
 
 -- LOL SEARCHING GO BYE BYE, PLEASE FIX
@@ -81,12 +82,14 @@ function SongList:render()
             Size = UDim2.new(1, 0, 0.95, 0),
             Padding = UDim.new(0, 4),
             HorizontalAlignment = "Right",
+            ScrollBarThickness = 5,
             items = self.state.found;
             renderItem = function(item, i)
                 return e(SongButton, {
                     SongKey = item.SongKey,
                     OnClick = self.props.OnSongSelected,
-                    LayoutOrder = i
+                    LayoutOrder = i,
+                    Selected = item.SongKey == self.props.SelectedSongKey
                 })
             end,
             getStableId = function(item)

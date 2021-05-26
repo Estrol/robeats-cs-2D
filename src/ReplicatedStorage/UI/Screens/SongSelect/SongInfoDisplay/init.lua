@@ -13,6 +13,7 @@ local f = Roact.createFragment
 -- hjsdgrfkhjbsdgfhkjdsfghjbksdfghjbk
 
 local NpsGraph = require(script.Parent.NpsGraph)
+local GridInfoDisplay = require(script.GridInfoDisplay)
 
 local RoundedFrame = require(game.ReplicatedStorage.UI.Components.Base.RoundedFrame)
 local RoundedTextButton = require(game.ReplicatedStorage.UI.Components.Base.RoundedTextButton)
@@ -85,7 +86,7 @@ function SongInfoDisplay:render()
         })
     end
     
-    local total_notes, total_holds = SongDatabase:get_note_metrics_for_key(self.props.SongKey)
+    local total_notes, total_holds, total_left_hand_objects, total_right_hand_objects = SongDatabase:get_note_metrics_for_key(self.props.SongKey)
 
     return e(RoundedFrame, {
         Position = self.props.Position,
@@ -174,91 +175,64 @@ function SongInfoDisplay:render()
             UIListLayout = e("UIGridLayout", {
                 SortOrder = Enum.SortOrder.LayoutOrder,
                 FillDirection = Enum.FillDirection.Horizontal,
-                FillDirectionMaxCells = 2,
-                CellSize = UDim2.fromScale(0.1, 0.3)
+                FillDirectionMaxCells = 4,
+                CellSize = UDim2.fromScale(0.1165, 0.33)
             }),
-            DifficultyDisplay = e(RoundedTextLabel, {
-                BackgroundColor3 = Color3.fromRGB(255, 255, 255),
-                BackgroundTransparency = 1,
-                BorderSizePixel = 0,
-                LayoutOrder = 1,
-                TextTransparency = self.motorBinding:map(function(a)
-                    return 1-a.title
-                end);
-                Size = UDim2.new(0.18, 0, 0.23, 0),
-                Font = Enum.Font.GothamSemibold,
-                Text = string.format("Difficulty: %d", Rating:get_rating_from_accuracy(self.props.SongKey, 97, self.props.SongRate / 100)),
-                TextColor3 = Color3.fromRGB(216, 216, 216),
-                TextScaled = true,
-                TextSize = 30,
-                TextXAlignment = Enum.TextXAlignment.Left,
-            }, {
-                UITextSizeConstraint = e("UITextSizeConstraint", {
-                    MaxTextSize = 22,
-                })
+            DifficultyDisplay = e(GridInfoDisplay, {
+                Value = Rating:get_rating_from_accuracy(self.props.SongKey, 97, self.props.SongRate / 100),
+                FormatValue = function(value)
+                    return string.format("Difficulty: %d", value)
+                end,
+                LayoutOrder = 1
             }),
-            TotalNotesDisplay = e(RoundedTextLabel, {
-                TextColor3 = Color3.fromRGB(216, 216, 216),
-                BackgroundTransparency = 1,
-                BorderSizePixel = 0,
-                LayoutOrder = 2,
-                TextTransparency = self.motorBinding:map(function(a)
-                    return 1-a.title
-                end);
-                Size = UDim2.new(0.18, 0, 0.23, 0),
-                Font = Enum.Font.GothamSemibold,
-                Text = string.format("Total Notes: %d", total_notes),
-                TextScaled = true,
-                TextSize = 30,
-                TextXAlignment = Enum.TextXAlignment.Left,
-            }, {
-                UITextSizeConstraint = e("UITextSizeConstraint", {
-                    MaxTextSize = 22,
-                })
+            TotalNotesDisplay = e(GridInfoDisplay, {
+                Value = total_notes,
+                FormatValue = function(value)
+                    return string.format("Total Notes: %d", value)
+                end,
+                LayoutOrder = 2
             }),
-            TotalHoldsDisplay = e(RoundedTextLabel, {
-                TextColor3 = Color3.fromRGB(216, 216, 216),
-                BackgroundTransparency = 1,
-                BorderSizePixel = 0,
-                LayoutOrder = 3,
-                Position = self.motorBinding:map(function(a)
-                    return UDim2.new(0.05*(1-a.artist), 0, 0.9, 0)
-                end),
-                TextTransparency = self.motorBinding:map(function(a)
-                    return 1-a.title
-                end);
-                Size = UDim2.new(0.18, 0, 0.23, 0),
-                Font = Enum.Font.GothamSemibold,
-                Text = string.format("Total Holds: %d", total_holds),
-                TextScaled = true,
-                TextSize = 30,
-                TextXAlignment = Enum.TextXAlignment.Left,
-            }, {
-                UITextSizeConstraint = e("UITextSizeConstraint", {
-                    MaxTextSize = 22,
-                })
+            TotalHoldsDisplay = e(GridInfoDisplay, {
+                Value = total_holds,
+                FormatValue = function(value)
+                    return string.format("Total Holds: %d", value)
+                end,
+                LayoutOrder = 3
             }),
-            TotalLengthDisplay = e(RoundedTextLabel, {
-                TextColor3 = Color3.fromRGB(216, 216, 216),
-                BackgroundTransparency = 1,
-                BorderSizePixel = 0,
-                LayoutOrder = 4,
-                Position = self.motorBinding:map(function(a)
-                    return UDim2.new(0.05*(1-a.artist), 0, 0.35, 0)
-                end),
-                TextTransparency = self.motorBinding:map(function(a)
-                    return 1-a.title
-                end);
-                Size = UDim2.new(0.18, 0, 0.23, 0),
-                Font = Enum.Font.GothamSemibold,
-                Text = string.format("Total Length: %s", SPUtil:format_ms_time(SongDatabase:get_song_length_for_key(self.props.SongKey) / (self.props.SongRate / 100))),
-                TextScaled = true,
-                TextSize = 30,
-                TextXAlignment = Enum.TextXAlignment.Left,
-            }, {
-                UITextSizeConstraint = e("UITextSizeConstraint", {
-                    MaxTextSize = 22,
-                })
+            TotalObjectsDisplay = e(GridInfoDisplay, {
+                Value = total_notes + total_holds,
+                FormatValue = function(value)
+                    return string.format("Total Objects: %d", value)
+                end,
+                LayoutOrder = 4
+            });
+            TotalLeftHandObjectsDisplay = e(GridInfoDisplay, {
+                Value = total_left_hand_objects,
+                FormatValue = function(value)
+                    return string.format("LH Objects: %s", value)
+                end,
+                LayoutOrder = 5
+            });
+            TotalRightHandObjectsDisplay = e(GridInfoDisplay, {
+                Value = total_right_hand_objects,
+                FormatValue = function(value)
+                    return string.format("RH Objects: %s", value)
+                end,
+                LayoutOrder = 6
+            });
+            LeftRightHandRatioDisplay = e(GridInfoDisplay, {
+                Value = total_left_hand_objects / total_right_hand_objects,
+                FormatValue = function(value)
+                    return string.format("L/R Ratio: %0.2f", value)
+                end,
+                LayoutOrder = 7
+            });
+            TotalLengthDisplay = e(GridInfoDisplay, {
+                Value = SongDatabase:get_song_length_for_key(self.props.SongKey) / (self.props.SongRate / 100),
+                FormatValue = function(value)
+                    return string.format("Total Length: %s", SPUtil:format_ms_time(value))
+                end,
+                LayoutOrder = 8
             });
         }),
         RateDown = self.props.ShowRateButtons and e(RoundedTextButton, {

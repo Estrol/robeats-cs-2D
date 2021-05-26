@@ -14,7 +14,8 @@ local function noop() end
 SongButton.defaultProps = {
     Size = UDim2.new(1, 0, 0, 75),
     OnClick = noop,
-    LayoutOrder = 1
+    LayoutOrder = 1,
+    Selected = false
 }
 
 function SongButton:init()
@@ -38,7 +39,8 @@ function SongButton:render()
         BackgroundTransparency = self.motorBinding:map(function(a)
             return math.clamp(1-a, 0, 0.58)
         end);
-        BackgroundColor3 = Color3.fromRGB(22, 22, 22),
+        BackgroundColor3 = self.props.Selected and Color3.fromRGB(30, 95, 85) or Color3.fromRGB(22, 22, 22),
+        HighlightBackgroundColor3 = self.props.Selected and Color3.fromRGB(16, 75, 67) or nil,
         BorderMode = Enum.BorderMode.Inset,
         BorderSizePixel = 0,
         Size = self.props.Size,
@@ -98,7 +100,7 @@ function SongButton:render()
             BorderSizePixel = 0,
             Position = UDim2.new(0.02, 0, 0.1, 0),
             Selectable = true,
-            Size = UDim2.new(0.45, 0, 0.3, 0),
+            Size = UDim2.new(0.7, 0, 0.3, 0),
             Font = Enum.Font.GothamBold,
             Text = SongDatabase:get_title_for_key(self.props.SongKey),
             TextColor3 = Color3.fromRGB(255, 208, 87),
