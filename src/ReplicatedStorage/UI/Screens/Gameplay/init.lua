@@ -379,8 +379,8 @@ function Gameplay:render()
 
         -- }),
         HitDeviance = e(RoundedFrame, {
-           Position = UDim2.fromScale(0.5, 0.95),
-           Size = UDim2.fromScale(0.15, 0.05),
+           Position = UDim2.fromScale(0.5, 0.975),
+           Size = UDim2.fromScale(0.15, 0.025),
            AnchorPoint = Vector2.new(0.5, 1),
            ZIndex = 5, -- This needed to overlap the 2D Lane's ZIndex
            [Roact.Ref] = self.hitDevianceRef
