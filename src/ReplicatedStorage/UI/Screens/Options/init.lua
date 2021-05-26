@@ -100,6 +100,15 @@ function Options:getSettingElements()
             end,
             LayoutOrder = 1
         });
+        --2d toggle
+        elements.Use2DLane = e(BoolValue, {
+            Value = self.props.options.Use2DLane,
+            OnChanged = function(value)
+                self.props.setOption("Use2DLane", value)
+            end,
+            Name = "2D Enabled",
+            LayoutOrder = 7
+        })
 
 
         elements.JudgementVisibility = e(MultipleChoiceValue, {
