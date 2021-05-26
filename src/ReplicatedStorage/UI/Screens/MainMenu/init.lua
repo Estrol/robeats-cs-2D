@@ -57,7 +57,7 @@ function MainMenuUI:render()
         Size = UDim2.new(1, 0, 1, 0),
         Position = UDim2.fromScale(0.5,0.5),
         AnchorPoint = Vector2.new(0.5,0.5),
-        Image = "http://www.roblox.com/asset/?id=6800827231"
+        Image = "rbxassetid://6859763885"
     }, {
         Logo = e(RoundedImageLabel, {
             Image = "rbxassetid://6224561143";
