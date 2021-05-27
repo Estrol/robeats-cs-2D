@@ -15,7 +15,7 @@ local defaultState = {
         Keybind4 = Enum.KeyCode.P,
 
         AudioOffset = 0;
-        NoteSpeed = 1;
+        NoteSpeed = 15;
         FOV = 70;
         LaneCover = 0;
 
