@@ -38,9 +38,10 @@ function EnvironmentSetup:initial_setup()
 	_player_gui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 end
 
-function EnvironmentSetup:setup_2d_environment(skin)
+function EnvironmentSetup:setup_2d_environment(skin, config)
 	local _gameplay_frame = skin:FindFirstChild("GameplayFrame"):Clone()
 	_gameplay_frame.Position = UDim2.fromScale(0.5, 1)
+	_gameplay_frame.Size = UDim2.fromScale(config.PlayfieldWidth / 100, 1.1)
 
 	local hit_pos = 10
 

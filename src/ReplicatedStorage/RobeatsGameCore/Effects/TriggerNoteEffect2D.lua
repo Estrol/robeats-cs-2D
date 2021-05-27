@@ -7,7 +7,7 @@ local EnvironmentSetup = require(game.ReplicatedStorage.RobeatsGameCore.Environm
 local TriggerNoteEffect2D = {}
 TriggerNoteEffect2D.Type = "TriggerNoteEffect2D"
 
-function TriggerNoteEffect2D:new(_game, _position, _result)
+function TriggerNoteEffect2D:new(_game, _track_index)
 	local self = EffectSystem:EffectBase()
 	self.ClassName = TriggerNoteEffect2D.Type
 
@@ -19,7 +19,7 @@ function TriggerNoteEffect2D:new(_game, _position, _result)
 	end
 
 	function self:cons()
-		local _skin = EnvironmentSetup:get_2d_skin()
+		local _skin = _game:get_skin()
 		local proto = _skin.EffectProto
 
 		_effect_obj = _game._object_pool:depool(self.ClassName)
@@ -33,8 +33,9 @@ function TriggerNoteEffect2D:new(_game, _position, _result)
 	end
 
 	--[[Override--]] function self:add_to_parent(parent)
-		local gameplayframe = EnvironmentSetup:get_player_gui_root()
-		local buttons = gameplayframe.TriggerButtons
+		local _player_gui_root = EnvironmentSetup:get_player_gui_root()
+		local _gameplay_frame = _player_gui_root.GameplayFrame
+		local buttons = _gameplay_frame.TriggerButtons
 		_effect_obj.Parent = buttons['Button'.._track_index]
 	end
 

@@ -27,7 +27,7 @@ function BoolValue:render()
         LayoutOrder = self.props.LayoutOrder
     }, {
         Name = e(RoundedTextLabel, {
-            Size = UDim2.fromScale(0.35, 0.2),
+            Size = UDim2.fromScale(0.7, 0.2),
             Position = UDim2.fromScale(0.05, 0.07),
             TextXAlignment = Enum.TextXAlignment.Left,
             TextColor3 = Color3.fromRGB(255, 255, 255),
@@ -41,7 +41,7 @@ function BoolValue:render()
             end,
             BackgroundColor3 = self.props.Value and Color3.fromRGB(43, 190, 6) or Color3.fromRGB(233, 10, 10),
             HighlightBackgroundColor3 = self.props.Value and Color3.fromRGB(30, 109, 10) or Color3.fromRGB(119, 18, 18),
-            Size = UDim2.fromScale(0.5, 0.5),
+            Size = UDim2.fromScale(0.5, 0.45),
             HoldSize = UDim2.fromScale(0.54, 0.54),
             AnchorPoint = Vector2.new(0.5, 0.5),
             Position = UDim2.fromScale(0.5, 0.6),

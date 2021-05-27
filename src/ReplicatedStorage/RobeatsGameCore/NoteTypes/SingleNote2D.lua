@@ -47,6 +47,15 @@ function SingleNote2D:new(_game, _track_index, _slot_index, _creation_time_ms, _
 		end
 		
 		_body = _note_obj
+
+		if _game:get_note_color_affects_2d() then
+			local _image = _body:FindFirstChildWhichIsA("ImageLabel")
+
+			if _image then
+				_image.ImageColor3 = _game:get_note_color()
+			end
+		end
+
 		_t = 0
 		self:update_visual(1)
 		
@@ -103,7 +112,7 @@ function SingleNote2D:new(_game, _track_index, _slot_index, _creation_time_ms, _
 		if _show_trigger_fx then
 			_game._effects:add_effect(TriggerNoteEffect2D:new(
 				_game,
-				note_result
+				_track_index
 			))
 		end
 

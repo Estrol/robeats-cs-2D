@@ -261,15 +261,38 @@ function Options:getSettingElements()
             LayoutOrder = 1
         })
 
-        elements.JudgementVisibility = e(EnumValue, {
+        elements.Use2DLane = e(BoolValue, {
+            Value = self.props.options.NoteColorAffects2D,
+            OnChanged = function(value)
+                self.props.setOption("NoteColorAffects2D", value)
+            end,
+            Name = "Let Note Color determine 2D object colors",
+            LayoutOrder = 2
+        })
+
+        elements.Skin = e(EnumValue, {
             Value = self.props.options.Skin2D,
             ValueNames = Skins:key_list()._table,
             OnChanged = function(value)
                 self.props.setOption("Skin2D", value)
             end,
             Name = "Skin",
-            LayoutOrder = 2
+            LayoutOrder = 4
         })
+
+        elements.PlayfieldWidth = e(IntValue, {
+            Value = self.props.options.PlayfieldWidth,
+            OnChanged = function(value)
+                self.props.setOption("PlayfieldWidth", value)
+            end,
+            Name = "Playfield Width",
+            FormatValue = function(value)
+                return string.format("%d", value)
+            end,
+            MaxValue = 100,
+            MinValue = 5,
+            LayoutOrder = 3
+        });
     end)
     
 

@@ -61,14 +61,31 @@ function HeldNote2D:new(
 			_note_obj.Body.Position = UDim2.new(0.5,0,-1,0)
 			_note_obj.Body.ZIndex = 2
 			_note_obj.Head.Position = UDim2.new(0.5,0,-1,0)
-			_note_obj.Head.ZIndex = 2
+			_note_obj.Head.ZIndex = 3
 			_note_obj.Tail.Position = UDim2.new(0.5,0,-1,0)
-			_note_obj.Head.ZIndex = 2
+			_note_obj.Head.ZIndex = 3
 		end
 
 		_body = _note_obj.Body
 		_head = _note_obj.Head
 		_tail = _note_obj.Tail
+
+		if _game:get_note_color_affects_2d() then
+			local _note_color = _game:get_note_color()
+
+			_body.BackgroundColor3 = _note_color
+
+			local _head_image = _head:FindFirstChildWhichIsA("ImageLabel")
+			local _tail_image = _tail:FindFirstChildWhichIsA("ImageLabel")
+
+			if _head_image then
+				_head_image.ImageColor3 = _note_color
+			end
+
+			if _tail_image then
+				_tail_image.ImageColor3 = _note_color
+			end
+		end
 
 		_state = HeldNote2D.State.Pre
 		self:update_visual(1)
@@ -255,7 +272,7 @@ function HeldNote2D:new(
 			if _show_trigger_fx then
 				_game._effects:add_effect(TriggerNoteEffect2D:new(
 					_game,
-					note_result
+					_track_index
 				))
 			end
 			
@@ -275,14 +292,14 @@ function HeldNote2D:new(
 			if _show_trigger_fx then
 				_game._effects:add_effect(TriggerNoteEffect2D:new(
 					_game,
-					note_result
+					_track_index
 				))
 			end
 
 			if _show_trigger_fx then
 				_game._effects:add_effect(TriggerNoteEffect2D:new(
 					_game,
-					note_result
+					_track_index
 				))
 
 			end
@@ -336,7 +353,7 @@ function HeldNote2D:new(
 				if _show_trigger_fx then
 					_game._effects:add_effect(TriggerNoteEffect2D:new(
 						_game,
-						note_result
+						_track_index
 					))
 
 				end

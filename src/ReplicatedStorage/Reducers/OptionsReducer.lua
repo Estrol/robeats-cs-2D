@@ -20,10 +20,12 @@ local defaultState = {
         LaneCover = 0;
 
         --interface settings
+        PlayfieldWidth = 45;
         Use2DLane = false;
         Skin2D = Skins:key_list():get(1);
         Lane2DScrollDirection = "Downscroll";
-        ComboPosition = "Middle"; 
+        ComboPosition = "Middle";
+        NoteColorAffects2D = false;
         InGameLeaderboardPosition = "Left";
         NoteColor = Color3.fromRGB(255, 255, 255);
 

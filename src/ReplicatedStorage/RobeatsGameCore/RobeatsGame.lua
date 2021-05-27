@@ -51,6 +51,7 @@ function RobeatsGame:new(_game_environment_center_position)
 	}
 	local _note_color = Color3.fromRGB(255, 175, 0)
 	local _mods = {}
+	local _note_color_affects_2d
 
 	self._audio_manager = AudioManager:new(self)
 	self._score_manager = ScoreManager:new(self)
@@ -112,6 +113,9 @@ function RobeatsGame:new(_game_environment_center_position)
 			return false
 		end
 	end
+
+	function self:get_note_color_affects_2d() return _note_color_affects_2d end
+	function self:set_note_color_affects_2d(val) _note_color_affects_2d = val end
 
 	function self:get_game_environment_center_position()
 		return _game_environment_center_position
@@ -185,8 +189,9 @@ function RobeatsGame:new(_game_environment_center_position)
 			end
 
 			self:set_skin(skin)
+			self:set_note_color_affects_2d(_config.NoteColorAffects2D)
 
-			EnvironmentSetup:setup_2d_environment(_skin)
+			EnvironmentSetup:setup_2d_environment(_skin, _config)
 		end
 
 		self._audio_manager:load_song(_song_key, _config)
