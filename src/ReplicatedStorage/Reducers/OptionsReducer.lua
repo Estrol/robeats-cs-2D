@@ -2,6 +2,8 @@ local Rodux = require(game.ReplicatedStorage.Packages.Rodux)
 local Llama = require(game.ReplicatedStorage.Packages.Llama)
 local createReducer = Rodux.createReducer
 
+local Skins = require(game.ReplicatedStorage.Skins)
+
 local join = Llama.Dictionary.join
 
 local defaultState = {
@@ -18,7 +20,12 @@ local defaultState = {
         LaneCover = 0;
 
         --interface settings
-        ComboPosition = "Middle"; 
+        PlayfieldWidth = 45;
+        Use2DLane = false;
+        Skin2D = Skins:key_list():get(1);
+        Lane2DScrollDirection = "Downscroll";
+        ComboPosition = "Middle";
+        NoteColorAffects2D = false;
         InGameLeaderboardPosition = "Left";
         NoteColor = Color3.fromRGB(255, 255, 255);
 

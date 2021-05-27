@@ -1,0 +1,12 @@
+{
+    "Lua.diagnostics.globals": [
+        "game",
+        "Enum",
+        "workspace",
+        "Instance"
+    ],
+    "Lua.diagnostics.disable": [
+        "redefined-local"
+    ],
+    "lua.targetVersion": "5.3"
+}

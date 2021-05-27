@@ -1,11 +1,17 @@
 local DebugOut = require(game.ReplicatedStorage.Shared.DebugOut)
 local SPDict = require(game.ReplicatedStorage.Shared.SPDict)
 local AssertType = require(game.ReplicatedStorage.Shared.AssertType)
+local Skins = require(game.ReplicatedStorage.Skins)
 
 local EnvironmentSetup = {}
 EnvironmentSetup.Mode = {
 	Menu = 0;
 	Game = 1;
+}
+
+EnvironmentSetup.LaneMode = {
+	['2D'] = 0;
+	['3D'] = 1;
 }
 
 local _game_environment
@@ -25,11 +31,51 @@ function EnvironmentSetup:initial_setup()
 	
 	_local_elements_folder = Instance.new("Folder",game.Workspace)
 	_local_elements_folder.Name = "LocalElements"
-	
+
 	_player_gui = Instance.new("ScreenGui")
 	_player_gui.Parent = game.Players.LocalPlayer.PlayerGui
 	_player_gui.IgnoreGuiInset = false
 	_player_gui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+end
+
+function EnvironmentSetup:setup_2d_environment(skin, config)
+	local _gameplay_frame = skin:FindFirstChild("GameplayFrame"):Clone()
+	_gameplay_frame.Position = UDim2.fromScale(0.5, 1)
+	_gameplay_frame.Size = UDim2.fromScale(config.PlayfieldWidth / 100, 1.1)
+
+	local hit_pos = 10
+
+	local tracks = _gameplay_frame.Tracks
+	local _trigger_buttons = _gameplay_frame.TriggerButtons
+	if #_trigger_buttons:GetChildren() == 0 then
+		for i,proto in pairs(skin.GameplayFrame.TriggerButtons:Clone():GetChildren()) do
+			proto.Parent = _trigger_buttons
+		end
+	end
+
+	_trigger_buttons.Size = UDim2.new(1, 0, hit_pos/100, 0)
+	tracks.Size = UDim2.new(1, 0, 1-hit_pos/100, 0)
+
+	_gameplay_frame.Parent = self:get_player_gui_root()
+end
+
+function EnvironmentSetup:teardown_2d_environment()
+	local _gameplay_frame = EnvironmentSetup:get_player_gui_root():FindFirstChild("GameplayFrame")
+	if _gameplay_frame == nil then
+		DebugOut:warnf("[EnvironmentSetup] this shouldn't happen if 2D setting enabled... but if from 3D why you called it???")
+	end
+
+	_gameplay_frame.ResultPopups:ClearAllChildren()
+	local _trigger_buttons = _gameplay_frame.TriggerButtons
+	for i=1,4 do
+		for _, proto in pairs(_trigger_buttons["Button"..i]:GetChildren()) do
+			if proto.Name == "EffectProto" then
+				proto:Destroy()
+			end
+		end
+	end
+
+	_gameplay_frame:Destroy()
 end
 
 function EnvironmentSetup:set_mode(mode)
