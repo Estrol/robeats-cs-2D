@@ -261,7 +261,7 @@ function Options:getSettingElements()
             LayoutOrder = 1
         })
 
-        elements.Use2DLane = e(BoolValue, {
+        elements.NoteColorAffects2D = e(BoolValue, {
             Value = self.props.options.NoteColorAffects2D,
             OnChanged = function(value)
                 self.props.setOption("NoteColorAffects2D", value)
