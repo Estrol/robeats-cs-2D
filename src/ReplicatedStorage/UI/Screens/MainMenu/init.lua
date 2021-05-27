@@ -57,7 +57,8 @@ function MainMenuUI:render()
         Size = UDim2.new(1, 0, 1, 0),
         Position = UDim2.fromScale(0.5,0.5),
         AnchorPoint = Vector2.new(0.5,0.5),
-        Image = "http://www.roblox.com/asset/?id=6800827231"
+        Image = "rbxassetid://6859763885",
+        ImageColor3 = Color3.fromRGB(100,100,100)
     }, {
         Logo = e(RoundedImageLabel, {
             Image = "rbxassetid://6224561143";
@@ -103,32 +104,10 @@ function MainMenuUI:render()
                 end
             }, {
                 UITextSizeConstraint = e("UITextSizeConstraint", {
-                    MinTextSize = 8;
-                    MaxTextSize = 13;
+                    MinTextSize = 10;
+                    MaxTextSize = 15;
                 })
             });
-
-            -- MultiButton = e(RoundedTextButton, {
-            --     TextXAlignment = Enum.TextXAlignment.Left;
-            --     BackgroundColor3 = Color3.fromRGB(70, 69, 69);
-            --     BorderMode = Enum.BorderMode.Inset,
-            --     BorderSizePixel = 0,
-            --     Size = UDim2.fromScale(1, 0.125),
-            --     Text = "  Multiplayer (Coming Soon)";
-            --     TextScaled = true;
-            --     TextColor3 = Color3.fromRGB(255, 255, 255);
-            --     LayoutOrder = 1;
-            --     HoldSize = UDim2.fromScale(0.95, 0.125),
-            --     OnClick = function()
-            --         self.props.history:push("/select")
-            --     end
-            -- }, {
-            --     UITextSizeConstraint = e("UITextSizeConstraint", {
-            --         MinTextSize = 8;
-            --         MaxTextSize = 13;
-            --     })
-            -- });
-
             ScoresButton = e(RoundedTextButton, {
                 TextXAlignment = Enum.TextXAlignment.Left;
                 BackgroundColor3 = Color3.fromRGB(22, 22, 22);
@@ -145,8 +124,8 @@ function MainMenuUI:render()
                 end
             }, {
                 UITextSizeConstraint = e("UITextSizeConstraint", {
-                    MinTextSize = 8;
-                    MaxTextSize = 13;
+                    MinTextSize = 10;
+                    MaxTextSize = 15;
                 })
             });
 
@@ -166,8 +145,8 @@ function MainMenuUI:render()
                 end
             }, {
                 UITextSizeConstraint = e("UITextSizeConstraint", {
-                    MinTextSize = 8;
-                    MaxTextSize = 13;
+                    MinTextSize = 10;
+                    MaxTextSize = 15;
                 })
             });
             GlobalLeaderboardButton = e(RoundedTextButton, {
@@ -186,8 +165,8 @@ function MainMenuUI:render()
                 end
             }, {
                 UITextSizeConstraint = e("UITextSizeConstraint", {
-                    MinTextSize = 8;
-                    MaxTextSize = 13;
+                    MinTextSize = 10;
+                    MaxTextSize = 15;
                 })
             });
         });
