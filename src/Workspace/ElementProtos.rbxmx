@@ -2683,7 +2683,7 @@
 						<token name="formFactorRaw">1</token>
 						<token name="shape">1</token>
 						<Vector3 name="size">
-							<X>0.25</X>
+							<X>0.194999993</X>
 							<Y>0.25</Y>
 							<Z>70.7109985</Z>
 						</Vector3>
@@ -3005,7 +3005,7 @@
 						<token name="formFactorRaw">1</token>
 						<token name="shape">1</token>
 						<Vector3 name="size">
-							<X>0.25</X>
+							<X>0.194999993</X>
 							<Y>0.25</Y>
 							<Z>70.7109985</Z>
 						</Vector3>
@@ -3327,7 +3327,7 @@
 						<token name="formFactorRaw">1</token>
 						<token name="shape">1</token>
 						<Vector3 name="size">
-							<X>0.25</X>
+							<X>0.194999993</X>
 							<Y>0.25</Y>
 							<Z>70.7109985</Z>
 						</Vector3>
@@ -3649,7 +3649,7 @@
 						<token name="formFactorRaw">1</token>
 						<token name="shape">1</token>
 						<Vector3 name="size">
-							<X>0.25</X>
+							<X>0.194999993</X>
 							<Y>0.25</Y>
 							<Z>70.7109985</Z>
 						</Vector3>
