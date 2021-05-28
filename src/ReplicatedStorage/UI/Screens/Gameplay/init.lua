@@ -362,7 +362,7 @@ function Gameplay:render()
                 self.state.marvelouses, self.state.perfects, self.state.greats, self.state.goods, self.state.bads, self.state.misses, MA)
         }, {
             UITextSizeConstraint = e("UITextSizeConstraint", {
-                MaxTextSize = 15
+                MaxTextSize = 25
             })
         }),
         Leaderboard = leaderboard,

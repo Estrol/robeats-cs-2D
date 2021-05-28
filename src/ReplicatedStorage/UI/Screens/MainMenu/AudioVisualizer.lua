@@ -24,8 +24,8 @@ function AudioVisualizer:init()
 
     self.animateLinesPerFrame = SPUtil:bind_to_frame(function()
         self.motor:setGoal(Flipper.Spring.new(SoundInstance.PlaybackLoudness, {
-            dampingRatio = 2.75,
-            frequency = 8.5
+            dampingRatio = 1.5,
+            frequency = 10
         }))
     end)
 end
@@ -42,7 +42,7 @@ function AudioVisualizer:render()
 
                 return UDim2.fromScale(1/numOfLines, a/650)
             end),
-            BackgroundColor3 = Color3.fromRGB(39, 39, 39),
+            BackgroundColor3 = Color3.fromRGB(99, 99, 99),
             LayoutOrder = i
         })
 
