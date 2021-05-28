@@ -131,7 +131,7 @@ function Options:getSettingElements()
     :case(2, function()
         elements.ComboPosition = e(EnumValue,{
             Value = self.props.options.ComboPosition,
-            ValueNames = {"Left", "Middle", "Right"},
+            ValueNames = {"Left", "Middle", "Right", "Top", "Bottom"},
             OnChanged = function(name)
                 self.props.setOption("ComboPosition", name)
             end,
@@ -257,7 +257,7 @@ function Options:getSettingElements()
             OnChanged = function(value)
                 self.props.setOption("Use2DLane", value)
             end,
-            Name = "Use 2D Lane",
+            Name = "2D Toggle",
             LayoutOrder = 1
         })
 
