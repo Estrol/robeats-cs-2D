@@ -49,7 +49,7 @@ function BoolValue:render()
             TextScaled = false,
             TextColor3 = Color3.fromRGB(255, 255, 255),
             TextSize = 20,
-            Text = self.props.Value and "ON" or "OFF"
+            Text = self.props.Value and "ENABLED" or "DISABLED"
         }),
         UIAspectRatioConstraint = e("UIAspectRatioConstraint", {
             AspectRatio = 8,
