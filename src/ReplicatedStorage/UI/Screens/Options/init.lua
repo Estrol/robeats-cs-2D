@@ -71,6 +71,7 @@ function Options:getSettingElements()
             end,
             Name = "Note Speed",
             MinValue = 0,
+            MaxValue = 100,
             LayoutOrder = 3
         })
 
