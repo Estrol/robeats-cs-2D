@@ -174,7 +174,11 @@ function HeldNote2D:new(
 		
 		if imm then
 			_body.BackgroundTransparency = target_transparency
-			_tail.BackgroundTransparency = target_transparency
+			if _tail:FindFirstChild("ImageLabel") ~= nil then
+				_tail.ImageLabel.ImageTransparency = target_transparency
+			else
+				_tail.BackgroundTransparency = target_transparency
+			end
 		else
 			_body.BackgroundTransparency = CurveUtil:Expt(
 				_body.BackgroundTransparency,
@@ -182,13 +186,22 @@ function HeldNote2D:new(
 				CurveUtil:NormalizedDefaultExptValueInSeconds(0.15),
 				dt_scale
 			)
-
-			_tail.BackgroundTransparency = CurveUtil:Expt(
-				_tail.BackgroundTransparency,
-				target_transparency,
-				CurveUtil:NormalizedDefaultExptValueInSeconds(0.15),
-				dt_scale
-			)
+			
+			if _tail:FindFirstChild("ImageLabel") ~= nil then
+				_tail.ImageLabel.ImageTransparency = CurveUtil:Expt(
+					_tail.ImageLabel.ImageTransparency,
+					target_transparency,
+					CurveUtil:NormalizedDefaultExptValueInSeconds(0.15),
+					dt_scale
+				)
+			else
+				_tail.BackgroundTransparency = CurveUtil:Expt(
+					_tail.BackgroundTransparency,
+					target_transparency,
+					CurveUtil:NormalizedDefaultExptValueInSeconds(0.15),
+					dt_scale
+				)
+			end
 		end
 	end
 
