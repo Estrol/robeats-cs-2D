@@ -108,7 +108,7 @@ function EnvironmentSetup:get_player_gui_root()
 end
 
 function EnvironmentSetup:get_robeats_game_stage()
-	return _game_environment.Platform
+	return _element_protos_folder.NoteTrackSystemProto.TrackBG.Union
 end
 
 return EnvironmentSetup
