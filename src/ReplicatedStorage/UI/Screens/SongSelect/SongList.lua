@@ -21,14 +21,6 @@ SongList.defaultProps = {
     SelectedSongKey = 1
 }
 
--- LOL SEARCHING GO BYE BYE, PLEASE FIX
--- RIP SEARCHING
-
---[[
-    startIndex = floor(scrollPosition / elementHeight)
-    endIndex = ceil((scrollPosition + scrollSize) / elementHeight)
-]]
-
 function SongList:init()
     self:setState({
         search = "";
