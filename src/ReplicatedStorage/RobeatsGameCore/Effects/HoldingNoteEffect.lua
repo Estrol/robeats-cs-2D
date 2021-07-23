@@ -44,12 +44,18 @@ function HoldingNoteEffect:new(
 		
 		self._effect_obj.PrimaryPart.Position = _position
 		
-		if _note_result == NoteResult.Okay then
-			self._effect_obj.PrimaryPart.BrickColor = BrickColor.new(243,237,0)
+		if _note_result == NoteResult.Miss then
+			self._effect_obj.PrimaryPart.Color = Color3.fromRGB(190, 30, 30)
+		elseif _note_result == NoteResult.Bad then
+			self._effect_obj.PrimaryPart.Color = Color3.fromRGB(174, 22, 194)
+		elseif _note_result == NoteResult.Good then
+			self._effect_obj.PrimaryPart.Color = Color3.fromRGB(12, 15, 151)
 		elseif _note_result == NoteResult.Great then
-			self._effect_obj.PrimaryPart.BrickColor = BrickColor.new(0,255,0)
+			self._effect_obj.PrimaryPart.Color = Color3.fromRGB(57, 192, 16)
+		elseif _note_result == NoteResult.Perfect then
+			self._effect_obj.PrimaryPart.Color = Color3.fromRGB(235, 220, 13)
 		else
-			self._effect_obj.PrimaryPart.BrickColor = BrickColor.new(0,207,256)
+			self._effect_obj.PrimaryPart.Color = Color3.fromRGB(255, 255, 255)
 		end	
 		
 		self._anim_t = 0
