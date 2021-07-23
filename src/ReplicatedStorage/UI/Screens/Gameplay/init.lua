@@ -377,7 +377,8 @@ function Gameplay:render()
         LaneCover = e(RoundedFrame, {
             Size = UDim2.fromScale(1, laneCoverY),
             ZIndex = 0,
-            BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+            BackgroundColor3 = Color3.fromRGB(0, 0, 0),
+            BorderSizePixel = 0
         })
     })
 end
