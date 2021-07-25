@@ -54,6 +54,26 @@ function ModerationService:KnitStart()
     end
 end
 
+function ModerationService:BanUser(userId, reason)
+    local success, result = ParseServer.Functions.call("ban", {
+        userid = userId,
+        reason = reason
+    })
+    :await()
+
+    if success then
+        DebugOut:puts("Successfully banned user %d", userId)
+    else
+        warn("An error occured!\n", result) 
+    end
+
+    local player = game.Players:GetPlayerByUserId(userId)
+
+    if player then
+        player:Kick(reason)
+    end
+end
+
 function ModerationService.Client:BanUser(moderator, userId, reason)
     if PermissionsService:HasModPermissions(moderator) then
         local success, result = ParseServer.Functions.call("ban", {

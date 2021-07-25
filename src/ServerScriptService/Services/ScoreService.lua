@@ -8,6 +8,7 @@ local GraphDataStore = DataStoreService:GetDataStore("GraphDataStore")
 local DebugOut = require(game.ReplicatedStorage.Shared.DebugOut)
 
 local PermissionsService
+local ModerationService
 local RateLimitService
 
 local ParseServer
@@ -23,6 +24,7 @@ local ScoreService = Knit.CreateService({
 
 function ScoreService:KnitStart()
     PermissionsService = Knit.GetService("PermissionsService")
+    ModerationService = Knit.GetService("ModerationService")
     RateLimitService = Knit.GetService("RateLimitService")
 
     local ParseServerService = Knit.GetService("ParseServerService")
@@ -158,6 +160,11 @@ function ScoreService.Client:SubmitScore(player, songMD5Hash, rating, score, mar
 
         if banned then
             player:Kick(reason)
+            return
+        end
+
+        if rating >= 85 then
+            ModerationService:BanUser(player.UserId, "Suspicious score detected")
             return
         end
 
