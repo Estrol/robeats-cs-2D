@@ -76,6 +76,11 @@ end
 
 function ModerationService.Client:BanUser(moderator, userId, reason)
     if PermissionsService:HasModPermissions(moderator) then
+        if moderator.UserId == userId then
+            warn("Moderator tried to take action on self!")
+            return
+        end
+
         local success, result = ParseServer.Functions.call("ban", {
             userid = userId,
             reason = reason
@@ -98,6 +103,11 @@ end
 
 function ModerationService.Client:KickUser(moderator, userId, reason)
     if PermissionsService:HasModPermissions(moderator) then
+        if moderator.UserId == userId then
+            warn("Moderator tried to take action on self!")
+            return
+        end
+        
         local player = game.Players:GetPlayerByUserId(userId)
 
         if player then
