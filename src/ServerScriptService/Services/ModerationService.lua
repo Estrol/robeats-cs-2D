@@ -70,7 +70,7 @@ function ModerationService:BanUser(userId, reason)
     local player = game.Players:GetPlayerByUserId(userId)
 
     if player then
-        player:Kick(reason)
+        player:Kick(string.format("%d - Server", reason))
     end
 end
 
@@ -96,7 +96,7 @@ function ModerationService.Client:BanUser(moderator, userId, reason)
         local player = game.Players:GetPlayerByUserId(userId)
 
         if player then
-            player:Kick(reason)
+            player:Kick(string.format("%d - %d",reason, moderator.Name))
         end
     end
 end
