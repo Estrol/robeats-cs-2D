@@ -7,9 +7,10 @@ local createReducer = Rodux.createReducer
 local join = Llama.Dictionary.join
 local set = Llama.Dictionary.set
 
-local function createRoom(player, name, password)
+local function createRoom(player, name, image, password)
     return {
         name = name or string.format("%s's room", player.Name),
+        image = image or "rbxassetid://6800827231",
         players = { player }, -- Add the player that created the room to the list of players
         password = password,
         host = player,
