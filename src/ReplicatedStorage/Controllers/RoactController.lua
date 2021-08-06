@@ -30,12 +30,16 @@ local RoactController = Knit.CreateController({
 })
 
 function RoactController:KnitStart()
-    self:InitializeState()
-    self:MountRoactNodes()
+    local store = self:InitializeState()
+    self:MountRoactNodes(store)
 end
 
 function RoactController:InitializeState()
-    State.Store:dispatch(Actions.setTransientOption("SongKey", math.random(1, SongDatabase:get_key_count())))
+    local store = State()
+
+    store:dispatch(Actions.setTransientOption("SongKey", math.random(1, SongDatabase:get_key_count())))
+
+    return store
 end
 
 function RoactController:GetRoutes()
@@ -96,7 +100,7 @@ function RoactController:GetDependencies()
     }
 end
 
-function RoactController:MountRoactNodes()
+function RoactController:MountRoactNodes(store)
     local routes = self:GetRoutes()
 
     local router = Roact.createElement(RoactRouter.Router, {
@@ -105,7 +109,7 @@ function RoactController:MountRoactNodes()
     }, routes)
 
     local storeProvider = Roact.createElement(RoactRodux.StoreProvider, {
-        store = State.Store
+        store = store
     }, {
         AppRouter = router
     })
