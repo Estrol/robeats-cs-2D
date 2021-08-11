@@ -164,7 +164,7 @@ function Gameplay:init()
                 Mean = mean,
                 Rating = rating,
                 SongKey = self.props.options.SongKey,
-                PlayerName = game.Players.LocalPlayer.DisplayName,
+                PlayerName = game.Players.LocalPlayer.Name,
                 Rate = self.props.options.SongRate,
                 TimePlayed = DateTime.now().UnixTimestamp
             })
