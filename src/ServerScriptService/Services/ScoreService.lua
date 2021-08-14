@@ -105,7 +105,7 @@ function ScoreService:RefreshProfile(player)
                         },
                         Rating = ScoreService:CalculateRating(scores),
                         Accuracy = ScoreService:CalculateAverageAccuracy(scores),
-                        PlayerName = player.DisplayName,
+                        PlayerName = player.Name,
                         UserId = player.UserId
                     })
                     :andThen(function(document)
@@ -117,7 +117,7 @@ function ScoreService:RefreshProfile(player)
                             TotalMapsPlayed = 1,
                             Rating = ScoreService:CalculateRating(scores),
                             Accuracy = ScoreService:CalculateAverageAccuracy(scores),
-                            PlayerName = player.DisplayName,
+                            PlayerName = player.Name,
                             CountryRegion = LocalizationService:GetCountryRegionForPlayerAsync(player),
                             Allowed = true,
                             UserId = player.UserId
@@ -176,7 +176,7 @@ function ScoreService.Client:SubmitScore(player, songMD5Hash, rating, score, mar
             if not oldScore then
                 succeeded = Scores:create({
                     UserId = player.UserId,
-                    PlayerName = player.DisplayName,
+                    PlayerName = player.Name,
                     Rating = rating,
                     Score = score,
                     Marvelouses = marvelouses,
@@ -208,7 +208,7 @@ function ScoreService.Client:SubmitScore(player, songMD5Hash, rating, score, mar
 
             if overwrite then
                 Scores:update(oldScore.objectId, {
-                    PlayerName = player.DisplayName,
+                    PlayerName = player.Name,
                     Rating = rating,
                     Score = score,
                     Marvelouses = marvelouses,
