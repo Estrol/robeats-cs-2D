@@ -6,6 +6,7 @@ local Rodux = require(game.ReplicatedStorage.Packages.Rodux)
 
 local OptionsReducer = require(game.ReplicatedStorage.Reducers.OptionsReducer)
 local PermissionsReducer = require(game.ReplicatedStorage.Reducers.PermissionsReducer)
+local MultiplayerReducer = require(game.ReplicatedStorage.Reducers.MultiplayerReducer)
 
 local SongDatabase = require(game.ReplicatedStorage.RobeatsGameCore.SongDatabase)
 
@@ -18,13 +19,26 @@ function StateController:KnitInit()
 
     local combinedReducers = Rodux.combineReducers({
         options = OptionsReducer,
-        permissions = PermissionsReducer
+        permissions = PermissionsReducer,
+        multiplayer = MultiplayerReducer
     })
         
     self.Store = Rodux.Store.new(combinedReducers)
 
     self.Store:dispatch(Actions.setAdmin(PermissionsService:HasModPermissions()))
     self.Store:dispatch(Actions.setTransientOption("SongKey", math.random(1, SongDatabase:get_key_count())))
+end
+
+function StateController:KnitStart()
+    local StateService = Knit.GetService("StateService")
+
+    StateService.ActionDispatched:Connect(function(action)
+        self.Store:dispatch(action)
+
+        print(self.Store:getState().multiplayer, StateService:GetState().multiplayer)
+    end)
+
+    self.Store:dispatch({ type = "setState", state = StateService:GetState() })
 end
 
 return StateController

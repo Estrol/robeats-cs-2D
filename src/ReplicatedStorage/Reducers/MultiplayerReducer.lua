@@ -40,5 +40,8 @@ return createReducer(defaultState, {
                 })
             })
         })
+    end,
+    setState = function(_, action)
+        return action.state.multiplayer
     end
 })
