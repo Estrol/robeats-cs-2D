@@ -5,7 +5,6 @@ local RoactRodux = require(game.ReplicatedStorage.Packages.RoactRodux)
 
 local SongDatabase = require(game.ReplicatedStorage.RobeatsGameCore.SongDatabase)
 
-local State = require(game.ReplicatedStorage.State)
 local Actions = require(game.ReplicatedStorage.Actions)
 
 local EnvironmentSetup = require(game.ReplicatedStorage.RobeatsGameCore.EnvironmentSetup)
@@ -30,16 +29,8 @@ local RoactController = Knit.CreateController({
 })
 
 function RoactController:KnitStart()
-    local store = self:InitializeState()
+    local store = Knit.GetController("StateController").Store
     self:MountRoactNodes(store)
-end
-
-function RoactController:InitializeState()
-    local store = State()
-
-    store:dispatch(Actions.setTransientOption("SongKey", math.random(1, SongDatabase:get_key_count())))
-
-    return store
 end
 
 function RoactController:GetRoutes()
