@@ -18,7 +18,7 @@ function PlayerProfile:init()
         rating = 0,
         accuracy = 0,
         totalMapsPlayed = 0,
-        userId = game.Players.LocalPlayer and game.Players.LocalPlayer.UserId,
+        userId = game.Players.LocalPlayer and game.Players.LocalPlayer.UserId or 0,
         playerName = game.Players.LocalPlayer and game.Players.LocalPlayer.Name,
         loaded = false
     })

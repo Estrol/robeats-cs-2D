@@ -62,7 +62,7 @@ function MainMenuUI:render()
         Logo = e(RoundedImageLabel, {
             Image = "rbxassetid://6224561143";
             Size = UDim2.fromScale(0.4, 0.9);
-            Position = UDim2.fromScale(0.02, 0.47);
+            Position = UDim2.fromScale(0.02, 0.4);
             AnchorPoint = Vector2.new(0.05, 0.5);
             BackgroundTransparency = 1;
         }, {
@@ -108,26 +108,26 @@ function MainMenuUI:render()
                 })
             });
 
-            -- MultiButton = e(RoundedTextButton, {
-            --     TextXAlignment = Enum.TextXAlignment.Left;
-            --     BackgroundColor3 = Color3.fromRGB(70, 69, 69);
-            --     BorderMode = Enum.BorderMode.Inset,
-            --     BorderSizePixel = 0,
-            --     Size = UDim2.fromScale(1, 0.125),
-            --     Text = "  Multiplayer (Coming Soon)";
-            --     TextScaled = true;
-            --     TextColor3 = Color3.fromRGB(255, 255, 255);
-            --     LayoutOrder = 1;
-            --     HoldSize = UDim2.fromScale(0.95, 0.125),
-            --     OnClick = function()
-            --         self.props.history:push("/select")
-            --     end
-            -- }, {
-            --     UITextSizeConstraint = e("UITextSizeConstraint", {
-            --         MinTextSize = 8;
-            --         MaxTextSize = 13;
-            --     })
-            -- });
+            MultiButton = e(RoundedTextButton, {
+                TextXAlignment = Enum.TextXAlignment.Left;
+                BackgroundColor3 = Color3.fromRGB(22, 22, 22);
+                BorderMode = Enum.BorderMode.Inset,
+                BorderSizePixel = 0,
+                Size = UDim2.fromScale(1, 0.125),
+                Text = "  Multiplayer";
+                TextScaled = true;
+                TextColor3 = Color3.fromRGB(255, 255, 255);
+                LayoutOrder = 5;
+                HoldSize = UDim2.fromScale(0.95, 0.125),
+                OnClick = function()
+                    self.props.history:push("/multiplayer")
+                end
+            }, {
+                UITextSizeConstraint = e("UITextSizeConstraint", {
+                    MinTextSize = 8;
+                    MaxTextSize = 13;
+                })
+            });
 
             ScoresButton = e(RoundedTextButton, {
                 TextXAlignment = Enum.TextXAlignment.Left;
