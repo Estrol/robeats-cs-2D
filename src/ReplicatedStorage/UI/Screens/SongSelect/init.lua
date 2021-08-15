@@ -117,10 +117,15 @@ function SongSelect:render()
             DefaultSpace = 4,
             Buttons = {
                 {
-                    Text = "Play",
-                    Color = Color3.fromRGB(8, 153, 32),
+                    Text = self.props.location.state.roomId and "Select" or "Play",
+                    Color = self.props.location.state.roomId and Color3.fromRGB(50, 77, 94) or Color3.fromRGB(8, 153, 32),
                     OnClick = function()
-                        self.props.history:push("/play")
+                        if self.props.location.state.roomId then
+                            self.props.multiplayerService:SetSongKey(self.props.location.state.roomId, self.props.options.SongKey)
+                            self.props.history:goBack()
+                        else
+                            self.props.history:push("/play")
+                        end
                     end
                 },
                 {
@@ -188,7 +193,8 @@ end
 
 local Injected = withInjection(SongSelect, {
     scoreService = "ScoreService",
-    previewController = "PreviewController"
+    previewController = "PreviewController",
+    multiplayerService = "MultiplayerService"
 })
 
 return RoactRodux.connect(function(state, props)

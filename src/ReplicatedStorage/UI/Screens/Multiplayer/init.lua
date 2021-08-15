@@ -24,7 +24,14 @@ function Multiplayer:render()
             Name = room.name,
             RoomId = id,
             Players = room.players,
-            SongKey = room.selectedSongKey
+            SongKey = room.selectedSongKey,
+            OnJoinClick = function(roomId)
+                self.props.multiplayerService:JoinRoomPromise(roomId):andThen(function()
+                    self.props.history:push("/room", {
+                        roomId = roomId
+                    })
+                end)
+            end
         })
     end
 

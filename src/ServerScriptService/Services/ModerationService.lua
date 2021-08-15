@@ -7,6 +7,8 @@ local ModerationService = Knit.CreateService {
     Client = {};
 }
 
+local RunService
+
 local PermissionsService
 
 local ParseServer
@@ -15,7 +17,7 @@ local Bans
 function ModerationService:OnPlayerAdded(player)
     -- Check if the user's account age is too young to join the game
 
-    if player.AccountAge < 2 then
+    if player.AccountAge < 2 and not RunService:IsStudio() then
         player:Kick(string.format("Your account must be older than 2 days to join this game. %d days left", 2 - player.AccountAge))
     end
 
@@ -52,6 +54,10 @@ function ModerationService:KnitStart()
     for _, player in pairs(game.Players:GetPlayers()) do
         self:OnPlayerAdded(player)
     end
+end
+
+function ModerationService:KnitInit()
+    RunService = game:GetService("RunService")
 end
 
 function ModerationService.Client:BanUser(moderator, userId, reason)

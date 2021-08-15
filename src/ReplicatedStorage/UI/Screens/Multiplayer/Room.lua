@@ -84,11 +84,7 @@ function Room:render()
             TextSize = 15,
             ZIndex = 2,
             OnClick = function()
-                if self.props.RoomId then
-                    self.props.history:push("/room", {
-                        roomId = self.props.RoomId
-                    })
-                end
+                self.props.OnJoinClick(self.props.RoomId)
             end
         }),
     })

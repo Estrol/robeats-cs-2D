@@ -28,6 +28,8 @@ local withHitDeviancePoint = require(script.Decorators.withHitDeviancePoint)
 
 local Knit = require(game:GetService("ReplicatedStorage").Knit)
 
+local withInjection = require(game.ReplicatedStorage.UI.Components.HOCs.withInjection)
+
 local Lighting = game:GetService("Lighting")
 
 local Gameplay = Roact.Component:extend("Gameplay")
@@ -35,10 +37,6 @@ local Gameplay = Roact.Component:extend("Gameplay")
 Gameplay.SpreadString = "<font color=\"rgb(125, 125, 125)\">%d</font> <font color=\"rgb(55, 55, 55)\">/</font> <font color=\"rgb(99, 91, 15)\">%d</font> <font color=\"rgb(55, 55, 55)\">/</font> <font color=\"rgb(23, 99, 15)\">%d</font> <font color=\"rgb(55, 55, 55)\">/</font> <font color=\"rgb(15, 39, 99)\">%d</font> <font color=\"rgb(55, 55, 55)\">/</font> <font color=\"rgb(91, 15, 99)\">%d</font> <font color=\"rgb(55, 55, 55)\">/</font> <font color=\"rgb(99, 15, 21)\">%d</font> | %0.1f M/P"
 
 function Gameplay:init()
-    -- Get the score service
-
-    local ScoreService = Knit.GetService("ScoreService")
-
     -- Set gameplay state
 
     self:setState({
@@ -61,11 +59,6 @@ function Gameplay:init()
     -- Set up hit deviance parent reference
 
     self.hitDevianceRef = Roact.createRef()
-
-    if not self.props.options.Use2DLane then
-        local stagePlat = EnvironmentSetup:get_robeats_game_stage()
-        stagePlat.Transparency = self.props.options.BaseTransparency
-    end
     
     -- Set FOV and Time of Day
 
@@ -93,7 +86,9 @@ function Gameplay:init()
     
     -- Load the map
 
-    _game:load(self.props.options.SongKey, GameSlot.SLOT_1, self.props.options)
+    _game:load(self.props.match and self.props.match.selectedSongKey or self.props.options.SongKey, GameSlot.SLOT_1, Llama.Dictionary.join(self.props.options, {
+        SongRate = self.props.match and self.props.match.songRate or self.props.options.SongRate
+    }))
 
     -- Bind the game loop to every frame
     
@@ -104,70 +99,23 @@ function Gameplay:init()
 
         -- Handle starting the game if the audio and its data has loaded!
 
-        if _game._audio_manager:is_ready_to_play() and not self.state.loaded then
+        if _game._audio_manager:is_ready_to_play() and self:allPlayersLoaded() and not self.state.loaded then
+            if self.props.match then
+                self.props.multiplayerService:SetReady(self.props.roomId, true)
+            end
+            
             self:setState({
                 loaded = true
             })
+            
             _game:start_game()
         end
-
+        
         -- If we have reached the end of the game, trigger cleanup
-
+        
         if _game:get_mode() == RobeatsGame.Mode.GameEnded then
             self.everyFrameConnection:Disconnect()
-            if lane_2D then
-                EnvironmentSetup:reset_2d_environment()
-            end
-
-            local marvelouses, perfects, greats, goods, bads, misses, maxChain = _game._score_manager:get_end_records()
-            local hits = _game._score_manager:get_hits()
-            local mean = _game._score_manager:get_mean()
-            local rating = Rating:get_rating_from_accuracy(self.props.options.SongKey, self.state.accuracy, self.props.options.SongRate / 100)
-
-            if (not self.forcedQuit) and (self.props.options.TimingPreset == "Standard") then
-                local md5Hash = SongDatabase:get_md5_hash_for_key(self.props.options.SongKey)
-                ScoreService:SubmitScorePromise(
-                    md5Hash,
-                    rating,
-                    self.state.score,
-                    marvelouses,
-                    perfects,
-                    greats,
-                    goods,
-                    bads,
-                    misses,
-                    self.state.accuracy,
-                    maxChain,
-                    mean,
-                    self.props.options.SongRate,
-                    self.props.options.Mods)
-                    :andThen(function()
-                        local moment = DateTime.now():ToLocalTime()
-                        DebugOut:puts("Score submitted at %d:%d:%d", moment.Hour, moment.Minute, moment.Second)
-                    end)
-                    :andThen(function()
-                        ScoreService:SubmitGraph(md5Hash, hits)
-                    end)
-            end
-
-            self.props.history:push("/results", {
-                Score = self.state.score,
-                Accuracy = self.state.accuracy,
-                Marvelouses = marvelouses,
-                Perfects = perfects,
-                Greats = greats,
-                Goods = goods,
-                Bads = bads,
-                Misses = misses,
-                MaxChain = maxChain,
-                Hits = hits,
-                Mean = mean,
-                Rating = rating,
-                SongKey = self.props.options.SongKey,
-                PlayerName = game.Players.LocalPlayer.Name,
-                Rate = self.props.options.SongRate,
-                TimePlayed = DateTime.now().UnixTimestamp
-            })
+            self:onGameplayEnd()
             return
         end
 
@@ -199,11 +147,6 @@ function Gameplay:init()
             withHitDeviancePoint(bar)
         end
 
-        if lane_2D then
-            local combo_frame = EnvironmentSetup:get_player_gui_root().GameplayFrame.Combo
-            combo_frame.Text = _game._score_manager:get_chain()
-        end
-
         self:setState({
             score = _game._score_manager:get_score(),
             accuracy = _game._score_manager:get_accuracy() * 100,
@@ -220,6 +163,74 @@ function Gameplay:init()
     -- Expose the game instance to the rest of the component
 
     self._game = _game
+end
+
+function Gameplay:onGameplayEnd()
+    if self.props.options.Use2DLane then
+        EnvironmentSetup:teardown_2d_environment()
+    end
+
+    local marvelouses, perfects, greats, goods, bads, misses, maxChain = self._game._score_manager:get_end_records()
+    local hits = self._game._score_manager:get_hits()
+    local mean = self._game._score_manager:get_mean()
+    local rating = Rating:get_rating_from_accuracy(self.props.options.SongKey, self.state.accuracy, self.props.options.SongRate / 100)
+
+    if (not self.forcedQuit) and (self.props.options.TimingPreset == "Standard") then
+        self:submitScore(
+            hits,
+            SongDatabase:get_md5_hash_for_key(self.props.options.SongKey),
+            rating,
+            self.state.score,
+            marvelouses,
+            perfects,
+            greats,
+            goods,
+            bads,
+            misses,
+            self.state.accuracy,
+            maxChain,
+            mean,
+            self.props.options.SongRate,
+            self.props.options.Mods)
+    end
+    
+    self.props.history:push("/results", {
+        Score = self.state.score,
+        Accuracy = self.state.accuracy,
+        Marvelouses = marvelouses,
+        Perfects = perfects,
+        Greats = greats,
+        Goods = goods,
+        Bads = bads,
+        Misses = misses,
+        MaxChain = maxChain,
+        Hits = hits,
+        Mean = mean,
+        Rating = rating,
+        SongKey = self.props.options.SongKey,
+        PlayerName = game.Players.LocalPlayer.Name,
+        Rate = self.props.options.SongRate,
+        TimePlayed = DateTime.now().UnixTimestamp
+    })
+end
+
+function Gameplay:allPlayersLoaded()
+    return self.props.match and #Llama.Dictionary.filter(self.props.match.players, function(player)
+        return not player.ready
+    end) == 0 or true
+end
+
+function Gameplay:submitScore(hits, ...)
+    local args = {...}
+    self.props.scoreService:SubmitScorePromise(unpack(args))
+        :andThen(function()
+            local moment = DateTime.now():ToLocalTime()
+            DebugOut:puts("Score submitted at %d:%d:%d", moment.Hour, moment.Minute, moment.Second)
+        end)
+        :andThen(function()
+            local md5Hash = select(1, unpack(args))
+            self.props.scoreService:SubmitGraph(md5Hash, hits)
+        end)
 end
 
 function Gameplay:render()
@@ -401,8 +412,15 @@ function Gameplay:willUnmount()
     self.everyFrameConnection:Disconnect() 
 end
 
+local Injected = withInjection(Gameplay, {
+    scoreService = "ScoreService",
+    multiplayerService = "MultiplayerService"
+})
+
 return RoactRodux.connect(function(state, props)
     return Llama.Dictionary.join(props, {
-        options = Llama.Dictionary.join(state.options.persistent, state.options.transient)
+        options = Llama.Dictionary.join(state.options.persistent, state.options.transient),
+        match = props.location.state.roomId and state.multiplayer.matches[props.location.state.roomId],
+        roomId = props.location.state.roomId
     })
-end)(Gameplay)
+end)(Injected)
