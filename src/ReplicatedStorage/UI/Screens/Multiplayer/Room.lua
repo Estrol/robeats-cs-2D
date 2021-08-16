@@ -49,7 +49,7 @@ function Room:render()
             Text = string.format("Host: %s, Number of Players: %d", hostName, #self.props.Players)
         }, {
             UITextSizeConstraint = e("UITextSizeConstraint", {
-                MaxTextSize = 19
+                MaxTextSize = 22
             })
         }),
         SongCover = e("ImageLabel", {
