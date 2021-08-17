@@ -12,8 +12,10 @@ local Rating = require(game.ReplicatedStorage.RobeatsGameCore.Enums.Rating)
 local SongDatabase = require(game.ReplicatedStorage.RobeatsGameCore.SongDatabase)
 local DebugOut = require(game.ReplicatedStorage.Shared.DebugOut)
 local NoteResult= require(game.ReplicatedStorage.RobeatsGameCore.Enums.NoteResult)
+local FlashEvery = require(game.ReplicatedStorage.Shared.FlashEvery)
 
 local Leaderboard = require(script.Leaderboard)
+local MultiplayerLeaderboard = require(script.MultiplayerLeaderboard)
 
 local AnimatedNumberLabel = require(game.ReplicatedStorage.UI.Components.Base.AnimatedNumberLabel)
 local RoundedTextLabel = require(game.ReplicatedStorage.UI.Components.Base.RoundedTextLabel)
@@ -92,6 +94,8 @@ function Gameplay:init()
 
     -- Bind the game loop to every frame
     
+    local _send_every = FlashEvery:new(1)
+
     self.everyFrameConnection = SPUtil:bind_to_frame(function(dt)
         if _game._audio_manager:get_just_finished() then
             _game:set_mode(RobeatsGame.Mode.GameEnded)
@@ -121,6 +125,24 @@ function Gameplay:init()
 
         local dt_scale = CurveUtil:DeltaTimeToTimescale(dt)
         _game:update(dt_scale)
+
+        _send_every:update(dt_scale)
+
+        -- Every second, send match stats to the server
+
+        if self.props.match and _send_every:do_flash() then
+            self.props.multiplayerService:SetMatchStats(self.props.roomId, {
+                score = self.state.score,
+                rating = Rating:get_rating_from_accuracy(self.props.options.SongKey, self.state.accuracy, self.props.options.SongRate / 100),
+                accuracy = self.state.accuracy
+            })
+        end
+
+        -- If the match no longer exists, quit the game
+
+        if not self.props.match and self.props.roomId then
+            _game:set_mode(RobeatsGame.Mode.GameEnded)
+        end
 
         self.setTimeLeft(_game._audio_manager:get_song_length_ms() - _game._audio_manager:get_current_time_ms())
     end)
@@ -194,24 +216,28 @@ function Gameplay:onGameplayEnd()
             self.props.options.Mods)
     end
     
-    self.props.history:push("/results", {
-        Score = self.state.score,
-        Accuracy = self.state.accuracy,
-        Marvelouses = marvelouses,
-        Perfects = perfects,
-        Greats = greats,
-        Goods = goods,
-        Bads = bads,
-        Misses = misses,
-        MaxChain = maxChain,
-        Hits = hits,
-        Mean = mean,
-        Rating = rating,
-        SongKey = self.props.options.SongKey,
-        PlayerName = game.Players.LocalPlayer.Name,
-        Rate = self.props.options.SongRate,
-        TimePlayed = DateTime.now().UnixTimestamp
-    })
+    if self.forcedQuit and self.props.match then
+        self.props.history:goBack()
+    else
+        self.props.history:push("/results", {
+            Score = self.state.score,
+            Accuracy = self.state.accuracy,
+            Marvelouses = marvelouses,
+            Perfects = perfects,
+            Greats = greats,
+            Goods = goods,
+            Bads = bads,
+            Misses = misses,
+            MaxChain = maxChain,
+            Hits = hits,
+            Mean = mean,
+            Rating = rating,
+            SongKey = self.props.options.SongKey,
+            PlayerName = game.Players.LocalPlayer.Name,
+            Rate = self.props.options.SongRate,
+            TimePlayed = DateTime.now().UnixTimestamp
+        })
+    end
 end
 
 function Gameplay:allPlayersLoaded()
@@ -280,12 +306,19 @@ function Gameplay:render()
     local leaderboard
 
     if not self.props.options.HideLeaderboard then
-        leaderboard = e(Leaderboard, {
-            SongKey = self.props.options.SongKey,
-            LocalRating = Rating:get_rating_from_accuracy(self.props.options.SongKey, self.state.accuracy, self.props.options.SongRate / 100),
-            LocalAccuracy = self.state.accuracy, 
-            Position = LeaderboardPositions[self.props.options.InGameLeaderboardPosition]
-        })
+        if self.props.match then
+            leaderboard = e(MultiplayerLeaderboard, {
+                Scores = self.props.match.players,
+                Position = LeaderboardPositions[self.props.options.InGameLeaderboardPosition]
+            })
+        else
+            leaderboard = e(Leaderboard, {
+                SongKey = self.props.options.SongKey,
+                LocalRating = Rating:get_rating_from_accuracy(self.props.options.SongKey, self.state.accuracy, self.props.options.SongRate / 100),
+                LocalAccuracy = self.state.accuracy, 
+                Position = LeaderboardPositions[self.props.options.InGameLeaderboardPosition]
+            })
+        end
     end
 
     return Roact.createFragment({

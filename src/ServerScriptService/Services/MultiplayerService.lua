@@ -8,6 +8,35 @@ local MultiplayerService = Knit.CreateService {
 
 local StateService
 
+function MultiplayerService:KnitStart()
+    game.Players.PlayerRemoving:Connect(function(player)
+        local store = StateService.Store
+        local state = MultiplayerService:GetState()
+
+        for id, match in pairs(state.matches) do
+            for _, matchPlayer in pairs(match.players) do
+                if matchPlayer.player == player then
+                    store:dispatch({
+                        type = "removeMatchPlayer",
+                        roomId = id,
+                        player = player
+                    })
+                end
+            end
+        end
+
+        for id, room in pairs(state.rooms) do
+            if table.find(room.players, player) then
+                store:dispatch({
+                    type = "removePlayer",
+                    roomId = id,
+                    player = player
+                })
+            end
+        end
+    end)
+end
+
 function MultiplayerService:KnitInit()
     StateService = Knit.GetService("StateService")
 end
@@ -117,6 +146,19 @@ function MultiplayerService.Client:JoinRoom(player, id)
         type = "addPlayer",
         player = player,
         roomId = id
+    })
+end
+
+function MultiplayerService.Client:SetMatchStats(player, id, stats)
+    local store = StateService.Store
+
+    store:dispatch({
+        type = "setMatchStats",
+        roomId = id,
+        userId = player.UserId,
+        score = stats.score,
+        rating = stats.rating,
+        accuracy = stats.accuracy
     })
 end
 
