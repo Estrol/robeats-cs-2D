@@ -7,6 +7,7 @@ local e = Roact.createElement
 
 local PlayerProfile = require(script.PlayerProfile)
 local AudioVisualizer = require(script.AudioVisualizer)
+local MusicBox = require(script.MusicBox)
 
 local withInjection = require(game.ReplicatedStorage.UI.Components.HOCs.withInjection)
 
@@ -14,16 +15,21 @@ local RoundedFrame = require(game.ReplicatedStorage.UI.Components.Base.RoundedFr
 local RoundedTextButton = require(game.ReplicatedStorage.UI.Components.Base.RoundedTextButton)
 local RoundedImageLabel = require(game.ReplicatedStorage.UI.Components.Base.RoundedImageLabel)
 
-
-
 local MainMenuUI = Roact.Component:extend("MainMenuUI")
 
 function MainMenuUI:init()
+    self:setState({
+        currSFXName = SongDatabase:get_data_for_key(self.props.songKey).AudioFilename,
+        currSFXArtistName = SongDatabase:get_data_for_key(self.props.songKey).AudioArtist,
+        currSFXBackground = SongDatabase:get_data_for_key(self.props.songKey).AudioCoverImageAssetId,
+    })
+
     self.previewController = self.props.previewController
 end
 
 function MainMenuUI:didMount()
     self.previewController:PlayId(SongDatabase:get_data_for_key(self.props.songKey).AudioAssetId)
+    self.soundObj = self.props.previewController:GetSoundInstance()
 end
 
 function MainMenuUI:render()
@@ -62,7 +68,7 @@ function MainMenuUI:render()
         Logo = e(RoundedImageLabel, {
             Image = "rbxassetid://6224561143";
             Size = UDim2.fromScale(0.4, 0.9);
-            Position = UDim2.fromScale(0.02, 0.4);
+            Position = UDim2.fromScale(0.02, 0.45);
             AnchorPoint = Vector2.new(0.05, 0.5);
             BackgroundTransparency = 1;
         }, {
@@ -75,6 +81,19 @@ function MainMenuUI:render()
             Size = UDim2.fromScale(0.45, 0.2)
         }),
         AudioVisualizer = e(AudioVisualizer),
+        SongBox = e(MusicBox, {
+            Size = UDim2.fromScale(0.35, 0.15);
+            Position = UDim2.fromScale(0.025, 0.02);
+            currentAudioName = self.state.currSFXName,
+            currentAudioArtist = self.state.currSFXArtist,
+            onClick = function()
+                if self.soundObj.IsPlaying then
+                    self.soundObj:Pause()
+                else
+                    self.soundObj:Resume()
+                end
+            end
+        }),
         ButtonContainer = e(RoundedFrame, {
             Size = UDim2.fromScale(0.25, 0.6);
             Position = UDim2.fromScale(0.02,0.95);
@@ -104,10 +123,9 @@ function MainMenuUI:render()
             }, {
                 UITextSizeConstraint = e("UITextSizeConstraint", {
                     MinTextSize = 8;
-                    MaxTextSize = 13;
+                    MaxTextSize = 17;
                 })
             });
-
             MultiButton = e(RoundedTextButton, {
                 TextXAlignment = Enum.TextXAlignment.Left;
                 BackgroundColor3 = Color3.fromRGB(22, 22, 22);
@@ -125,10 +143,9 @@ function MainMenuUI:render()
             }, {
                 UITextSizeConstraint = e("UITextSizeConstraint", {
                     MinTextSize = 8;
-                    MaxTextSize = 13;
+                    MaxTextSize = 17;
                 })
             });
-
             ScoresButton = e(RoundedTextButton, {
                 TextXAlignment = Enum.TextXAlignment.Left;
                 BackgroundColor3 = Color3.fromRGB(22, 22, 22);
@@ -146,7 +163,7 @@ function MainMenuUI:render()
             }, {
                 UITextSizeConstraint = e("UITextSizeConstraint", {
                     MinTextSize = 8;
-                    MaxTextSize = 13;
+                    MaxTextSize = 17;
                 })
             });
 
@@ -167,7 +184,7 @@ function MainMenuUI:render()
             }, {
                 UITextSizeConstraint = e("UITextSizeConstraint", {
                     MinTextSize = 8;
-                    MaxTextSize = 13;
+                    MaxTextSize = 17;
                 })
             });
             GlobalLeaderboardButton = e(RoundedTextButton, {
@@ -187,7 +204,7 @@ function MainMenuUI:render()
             }, {
                 UITextSizeConstraint = e("UITextSizeConstraint", {
                     MinTextSize = 8;
-                    MaxTextSize = 13;
+                    MaxTextSize = 17;
                 })
             });
         });
