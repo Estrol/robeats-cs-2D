@@ -23,7 +23,8 @@ local function createMatch(room)
             }
         end),
         selectedSongKey = room.selectedSongKey,
-        ongoing = true
+        ongoing = true,
+        songRate = room.songRate
     }
 end
 
@@ -75,9 +76,23 @@ return createReducer(defaultState, {
             })
         })
     end,
+    removeMatchPlayer = function(state, action)
+        local players = removeValue(state.rooms[action.roomId].players, action.player)
+
+        return join(state, {
+            rooms = join(state.rooms, {
+                [action.roomId] = join(state.rooms[action.roomId], {
+                    players = players
+                })
+            })
+        })
+    end,
     removeRoom = function(state, action)
         return join(state, {
             rooms = join(state.rooms, {
+                [action.roomId] = Llama.None
+            }),
+            matches = join(state.matches, {
                 [action.roomId] = Llama.None
             })
         })
@@ -127,6 +142,25 @@ return createReducer(defaultState, {
                     players = join(state.matches[action.roomId].players, {
                         [playerIndex] = join(state.matches[action.roomId].players[playerIndex], {
                             ready = action.value
+                        })
+                    })
+                })
+            })
+        })
+    end,
+    setMatchStats = function(state, action)
+        local playerIndex = findWhere(state.matches[action.roomId].players, function(player)
+            return player.player.UserId == action.userId
+        end)
+
+        return join(state, {
+            matches = join(state.matches, {
+                [action.roomId] = join(state.matches[action.roomId], {
+                    players = join(state.matches[action.roomId].players, {
+                        [playerIndex] = join(state.matches[action.roomId].players[playerIndex], {
+                            score = action.score,
+                            accuracy = action.accuracy,
+                            rating = action.rating
                         })
                     })
                 })
