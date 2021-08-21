@@ -10,6 +10,7 @@ local ModerationService = Knit.CreateService {
 local RunService
 
 local PermissionsService
+local TagService
 
 local ParseServer
 local Bans
@@ -36,6 +37,8 @@ function ModerationService:OnPlayerAdded(player)
                 player:Kick(ban.Reason)
             end
         end)
+
+    ModerationService:SetTag(player)
 end
 
 
@@ -58,6 +61,13 @@ end
 
 function ModerationService:KnitInit()
     RunService = game:GetService("RunService")
+    TagService = Knit.GetService("TagService")
+end
+
+function ModerationService:SetTag(player)
+    if PermissionsService:HasModPermissions(player) then
+        TagService:AddTag(player, "STAFF", Color3.fromRGB(255, 100, 115))
+    end
 end
 
 function ModerationService.Client:BanUser(moderator, userId, reason)
