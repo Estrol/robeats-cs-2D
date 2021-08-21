@@ -3,6 +3,7 @@ local Llama = require(game.ReplicatedStorage.Packages.Llama)
 local createReducer = Rodux.createReducer
 
 local join = Llama.Dictionary.join
+local copyDeep = Llama.Dictionary.copyDeep
 local set = Llama.Dictionary.set
 local removeKey = Llama.Dictionary.removeKey
 local map = Llama.Dictionary.map
@@ -10,6 +11,7 @@ local map = Llama.Dictionary.map
 local push = Llama.List.push
 local findWhere = Llama.List.findWhere
 local removeValue = Llama.List.removeValue
+local removeIndex = Llama.List.removeIndex
 
 local function createMatch(room)
     return {
@@ -19,6 +21,13 @@ local function createMatch(room)
                 score = 0,
                 accuracy = 0,
                 rating = 0,
+                marvelouses = 0,
+                perfects = 0,
+                greats = 0,
+                goods = 0,
+                bads = 0,
+                misses = 0,
+                mean = 0,
                 ready = false
             }
         end),
@@ -66,23 +75,22 @@ return createReducer(defaultState, {
         })
     end,
     removePlayer = function(state, action)
-        local players = removeValue(state.rooms[action.roomId].players, action.player)
+        local playerIndex = findWhere(state.matches[action.roomId].players, function(player)
+            return player.player.UserId == action.player.UserId
+        end)
+
+        local roomPlayers = removeValue(state.rooms[action.roomId].players, action.player)
+        local matchPlayers = removeIndex(state.matches[action.roomId].players, playerIndex)
 
         return join(state, {
-            rooms = join(state.rooms, {
-                [action.roomId] = join(state.rooms[action.roomId], {
-                    players = players
+            matches = join(state.matches, {
+                [action.roomId] = join(state.matches[action.roomId], {
+                    players = matchPlayers
                 })
-            })
-        })
-    end,
-    removeMatchPlayer = function(state, action)
-        local players = removeValue(state.rooms[action.roomId].players, action.player)
-
-        return join(state, {
+            }),
             rooms = join(state.rooms, {
                 [action.roomId] = join(state.rooms[action.roomId], {
-                    players = players
+                    players = roomPlayers
                 })
             })
         })
@@ -132,40 +140,45 @@ return createReducer(defaultState, {
         })
     end,
     setReady = function(state, action)
+        local mutableState = copyDeep(state)
         local playerIndex = findWhere(state.matches[action.roomId].players, function(player)
             return player.player.UserId == action.userId
         end)
 
-        return join(state, {
-            matches = join(state.matches, {
-                [action.roomId] = join(state.matches[action.roomId], {
-                    players = join(state.matches[action.roomId].players, {
-                        [playerIndex] = join(state.matches[action.roomId].players[playerIndex], {
-                            ready = action.value
-                        })
-                    })
-                })
-            })
-        })
+        local match = mutableState.matches[action.roomId]
+        match.players[playerIndex].ready = action.value
+
+        local room = mutableState.rooms[action.roomId]
+
+        if #Llama.Dictionary.filter(match.players, function(player)
+            return not player.ready
+        end) == 0 then
+            room.inProgress = false
+        end
+
+        return mutableState
     end,
     setMatchStats = function(state, action)
+        local mutableState = copyDeep(state)
         local playerIndex = findWhere(state.matches[action.roomId].players, function(player)
             return player.player.UserId == action.userId
         end)
 
-        return join(state, {
-            matches = join(state.matches, {
-                [action.roomId] = join(state.matches[action.roomId], {
-                    players = join(state.matches[action.roomId].players, {
-                        [playerIndex] = join(state.matches[action.roomId].players[playerIndex], {
-                            score = action.score,
-                            accuracy = action.accuracy,
-                            rating = action.rating
-                        })
-                    })
-                })
-            })
+        mutableState.matches[action.roomId].players[playerIndex] = join(mutableState.matches[action.roomId].players[playerIndex], {
+            score = action.score,
+            accuracy = action.accuracy,
+            rating = action.rating,
+            marvelouses = action.marvelouses,
+            perfects = action.perfects,
+            greats = action.greats,
+            goods = action.goods,
+            bads = action.bads,
+            misses = action.misses,
+            mean = action.mean,
+            maxCombo = action.maxCombo
         })
+
+        return mutableState
     end,
     setHost = function(state, action)
         return join(state, {

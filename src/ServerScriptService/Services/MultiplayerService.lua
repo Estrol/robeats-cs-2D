@@ -6,6 +6,8 @@ local MultiplayerService = Knit.CreateService {
     Client = {};
 }
 
+local Llama
+
 local StateService
 
 function MultiplayerService:KnitStart()
@@ -13,7 +15,7 @@ function MultiplayerService:KnitStart()
         local store = StateService.Store
         local state = MultiplayerService:GetState()
 
-        for id, match in pairs(state.matches) do
+        for id, match in pairs(state.multiplayer.matches) do
             for _, matchPlayer in pairs(match.players) do
                 if matchPlayer.player == player then
                     store:dispatch({
@@ -25,7 +27,7 @@ function MultiplayerService:KnitStart()
             end
         end
 
-        for id, room in pairs(state.rooms) do
+        for id, room in pairs(state.multiplayer.rooms) do
             if table.find(room.players, player) then
                 store:dispatch({
                     type = "removePlayer",
@@ -39,6 +41,7 @@ end
 
 function MultiplayerService:KnitInit()
     StateService = Knit.GetService("StateService")
+    Llama = require(game.ReplicatedStorage.Packages.Llama)
 end
 
 function MultiplayerService:GetState()
@@ -141,6 +144,11 @@ end
 
 function MultiplayerService.Client:JoinRoom(player, id)
     local store = StateService.Store
+    local state = MultiplayerService:GetState()
+
+    if state.multiplayer.rooms[id].inProgress then
+        return
+    end
 
     store:dispatch({
         type = "addPlayer",
@@ -152,14 +160,13 @@ end
 function MultiplayerService.Client:SetMatchStats(player, id, stats)
     local store = StateService.Store
 
-    store:dispatch({
+    local action = {
         type = "setMatchStats",
         roomId = id,
-        userId = player.UserId,
-        score = stats.score,
-        rating = stats.rating,
-        accuracy = stats.accuracy
-    })
+        userId = player.UserId
+    }
+
+    store:dispatch(Llama.Dictionary.join(action, stats))
 end
 
 return MultiplayerService

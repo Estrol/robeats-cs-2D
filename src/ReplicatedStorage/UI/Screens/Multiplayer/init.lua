@@ -26,11 +26,13 @@ function Multiplayer:render()
             Players = room.players,
             SongKey = room.selectedSongKey,
             OnJoinClick = function(roomId)
-                self.props.multiplayerService:JoinRoomPromise(roomId):andThen(function()
-                    self.props.history:push("/room", {
-                        roomId = roomId
-                    })
-                end)
+                if not room.inProgress then
+                    self.props.multiplayerService:JoinRoomPromise(roomId):andThen(function()
+                        self.props.history:push("/room", {
+                            roomId = roomId
+                        })
+                    end)
+                end
             end
         })
     end
@@ -48,6 +50,10 @@ function Multiplayer:render()
             Text = "Back",
             TextSize = 12,
             OnClick = function()
+                if self.props.location.state.goToHome then
+                    self.props.history:push("/")
+                    return
+                end
                 self.props.history:goBack()
             end
         }),

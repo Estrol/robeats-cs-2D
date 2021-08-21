@@ -45,6 +45,7 @@ function Gameplay:init()
         accuracy = 0,
         score = 0,
         chain = 0,
+        maxCombo = 0,
         marvelouses = 0,
         perfects = 0,
         greats = 0,
@@ -103,7 +104,7 @@ function Gameplay:init()
 
         -- Handle starting the game if the audio and its data has loaded!
 
-        if _game._audio_manager:is_ready_to_play() and self:allPlayersLoaded() and not self.state.loaded then
+        if not self.state.loaded and _game._audio_manager:is_ready_to_play() and self:allPlayersLoaded() then
             if self.props.match then
                 self.props.multiplayerService:SetReady(self.props.roomId, true)
             end
@@ -134,8 +135,17 @@ function Gameplay:init()
             self.props.multiplayerService:SetMatchStats(self.props.roomId, {
                 score = self.state.score,
                 rating = Rating:get_rating_from_accuracy(self.props.options.SongKey, self.state.accuracy, self.props.options.SongRate / 100),
-                accuracy = self.state.accuracy
+                accuracy = self.state.accuracy,
+                marvelouses = self.state.marvelouses,
+                perfects = self.state.perfects,
+                greats = self.state.greats,
+                goods = self.state.goods,
+                bads = self.state.bads,
+                misses = self.state.misses,
+                maxCombo = self.state.maxCombo,
             })
+
+            -- print(self.props.match.players)
         end
 
         -- If the match no longer exists, quit the game
@@ -146,6 +156,8 @@ function Gameplay:init()
 
         self.setTimeLeft(_game._audio_manager:get_song_length_ms() - _game._audio_manager:get_current_time_ms())
     end)
+
+    self.onMultiplayerGameEnded = Instance.new("BindableEvent")
 
     -- Hook into onStatsChanged to monitor when stats change in ScoreManager
 
@@ -173,6 +185,7 @@ function Gameplay:init()
             score = _game._score_manager:get_score(),
             accuracy = _game._score_manager:get_accuracy() * 100,
             chain = _game._score_manager:get_chain(),
+            maxCombo = args[7],
             marvelouses = args[1],
             perfects = args[2],
             greats = args[3],
@@ -185,6 +198,12 @@ function Gameplay:init()
     -- Expose the game instance to the rest of the component
 
     self._game = _game
+end
+
+function Gameplay:didUpdate()
+    if self.props.room and not self.props.room.inProgress then
+        self.onMultiplayerGameEnded:Fire()
+    end
 end
 
 function Gameplay:onGameplayEnd()
@@ -217,7 +236,50 @@ function Gameplay:onGameplayEnd()
     end
     
     if self.forcedQuit and self.props.match then
-        self.props.history:goBack()
+        self.props.multiplayerService:LeaveRoomPromise(self.props.roomId):andThen(function()
+            self.props.history:push("/multiplayer", {
+                goToHome = true
+            })
+        end)
+    elseif self.props.match then
+        self.props.multiplayerService:SetMatchStatsPromise(self.props.roomId, {
+            score = self.state.score,
+            rating = Rating:get_rating_from_accuracy(self.props.options.SongKey, self.state.accuracy, self.props.options.SongRate / 100),
+            accuracy = self.state.accuracy,
+            marvelouses = self.state.marvelouses,
+            perfects = self.state.perfects,
+            greats = self.state.greats,
+            goods = self.state.goods,
+            bads = self.state.bads,
+            misses = self.state.misses,
+            maxCombo = self.state.maxCombo,
+        })
+        :andThen(function()
+            self.props.multiplayerService:SetReadyPromise(self.props.roomId, false)
+                :andThen(function()
+                    self.onMultiplayerGameEnded.Event:Connect(function()
+                        self.props.history:push("/results", {
+                            Score = self.state.score,
+                            Accuracy = self.state.accuracy,
+                            Marvelouses = marvelouses,
+                            Perfects = perfects,
+                            Greats = greats,
+                            Goods = goods,
+                            Bads = bads,
+                            Misses = misses,
+                            MaxChain = maxChain,
+                            Hits = hits,
+                            Mean = mean,
+                            Rating = rating,
+                            SongKey = self.props.options.SongKey,
+                            PlayerName = game.Players.LocalPlayer.Name,
+                            Rate = self.props.options.SongRate,
+                            TimePlayed = DateTime.now().UnixTimestamp,
+                            Match = self.props.match
+                        })
+                    end)
+                end)
+        end)
     else
         self.props.history:push("/results", {
             Score = self.state.score,
@@ -442,7 +504,8 @@ end
 
 function Gameplay:willUnmount()
     self._game:teardown()
-    self.everyFrameConnection:Disconnect() 
+    self.everyFrameConnection:Disconnect()
+    self.onMultiplayerGameEnded:Destroy()
 end
 
 local Injected = withInjection(Gameplay, {
@@ -454,6 +517,7 @@ return RoactRodux.connect(function(state, props)
     return Llama.Dictionary.join(props, {
         options = Llama.Dictionary.join(state.options.persistent, state.options.transient),
         match = props.location.state.roomId and state.multiplayer.matches[props.location.state.roomId],
+        room = props.location.state.roomId and state.multiplayer.rooms[props.location.state.roomId],
         roomId = props.location.state.roomId
     })
 end)(Injected)

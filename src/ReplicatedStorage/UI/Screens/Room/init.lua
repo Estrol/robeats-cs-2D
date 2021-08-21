@@ -1,5 +1,6 @@
 local Roact = require(game.ReplicatedStorage.Packages.Roact)
 local RoactRodux = require(game.ReplicatedStorage.Packages.RoactRodux)
+local Llama = require(game.ReplicatedStorage.Packages.Llama)
 local e = Roact.createElement
 
 local SongDatabase = require(game.ReplicatedStorage.RobeatsGameCore.SongDatabase)
@@ -138,6 +139,7 @@ return RoactRodux.connect(function(state, props)
     return {
         room = state.multiplayer.rooms[props.location.state.roomId],
         roomId = props.location.state.roomId,
+        match = state.multiplayer.matches[props.location.state.roomId],
         isHost = state.multiplayer.rooms[props.location.state.roomId].host and userId == state.multiplayer.rooms[props.location.state.roomId].host.UserId or false
     }
 end)(Injected)

@@ -1,4 +1,5 @@
 local Roact = require(game.ReplicatedStorage.Packages.Roact)
+local Llama = require(game.ReplicatedStorage.Packages.Llama)
 local e = Roact.createElement
 
 local SPUtil = require(game.ReplicatedStorage.Shared.SPUtil)
@@ -20,6 +21,7 @@ local DotGraph = require(game.ReplicatedStorage.UI.Components.Graph.DotGraph)
 local SpreadDisplay = require(script.SpreadDisplay)
 local DataDisplay = require(script.DataDisplay)
 local SongInfoDisplay = require(game.ReplicatedStorage.UI.Screens.SongSelect.SongInfoDisplay)
+local PlayerSelection = require(script.PlayerSelection)
 
 function noop() end
 
@@ -61,12 +63,67 @@ end
 function Results:render()
 	local state = self.props.location.state
 
-	local grade = Grade:get_grade_from_accuracy(state.Accuracy)
-
-	local hits = state.Hits or {}
-	local mean = state.Mean or 0
-
 	local moment = DateTime.fromUnixTimestamp(state.TimePlayed):ToLocalTime()
+
+	local playerSelection
+
+	local match = self.props.location.state.Match
+
+	if match then
+		playerSelection = e(PlayerSelection, {
+			Players = match.players,
+			SelectedPlayer = self.state.selectedScoreUserId,
+			OnPlayerSelected = function(id)
+				self:setState({
+					selectedScoreUserId = id
+				})
+			end
+		})
+	end
+
+	local scoreData
+
+	if self.state.selectedScoreUserId and self.state.selectedScoreUserId ~= (game.Players.LocalPlayer and game.Players.LocalPlayer.UserId or 0) then
+		local playerIndex = Llama.List.findWhere(match.players, function(player)
+			return player.player.UserId == self.state.selectedScoreUserId
+		end)
+
+		local player = match.players[playerIndex]
+
+		scoreData = {
+			score = player.score,
+			rating = player.rating,
+			accuracy = player.accuracy,
+			marvelouses = player.marvelouses,
+			perfects = player.perfects,
+			greats = player.greats,
+			goods = player.goods,
+			bads = player.bads,
+			misses = player.misses,
+			mean = player.mean,
+			maxCombo = player.maxCombo,
+			playerName = player.player.Name
+		}
+	else
+		scoreData = {
+			score = state.Score,
+			rating = state.Rating,
+			accuracy = state.Accuracy,
+			marvelouses = state.Marvelouses,
+			perfects = state.Perfects,
+			greats = state.Greats,
+			goods = state.Goods,
+			bads = state.Bads,
+			misses = state.Misses,
+			mean = state.Mean,
+			maxCombo = state.MaxCombo,
+			playerName = state.PlayerName
+		}
+	end
+
+	scoreData.grade = Grade:get_grade_from_accuracy(scoreData.accuracy)
+
+	scoreData.hits = scoreData.hits or state.Hits or {}
 
     return Roact.createElement("Frame", {
 		BackgroundColor3 = Color3.fromRGB(0,0,0),
@@ -98,7 +155,7 @@ function Results:render()
 			interval = {
 				y = 50;
 			};
-			points = hits;
+			points = scoreData.points;
 			formatPoint = function(hit)
 				return {
 					x = (hit.hit_object_time + hit.time_left) / (SongDatabase:get_song_length_for_key(state.SongKey, state.Rate / 100) + 3300),
@@ -111,34 +168,34 @@ function Results:render()
 			AnchorPoint = Vector2.new(0.5, 0.5),
 			Position = UDim2.fromScale(0.555, 0.609),
 			Size = UDim2.fromScale(0.279, 0.305),
-			Marvelouses = state.Marvelouses,
-			Perfects = state.Perfects,
-			Greats = state.Greats,
-			Goods = state.Goods,
-			Bads = state.Bads,
-			Misses = state.Misses
+			Marvelouses = scoreData.marvelouses,
+			Perfects = scoreData.perfects,
+			Greats = scoreData.greats,
+			Goods = scoreData.goods,
+			Bads = scoreData.bads,
+			Misses = scoreData.misses
 		}),
 		DataDisplay = Roact.createElement(DataDisplay, {
 			data = {
 				{
 					Name = "Score";
-					Value = string.format("%d", state.Score);
+					Value = string.format("%d", scoreData.score);
 				};
 				{
 					Name = "Accuracy";
-					Value = string.format("%0.2f%%", state.Accuracy);
+					Value = string.format("%0.2f%%", scoreData.accuracy);
 				};
 				{
 					Name = "Rating";
-					Value = string.format("%0.2f", state.Rating);
+					Value = string.format("%0.2f", scoreData.rating);
 				};
 				{
 					Name = "Max Combo";
-					Value = state.MaxChain
+					Value = scoreData.maxCombo
 				};
 				{
 					Name = "Mean";
-					Value = string.format("%0d ms", mean);
+					Value = string.format("%0d ms", scoreData.mean);
 				};
 			};
 			Position = UDim2.fromScale(0.696, 0.34);
@@ -152,7 +209,7 @@ function Results:render()
 			Position = UDim2.fromScale(0.2, 0.522),
 			Selectable = true,
 			Size = UDim2.fromScale(0.331, 0.605),
-			Image = self.gradeImages[grade] or "http://www.roblox.com/asset/?id=168702873",
+			Image = self.gradeImages[scoreData.grade] or "http://www.roblox.com/asset/?id=168702873",
 		}, {
 			UIAspectRatioConstraint = Roact.createElement("UIAspectRatioConstraint", {
 				AspectRatio = 1
@@ -163,7 +220,7 @@ function Results:render()
 			AnchorPoint = Vector2.new(0.5, 0.5),
 			Size = UDim2.fromScale(0.728, 0.046),
 			RichText = true,
-			Text = string.format("Played by %s at %d:%02d:%02d %d/%d/%02d", state.PlayerName, moment.Hour, moment.Minute, moment.Second, moment.Month, moment.Day, moment.Year),
+			Text = string.format("Played by %s at %d:%02d:%02d %d/%d/%02d", scoreData.playerName, moment.Hour, moment.Minute, moment.Second, moment.Month, moment.Day, moment.Year),
 			TextXAlignment = Enum.TextXAlignment.Left,
 			TextColor3 = Color3.fromRGB(218, 218, 218),
 			BackgroundTransparency = 1,
@@ -205,7 +262,8 @@ function Results:render()
 			OnClick = function()
 				self.props.history:push("/select")
 			end
-		})
+		}),
+		PlayerSelection = playerSelection
 	})
 end
 
