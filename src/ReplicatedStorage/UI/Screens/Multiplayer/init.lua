@@ -24,6 +24,7 @@ function Multiplayer:render()
             Name = room.name,
             RoomId = id,
             Players = room.players,
+            SongRate = room.songRate,
             SongKey = room.selectedSongKey,
             OnJoinClick = function(roomId)
                 if not room.inProgress then

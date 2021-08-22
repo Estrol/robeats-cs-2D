@@ -22,11 +22,13 @@ PlayerSelection.defaultProps = {
 }
 
 function PlayerSelection:render()
-    local sortedPlayers = Llama.List.sort(self.props.Players, function(a, b)
+    local playersList = Llama.Dictionary.values(self.props.Players)
+
+    table.sort(playersList, function(a, b)
         return a.rating > b.rating
     end)
 
-    local players = Llama.List.map(sortedPlayers, function(player, index)
+    local players = Llama.List.map(playersList, function(player, index)
         return e(Player, {
             UserId = player.player.UserId,
             Place = index,

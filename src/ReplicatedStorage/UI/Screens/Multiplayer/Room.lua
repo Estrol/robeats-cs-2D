@@ -1,4 +1,5 @@
 local Roact = require(game.ReplicatedStorage.Packages.Roact)
+local Llama = require(game.ReplicatedStorage.Packages.Llama)
 local e = Roact.createElement
 
 local SongDatabase = require(game.ReplicatedStorage.RobeatsGameCore.SongDatabase)
@@ -46,10 +47,24 @@ function Room:render()
             Position = UDim2.fromScale(0.015, 0.327),
             Size = UDim2.fromScale(1, 0.35),
             TextXAlignment = Enum.TextXAlignment.Left,
-            Text = string.format("Host: %s, Number of Players: %d", hostName, #self.props.Players)
+            Text = string.format("Host: %s, Number of Players: %d", hostName, Llama.Dictionary.count(self.props.Players))
         }, {
             UITextSizeConstraint = e("UITextSizeConstraint", {
                 MaxTextSize = 22
+            })
+        }),
+        CurrentSongInfo = e(RoundedTextLabel, {
+            BackgroundTransparency = 1,
+            TextScaled = true,
+            Position = UDim2.fromScale(0.015, 0.56),
+            Size = UDim2.fromScale(1, 0.35),
+            TextXAlignment = Enum.TextXAlignment.Left,
+            TextColor3 = Color3.fromRGB(161, 161, 161),
+            Font = Enum.Font.Gotham,
+            Text = string.format("Playing: %s - %s [%0.2fx rate]", SongDatabase:get_title_for_key(self.props.SongKey), SongDatabase:get_artist_for_key(self.props.SongKey), self.props.SongRate / 100)
+        }, {
+            UITextSizeConstraint = e("UITextSizeConstraint", {
+                MaxTextSize = 18
             })
         }),
         SongCover = e("ImageLabel", {

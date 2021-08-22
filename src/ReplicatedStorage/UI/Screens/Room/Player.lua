@@ -1,6 +1,8 @@
 local Roact = require(game.ReplicatedStorage.Packages.Roact)
 local e = Roact.createElement
 
+local withInjection = require(game.ReplicatedStorage.UI.Components.HOCs.withInjection)
+
 local RoundedFrame = require(game.ReplicatedStorage.UI.Components.Base.RoundedFrame)
 local RoundedAutoScrollingFrame = require(game.ReplicatedStorage.UI.Components.Base.RoundedAutoScrollingFrame)
 local RoundedTextLabel = require(game.ReplicatedStorage.UI.Components.Base.RoundedTextLabel)
@@ -55,6 +57,9 @@ function Player:render()
                 UITextSizeConstraint = e("UITextSizeConstraint", {
                     MaxTextSize = 15
                 })
+            }),
+            UIAspectRatioConstraint = e("UIAspectRatioConstraint", {
+                AspectRatio = 1
             })
         })
     })

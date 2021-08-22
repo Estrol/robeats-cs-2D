@@ -10,6 +10,8 @@ local Llama
 
 local StateService
 
+local AssertType
+
 function MultiplayerService:KnitStart()
     game.Players.PlayerRemoving:Connect(function(player)
         local store = StateService.Store
@@ -42,6 +44,7 @@ end
 function MultiplayerService:KnitInit()
     StateService = Knit.GetService("StateService")
     Llama = require(game.ReplicatedStorage.Packages.Llama)
+    AssertType = require(game.ReplicatedStorage.Shared.AssertType)
 end
 
 function MultiplayerService:GetState()
@@ -72,11 +75,15 @@ function MultiplayerService.Client:RemoveRoom(player)
 end
 
 function MultiplayerService.Client:LeaveRoom(player, id)
-    local store = StateService.Store
-    local state = store:getState()
+    AssertType:is_string(id)
 
-    if table.find(state.multiplayer.rooms[id].players, player) then
-        if #state.multiplayer.rooms[id].players == 1 then
+    local store = StateService.Store
+    local state = MultiplayerService:GetState()
+
+    local room = state.multiplayer.rooms[id]
+
+    if room.players[tostring(player.UserId)] then
+        if Llama.Dictionary.count(room.players) == 1 then
             store:dispatch({
                 type = "removeRoom",
                 roomId = id
@@ -88,14 +95,26 @@ function MultiplayerService.Client:LeaveRoom(player, id)
             player = player,
             roomId = id
         })
+
+        local match = state.multiplayer.matches[id]
+
+        if match and match.players[tostring(player.UserId)] then
+            store:dispatch({
+                type = "removeMatchPlayer",
+                roomId = id,
+                player = player
+            })
+        end
     end
 end
 
 function MultiplayerService.Client:StartMatch(player, id)
+    AssertType:is_string(id)
+
     local store = StateService.Store
     local state = MultiplayerService:GetState()
 
-    if state.multiplayer.matches[id] then
+    if state.multiplayer.matches[id] and state.multiplayer.matches[id].ongoing then
         return
     end
 
@@ -108,6 +127,8 @@ function MultiplayerService.Client:StartMatch(player, id)
 end
 
 function MultiplayerService.Client:SetReady(player, id, value)
+    AssertType:is_string(id)
+    
     local store = StateService.Store
 
     store:dispatch({
@@ -116,9 +137,26 @@ function MultiplayerService.Client:SetReady(player, id, value)
         userId = player.UserId,
         value = value
     })
+
+    if not value then
+        local state = MultiplayerService:GetState()
+
+        local readyPlayers = #Llama.Dictionary.filter(state.multiplayer.matches[id].players, function(matchPlayer)
+            return matchPlayer.ready
+        end)
+
+        if readyPlayers == 0 then
+            store:dispatch({
+                type = "endMatch",
+                roomId = id
+            })
+        end
+    end
 end
 
 function MultiplayerService.Client:SetSongKey(player, id, key)
+    AssertType:is_string(id)
+
     local store = StateService.Store
 
     if MultiplayerService:IsHost(player, id) then
@@ -131,6 +169,8 @@ function MultiplayerService.Client:SetSongKey(player, id, key)
 end
 
 function MultiplayerService.Client:SetSongRate(player, id, rate)
+    AssertType:is_string(id)
+
     local store = StateService.Store
 
     if MultiplayerService:IsHost(player, id) then
@@ -143,6 +183,8 @@ function MultiplayerService.Client:SetSongRate(player, id, rate)
 end
 
 function MultiplayerService.Client:JoinRoom(player, id)
+    AssertType:is_string(id)
+
     local store = StateService.Store
     local state = MultiplayerService:GetState()
 
@@ -158,6 +200,8 @@ function MultiplayerService.Client:JoinRoom(player, id)
 end
 
 function MultiplayerService.Client:SetMatchStats(player, id, stats)
+    AssertType:is_string(id)
+
     local store = StateService.Store
 
     local action = {

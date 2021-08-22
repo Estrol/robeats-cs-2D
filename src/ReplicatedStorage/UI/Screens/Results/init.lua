@@ -42,7 +42,11 @@ function Results:init()
 	}
 	
 	self.backOutConnection = SPUtil:bind_to_key(Enum.KeyCode.Return, function()
-		self.props.history:push("/select")
+		if self.props.location.state.goToMultiSelect then
+			self.props.history:push("/multiplayer")
+			return
+		end
+		self.props.history:goBack()
 	end)
 end
 
@@ -84,11 +88,7 @@ function Results:render()
 	local scoreData
 
 	if self.state.selectedScoreUserId and self.state.selectedScoreUserId ~= (game.Players.LocalPlayer and game.Players.LocalPlayer.UserId or 0) then
-		local playerIndex = Llama.List.findWhere(match.players, function(player)
-			return player.player.UserId == self.state.selectedScoreUserId
-		end)
-
-		local player = match.players[playerIndex]
+		local player = match.players[tostring(state.Match.players[tostring(self.state.selectedScoreUserId)].player.UserId)]
 
 		scoreData = {
 			score = player.score,
@@ -102,7 +102,8 @@ function Results:render()
 			misses = player.misses,
 			mean = player.mean,
 			maxCombo = player.maxCombo,
-			playerName = player.player.Name
+			playerName = player.player.Name,
+			hits = player.hits
 		}
 	else
 		scoreData = {
@@ -116,7 +117,7 @@ function Results:render()
 			bads = state.Bads,
 			misses = state.Misses,
 			mean = state.Mean,
-			maxCombo = state.MaxCombo,
+			maxCombo = state.MaxChain,
 			playerName = state.PlayerName
 		}
 	end
@@ -155,7 +156,7 @@ function Results:render()
 			interval = {
 				y = 50;
 			};
-			points = scoreData.points;
+			points = scoreData.hits;
 			formatPoint = function(hit)
 				return {
 					x = (hit.hit_object_time + hit.time_left) / (SongDatabase:get_song_length_for_key(state.SongKey, state.Rate / 100) + 3300),
@@ -260,7 +261,14 @@ function Results:render()
 			TextSize = 16,
 			ZIndex = 5,
 			OnClick = function()
-				self.props.history:push("/select")
+				if match then
+					self.props.history:push("/room", {
+						roomId = state.RoomId,
+						goToMultiSelect = true
+					})
+				else
+					self.props.history:push("/select")
+				end
 			end
 		}),
 		PlayerSelection = playerSelection

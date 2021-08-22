@@ -134,7 +134,7 @@ function Gameplay:init()
         if self.props.match and _send_every:do_flash() then
             self.props.multiplayerService:SetMatchStats(self.props.roomId, {
                 score = self.state.score,
-                rating = Rating:get_rating_from_accuracy(self.props.options.SongKey, self.state.accuracy, self.props.options.SongRate / 100),
+                rating = Rating:get_rating_from_accuracy(self.props.options.SongKey, self.state.accuracy, self.props.match.songRate / 100),
                 accuracy = self.state.accuracy,
                 marvelouses = self.state.marvelouses,
                 perfects = self.state.perfects,
@@ -231,7 +231,7 @@ function Gameplay:onGameplayEnd()
             self.state.accuracy,
             maxChain,
             mean,
-            self.props.options.SongRate,
+            self.props.match.songRate or self.props.options.SongRate,
             self.props.options.Mods)
     end
     
@@ -253,6 +253,8 @@ function Gameplay:onGameplayEnd()
             bads = self.state.bads,
             misses = self.state.misses,
             maxCombo = self.state.maxCombo,
+            mean = mean,
+            hits = hits
         })
         :andThen(function()
             self.props.multiplayerService:SetReadyPromise(self.props.roomId, false)
@@ -271,11 +273,12 @@ function Gameplay:onGameplayEnd()
                             Hits = hits,
                             Mean = mean,
                             Rating = rating,
-                            SongKey = self.props.options.SongKey,
+                            SongKey = self.props.match.selectedSongKey,
                             PlayerName = game.Players.LocalPlayer.Name,
-                            Rate = self.props.options.SongRate,
+                            Rate = self.props.match.songRate,
                             TimePlayed = DateTime.now().UnixTimestamp,
-                            Match = self.props.match
+                            Match = self.props.match,
+                            RoomId = self.props.roomId
                         })
                     end)
                 end)

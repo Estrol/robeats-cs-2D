@@ -43,16 +43,12 @@ function Room:didUpdate()
 end
 
 function Room:render()
-    local players = {}
-
-    local room = self.props.room
-
-    for i, player in ipairs(room.players) do
-        players[i] = e(Player, {
+    local players = Llama.Dictionary.map(self.props.room.players, function(player)
+        return e(Player, {
             Name = player.Name,
             UserId = player.UserId
         })
-    end
+    end)
 
     return e(RoundedFrame, {
     
@@ -68,6 +64,12 @@ function Room:render()
             TextSize = 12,
             OnClick = function()
                 self.props.multiplayerService:LeaveRoom(self.props.roomId)
+                if self.props.location.state.goToMultiSelect then
+                    self.props.history:push("/multiplayer", {
+                        goToHome = true
+                    })
+                    return
+                end
                 self.props.history:goBack()
             end
         }),

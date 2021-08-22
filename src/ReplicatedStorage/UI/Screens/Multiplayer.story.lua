@@ -18,7 +18,15 @@ return function(target)
         
     local store = Rodux.Store.new(combinedReducers)
 
-    store:dispatch({type = "createRoom"})
+    local id = "testRoom"
+
+    local action = {
+        type = "createRoom"
+    }
+
+    action.id = id
+
+    store:dispatch(action)
 
     local storeProvider = Roact.createElement(RoactRodux.StoreProvider, {
         store = store

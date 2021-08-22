@@ -35,7 +35,7 @@ function StateController:KnitStart()
     StateService.ActionDispatched:Connect(function(action)
         self.Store:dispatch(action)
 
-        -- print(self.Store:getState().multiplayer, StateService:GetState().multiplayer)
+        -- print(action, self.Store:getState().multiplayer)
     end)
 
     self.Store:dispatch({ type = "setState", state = StateService:GetState() })

@@ -21,7 +21,7 @@ MultiplayerLeaderboard.defaultProps = {
 }
 
 function MultiplayerLeaderboard:render()
-    local scores = Llama.Dictionary.copy(self.props.Scores)
+    local scores = Llama.Dictionary.values(self.props.Scores)
 
     table.sort(scores, function(a, b)
         return a.rating > b.rating

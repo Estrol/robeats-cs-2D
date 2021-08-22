@@ -41,7 +41,7 @@ local function createRoom(player, name, image, password)
     return {
         name = player and (name or string.format("%s's room", player.Name)),
         image = image or "rbxassetid://6800827231",
-        players = { player }, -- Add the player that created the room to the list of players
+        players = { [tostring(player and player.UserId or "0")] = player }, -- Add the player that created the room to the list of players
         password = password,
         host = player,
         selectedSongKey = 1,
@@ -64,7 +64,7 @@ return createReducer(defaultState, {
         })
     end,
     addPlayer = function(state, action)
-        local players = push(state.rooms[action.roomId].players, action.player)
+        local players = set(state.rooms[action.roomId].players, tostring(action.player.UserId), action.player)
 
         return join(state, {
             rooms = join(state.rooms, {
@@ -75,21 +75,32 @@ return createReducer(defaultState, {
         })
     end,
     removePlayer = function(state, action)
-        local playerIndex = findWhere(state.matches[action.roomId].players, function(player)
-            return player.player.UserId == action.player.UserId
-        end)
+        local roomPlayers = removeKey(state.rooms[action.roomId].players, tostring(action.player.UserId))
 
-        local roomPlayers = removeValue(state.rooms[action.roomId].players, action.player)
-        local matchPlayers = removeIndex(state.matches[action.roomId].players, playerIndex)
+        local room = state.rooms[action.roomId]
+        local host
+
+        if room.host == action.player then
+            local players = Llama.Dictionary.values(room.players)
+
+            host = players[math.random(1, #players)]
+        end
+
+        return join(state, {
+            rooms = join(state.rooms, {
+                [action.roomId] = join(state.rooms[action.roomId], {
+                    players = roomPlayers,
+                    host = host
+                })
+            })
+        })
+    end,
+    removeMatchPlayer = function(state, action)
+        local roomPlayers = removeKey(state.matches[action.roomId].players, tostring(action.player.UserId))
 
         return join(state, {
             matches = join(state.matches, {
                 [action.roomId] = join(state.matches[action.roomId], {
-                    players = matchPlayers
-                })
-            }),
-            rooms = join(state.rooms, {
-                [action.roomId] = join(state.rooms[action.roomId], {
                     players = roomPlayers
                 })
             })
@@ -141,12 +152,9 @@ return createReducer(defaultState, {
     end,
     setReady = function(state, action)
         local mutableState = copyDeep(state)
-        local playerIndex = findWhere(state.matches[action.roomId].players, function(player)
-            return player.player.UserId == action.userId
-        end)
 
         local match = mutableState.matches[action.roomId]
-        match.players[playerIndex].ready = action.value
+        match.players[tostring(action.userId)].ready = action.value
 
         local room = mutableState.rooms[action.roomId]
 
@@ -160,11 +168,10 @@ return createReducer(defaultState, {
     end,
     setMatchStats = function(state, action)
         local mutableState = copyDeep(state)
-        local playerIndex = findWhere(state.matches[action.roomId].players, function(player)
-            return player.player.UserId == action.userId
-        end)
 
-        mutableState.matches[action.roomId].players[playerIndex] = join(mutableState.matches[action.roomId].players[playerIndex], {
+        local userId = tostring(action.userId)
+
+        mutableState.matches[action.roomId].players[userId] = join(mutableState.matches[action.roomId].players[userId], {
             score = action.score,
             accuracy = action.accuracy,
             rating = action.rating,
@@ -175,7 +182,8 @@ return createReducer(defaultState, {
             bads = action.bads,
             misses = action.misses,
             mean = action.mean,
-            maxCombo = action.maxCombo
+            maxCombo = action.maxCombo,
+            hits = action.hits
         })
 
         return mutableState
