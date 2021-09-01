@@ -36,8 +36,12 @@ function SongSelect:init()
 
     self.maid = Maid.new()
 
+    if self.props.options.SongRate > 200 then
+        self.props.setSongRate(200)
+    end
+
     self.uprate = function()
-        if self.props.options.SongRate < 500 then
+        if self.props.options.SongRate < 200 then
             self.props.setSongRate(self.props.options.SongRate + 5)
         end
     end
