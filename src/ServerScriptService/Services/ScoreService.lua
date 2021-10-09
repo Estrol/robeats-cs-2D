@@ -250,12 +250,13 @@ function ScoreService.Client:GetGraph(player, userId, songMD5Hash)
     return {}
 end
 
-function ScoreService.Client:GetScores(player, songMD5Hash, limit)
+function ScoreService.Client:GetScores(player, songMD5Hash, limit, songRate)
     if RateLimitService:CanProcessRequestWithRateLimit(player, "GetScores", 2) then
         local succeeded, documents = Scores
             :query()
             :where({
                 SongMD5Hash = songMD5Hash,
+                Rate = songRate,
                 Allowed = true
             })
             :limit(limit)

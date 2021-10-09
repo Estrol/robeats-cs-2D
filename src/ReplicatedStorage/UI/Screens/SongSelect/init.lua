@@ -16,6 +16,7 @@ local Maid = require(game.ReplicatedStorage.Knit.Util.Maid)
 
 local withInjection = require(game.ReplicatedStorage.UI.Components.HOCs.withInjection)
 
+local RoundedTextButton = require(game.ReplicatedStorage.UI.Components.Base.RoundedTextButton)
 local RoundedFrame = require(game.ReplicatedStorage.UI.Components.Base.RoundedFrame)
 local ButtonLayout = require(game.ReplicatedStorage.UI.Components.Base.ButtonLayout)
 
@@ -31,7 +32,8 @@ function SongSelect:init()
     self.previewController = self.props.previewController
 
     self:setState({
-        modSelectionVisible = false
+        modSelectionVisible = false,
+        filterByRate = false
     })
 
     self.maid = Maid.new()
@@ -82,9 +84,10 @@ function SongSelect:render()
             SelectedSongKey = self.props.options.SongKey
         }),
         Leaderboard = e(Leaderboard, {
-            Size = UDim2.fromScale(0.325, 0.7),
-            Position = UDim2.fromScale(0.02, 0.22),
+            Size = UDim2.fromScale(0.325, 0.665),
+            Position = UDim2.fromScale(0.02, 0.255),
             SongKey = self.props.options.SongKey,
+            SongRate = self.state.filterByRate and self.props.options.SongRate or nil,
             IsAdmin = self.props.permissions.isAdmin,
             OnLeaderboardSlotClicked = function(stats)
                 local _, hits = self.scoreService:GetGraphPromise(stats.UserId, stats.SongMD5Hash)
@@ -159,6 +162,25 @@ function SongSelect:render()
                     modSelectionVisible = false
                 })
             end
+        }),
+        ShowOnlyCurrentRate = Roact.createElement(RoundedTextButton, {
+            BackgroundColor3 = self.state.filterByRate and Color3.fromRGB(41, 176, 194) or Color3.fromRGB(41, 41, 41),
+            Position = UDim2.fromScale(0.02, 0.25),
+            Size = UDim2.fromScale(0.14, 0.035),
+            HoldSize = UDim2.fromScale(0.14, 0.035),
+            AnchorPoint = Vector2.new(0, 1),
+            TextScaled = true,
+            TextColor3 = Color3.fromRGB(255, 255, 255),
+            Text = "Show Only Current Rate",
+            OnClick = function()
+                self:setState({
+                    filterByRate = not self.state.filterByRate
+                })
+            end
+        }, {
+            UITextSizeConstraint = e("UITextSizeConstraint", {
+                MaxTextSize = 13
+            })
         })
     })
 end

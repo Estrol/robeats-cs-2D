@@ -41,7 +41,7 @@ function Leaderboard:performFetch()
         loading = true
     })
 
-    self.scoreService:GetScoresPromise(songMD5Hash, self.props.ScoreLimit):andThen(function(scores)
+    self.scoreService:GetScoresPromise(songMD5Hash, self.props.ScoreLimit, self.props.SongRate):andThen(function(scores)
         self:setState({
             scores = scores,
             loading = false
@@ -54,7 +54,15 @@ function Leaderboard:didMount()
 end
 
 function Leaderboard:didUpdate(lastProps)
-    if lastProps.SongKey ~= self.props.SongKey then
+    if lastProps.SongRate ~= self.props.SongRate then
+        local oldRate = self.props.SongRate
+
+        task.delay(0.5, function()
+            if self.props.SongRate == oldRate then
+                self:performFetch()
+            end
+        end)
+    elseif lastProps.SongKey ~= self.props.SongKey then
         self:performFetch()
     end
 end
