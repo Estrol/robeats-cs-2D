@@ -21,9 +21,10 @@ local defaultState = {
 
         --interface settings
         PlayfieldWidth = 45;
+        PlayfieldHitPos = 10;
         Use2DLane = false;
         Skin2D = Skins:key_list():get(1);
-        Lane2DScrollDirection = "Downscroll";
+        Upscroll = false;
         ComboPosition = "Middle";
         NoteColorAffects2D = false;
         InGameLeaderboardPosition = "Left";

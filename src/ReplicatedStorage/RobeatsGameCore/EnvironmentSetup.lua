@@ -42,8 +42,10 @@ function EnvironmentSetup:setup_2d_environment(skin, config)
 	local _gameplay_frame = skin:FindFirstChild("GameplayFrame"):Clone()
 	_gameplay_frame.Position = UDim2.fromScale(0.5, 1)
 	_gameplay_frame.Size = UDim2.fromScale(config.PlayfieldWidth / 100, 1.1)
+	_gameplay_frame.ZIndex = 0;
 
-	local hit_pos = 10
+	local hit_pos = config.PlayfieldHitPos
+	local upscroll = config.Upscroll
 
 	local tracks = _gameplay_frame.Tracks
 	local _trigger_buttons = _gameplay_frame.TriggerButtons
@@ -56,6 +58,11 @@ function EnvironmentSetup:setup_2d_environment(skin, config)
 	_trigger_buttons.Size = UDim2.new(1, 0, hit_pos/100, 0)
 	tracks.Size = UDim2.new(1, 0, 1-hit_pos/100, 0)
 
+	if upscroll then
+		_gameplay_frame.Rotation = 180
+		_gameplay_frame.Position = _gameplay_frame.Position + UDim2.new(0, 0, 0.05, 0)
+	end
+
 	_gameplay_frame.Parent = self:get_player_gui_root()
 end
 
@@ -63,6 +70,7 @@ function EnvironmentSetup:teardown_2d_environment()
 	local _gameplay_frame = EnvironmentSetup:get_player_gui_root():FindFirstChild("GameplayFrame")
 	if _gameplay_frame == nil then
 		DebugOut:warnf("[EnvironmentSetup] this shouldn't happen if 2D setting enabled... but if from 3D why you called it???")
+		return
 	end
 
 	_gameplay_frame.ResultPopups:ClearAllChildren()

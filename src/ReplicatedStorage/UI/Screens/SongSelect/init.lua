@@ -33,7 +33,8 @@ function SongSelect:init()
 
     self:setState({
         modSelectionVisible = false,
-        filterByRate = false
+        filterByRate = false,
+        songListRobloxInstance = nil -- Used for scrolling frame manipulation
     })
 
     self.maid = Maid.new()
@@ -79,7 +80,11 @@ function SongSelect:render()
             AnchorPoint = Vector2.new(1, 1),
             Position = UDim2.fromScale(0.995, 0.985),
             OnSongSelected = function(key)
-                self.props.setSongKey(key)
+                if self.props.options.SongKey == key then
+                    self.props.history:push("/play")
+                else
+                    self.props.setSongKey(key)
+                end
             end,
             SelectedSongKey = self.props.options.SongKey
         }),
@@ -189,6 +194,12 @@ function SongSelect:didMount()
     self.previewController:PlayId(SongDatabase:get_data_for_key(self.props.options.SongKey).AudioAssetId, function(audio)
         audio.TimePosition = audio.TimeLength * 0.33
     end, 0.5, true)
+
+    print(self.props);
+
+    --self.state.SongList.SongList:setState({
+    --    CanvasPosition = Vector2.new(0, 0);
+    --})
 end
 
 function SongSelect:didUpdate(oldProps)

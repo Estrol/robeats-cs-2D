@@ -63,7 +63,7 @@ function Gameplay:init()
     self.hitDevianceRef = Roact.createRef()
 
     if not self.props.options.Use2DLane then
-        local stagePlat = EnvironmentSetup:get_robeats_game_stage()
+        local stagePlat = EnvironmentSetup:get_element_protos_folder().NoteTrackSystemProto.TrackBG.Union
         stagePlat.Transparency = self.props.options.BaseTransparency
     end
     
@@ -76,20 +76,27 @@ function Gameplay:init()
     game.StarterGui:SetCoreGuiEnabled("PlayerList", not self.props.options.HidePlayerList)
     game.StarterGui:SetCoreGuiEnabled("Chat", not self.props.options.HideChat)
 
+    -- 2D Properties
+    local use_upscroll = self.props.options.Upscroll
+    local lane_2d = self.props.options.Use2DLane
+
     -- Create the game instance
 
     local _game = RobeatsGame:new(EnvironmentSetup:get_game_environment_center_position())
     _game._input:set_keybinds({
-        self.props.options.Keybind1,
-        self.props.options.Keybind2,
-        self.props.options.Keybind3,
-        self.props.options.Keybind4,
+        (lane_2d and use_upscroll) and self.props.options.Keybind4 or self.props.options.Keybind1,
+        (lane_2d and use_upscroll) and self.props.options.Keybind3 or self.props.options.Keybind2,
+        (lane_2d and use_upscroll) and self.props.options.Keybind2 or self.props.options.Keybind3,
+        (lane_2d and use_upscroll) and self.props.options.Keybind1 or self.props.options.Keybind4
     })
     _game:set_hit_lighting(self.props.options.HitLighting)
     _game:set_ln_tails(self.props.options.HideLNTails)
     _game:set_judgement_visibility(self.props.options.JudgementVisibility)
     _game:set_note_color(self.props.options.NoteColor)
-    _game:set_2d_mode(self.props.options.Use2DLane)
+    _game:set_2d_mode(lane_2d)
+    if lane_2d then
+        _game:set_upscroll_mode(self.props.options.Upscroll);
+    end
     
     -- Load the map
 
@@ -115,9 +122,6 @@ function Gameplay:init()
 
         if _game:get_mode() == RobeatsGame.Mode.GameEnded then
             self.everyFrameConnection:Disconnect()
-            if lane_2D then
-                EnvironmentSetup:reset_2d_environment()
-            end
 
             local marvelouses, perfects, greats, goods, bads, misses, maxChain = _game._score_manager:get_end_records()
             local hits = _game._score_manager:get_hits()
@@ -197,11 +201,6 @@ function Gameplay:init()
             bar.Parent = self.hitDevianceRef:getValue()
 
             withHitDeviancePoint(bar)
-        end
-
-        if lane_2D then
-            local combo_frame = EnvironmentSetup:get_player_gui_root().GameplayFrame.Combo
-            combo_frame.Text = _game._score_manager:get_chain()
         end
 
         self:setState({

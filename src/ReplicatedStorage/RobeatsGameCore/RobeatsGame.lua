@@ -37,6 +37,7 @@ function RobeatsGame:new(_game_environment_center_position)
 	}
 
 	local _skin
+	local _2d_hit_pos
 	local _get_2d_mode = false
 	local _is_upscroll = false
 	local _show_hit_lighting = false
@@ -85,6 +86,11 @@ function RobeatsGame:new(_game_environment_center_position)
 
 	function self:get_2d_mode() return _get_2d_mode end
 	function self:set_2d_mode(val) _get_2d_mode = val end
+
+	function self:get_2d_hit_position() return _2d_hit_pos end
+	function self:set_2d_hit_position(val)
+		_2d_hit_pos = val;
+	end
 
 	function self:is_upscroll() return _is_upscroll end
 	function self:set_upscroll_mode(val) _is_upscroll = val end
