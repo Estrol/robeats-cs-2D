@@ -40,7 +40,7 @@ function SongSelect:init()
     self.maid = Maid.new()
 
     self.uprate = function()
-        if self.props.options.SongRate < 500 then
+        if self.props.options.SongRate < 200 then
             self.props.setSongRate(self.props.options.SongRate + 5)
         end
     end
@@ -194,12 +194,6 @@ function SongSelect:didMount()
     self.previewController:PlayId(SongDatabase:get_data_for_key(self.props.options.SongKey).AudioAssetId, function(audio)
         audio.TimePosition = audio.TimeLength * 0.33
     end, 0.5, true)
-
-    print(self.props);
-
-    --self.state.SongList.SongList:setState({
-    --    CanvasPosition = Vector2.new(0, 0);
-    --})
 end
 
 function SongSelect:didUpdate(oldProps)

@@ -84,7 +84,9 @@ function Options:getSettingElements()
             FormatValue = function(value)
                 return string.format("%d ms", value)
             end,
-            LayoutOrder = 4
+            LayoutOrder = 4,
+            MinValue = -300,
+            MaxValue = 300
         })
         --Keybinds
 
@@ -205,13 +207,22 @@ function Options:getSettingElements()
             LayoutOrder = 1
         });
 
+        elements.TransparentHeldNote = e(BoolValue, {
+            Value = self.props.options.TransparentHeldNote,
+            OnChanged = function(value)
+                self.props.setOption("TransparentHeldNote", value)
+            end,
+            Name = "Held Note Transparent",
+            LayoutOrder = 3
+        })
+
         elements.HitLighting = e(BoolValue, {
             Value = self.props.options.HitLighting,
             OnChanged = function(value)
                 self.props.setOption("HitLighting", value)
             end,
             Name = "Hit Lighting",
-            LayoutOrder = 3
+            LayoutOrder = 4
         });
 
         elements.HidePlayerList = e(BoolValue, {
@@ -220,7 +231,7 @@ function Options:getSettingElements()
                 self.props.setOption("HidePlayerList", not value)
             end,
             Name = "Playerlist Visible",
-            LayoutOrder = 4
+            LayoutOrder = 5
         });
 
         elements.HideChat = e(BoolValue, {
@@ -229,7 +240,7 @@ function Options:getSettingElements()
                 self.props.setOption("HideChat", not value)
             end,
             Name = "Chat Visible",
-            LayoutOrder = 5
+            LayoutOrder = 6
         });
 
         elements.HideLNTails = e(BoolValue, {
@@ -238,7 +249,7 @@ function Options:getSettingElements()
                 self.props.setOption("HideLNTails", value)
             end,
             Name = "Hide LN Tails",
-            LayoutOrder = 6
+            LayoutOrder = 7
         })
 
         elements.HideLeaderboard = e(BoolValue, {
@@ -247,7 +258,7 @@ function Options:getSettingElements()
                 self.props.setOption("HideLeaderboard", value)
             end,
             Name = "Hide In-Game Leaderboard",
-            LayoutOrder = 7
+            LayoutOrder = 8
         })
     end)
     -- 2D related

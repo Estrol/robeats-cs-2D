@@ -126,6 +126,12 @@ function HeldNote2D:new(
 			if _game._audio_manager:get_current_time_ms() > _hit_time_ms then
 				if _state ~= HeldNote2D.State.HoldMissedActive then
 					head_pos = 1
+
+					if tail_pos > 1 then
+						if _state ~= HeldNote2D.State.Passed then
+							tail_pos = 1
+						end
+					end
 				end
 			end
 		end
@@ -139,17 +145,21 @@ function HeldNote2D:new(
 			_head.Visible = true
 		end
 		
-		if _state == HeldNote2D.State.Passed and _did_trigger_tail then
-			_tail.Visible = false
-			_head.Visible = false
-		else
-			if tail_visible() then
-				_tail.Visible = true
-			else
+		if _game:get_ln_tails() == false then
+			if _state == HeldNote2D.State.Passed and _did_trigger_tail then
 				_tail.Visible = false
+				_head.Visible = false
+			else
+				if tail_visible() then
+					_tail.Visible = true
+				else
+					_tail.Visible = false
+				end
 			end
+		else
+			_tail.Visible = false
 		end
-		
+
 		do
 			local _body_pos = (tail_to_head * 0.5) + tail_pos
 			_body.Position = UDim2.new(0.5, 0, _body_pos, 0)
@@ -158,6 +168,7 @@ function HeldNote2D:new(
 		
 		local target_transparency = 0
 		local imm = false
+
 		if _state == HeldNote2D.State.HoldMissedActive then
 			target_transparency = 0.9
 			if _did_trigger_head then
@@ -167,7 +178,6 @@ function HeldNote2D:new(
 		elseif _state == HeldNote2D.State.Passed and _did_trigger_tail then
 			target_transparency = 1
 			imm = true
-
 		else
 			target_transparency = 0
 		end

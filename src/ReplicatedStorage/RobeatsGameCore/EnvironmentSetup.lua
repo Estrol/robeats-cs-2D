@@ -38,6 +38,10 @@ function EnvironmentSetup:initial_setup()
 	_player_gui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 end
 
+function EnvironmentSetup:set_gui_inset(val)
+	_player_gui.IgnoreGuiInset = val
+end
+
 function EnvironmentSetup:setup_2d_environment(skin, config)
 	local _gameplay_frame = skin:FindFirstChild("GameplayFrame"):Clone()
 	_gameplay_frame.Position = UDim2.fromScale(0.5, 1)

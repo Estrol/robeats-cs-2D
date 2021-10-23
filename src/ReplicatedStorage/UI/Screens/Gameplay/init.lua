@@ -93,6 +93,7 @@ function Gameplay:init()
     _game:set_ln_tails(self.props.options.HideLNTails)
     _game:set_judgement_visibility(self.props.options.JudgementVisibility)
     _game:set_note_color(self.props.options.NoteColor)
+    _game:set_ln_transparent(self.props.options.TransparentHeldNote)
     _game:set_2d_mode(lane_2d)
     if lane_2d then
         _game:set_upscroll_mode(self.props.options.Upscroll);
@@ -223,6 +224,8 @@ end
 
 function Gameplay:render()
     if not self.state.loaded then
+        EnvironmentSetup:set_gui_inset(true);
+
         return Roact.createFragment({
             LoadingWheel = e(LoadingWheel, {
                 AnchorPoint = Vector2.new(0, 0.5),
@@ -258,11 +261,23 @@ function Gameplay:render()
     local MA = (self.state.perfects) == 0 and 0 or self.state.marvelouses / self.state.perfects
 
     local laneCoverY
+    local laneCoverPosY
+    local laneCoverRotation
 
     if self.props.options.LaneCover > 0 then
         laneCoverY = SPUtil:lerp(0.32, 0.8, self.props.options.LaneCover / 100)
+
+        if self.props.options.Use2DLane and self.props.options.Upscroll then
+            laneCoverPosY = 0.6
+            laneCoverRotation = 180
+        else
+            laneCoverPosY = 0
+            laneCoverRotation = 0
+        end
     else
         laneCoverY = 0
+        laneCoverPosY = 0
+        laneCoverRotation = 0
     end
 
     local leaderboard
@@ -271,7 +286,7 @@ function Gameplay:render()
         leaderboard = e(Leaderboard, {
             SongKey = self.props.options.SongKey,
             LocalRating = Rating:get_rating_from_accuracy(self.props.options.SongKey, self.state.accuracy, self.props.options.SongRate / 100),
-            LocalAccuracy = self.state.accuracy, 
+            LocalAccuracy = self.state.accuracy,
             Position = LeaderboardPositions[self.props.options.InGameLeaderboardPosition]
         })
     end
@@ -339,7 +354,7 @@ function Gameplay:render()
             TextColor3 = Color3.fromRGB(255, 255, 255),
             BackgroundColor3 = Color3.fromRGB(230, 19, 19),
             HighlightBackgroundColor3 = Color3.fromRGB(187, 53, 53),
-            Position = UDim2.fromScale(0.02, 0.02),
+            Position = UDim2.fromScale(0.02, 0.09),
             Text = "Back (No save)",
             TextSize = 11,
             OnClick = function()
@@ -379,7 +394,9 @@ function Gameplay:render()
         }),
         LaneCover = e(RoundedFrame, {
             Size = UDim2.fromScale(1, laneCoverY),
+            Position = UDim2.fromScale(0, laneCoverPosY),
             ZIndex = 0,
+            Rotation = laneCoverRotation or 0,
             BackgroundColor3 = Color3.fromRGB(0, 0, 0)
         }, {
             UIGradient = e("UIGradient", {
@@ -396,8 +413,9 @@ function Gameplay:render()
 end
 
 function Gameplay:willUnmount()
+    EnvironmentSetup:set_gui_inset(false);
     self._game:teardown()
-    self.everyFrameConnection:Disconnect() 
+    self.everyFrameConnection:Disconnect()
 end
 
 return RoactRodux.connect(function(state, props)
