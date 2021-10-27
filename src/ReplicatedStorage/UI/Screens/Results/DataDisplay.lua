@@ -11,7 +11,7 @@ function DataDisplay:init()
 end
 
 function DataDisplay:didMount()
-    delay(0.5, function()
+    task.delay(0.5, function()
         self.motor:setGoal(Flipper.Spring.new(1, {
             frequency = 17;
             dampingRatio = 5;
