@@ -2227,7 +2227,7 @@
 						<R02>0</R02>
 						<R10>1</R10>
 						<R11>0</R11>
-						<R12>0</R12>
+						<R12>-0</R12>
 						<R20>0</R20>
 						<R21>0</R21>
 						<R22>1</R22>
@@ -2320,7 +2320,7 @@
 						<R02>0</R02>
 						<R10>1</R10>
 						<R11>0</R11>
-						<R12>0</R12>
+						<R12>-0</R12>
 						<R20>0</R20>
 						<R21>0</R21>
 						<R22>1</R22>
@@ -2413,7 +2413,7 @@
 						<R02>0</R02>
 						<R10>1</R10>
 						<R11>0</R11>
-						<R12>0</R12>
+						<R12>-0</R12>
 						<R20>0</R20>
 						<R21>0</R21>
 						<R22>1</R22>
@@ -2470,7 +2470,7 @@
 					<float name="TopParamB">0.5</float>
 					<token name="TopSurface">0</token>
 					<token name="TopSurfaceInput">0</token>
-					<float name="Transparency">1</float>
+					<float name="Transparency">0</float>
 					<Vector3 name="Velocity">
 						<X>0</X>
 						<Y>0</Y>
@@ -2725,13 +2725,13 @@
 						<Z>0</Z>
 						<R00>1</R00>
 						<R01>0</R01>
-						<R02>0.707106829</R02>
+						<R02>0</R02>
 						<R10>0</R10>
-						<R11>1.00000012</R11>
+						<R11>1</R11>
 						<R12>0</R12>
-						<R20>-0.707106829</R20>
+						<R20>0</R20>
 						<R21>0</R21>
-						<R22>-0.707106829</R22>
+						<R22>1</R22>
 					</CoordinateFrame>
 					<float name="Reflectance">0</float>
 					<float name="RightParamA">-0.5</float>
@@ -2783,13 +2783,8 @@
 						<R21>0</R21>
 						<R22>1</R22>
 					</CoordinateFrame>
-					<float name="Reflectance">0</float>
-					<float name="RightParamA">-0.5</float>
-					<float name="RightParamB">0.5</float>
-					<token name="RightSurface">0</token>
-					<token name="RightSurfaceInput">0</token>
-					<int name="RootPriority">0</int>
-					<Vector3 name="RotVelocity">
+					<SharedString name="ModelMeshData">yuZpQdnvvUBOTYh1jqZ2cA==</SharedString>
+					<Vector3 name="ModelMeshSize">
 						<X>0</X>
 						<Y>0</Y>
 						<Z>0</Z>
@@ -3486,13 +3481,13 @@
 							<Z>-2.65901375</Z>
 							<R00>0.683592319</R00>
 							<R01>0</R01>
-							<R02>-0.68359226</R02>
+							<R02>-0.729864061</R02>
 							<R10>0</R10>
 							<R11>1</R11>
 							<R12>0</R12>
-							<R20>0.68359226</R20>
+							<R20>0.729864061</R20>
 							<R21>0</R21>
-							<R22>0.72986412</R22>
+							<R22>0.683592319</R22>
 						</CoordinateFrame>
 						<bool name="CanCollide">false</bool>
 						<bool name="CanQuery">true</bool>
