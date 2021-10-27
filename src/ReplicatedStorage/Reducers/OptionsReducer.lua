@@ -21,9 +21,10 @@ local defaultState = {
 
         --interface settings
         PlayfieldWidth = 45;
+        PlayfieldHitPos = 10;
         Use2DLane = false;
         Skin2D = Skins:key_list():get(1);
-        Lane2DScrollDirection = "Downscroll";
+        Upscroll = false;
         ComboPosition = "Middle";
         NoteColorAffects2D = false;
         InGameLeaderboardPosition = "Left";
@@ -32,19 +33,19 @@ local defaultState = {
         --Extra settings.
         TimeOfDay = 24;
         BaseTransparency = 0;
+        TransparentHeldNote = false;
         HitLighting = false;
         HideLNTails = false;
         HidePlayerList = false;
         HideChat = false;
         HideLeaderboard = false;
 
-        
         --Change this to swap the timing preset
         TimingPreset = "Standard",
 
         --Change this to toggle the visibility of certain judgements
         JudgementVisibility = { true, true, true, true, true, true },
-        
+
         --You probably won't need to modify these
         NoteRemoveTimeMS = -200;
         PostFinishWaitTimeMS = 300;

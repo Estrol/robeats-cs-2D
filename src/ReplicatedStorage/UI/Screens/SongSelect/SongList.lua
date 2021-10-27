@@ -25,7 +25,7 @@ function SongList:init()
     self:setState({
         search = "";
         found = SongDatabase:filter_keys();
-        sortByDifficulty = false
+        sortByDifficulty = false;
     })
 
     self.OnSearchChanged = function(o)
@@ -38,7 +38,7 @@ end
 
 function SongList:didUpdate(_, prevState)
     if (self.state.search ~= prevState.search) or (self.state.sortByDifficulty ~= prevState.sortByDifficulty) then
-        Promise.new(function(resolve)    
+        Promise.new(function(resolve)
             if self.state.sortByDifficulty then
                 local found = SongDatabase:filter_keys(self.state.search)
 

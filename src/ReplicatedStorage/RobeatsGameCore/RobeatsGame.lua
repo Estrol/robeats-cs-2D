@@ -37,8 +37,10 @@ function RobeatsGame:new(_game_environment_center_position)
 	}
 
 	local _skin
+	local _2d_hit_pos
 	local _get_2d_mode = false
 	local _is_upscroll = false
+	local _ln_transparent = false
 	local _show_hit_lighting = false
 	local _hide_ln_tails = false
 	local _judgement_visibility = {
@@ -86,9 +88,17 @@ function RobeatsGame:new(_game_environment_center_position)
 	function self:get_2d_mode() return _get_2d_mode end
 	function self:set_2d_mode(val) _get_2d_mode = val end
 
+	function self:get_2d_hit_position() return _2d_hit_pos end
+	function self:set_2d_hit_position(val)
+		_2d_hit_pos = val;
+	end
+
 	function self:is_upscroll() return _is_upscroll end
 	function self:set_upscroll_mode(val) _is_upscroll = val end
 	--[[ END of 2D Implementations ]]
+
+	function self:set_ln_transparent(val) _ln_transparent = val end
+	function self:get_ln_transparent() return _ln_transparent end
 
 	function self:set_hit_lighting(val) _show_hit_lighting = val end
 	function self:get_hit_lighting() return _show_hit_lighting end

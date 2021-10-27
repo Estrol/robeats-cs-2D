@@ -63,7 +63,8 @@ function MainMenuUI:render()
         Size = UDim2.new(1, 0, 1, 0),
         Position = UDim2.fromScale(0.5,0.5),
         AnchorPoint = Vector2.new(0.5,0.5),
-        Image = "http://www.roblox.com/asset/?id=6800827231"
+        Image = "rbxassetid://6859763885",
+        ImageColor3 = Color3.fromRGB(100,100,100)
     }, {
         Logo = e(RoundedImageLabel, {
             Image = "rbxassetid://6224561143";
@@ -122,8 +123,8 @@ function MainMenuUI:render()
                 end
             }, {
                 UITextSizeConstraint = e("UITextSizeConstraint", {
-                    MinTextSize = 8;
-                    MaxTextSize = 13;
+                    MinTextSize = 10;
+                    MaxTextSize = 15;
                 })
             });
             ScoresButton = e(RoundedTextButton, {
@@ -142,8 +143,8 @@ function MainMenuUI:render()
                 end
             }, {
                 UITextSizeConstraint = e("UITextSizeConstraint", {
-                    MinTextSize = 8;
-                    MaxTextSize = 13;
+                    MinTextSize = 10;
+                    MaxTextSize = 15;
                 })
             });
 
@@ -163,8 +164,8 @@ function MainMenuUI:render()
                 end
             }, {
                 UITextSizeConstraint = e("UITextSizeConstraint", {
-                    MinTextSize = 8;
-                    MaxTextSize = 13;
+                    MinTextSize = 10;
+                    MaxTextSize = 15;
                 })
             });
             GlobalLeaderboardButton = e(RoundedTextButton, {
@@ -183,8 +184,8 @@ function MainMenuUI:render()
                 end
             }, {
                 UITextSizeConstraint = e("UITextSizeConstraint", {
-                    MinTextSize = 8;
-                    MaxTextSize = 13;
+                    MinTextSize = 10;
+                    MaxTextSize = 15;
                 })
             });
         });
