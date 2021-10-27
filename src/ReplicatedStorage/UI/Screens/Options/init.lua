@@ -85,7 +85,9 @@ function Options:getSettingElements()
             FormatValue = function(value)
                 return string.format("%d ms", value)
             end,
-            LayoutOrder = 4
+            LayoutOrder = 4,
+            MinValue = -300,
+            MaxValue = 300
         })
         --Keybinds
 
@@ -189,7 +191,7 @@ function Options:getSettingElements()
             MaxValue = 1,
             MinValue = 0,
             LayoutOrder = 2
-         });
+        });
 
 
         elements.TimeOfDay = e(IntValue, {
@@ -206,13 +208,22 @@ function Options:getSettingElements()
             LayoutOrder = 1
         });
 
+        elements.TransparentHeldNote = e(BoolValue, {
+            Value = self.props.options.TransparentHeldNote,
+            OnChanged = function(value)
+                self.props.setOption("TransparentHeldNote", value)
+            end,
+            Name = "Held Note Transparent",
+            LayoutOrder = 3
+        })
+
         elements.HitLighting = e(BoolValue, {
             Value = self.props.options.HitLighting,
             OnChanged = function(value)
                 self.props.setOption("HitLighting", value)
             end,
             Name = "Hit Lighting",
-            LayoutOrder = 3
+            LayoutOrder = 4
         });
 
         elements.HidePlayerList = e(BoolValue, {
@@ -221,7 +232,7 @@ function Options:getSettingElements()
                 self.props.setOption("HidePlayerList", not value)
             end,
             Name = "Playerlist Visible",
-            LayoutOrder = 4
+            LayoutOrder = 5
         });
 
         elements.HideChat = e(BoolValue, {
@@ -230,7 +241,7 @@ function Options:getSettingElements()
                 self.props.setOption("HideChat", not value)
             end,
             Name = "Chat Visible",
-            LayoutOrder = 5
+            LayoutOrder = 6
         });
 
         elements.HideLNTails = e(BoolValue, {
@@ -239,7 +250,7 @@ function Options:getSettingElements()
                 self.props.setOption("HideLNTails", value)
             end,
             Name = "Hide LN Tails",
-            LayoutOrder = 6
+            LayoutOrder = 7
         })
 
         elements.HideLeaderboard = e(BoolValue, {
@@ -248,7 +259,7 @@ function Options:getSettingElements()
                 self.props.setOption("HideLeaderboard", value)
             end,
             Name = "Hide In-Game Leaderboard",
-            LayoutOrder = 7
+            LayoutOrder = 8
         })
     end)
     -- 2D related
@@ -262,23 +273,22 @@ function Options:getSettingElements()
             LayoutOrder = 1
         })
 
+        elements.Upscroll = e(BoolValue, {
+            Value = self.props.options.Upscroll,
+            OnChanged = function(value)
+                self.props.setOption("Upscroll", value)
+            end,
+            Name = "Upscroll Mode",
+            LayoutOrder = 2
+        })
+
         elements.NoteColorAffects2D = e(BoolValue, {
             Value = self.props.options.NoteColorAffects2D,
             OnChanged = function(value)
                 self.props.setOption("NoteColorAffects2D", value)
             end,
             Name = "Let Note Color determine 2D object colors",
-            LayoutOrder = 2
-        })
-
-        elements.Skin = e(EnumValue, {
-            Value = self.props.options.Skin2D,
-            ValueNames = Skins:key_list()._table,
-            OnChanged = function(value)
-                self.props.setOption("Skin2D", value)
-            end,
-            Name = "Skin",
-            LayoutOrder = 4
+            LayoutOrder = 3
         })
 
         elements.PlayfieldWidth = e(IntValue, {
@@ -292,8 +302,32 @@ function Options:getSettingElements()
             end,
             MaxValue = 100,
             MinValue = 5,
-            LayoutOrder = 3
-        });
+            LayoutOrder = 4
+        })
+
+        elements.PlayfieldHitPos = e(IntValue, {
+            Value = self.props.options.PlayfieldHitPos,
+            OnChanged = function(value)
+                self.props.setOption("PlayfieldHitPos", value)
+            end,
+            Name = "Playfield Hit Position",
+            FormatValue = function(value)
+                return string.format("%d", value)
+            end,
+            MaxValue = 60,
+            MinValue = 1,
+            LayoutOrder = 5
+        })
+
+        elements.Skin = e(EnumValue, {
+            Value = self.props.options.Skin2D,
+            ValueNames = Skins:key_list()._table,
+            OnChanged = function(value)
+                self.props.setOption("Skin2D", value)
+            end,
+            Name = "Skin",
+            LayoutOrder = 6
+        })
     end)
     
 

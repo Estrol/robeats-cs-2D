@@ -1,4 +1,6 @@
-local SPList = require(game.ReplicatedStorage.Shared.SPList)
+local HttpService = game:GetService("HttpService")
+
+local SPDict = require(game.ReplicatedStorage.Shared.SPDict)
 local SongErrorParser = require(game.ReplicatedStorage.RobeatsGameCore.SongErrorParser)
 
 local SongMetadata = require(workspace:WaitForChild("Songs"):WaitForChild("SongMetadata"))
@@ -15,6 +17,7 @@ function SongDatabase:new()
 	self.SongMode = SongDatabase.SongMode
 
 	local _all_keys = SongMetadata
+	local _map_data_cache = SPDict:new()
 
 	function self:cons()
 		for itr_key, data in self:key_itr() do
@@ -164,7 +167,28 @@ function SongDatabase:new()
 
 	function self:get_hit_objects_for_key(key, rate, mirror)
 		local data = self:get_data_for_key(key)
-		local map_data = require(data.AudioMapData)
+		local map_data = _map_data_cache:get(key)
+
+		if not map_data then
+			local splits = data.AudioMapData:GetChildren()
+
+			-- Map data is split up into 200k character blocks due to Roblox's limit of 200k characters per StringValue instance.
+			-- We use StringValues instead of ModuleScripts because using ModuleScripts causes massive performace problems in Studio.
+
+			table.sort(splits, function(a, b)
+				return tonumber(a.Name) < tonumber(b.Name)
+			end)
+
+			local map_json = ""
+
+			for _, split in ipairs(splits) do
+				map_json ..= split.Value
+			end
+
+			map_data = HttpService:JSONDecode(map_json)
+
+			_map_data_cache:add(key, map_data)
+		end
 
 		if (rate == 1 or rate == nil) and (not mirror) then
 			return map_data

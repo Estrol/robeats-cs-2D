@@ -11,7 +11,7 @@
     <img src="https://img.shields.io/discord/520391631761833988?color=%2334baeb&label=Join%20our%20Discord%20server%21"/>
 </a>
 
-This game is currently in *alpha* and is subject to *rapid change*. Features may come and go without prior notice.
+This game is currently in *BETA* and is subject to *various changes*. Features may come and go without prior notice.
 
 # How to contribute
 
@@ -25,5 +25,5 @@ If you have any questions feel free to join the Discord server (link above) and 
 
 # Special thanks
 
-- [AstralKingdoms](https://github.com/astralkingdummy) for much work and maintinence, along with doing various things with the legacy game
+- [astral](https://github.com/astralkingdummy) for much work and maintinence, along with doing various things with the legacy game
 - [spotco](https://github.com/spotco) for providing a solid base for this game and making this even possible!
