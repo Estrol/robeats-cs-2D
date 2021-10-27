@@ -33,13 +33,14 @@ function SongSelect:init()
 
     self:setState({
         modSelectionVisible = false,
-        filterByRate = false
+        filterByRate = false,
+        songListRobloxInstance = nil -- Used for scrolling frame manipulation
     })
 
     self.maid = Maid.new()
 
     self.uprate = function()
-        if self.props.options.SongRate < 500 then
+        if self.props.options.SongRate < 200 then
             self.props.setSongRate(self.props.options.SongRate + 5)
         end
     end
@@ -79,7 +80,11 @@ function SongSelect:render()
             AnchorPoint = Vector2.new(1, 1),
             Position = UDim2.fromScale(0.995, 0.985),
             OnSongSelected = function(key)
-                self.props.setSongKey(key)
+                if self.props.options.SongKey == key then
+                    self.props.history:push("/play")
+                else
+                    self.props.setSongKey(key)
+                end
             end,
             SelectedSongKey = self.props.options.SongKey
         }),

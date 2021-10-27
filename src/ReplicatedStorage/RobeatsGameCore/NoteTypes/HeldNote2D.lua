@@ -124,31 +124,42 @@ function HeldNote2D:new(
 		
 		if _did_trigger_head then
 			if _game._audio_manager:get_current_time_ms() > _hit_time_ms then
-				head_pos = 1
+				if _state ~= HeldNote2D.State.HoldMissedActive then
+					head_pos = 1
+
+					if tail_pos > 1 then
+						if _state ~= HeldNote2D.State.Passed then
+							tail_pos = 1
+						end
+					end
+				end
 			end
 		end
 		
 		_head.Position = UDim2.new(0.5, 0, head_pos, 0)
 		_tail.Position = UDim2.new(0.5, 0, tail_pos, 0)
 
-		local tail_to_head = (_head.Position.Y.Scale-_tail.Position.Y.Scale)
+		local tail_to_head = (head_pos - tail_pos)
 		
 		if _state == HeldNote2D.State.Pre then
 			_head.Visible = true
-		else
-			_head.Visible = false
 		end
 		
-		if _state == HeldNote2D.State.Passed and _did_trigger_tail then
-			_tail.Visible = false
-		else
-			if tail_visible() then
-				_tail.Visible = true
-			else
+		if _game:get_ln_tails() == false then
+			if _state == HeldNote2D.State.Passed and _did_trigger_tail then
 				_tail.Visible = false
+				_head.Visible = false
+			else
+				if tail_visible() then
+					_tail.Visible = true
+				else
+					_tail.Visible = false
+				end
 			end
+		else
+			_tail.Visible = false
 		end
-		
+
 		do
 			local _body_pos = (tail_to_head * 0.5) + tail_pos
 			_body.Position = UDim2.new(0.5, 0, _body_pos, 0)
@@ -157,19 +168,27 @@ function HeldNote2D:new(
 		
 		local target_transparency = 0
 		local imm = false
+
 		if _state == HeldNote2D.State.HoldMissedActive then
 			target_transparency = 0.9
+			if _did_trigger_head then
+				_head.Visible = false
+			end
 
 		elseif _state == HeldNote2D.State.Passed and _did_trigger_tail then
 			target_transparency = 1
 			imm = true
-
 		else
 			target_transparency = 0
 		end
 		
 		if imm then
 			_body.BackgroundTransparency = target_transparency
+			if _tail:FindFirstChild("ImageLabel") ~= nil then
+				_tail.ImageLabel.ImageTransparency = target_transparency
+			else
+				_tail.BackgroundTransparency = target_transparency
+			end
 		else
 			_body.BackgroundTransparency = CurveUtil:Expt(
 				_body.BackgroundTransparency,
@@ -177,6 +196,22 @@ function HeldNote2D:new(
 				CurveUtil:NormalizedDefaultExptValueInSeconds(0.15),
 				dt_scale
 			)
+			
+			if _tail:FindFirstChild("ImageLabel") ~= nil then
+				_tail.ImageLabel.ImageTransparency = CurveUtil:Expt(
+					_tail.ImageLabel.ImageTransparency,
+					target_transparency,
+					CurveUtil:NormalizedDefaultExptValueInSeconds(0.15),
+					dt_scale
+				)
+			else
+				_tail.BackgroundTransparency = CurveUtil:Expt(
+					_tail.BackgroundTransparency,
+					target_transparency,
+					CurveUtil:NormalizedDefaultExptValueInSeconds(0.15),
+					dt_scale
+				)
+			end
 		end
 	end
 

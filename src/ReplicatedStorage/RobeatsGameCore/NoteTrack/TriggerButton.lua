@@ -14,7 +14,9 @@ function TriggerButton:new(_game, _parent_note_track, _position)
 		_triggerbutton_obj = EnvironmentSetup:get_element_protos_folder().TriggerButtonProto:Clone()
 		_triggerbutton_obj.Parent = _parent_note_track:get_track_obj()
 		_triggerbutton_obj:SetPrimaryPartCFrame(
-			CFrame.new(_position) * SPUtil:part_cframe_rotation(_triggerbutton_obj.PrimaryPart)
+			CFrame.new(
+				Vector3.new(_position.X, _game:get_game_environment_center_position().Y + 1, _position.Z)
+			) * SPUtil:part_cframe_rotation(_triggerbutton_obj.PrimaryPart)
 		)
 		_triggerbutton_obj.InteriorGlow.Transparency = _tar_glow_transparency
 	end
