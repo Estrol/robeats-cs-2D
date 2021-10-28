@@ -20,7 +20,6 @@ local _local_elements_folder
 local _player_gui
 
 function EnvironmentSetup:initial_setup()
-	game.Players.LocalPlayer.EnableMouseLockOption = false 
 	game.StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.Backpack, false)
 	workspace.CurrentCamera.CameraType = Enum.CameraType.Scriptable
 
