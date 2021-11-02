@@ -15,15 +15,11 @@ local RoundedFrame = require(game.ReplicatedStorage.UI.Components.Base.RoundedFr
 local RoundedTextButton = require(game.ReplicatedStorage.UI.Components.Base.RoundedTextButton)
 local RoundedImageLabel = require(game.ReplicatedStorage.UI.Components.Base.RoundedImageLabel)
 
+local Actions = require(game.ReplicatedStorage.Actions)
+
 local MainMenuUI = Roact.Component:extend("MainMenuUI")
 
 function MainMenuUI:init()
-    self:setState({
-        currSFXName = SongDatabase:get_data_for_key(self.props.songKey).AudioFilename,
-        currSFXArtistName = SongDatabase:get_data_for_key(self.props.songKey).AudioArtist,
-        currSFXBackground = SongDatabase:get_data_for_key(self.props.songKey).AudioCoverImageAssetId,
-    })
-
     self.previewController = self.props.previewController
 end
 
@@ -83,16 +79,29 @@ function MainMenuUI:render()
         }),
         AudioVisualizer = e(AudioVisualizer),
         SongBox = e(MusicBox, {
-            Size = UDim2.fromScale(0.35, 0.15);
+            Size = UDim2.fromScale(0.35, 0.1648);
             Position = UDim2.fromScale(0.025, 0.02);
-            currentAudioName = self.state.currSFXName,
-            currentAudioArtist = self.state.currSFXArtist,
-            onClick = function()
+            SongKey = self.props.songKey;
+            OnPauseToggle = function()
                 if self.soundObj.IsPlaying then
                     self.soundObj:Pause()
                 else
                     self.soundObj:Resume()
                 end
+            end,
+            OnBack = function()
+                local newSongKey = math.clamp(self.props.songKey - 1, 1, SongDatabase:get_key_count())
+
+                self.props.setSongKey(newSongKey)
+
+                self:fadePreview(newSongKey)
+            end,
+            OnNext = function()
+                local newSongKey = math.clamp(self.props.songKey + 1, 1, SongDatabase:get_key_count())
+
+                self.props.setSongKey(newSongKey)
+
+                self:fadePreview(newSongKey)
             end
         }),
         ButtonContainer = e(RoundedFrame, {
@@ -206,6 +215,12 @@ function MainMenuUI:render()
     
 end
 
+function MainMenuUI:fadePreview(songKey)
+    self.props.previewController:PlayId(SongDatabase:get_data_for_key(songKey).AudioAssetId, function(audio)
+        audio.TimePosition = audio.TimeLength * 0.33
+    end)
+end
+
 local Injected = withInjection(MainMenuUI, {
     previewController = "PreviewController"
 })
@@ -214,5 +229,12 @@ return RoactRodux.connect(function(state)
     return {
         songKey = state.options.transient.SongKey,
         permissions = state.permissions
+    }
+end,
+function(dispatch)
+    return {
+        setSongKey = function(key)
+            dispatch(Actions.setTransientOption("SongKey", key))
+        end
     }
 end)(Injected)

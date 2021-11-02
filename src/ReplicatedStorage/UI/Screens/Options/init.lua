@@ -8,6 +8,8 @@ local SPUtil = require(game.ReplicatedStorage.Shared.SPUtil)
 local DebugOut = require(game.ReplicatedStorage.Shared.DebugOut)
 local RunService = game:GetService("RunService")
 
+local Skin = require(game.ReplicatedStorage.UI.Screens.Options.Skin)
+
 local Skins = require(game.ReplicatedStorage.Skins)
 local Actions = require(game.ReplicatedStorage.Actions)
 
@@ -21,6 +23,7 @@ local BoolValue = require(script.BoolValue)
 local MultipleChoiceValue = require(script.MultipleChoiceValue)
 local EnumValue = require(script.EnumValue)
 local ColorValue = require(script.ColorValue)
+local ButtonValue = require(script.ButtonValue)
 
 local Options = Roact.Component:extend("Options")
 
@@ -30,7 +33,8 @@ function noop() end
 
 function Options:init()
     self:setState({
-        selectedCategory = 1
+        selectedCategory = 1,
+        skinMenuOpen = false
     })
 
     if RunService:IsRunning() then
@@ -319,13 +323,16 @@ function Options:getSettingElements()
             LayoutOrder = 5
         })
 
-        elements.Skin = e(EnumValue, {
+        elements.SelectSkin = e(ButtonValue, {
             Value = self.props.options.Skin2D,
             ValueNames = Skins:key_list()._table,
-            OnChanged = function(value)
-                self.props.setOption("Skin2D", value)
+            OnClick = function()
+                self:setState({
+                    skinMenuOpen = not self.state.skinMenuOpen
+                })
             end,
-            Name = "Skin",
+            Name = "Select Skin",
+            ButtonText = "Open Skin Selection Panel",
             LayoutOrder = 6
         })
     end)
@@ -335,6 +342,16 @@ function Options:getSettingElements()
 end
 
 function Options:render()
+    if self.state.skinMenuOpen then
+        return e(Skin, {
+            OnBack = function()
+                self:setState({
+                    skinMenuOpen = false
+                })
+            end
+        })
+    end
+
     local options = self:getSettingElements()
 
     local categories = {}

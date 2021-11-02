@@ -46,6 +46,7 @@ function RoundedImageButton:render()
         AutoButtonColor = false;
         LayoutOrder = self.props.LayoutOrder;
         Image = self.props.Image;
+        Rotation = self.props.Rotation;
         ImageColor3 = self.motorBinding:map(function(a)
             return self.props.ImageColor3:Lerp(self.props.HighlightImageColor3, a.tap)
         end);
