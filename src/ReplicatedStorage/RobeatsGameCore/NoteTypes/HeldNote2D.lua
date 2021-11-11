@@ -150,11 +150,7 @@ function HeldNote2D:new(
 				_tail.Visible = false
 				_head.Visible = false
 			else
-				if tail_visible() then
-					_tail.Visible = true
-				else
-					_tail.Visible = false
-				end
+				_tail.Visible = tail_visible()
 			end
 		else
 			_tail.Visible = false
