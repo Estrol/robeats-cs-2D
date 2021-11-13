@@ -16,14 +16,16 @@ function ChatTagService:KnitStart()
     PermissionsService = Knit.GetService("PermissionsService")
     ChatService = require(game.ServerScriptService:WaitForChild("ChatServiceRunner"):WaitForChild("ChatService"))
 
-    ChatService.SpeakerAdded:Connect(self.HandleSpeakerAdded)
+    ChatService.SpeakerAdded:Connect(function(Speaker)
+        self:HandleSpeakerAdded(Speaker)
+    end)
 
     for _, speaker in ipairs(ChatService:GetSpeakerList()) do
-        self.HandleSpeakerAdded(speaker)
+        self:HandleSpeakerAdded(speaker)
     end
 end
 
-function ChatTagService.HandleSpeakerAdded(speakerName)
+function ChatTagService:HandleSpeakerAdded(speakerName)
     local speaker = ChatService:GetSpeaker(speakerName)
     local player = speaker:GetPlayer()
 
