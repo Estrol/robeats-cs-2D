@@ -5,8 +5,7 @@
       <BinaryString name="AttributesSerialize">
       </BinaryString>
       <int64 name="SourceAssetId">-1</int64>
-      <BinaryString name="Tags">
-      </BinaryString>
+      <BinaryString name="Tags"></BinaryString>
     </Properties>
     <Item class="Color3Value" referent="1">
       <Properties>
@@ -14,8 +13,7 @@
         <BinaryString name="AttributesSerialize">
         </BinaryString>
         <int64 name="SourceAssetId">-1</int64>
-        <BinaryString name="Tags">
-        </BinaryString>
+        <BinaryString name="Tags"></BinaryString>
         <Color3 name="Value">
           <R>0</R>
           <G>0.92549026</G>
@@ -78,6 +76,7 @@
           <YS>0</YS>
           <YO>0</YO>
         </UDim2>
+        <token name="ResampleMode">0</token>
         <Ref name="RootLocalizationTable">null</Ref>
         <float name="Rotation">0</float>
         <token name="ScaleType">3</token>
@@ -102,8 +101,7 @@
         </Rect2D>
         <float name="SliceScale">1</float>
         <int64 name="SourceAssetId">-1</int64>
-        <BinaryString name="Tags">
-        </BinaryString>
+        <BinaryString name="Tags"></BinaryString>
         <UDim2 name="TileSize">
           <XS>1</XS>
           <XO>0</XO>
@@ -165,8 +163,7 @@
         <token name="SizeConstraint">0</token>
         <int64 name="SourceAssetId">-1</int64>
         <token name="Style">0</token>
-        <BinaryString name="Tags">
-        </BinaryString>
+        <BinaryString name="Tags"></BinaryString>
         <bool name="Visible">true</bool>
         <int name="ZIndex">8</int>
       </Properties>
@@ -179,8 +176,7 @@
           </BinaryString>
           <token name="DominantAxis">0</token>
           <int64 name="SourceAssetId">-1</int64>
-          <BinaryString name="Tags">
-          </BinaryString>
+          <BinaryString name="Tags"></BinaryString>
         </Properties>
       </Item>
       <Item class="ImageLabel" referent="5">
@@ -238,6 +234,7 @@
             <YS>0.5</YS>
             <YO>0</YO>
           </UDim2>
+          <token name="ResampleMode">0</token>
           <Ref name="RootLocalizationTable">null</Ref>
           <float name="Rotation">0</float>
           <token name="ScaleType">0</token>
@@ -262,8 +259,7 @@
           </Rect2D>
           <float name="SliceScale">1</float>
           <int64 name="SourceAssetId">-1</int64>
-          <BinaryString name="Tags">
-          </BinaryString>
+          <BinaryString name="Tags"></BinaryString>
           <UDim2 name="TileSize">
             <XS>1</XS>
             <XO>0</XO>
@@ -281,8 +277,7 @@
         <BinaryString name="AttributesSerialize">
         </BinaryString>
         <int64 name="SourceAssetId">-1</int64>
-        <BinaryString name="Tags">
-        </BinaryString>
+        <BinaryString name="Tags"></BinaryString>
       </Properties>
       <Item class="Frame" referent="7">
         <Properties>
@@ -335,8 +330,7 @@
           <token name="SizeConstraint">0</token>
           <int64 name="SourceAssetId">-1</int64>
           <token name="Style">0</token>
-          <BinaryString name="Tags">
-          </BinaryString>
+          <BinaryString name="Tags"></BinaryString>
           <bool name="Visible">true</bool>
           <int name="ZIndex">6</int>
         </Properties>
@@ -392,8 +386,7 @@
           <token name="SizeConstraint">0</token>
           <int64 name="SourceAssetId">-1</int64>
           <token name="Style">0</token>
-          <BinaryString name="Tags">
-          </BinaryString>
+          <BinaryString name="Tags"></BinaryString>
           <bool name="Visible">true</bool>
           <int name="ZIndex">7</int>
         </Properties>
@@ -452,6 +445,7 @@
               <YS>0.5</YS>
               <YO>0</YO>
             </UDim2>
+            <token name="ResampleMode">0</token>
             <Ref name="RootLocalizationTable">null</Ref>
             <float name="Rotation">0</float>
             <token name="ScaleType">0</token>
@@ -476,8 +470,7 @@
             </Rect2D>
             <float name="SliceScale">1</float>
             <int64 name="SourceAssetId">-1</int64>
-            <BinaryString name="Tags">
-            </BinaryString>
+            <BinaryString name="Tags"></BinaryString>
             <UDim2 name="TileSize">
               <XS>1</XS>
               <XO>0</XO>
@@ -497,8 +490,7 @@
             </BinaryString>
             <token name="DominantAxis">0</token>
             <int64 name="SourceAssetId">-1</int64>
-            <BinaryString name="Tags">
-            </BinaryString>
+            <BinaryString name="Tags"></BinaryString>
           </Properties>
         </Item>
       </Item>
@@ -553,8 +545,7 @@
           <token name="SizeConstraint">0</token>
           <int64 name="SourceAssetId">-1</int64>
           <token name="Style">0</token>
-          <BinaryString name="Tags">
-          </BinaryString>
+          <BinaryString name="Tags"></BinaryString>
           <bool name="Visible">true</bool>
           <int name="ZIndex">7</int>
         </Properties>
@@ -613,6 +604,7 @@
               <YS>0.5</YS>
               <YO>0</YO>
             </UDim2>
+            <token name="ResampleMode">0</token>
             <Ref name="RootLocalizationTable">null</Ref>
             <float name="Rotation">0</float>
             <token name="ScaleType">0</token>
@@ -637,8 +629,7 @@
             </Rect2D>
             <float name="SliceScale">1</float>
             <int64 name="SourceAssetId">-1</int64>
-            <BinaryString name="Tags">
-            </BinaryString>
+            <BinaryString name="Tags"></BinaryString>
             <UDim2 name="TileSize">
               <XS>1</XS>
               <XO>0</XO>
@@ -658,8 +649,7 @@
             </BinaryString>
             <token name="DominantAxis">0</token>
             <int64 name="SourceAssetId">-1</int64>
-            <BinaryString name="Tags">
-            </BinaryString>
+            <BinaryString name="Tags"></BinaryString>
           </Properties>
         </Item>
       </Item>
@@ -715,8 +705,7 @@
         <token name="SizeConstraint">0</token>
         <int64 name="SourceAssetId">-1</int64>
         <token name="Style">0</token>
-        <BinaryString name="Tags">
-        </BinaryString>
+        <BinaryString name="Tags"></BinaryString>
         <bool name="Visible">true</bool>
         <int name="ZIndex">2</int>
       </Properties>
@@ -726,8 +715,7 @@
           <BinaryString name="AttributesSerialize">
           </BinaryString>
           <int64 name="SourceAssetId">-1</int64>
-          <BinaryString name="Tags">
-          </BinaryString>
+          <BinaryString name="Tags"></BinaryString>
         </Properties>
       </Item>
       <Item class="Frame" referent="16">
@@ -781,8 +769,7 @@
           <token name="SizeConstraint">0</token>
           <int64 name="SourceAssetId">-1</int64>
           <token name="Style">0</token>
-          <BinaryString name="Tags">
-          </BinaryString>
+          <BinaryString name="Tags"></BinaryString>
           <bool name="Visible">true</bool>
           <int name="ZIndex">2</int>
         </Properties>
@@ -837,8 +824,7 @@
             <token name="SizeConstraint">0</token>
             <int64 name="SourceAssetId">-1</int64>
             <token name="Style">0</token>
-            <BinaryString name="Tags">
-            </BinaryString>
+            <BinaryString name="Tags"></BinaryString>
             <bool name="Visible">false</bool>
             <int name="ZIndex">2</int>
           </Properties>
@@ -897,6 +883,7 @@
                 <YS>0</YS>
                 <YO>0</YO>
               </UDim2>
+              <token name="ResampleMode">0</token>
               <Ref name="RootLocalizationTable">null</Ref>
               <float name="Rotation">0</float>
               <token name="ScaleType">0</token>
@@ -921,8 +908,7 @@
               </Rect2D>
               <float name="SliceScale">1</float>
               <int64 name="SourceAssetId">-1</int64>
-              <BinaryString name="Tags">
-              </BinaryString>
+              <BinaryString name="Tags"></BinaryString>
               <UDim2 name="TileSize">
                 <XS>1</XS>
                 <XO>0</XO>
@@ -985,8 +971,7 @@
             <token name="SizeConstraint">0</token>
             <int64 name="SourceAssetId">-1</int64>
             <token name="Style">0</token>
-            <BinaryString name="Tags">
-            </BinaryString>
+            <BinaryString name="Tags"></BinaryString>
             <bool name="Visible">false</bool>
             <int name="ZIndex">2</int>
           </Properties>
@@ -1045,6 +1030,7 @@
                 <YS>0</YS>
                 <YO>0</YO>
               </UDim2>
+              <token name="ResampleMode">0</token>
               <Ref name="RootLocalizationTable">null</Ref>
               <float name="Rotation">0</float>
               <token name="ScaleType">0</token>
@@ -1069,8 +1055,7 @@
               </Rect2D>
               <float name="SliceScale">1</float>
               <int64 name="SourceAssetId">-1</int64>
-              <BinaryString name="Tags">
-              </BinaryString>
+              <BinaryString name="Tags"></BinaryString>
               <UDim2 name="TileSize">
                 <XS>1</XS>
                 <XO>0</XO>
@@ -1133,8 +1118,7 @@
             <token name="SizeConstraint">0</token>
             <int64 name="SourceAssetId">-1</int64>
             <token name="Style">0</token>
-            <BinaryString name="Tags">
-            </BinaryString>
+            <BinaryString name="Tags"></BinaryString>
             <bool name="Visible">false</bool>
             <int name="ZIndex">2</int>
           </Properties>
@@ -1193,6 +1177,7 @@
                 <YS>0</YS>
                 <YO>0</YO>
               </UDim2>
+              <token name="ResampleMode">0</token>
               <Ref name="RootLocalizationTable">null</Ref>
               <float name="Rotation">0</float>
               <token name="ScaleType">0</token>
@@ -1217,8 +1202,7 @@
               </Rect2D>
               <float name="SliceScale">1</float>
               <int64 name="SourceAssetId">-1</int64>
-              <BinaryString name="Tags">
-              </BinaryString>
+              <BinaryString name="Tags"></BinaryString>
               <UDim2 name="TileSize">
                 <XS>1</XS>
                 <XO>0</XO>
@@ -1281,8 +1265,7 @@
             <token name="SizeConstraint">0</token>
             <int64 name="SourceAssetId">-1</int64>
             <token name="Style">0</token>
-            <BinaryString name="Tags">
-            </BinaryString>
+            <BinaryString name="Tags"></BinaryString>
             <bool name="Visible">false</bool>
             <int name="ZIndex">2</int>
           </Properties>
@@ -1341,6 +1324,7 @@
                 <YS>0</YS>
                 <YO>0</YO>
               </UDim2>
+              <token name="ResampleMode">0</token>
               <Ref name="RootLocalizationTable">null</Ref>
               <float name="Rotation">0</float>
               <token name="ScaleType">0</token>
@@ -1365,8 +1349,7 @@
               </Rect2D>
               <float name="SliceScale">1</float>
               <int64 name="SourceAssetId">-1</int64>
-              <BinaryString name="Tags">
-              </BinaryString>
+              <BinaryString name="Tags"></BinaryString>
               <UDim2 name="TileSize">
                 <XS>1</XS>
                 <XO>0</XO>
@@ -1430,8 +1413,7 @@
           <token name="SizeConstraint">0</token>
           <int64 name="SourceAssetId">-1</int64>
           <token name="Style">0</token>
-          <BinaryString name="Tags">
-          </BinaryString>
+          <BinaryString name="Tags"></BinaryString>
           <bool name="Visible">true</bool>
           <int name="ZIndex">1</int>
         </Properties>
@@ -1486,8 +1468,7 @@
             <token name="SizeConstraint">0</token>
             <int64 name="SourceAssetId">-1</int64>
             <token name="Style">0</token>
-            <BinaryString name="Tags">
-            </BinaryString>
+            <BinaryString name="Tags"></BinaryString>
             <bool name="Visible">true</bool>
             <int name="ZIndex">1</int>
           </Properties>
@@ -1548,6 +1529,7 @@
               <YS>1</YS>
               <YO>0</YO>
             </UDim2>
+            <token name="ResampleMode">0</token>
             <Ref name="RootLocalizationTable">null</Ref>
             <float name="Rotation">0</float>
             <token name="ScaleType">0</token>
@@ -1572,8 +1554,7 @@
             </Rect2D>
             <float name="SliceScale">1</float>
             <int64 name="SourceAssetId">-1</int64>
-            <BinaryString name="Tags">
-            </BinaryString>
+            <BinaryString name="Tags"></BinaryString>
             <UDim2 name="TileSize">
               <XS>1</XS>
               <XO>0</XO>
@@ -1635,8 +1616,7 @@
             <token name="SizeConstraint">0</token>
             <int64 name="SourceAssetId">-1</int64>
             <token name="Style">0</token>
-            <BinaryString name="Tags">
-            </BinaryString>
+            <BinaryString name="Tags"></BinaryString>
             <bool name="Visible">true</bool>
             <int name="ZIndex">1</int>
           </Properties>
@@ -1692,8 +1672,7 @@
             <token name="SizeConstraint">0</token>
             <int64 name="SourceAssetId">-1</int64>
             <token name="Style">0</token>
-            <BinaryString name="Tags">
-            </BinaryString>
+            <BinaryString name="Tags"></BinaryString>
             <bool name="Visible">true</bool>
             <int name="ZIndex">1</int>
           </Properties>
@@ -1749,8 +1728,7 @@
             <token name="SizeConstraint">0</token>
             <int64 name="SourceAssetId">-1</int64>
             <token name="Style">0</token>
-            <BinaryString name="Tags">
-            </BinaryString>
+            <BinaryString name="Tags"></BinaryString>
             <bool name="Visible">true</bool>
             <int name="ZIndex">1</int>
           </Properties>
@@ -1776,8 +1754,7 @@
 	Data = nil -- Keep this empty for skin data
 }</string>
         <int64 name="SourceAssetId">-1</int64>
-        <BinaryString name="Tags">
-        </BinaryString>
+        <BinaryString name="Tags"></BinaryString>
       </Properties>
     </Item>
   </Item>

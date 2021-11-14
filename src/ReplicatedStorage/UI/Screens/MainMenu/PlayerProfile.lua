@@ -8,6 +8,8 @@ local RoundedTextLabel = require(game.ReplicatedStorage.UI.Components.Base.Round
 local RoundedImageLabel = require(game.ReplicatedStorage.UI.Components.Base.RoundedImageLabel)
 local LoadingWheel = require(game.ReplicatedStorage.UI.Components.Base.LoadingWheel)
 
+local Tier = require(game.ReplicatedStorage.UI.Components.Tier)
+
 local PlayerProfile = Roact.Component:extend("PlayerProfile")
 
 function PlayerProfile:init()
@@ -25,11 +27,15 @@ function PlayerProfile:init()
 
     self.scoreService:GetProfilePromise():andThen(function(profile)
         if profile then
+            local tier = self.props.tierService:GetTierFromRating(profile.Rating)
+
             self:setState({
                 rank = profile.Rank,
                 rating = profile.Rating or 0,
                 accuracy = profile.Accuracy or 0,
                 totalMapsPlayed = profile.TotalMapsPlayed or 0,
+                tier = tier.name,
+                division = tier.division,
                 loaded = true
             })
         else
@@ -98,9 +104,10 @@ function PlayerProfile:render()
            PlayerName = e(RoundedTextLabel, {
                Position = UDim2.fromScale(1.2, 0),
                Size = UDim2.fromScale(2.35, 0.3),
+               RichText = true,
                TextXAlignment = Enum.TextXAlignment.Left,
                TextColor3 = Color3.fromRGB(255, 255, 255),
-               Text = self.state.playerName,
+               Text = string.format("%s <font color=\"#b3b3b3\">[%s]</font>", self.state.playerName, self.state.tier..(if self.state.division then string.format(" %d", self.state.division) else "")),
                TextScaled = true,
                BackgroundTransparency = 1
            }),
@@ -131,6 +138,17 @@ function PlayerProfile:render()
                TextScaled = true,
                BackgroundTransparency = 1
            }),
+           Tier = self.state.tier and e(Tier, {
+                imageLabelProps = {
+                    Position = UDim2.fromScale(0.01, 1),
+                    Size = UDim2.fromScale(0.5, 1),
+                    AnchorPoint = Vector2.new(0, 1),
+                    BackgroundTransparency = 1,
+                    ImageTransparency = 0.1
+                },
+                tier = self.state.tier,
+                division = self.state.division
+            })
         }),
         Rank = self.state.rank and e(RoundedTextLabel, {
             Position = UDim2.fromScale(0.97, 0.92),
@@ -149,5 +167,6 @@ function PlayerProfile:render()
 end
 
 return withInjection(PlayerProfile, {
-    scoreService = "ScoreService"
+    scoreService = "ScoreService",
+    tierService = "TierService"
 })

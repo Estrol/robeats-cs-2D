@@ -1,12 +1,11 @@
 local Roact = require(game.ReplicatedStorage.Packages.Roact)
-local e = Roact.createElement
+local MusicBox = require(script.Parent.MusicBox)
 
-local MusicBox = script.Parent.MusicBox
-
-return function (target)
-    local app = e(MusicBox, {
-        Position = UDim2.fromScale(0.25, 0.02),
-        SongKey = 1
+return function(target)
+    local app = Roact.createElement(MusicBox, {
+        currentAudioName = "Sky Is The Limit",
+        currentAudioArtist = "-RYO-",
+        currentAudioSongCover = "https://www.roblox.com/library/6998234944/cs-lgoo"
     })
 
     local handle = Roact.mount(app, target)

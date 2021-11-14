@@ -5,8 +5,7 @@
       <BinaryString name="AttributesSerialize">
       </BinaryString>
       <int64 name="SourceAssetId">-1</int64>
-      <BinaryString name="Tags">
-      </BinaryString>
+      <BinaryString name="Tags"></BinaryString>
     </Properties>
     <Item class="Color3Value" referent="1">
       <Properties>
@@ -14,8 +13,7 @@
         <BinaryString name="AttributesSerialize">
         </BinaryString>
         <int64 name="SourceAssetId">-1</int64>
-        <BinaryString name="Tags">
-        </BinaryString>
+        <BinaryString name="Tags"></BinaryString>
         <Color3 name="Value">
           <R>1</R>
           <G>1</G>
@@ -74,8 +72,7 @@
         <token name="SizeConstraint">0</token>
         <int64 name="SourceAssetId">-1</int64>
         <token name="Style">0</token>
-        <BinaryString name="Tags">
-        </BinaryString>
+        <BinaryString name="Tags"></BinaryString>
         <bool name="Visible">true</bool>
         <int name="ZIndex">8</int>
       </Properties>
@@ -88,8 +85,7 @@
           </BinaryString>
           <token name="DominantAxis">0</token>
           <int64 name="SourceAssetId">-1</int64>
-          <BinaryString name="Tags">
-          </BinaryString>
+          <BinaryString name="Tags"></BinaryString>
         </Properties>
       </Item>
       <Item class="LocalScript" referent="4">
@@ -118,8 +114,7 @@ local index = tonumber(string.sub(track.Name,string.len(track.Name)))
 img.Image = imgkeys[index]
 ]]></string>
           <int64 name="SourceAssetId">-1</int64>
-          <BinaryString name="Tags">
-          </BinaryString>
+          <BinaryString name="Tags"></BinaryString>
         </Properties>
       </Item>
       <Item class="ImageLabel" referent="5">
@@ -177,6 +172,7 @@ img.Image = imgkeys[index]
             <YS>0.5</YS>
             <YO>0</YO>
           </UDim2>
+          <token name="ResampleMode">0</token>
           <Ref name="RootLocalizationTable">null</Ref>
           <float name="Rotation">0</float>
           <token name="ScaleType">0</token>
@@ -201,8 +197,7 @@ img.Image = imgkeys[index]
           </Rect2D>
           <float name="SliceScale">1</float>
           <int64 name="SourceAssetId">-1</int64>
-          <BinaryString name="Tags">
-          </BinaryString>
+          <BinaryString name="Tags"></BinaryString>
           <UDim2 name="TileSize">
             <XS>1</XS>
             <XO>0</XO>
@@ -220,8 +215,7 @@ img.Image = imgkeys[index]
         <BinaryString name="AttributesSerialize">
         </BinaryString>
         <int64 name="SourceAssetId">-1</int64>
-        <BinaryString name="Tags">
-        </BinaryString>
+        <BinaryString name="Tags"></BinaryString>
       </Properties>
       <Item class="Frame" referent="7">
         <Properties>
@@ -274,8 +268,7 @@ img.Image = imgkeys[index]
           <token name="SizeConstraint">0</token>
           <int64 name="SourceAssetId">-1</int64>
           <token name="Style">0</token>
-          <BinaryString name="Tags">
-          </BinaryString>
+          <BinaryString name="Tags"></BinaryString>
           <bool name="Visible">true</bool>
           <int name="ZIndex">6</int>
         </Properties>
@@ -331,8 +324,7 @@ img.Image = imgkeys[index]
           <token name="SizeConstraint">0</token>
           <int64 name="SourceAssetId">-1</int64>
           <token name="Style">0</token>
-          <BinaryString name="Tags">
-          </BinaryString>
+          <BinaryString name="Tags"></BinaryString>
           <bool name="Visible">true</bool>
           <int name="ZIndex">7</int>
         </Properties>
@@ -345,8 +337,7 @@ img.Image = imgkeys[index]
             </BinaryString>
             <token name="DominantAxis">0</token>
             <int64 name="SourceAssetId">-1</int64>
-            <BinaryString name="Tags">
-            </BinaryString>
+            <BinaryString name="Tags"></BinaryString>
           </Properties>
         </Item>
         <Item class="LocalScript" referent="10">
@@ -378,8 +369,7 @@ local index = tonumber(string.sub(track.Name,string.len(track.Name)))
 img.Image = imgkeys[index]
 ]]></string>
             <int64 name="SourceAssetId">-1</int64>
-            <BinaryString name="Tags">
-            </BinaryString>
+            <BinaryString name="Tags"></BinaryString>
           </Properties>
         </Item>
         <Item class="ImageLabel" referent="11">
@@ -438,6 +428,7 @@ img.Image = imgkeys[index]
               <YS>0.5</YS>
               <YO>0</YO>
             </UDim2>
+            <token name="ResampleMode">0</token>
             <Ref name="RootLocalizationTable">null</Ref>
             <float name="Rotation">0</float>
             <token name="ScaleType">0</token>
@@ -462,8 +453,7 @@ img.Image = imgkeys[index]
             </Rect2D>
             <float name="SliceScale">1</float>
             <int64 name="SourceAssetId">-1</int64>
-            <BinaryString name="Tags">
-            </BinaryString>
+            <BinaryString name="Tags"></BinaryString>
             <UDim2 name="TileSize">
               <XS>1</XS>
               <XO>0</XO>
@@ -526,8 +516,7 @@ img.Image = imgkeys[index]
           <token name="SizeConstraint">0</token>
           <int64 name="SourceAssetId">-1</int64>
           <token name="Style">0</token>
-          <BinaryString name="Tags">
-          </BinaryString>
+          <BinaryString name="Tags"></BinaryString>
           <bool name="Visible">true</bool>
           <int name="ZIndex">6</int>
         </Properties>
@@ -540,8 +529,7 @@ img.Image = imgkeys[index]
             </BinaryString>
             <token name="DominantAxis">0</token>
             <int64 name="SourceAssetId">-1</int64>
-            <BinaryString name="Tags">
-            </BinaryString>
+            <BinaryString name="Tags"></BinaryString>
           </Properties>
         </Item>
       </Item>
@@ -602,6 +590,7 @@ img.Image = imgkeys[index]
           <YS>0</YS>
           <YO>0</YO>
         </UDim2>
+        <token name="ResampleMode">0</token>
         <Ref name="RootLocalizationTable">null</Ref>
         <float name="Rotation">0</float>
         <token name="ScaleType">3</token>
@@ -626,8 +615,7 @@ img.Image = imgkeys[index]
         </Rect2D>
         <float name="SliceScale">1</float>
         <int64 name="SourceAssetId">-1</int64>
-        <BinaryString name="Tags">
-        </BinaryString>
+        <BinaryString name="Tags"></BinaryString>
         <UDim2 name="TileSize">
           <XS>1</XS>
           <XO>0</XO>
@@ -646,8 +634,7 @@ img.Image = imgkeys[index]
           </BinaryString>
           <token name="DominantAxis">0</token>
           <int64 name="SourceAssetId">-1</int64>
-          <BinaryString name="Tags">
-          </BinaryString>
+          <BinaryString name="Tags"></BinaryString>
         </Properties>
       </Item>
       <Item class="LocalScript" referent="16">
@@ -677,8 +664,7 @@ local index = tonumber(string.sub(track.Name,string.len(track.Name)))
 effect.Image = imgkeys[index]
 ]]></string>
           <int64 name="SourceAssetId">-1</int64>
-          <BinaryString name="Tags">
-          </BinaryString>
+          <BinaryString name="Tags"></BinaryString>
         </Properties>
       </Item>
     </Item>
@@ -733,8 +719,7 @@ effect.Image = imgkeys[index]
         <token name="SizeConstraint">0</token>
         <int64 name="SourceAssetId">-1</int64>
         <token name="Style">0</token>
-        <BinaryString name="Tags">
-        </BinaryString>
+        <BinaryString name="Tags"></BinaryString>
         <bool name="Visible">true</bool>
         <int name="ZIndex">2</int>
       </Properties>
@@ -744,8 +729,7 @@ effect.Image = imgkeys[index]
           <BinaryString name="AttributesSerialize">
           </BinaryString>
           <int64 name="SourceAssetId">-1</int64>
-          <BinaryString name="Tags">
-          </BinaryString>
+          <BinaryString name="Tags"></BinaryString>
         </Properties>
       </Item>
       <Item class="Frame" referent="19">
@@ -799,8 +783,7 @@ effect.Image = imgkeys[index]
           <token name="SizeConstraint">0</token>
           <int64 name="SourceAssetId">-1</int64>
           <token name="Style">0</token>
-          <BinaryString name="Tags">
-          </BinaryString>
+          <BinaryString name="Tags"></BinaryString>
           <bool name="Visible">true</bool>
           <int name="ZIndex">0</int>
         </Properties>
@@ -855,8 +838,7 @@ effect.Image = imgkeys[index]
             <token name="SizeConstraint">0</token>
             <int64 name="SourceAssetId">-1</int64>
             <token name="Style">0</token>
-            <BinaryString name="Tags">
-            </BinaryString>
+            <BinaryString name="Tags"></BinaryString>
             <bool name="Visible">true</bool>
             <int name="ZIndex">2</int>
           </Properties>
@@ -915,6 +897,7 @@ effect.Image = imgkeys[index]
                 <YS>0</YS>
                 <YO>0</YO>
               </UDim2>
+              <token name="ResampleMode">0</token>
               <Ref name="RootLocalizationTable">null</Ref>
               <float name="Rotation">0</float>
               <token name="ScaleType">0</token>
@@ -939,8 +922,7 @@ effect.Image = imgkeys[index]
               </Rect2D>
               <float name="SliceScale">1</float>
               <int64 name="SourceAssetId">-1</int64>
-              <BinaryString name="Tags">
-              </BinaryString>
+              <BinaryString name="Tags"></BinaryString>
               <UDim2 name="TileSize">
                 <XS>1</XS>
                 <XO>0</XO>
@@ -953,7 +935,7 @@ effect.Image = imgkeys[index]
           </Item>
           <Item class="ImageLabel" referent="22">
             <Properties>
-              <string name="Name">HiT arrow</string>
+              <string name="Name">ReceptorImage</string>
               <bool name="Active">false</bool>
               <Vector2 name="AnchorPoint">
                 <X>0.5</X>
@@ -1006,6 +988,7 @@ effect.Image = imgkeys[index]
                 <YS>0</YS>
                 <YO>0</YO>
               </UDim2>
+              <token name="ResampleMode">0</token>
               <Ref name="RootLocalizationTable">null</Ref>
               <float name="Rotation">0</float>
               <token name="ScaleType">3</token>
@@ -1030,8 +1013,7 @@ effect.Image = imgkeys[index]
               </Rect2D>
               <float name="SliceScale">1</float>
               <int64 name="SourceAssetId">-1</int64>
-              <BinaryString name="Tags">
-              </BinaryString>
+              <BinaryString name="Tags"></BinaryString>
               <UDim2 name="TileSize">
                 <XS>1</XS>
                 <XO>0</XO>
@@ -1050,8 +1032,7 @@ effect.Image = imgkeys[index]
                 </BinaryString>
                 <token name="DominantAxis">0</token>
                 <int64 name="SourceAssetId">-1</int64>
-                <BinaryString name="Tags">
-                </BinaryString>
+                <BinaryString name="Tags"></BinaryString>
               </Properties>
             </Item>
           </Item>
@@ -1107,8 +1088,7 @@ effect.Image = imgkeys[index]
             <token name="SizeConstraint">0</token>
             <int64 name="SourceAssetId">-1</int64>
             <token name="Style">0</token>
-            <BinaryString name="Tags">
-            </BinaryString>
+            <BinaryString name="Tags"></BinaryString>
             <bool name="Visible">true</bool>
             <int name="ZIndex">2</int>
           </Properties>
@@ -1167,6 +1147,7 @@ effect.Image = imgkeys[index]
                 <YS>0</YS>
                 <YO>0</YO>
               </UDim2>
+              <token name="ResampleMode">0</token>
               <Ref name="RootLocalizationTable">null</Ref>
               <float name="Rotation">0</float>
               <token name="ScaleType">0</token>
@@ -1191,8 +1172,7 @@ effect.Image = imgkeys[index]
               </Rect2D>
               <float name="SliceScale">1</float>
               <int64 name="SourceAssetId">-1</int64>
-              <BinaryString name="Tags">
-              </BinaryString>
+              <BinaryString name="Tags"></BinaryString>
               <UDim2 name="TileSize">
                 <XS>1</XS>
                 <XO>0</XO>
@@ -1205,7 +1185,7 @@ effect.Image = imgkeys[index]
           </Item>
           <Item class="ImageLabel" referent="26">
             <Properties>
-              <string name="Name">HiT arrow</string>
+              <string name="Name">ReceptorImage</string>
               <bool name="Active">false</bool>
               <Vector2 name="AnchorPoint">
                 <X>0.5</X>
@@ -1258,6 +1238,7 @@ effect.Image = imgkeys[index]
                 <YS>0</YS>
                 <YO>0</YO>
               </UDim2>
+              <token name="ResampleMode">0</token>
               <Ref name="RootLocalizationTable">null</Ref>
               <float name="Rotation">0</float>
               <token name="ScaleType">3</token>
@@ -1282,8 +1263,7 @@ effect.Image = imgkeys[index]
               </Rect2D>
               <float name="SliceScale">1</float>
               <int64 name="SourceAssetId">-1</int64>
-              <BinaryString name="Tags">
-              </BinaryString>
+              <BinaryString name="Tags"></BinaryString>
               <UDim2 name="TileSize">
                 <XS>1</XS>
                 <XO>0</XO>
@@ -1302,8 +1282,7 @@ effect.Image = imgkeys[index]
                 </BinaryString>
                 <token name="DominantAxis">0</token>
                 <int64 name="SourceAssetId">-1</int64>
-                <BinaryString name="Tags">
-                </BinaryString>
+                <BinaryString name="Tags"></BinaryString>
               </Properties>
             </Item>
           </Item>
@@ -1359,8 +1338,7 @@ effect.Image = imgkeys[index]
             <token name="SizeConstraint">0</token>
             <int64 name="SourceAssetId">-1</int64>
             <token name="Style">0</token>
-            <BinaryString name="Tags">
-            </BinaryString>
+            <BinaryString name="Tags"></BinaryString>
             <bool name="Visible">true</bool>
             <int name="ZIndex">2</int>
           </Properties>
@@ -1419,6 +1397,7 @@ effect.Image = imgkeys[index]
                 <YS>0</YS>
                 <YO>0</YO>
               </UDim2>
+              <token name="ResampleMode">0</token>
               <Ref name="RootLocalizationTable">null</Ref>
               <float name="Rotation">0</float>
               <token name="ScaleType">0</token>
@@ -1443,8 +1422,7 @@ effect.Image = imgkeys[index]
               </Rect2D>
               <float name="SliceScale">1</float>
               <int64 name="SourceAssetId">-1</int64>
-              <BinaryString name="Tags">
-              </BinaryString>
+              <BinaryString name="Tags"></BinaryString>
               <UDim2 name="TileSize">
                 <XS>1</XS>
                 <XO>0</XO>
@@ -1457,7 +1435,7 @@ effect.Image = imgkeys[index]
           </Item>
           <Item class="ImageLabel" referent="30">
             <Properties>
-              <string name="Name">HiT arrow</string>
+              <string name="Name">ReceptorImage</string>
               <bool name="Active">false</bool>
               <Vector2 name="AnchorPoint">
                 <X>0.5</X>
@@ -1510,6 +1488,7 @@ effect.Image = imgkeys[index]
                 <YS>0</YS>
                 <YO>0</YO>
               </UDim2>
+              <token name="ResampleMode">0</token>
               <Ref name="RootLocalizationTable">null</Ref>
               <float name="Rotation">0</float>
               <token name="ScaleType">3</token>
@@ -1534,8 +1513,7 @@ effect.Image = imgkeys[index]
               </Rect2D>
               <float name="SliceScale">1</float>
               <int64 name="SourceAssetId">-1</int64>
-              <BinaryString name="Tags">
-              </BinaryString>
+              <BinaryString name="Tags"></BinaryString>
               <UDim2 name="TileSize">
                 <XS>1</XS>
                 <XO>0</XO>
@@ -1554,8 +1532,7 @@ effect.Image = imgkeys[index]
                 </BinaryString>
                 <token name="DominantAxis">0</token>
                 <int64 name="SourceAssetId">-1</int64>
-                <BinaryString name="Tags">
-                </BinaryString>
+                <BinaryString name="Tags"></BinaryString>
               </Properties>
             </Item>
           </Item>
@@ -1611,8 +1588,7 @@ effect.Image = imgkeys[index]
             <token name="SizeConstraint">0</token>
             <int64 name="SourceAssetId">-1</int64>
             <token name="Style">0</token>
-            <BinaryString name="Tags">
-            </BinaryString>
+            <BinaryString name="Tags"></BinaryString>
             <bool name="Visible">true</bool>
             <int name="ZIndex">2</int>
           </Properties>
@@ -1671,6 +1647,7 @@ effect.Image = imgkeys[index]
                 <YS>0</YS>
                 <YO>0</YO>
               </UDim2>
+              <token name="ResampleMode">0</token>
               <Ref name="RootLocalizationTable">null</Ref>
               <float name="Rotation">0</float>
               <token name="ScaleType">0</token>
@@ -1695,8 +1672,7 @@ effect.Image = imgkeys[index]
               </Rect2D>
               <float name="SliceScale">1</float>
               <int64 name="SourceAssetId">-1</int64>
-              <BinaryString name="Tags">
-              </BinaryString>
+              <BinaryString name="Tags"></BinaryString>
               <UDim2 name="TileSize">
                 <XS>1</XS>
                 <XO>0</XO>
@@ -1709,7 +1685,7 @@ effect.Image = imgkeys[index]
           </Item>
           <Item class="ImageLabel" referent="34">
             <Properties>
-              <string name="Name">HiT arrow</string>
+              <string name="Name">ReceptorImage</string>
               <bool name="Active">false</bool>
               <Vector2 name="AnchorPoint">
                 <X>0.5</X>
@@ -1762,6 +1738,7 @@ effect.Image = imgkeys[index]
                 <YS>0</YS>
                 <YO>0</YO>
               </UDim2>
+              <token name="ResampleMode">0</token>
               <Ref name="RootLocalizationTable">null</Ref>
               <float name="Rotation">0</float>
               <token name="ScaleType">3</token>
@@ -1786,8 +1763,7 @@ effect.Image = imgkeys[index]
               </Rect2D>
               <float name="SliceScale">1</float>
               <int64 name="SourceAssetId">-1</int64>
-              <BinaryString name="Tags">
-              </BinaryString>
+              <BinaryString name="Tags"></BinaryString>
               <UDim2 name="TileSize">
                 <XS>1</XS>
                 <XO>0</XO>
@@ -1806,8 +1782,7 @@ effect.Image = imgkeys[index]
                 </BinaryString>
                 <token name="DominantAxis">0</token>
                 <int64 name="SourceAssetId">-1</int64>
-                <BinaryString name="Tags">
-                </BinaryString>
+                <BinaryString name="Tags"></BinaryString>
               </Properties>
             </Item>
           </Item>
@@ -1864,8 +1839,7 @@ effect.Image = imgkeys[index]
           <token name="SizeConstraint">0</token>
           <int64 name="SourceAssetId">-1</int64>
           <token name="Style">0</token>
-          <BinaryString name="Tags">
-          </BinaryString>
+          <BinaryString name="Tags"></BinaryString>
           <bool name="Visible">true</bool>
           <int name="ZIndex">1</int>
         </Properties>
@@ -1920,8 +1894,7 @@ effect.Image = imgkeys[index]
             <token name="SizeConstraint">0</token>
             <int64 name="SourceAssetId">-1</int64>
             <token name="Style">0</token>
-            <BinaryString name="Tags">
-            </BinaryString>
+            <BinaryString name="Tags"></BinaryString>
             <bool name="Visible">true</bool>
             <int name="ZIndex">1</int>
           </Properties>
@@ -1977,8 +1950,7 @@ effect.Image = imgkeys[index]
             <token name="SizeConstraint">0</token>
             <int64 name="SourceAssetId">-1</int64>
             <token name="Style">0</token>
-            <BinaryString name="Tags">
-            </BinaryString>
+            <BinaryString name="Tags"></BinaryString>
             <bool name="Visible">true</bool>
             <int name="ZIndex">1</int>
           </Properties>
@@ -2034,8 +2006,7 @@ effect.Image = imgkeys[index]
             <token name="SizeConstraint">0</token>
             <int64 name="SourceAssetId">-1</int64>
             <token name="Style">0</token>
-            <BinaryString name="Tags">
-            </BinaryString>
+            <BinaryString name="Tags"></BinaryString>
             <bool name="Visible">true</bool>
             <int name="ZIndex">1</int>
           </Properties>
@@ -2091,8 +2062,7 @@ effect.Image = imgkeys[index]
             <token name="SizeConstraint">0</token>
             <int64 name="SourceAssetId">-1</int64>
             <token name="Style">0</token>
-            <BinaryString name="Tags">
-            </BinaryString>
+            <BinaryString name="Tags"></BinaryString>
             <bool name="Visible">true</bool>
             <int name="ZIndex">1</int>
           </Properties>
@@ -2152,6 +2122,7 @@ effect.Image = imgkeys[index]
               <YS>1</YS>
               <YO>0</YO>
             </UDim2>
+            <token name="ResampleMode">0</token>
             <Ref name="RootLocalizationTable">null</Ref>
             <float name="Rotation">0</float>
             <token name="ScaleType">0</token>
@@ -2176,8 +2147,7 @@ effect.Image = imgkeys[index]
             </Rect2D>
             <float name="SliceScale">1</float>
             <int64 name="SourceAssetId">-1</int64>
-            <BinaryString name="Tags">
-            </BinaryString>
+            <BinaryString name="Tags"></BinaryString>
             <UDim2 name="TileSize">
               <XS>1</XS>
               <XO>0</XO>
@@ -2209,8 +2179,7 @@ effect.Image = imgkeys[index]
 	Data = nil -- Keep this empty for skin data
 }</string>
         <int64 name="SourceAssetId">-1</int64>
-        <BinaryString name="Tags">
-        </BinaryString>
+        <BinaryString name="Tags"></BinaryString>
       </Properties>
     </Item>
   </Item>

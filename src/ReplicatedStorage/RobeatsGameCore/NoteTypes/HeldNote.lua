@@ -185,6 +185,11 @@ function HeldNote:new(
 		end
 		
 		local tail_to_head = head_pos - tail_pos
+		local ln_transparency = 0
+
+		if _game:get_ln_transparent() then
+			ln_transparency = 0.5
+		end
 		
 		--Calculate transparency for head and tail
 		if _state == HeldNote.State.Pre then
@@ -201,8 +206,8 @@ function HeldNote:new(
 				_tail_outline_adorn.Transparency = 1
 			else
 				if tail_visible() then
-					_tail_adorn.Transparency = 0
-					_tail_outline_adorn.Transparency = 0
+					_tail_adorn.Transparency = ln_transparency
+					_tail_outline_adorn.Transparency = ln_transparency
 				else
 					_tail_adorn.Transparency = 1
 					_tail_outline_adorn.Transparency = 1
@@ -285,9 +290,9 @@ function HeldNote:new(
 			_body_outline_right_adorn.Transparency = 1
 
 		else
-			target_transparency = 0
-			_body_outline_left_adorn.Transparency = 0
-			_body_outline_right_adorn.Transparency = 0
+			target_transparency = ln_transparency
+			_body_outline_left_adorn.Transparency = ln_transparency
+			_body_outline_right_adorn.Transparency = ln_transparency
 		end
 
 		if imm then

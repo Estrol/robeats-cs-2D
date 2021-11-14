@@ -8,6 +8,8 @@ local SPUtil = require(game.ReplicatedStorage.Shared.SPUtil)
 local DebugOut = require(game.ReplicatedStorage.Shared.DebugOut)
 local RunService = game:GetService("RunService")
 
+local Skin = require(game.ReplicatedStorage.UI.Screens.Options.Skin)
+
 local Skins = require(game.ReplicatedStorage.Skins)
 local Actions = require(game.ReplicatedStorage.Actions)
 
@@ -21,6 +23,7 @@ local BoolValue = require(script.BoolValue)
 local MultipleChoiceValue = require(script.MultipleChoiceValue)
 local EnumValue = require(script.EnumValue)
 local ColorValue = require(script.ColorValue)
+local ButtonValue = require(script.ButtonValue)
 
 local Options = Roact.Component:extend("Options")
 
@@ -30,7 +33,8 @@ function noop() end
 
 function Options:init()
     self:setState({
-        selectedCategory = 1
+        selectedCategory = 1,
+        skinMenuOpen = false
     })
 
     if RunService:IsRunning() then
@@ -71,6 +75,7 @@ function Options:getSettingElements()
             end,
             Name = "Note Speed",
             MinValue = 0,
+            MaxValue = 100,
             LayoutOrder = 3
         })
 
@@ -84,7 +89,9 @@ function Options:getSettingElements()
             FormatValue = function(value)
                 return string.format("%d ms", value)
             end,
-            LayoutOrder = 4
+            LayoutOrder = 4,
+            MinValue = -300,
+            MaxValue = 300
         })
         --Keybinds
 
@@ -188,7 +195,7 @@ function Options:getSettingElements()
             MaxValue = 1,
             MinValue = 0,
             LayoutOrder = 2
-         });
+        });
 
 
         elements.TimeOfDay = e(IntValue, {
@@ -205,13 +212,22 @@ function Options:getSettingElements()
             LayoutOrder = 1
         });
 
+        elements.TransparentHeldNote = e(BoolValue, {
+            Value = self.props.options.TransparentHeldNote,
+            OnChanged = function(value)
+                self.props.setOption("TransparentHeldNote", value)
+            end,
+            Name = "Held Note Transparent",
+            LayoutOrder = 3
+        })
+
         elements.HitLighting = e(BoolValue, {
             Value = self.props.options.HitLighting,
             OnChanged = function(value)
                 self.props.setOption("HitLighting", value)
             end,
             Name = "Hit Lighting",
-            LayoutOrder = 3
+            LayoutOrder = 4
         });
 
         elements.HidePlayerList = e(BoolValue, {
@@ -220,7 +236,7 @@ function Options:getSettingElements()
                 self.props.setOption("HidePlayerList", not value)
             end,
             Name = "Playerlist Visible",
-            LayoutOrder = 4
+            LayoutOrder = 5
         });
 
         elements.HideChat = e(BoolValue, {
@@ -229,7 +245,7 @@ function Options:getSettingElements()
                 self.props.setOption("HideChat", not value)
             end,
             Name = "Chat Visible",
-            LayoutOrder = 5
+            LayoutOrder = 6
         });
 
         elements.HideLNTails = e(BoolValue, {
@@ -238,7 +254,7 @@ function Options:getSettingElements()
                 self.props.setOption("HideLNTails", value)
             end,
             Name = "Hide LN Tails",
-            LayoutOrder = 6
+            LayoutOrder = 7
         })
 
         elements.HideLeaderboard = e(BoolValue, {
@@ -247,7 +263,7 @@ function Options:getSettingElements()
                 self.props.setOption("HideLeaderboard", value)
             end,
             Name = "Hide In-Game Leaderboard",
-            LayoutOrder = 7
+            LayoutOrder = 8
         })
     end)
     -- 2D related
@@ -261,23 +277,22 @@ function Options:getSettingElements()
             LayoutOrder = 1
         })
 
+        elements.Upscroll = e(BoolValue, {
+            Value = self.props.options.Upscroll,
+            OnChanged = function(value)
+                self.props.setOption("Upscroll", value)
+            end,
+            Name = "Upscroll Mode",
+            LayoutOrder = 2
+        })
+
         elements.NoteColorAffects2D = e(BoolValue, {
             Value = self.props.options.NoteColorAffects2D,
             OnChanged = function(value)
                 self.props.setOption("NoteColorAffects2D", value)
             end,
             Name = "Let Note Color determine 2D object colors",
-            LayoutOrder = 2
-        })
-
-        elements.Skin = e(EnumValue, {
-            Value = self.props.options.Skin2D,
-            ValueNames = Skins:key_list()._table,
-            OnChanged = function(value)
-                self.props.setOption("Skin2D", value)
-            end,
-            Name = "Skin",
-            LayoutOrder = 4
+            LayoutOrder = 3
         })
 
         elements.PlayfieldWidth = e(IntValue, {
@@ -291,8 +306,35 @@ function Options:getSettingElements()
             end,
             MaxValue = 100,
             MinValue = 5,
-            LayoutOrder = 3
-        });
+            LayoutOrder = 4
+        })
+
+        elements.PlayfieldHitPos = e(IntValue, {
+            Value = self.props.options.PlayfieldHitPos,
+            OnChanged = function(value)
+                self.props.setOption("PlayfieldHitPos", value)
+            end,
+            Name = "Playfield Hit Position",
+            FormatValue = function(value)
+                return string.format("%d", value)
+            end,
+            MaxValue = 60,
+            MinValue = 1,
+            LayoutOrder = 5
+        })
+
+        elements.SelectSkin = e(ButtonValue, {
+            Value = self.props.options.Skin2D,
+            ValueNames = Skins:key_list()._table,
+            OnClick = function()
+                self:setState({
+                    skinMenuOpen = not self.state.skinMenuOpen
+                })
+            end,
+            Name = "Select Skin",
+            ButtonText = "Open Skin Selection Panel",
+            LayoutOrder = 6
+        })
     end)
     
 
@@ -300,6 +342,16 @@ function Options:getSettingElements()
 end
 
 function Options:render()
+    if self.state.skinMenuOpen then
+        return e(Skin, {
+            OnBack = function()
+                self:setState({
+                    skinMenuOpen = false
+                })
+            end
+        })
+    end
+
     local options = self:getSettingElements()
 
     local categories = {}

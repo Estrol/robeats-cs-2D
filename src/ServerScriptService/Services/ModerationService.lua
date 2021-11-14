@@ -59,19 +59,33 @@ function ModerationService:KnitStart()
     end
 end
 
-function ModerationService:KnitInit()
-    RunService = game:GetService("RunService")
-    TagService = Knit.GetService("TagService")
-end
+function ModerationService:BanUser(userId, reason)
+    local success, result = ParseServer.Functions.call("ban", {
+        userid = userId,
+        reason = reason
+    })
+    :await()
 
-function ModerationService:SetTag(player)
-    if PermissionsService:HasModPermissions(player) then
-        TagService:AddTag(player, "STAFF", Color3.fromRGB(255, 100, 115))
+    if success then
+        DebugOut:puts("Successfully banned user %d", userId)
+    else
+        warn("An error occured!\n", result) 
+    end
+
+    local player = game.Players:GetPlayerByUserId(userId)
+
+    if player then
+        player:Kick(string.format("%d - Server", reason))
     end
 end
 
 function ModerationService.Client:BanUser(moderator, userId, reason)
     if PermissionsService:HasModPermissions(moderator) then
+        if moderator.UserId == userId then
+            warn("Moderator tried to take action on self!")
+            return
+        end
+
         local success, result = ParseServer.Functions.call("ban", {
             userid = userId,
             reason = reason
@@ -87,13 +101,18 @@ function ModerationService.Client:BanUser(moderator, userId, reason)
         local player = game.Players:GetPlayerByUserId(userId)
 
         if player then
-            player:Kick(reason)
+            player:Kick(string.format("%d - %d",reason, moderator.Name))
         end
     end
 end
 
 function ModerationService.Client:KickUser(moderator, userId, reason)
     if PermissionsService:HasModPermissions(moderator) then
+        if moderator.UserId == userId then
+            warn("Moderator tried to take action on self!")
+            return
+        end
+        
         local player = game.Players:GetPlayerByUserId(userId)
 
         if player then

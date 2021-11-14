@@ -15,6 +15,8 @@ local RoundedFrame = require(game.ReplicatedStorage.UI.Components.Base.RoundedFr
 local RoundedTextButton = require(game.ReplicatedStorage.UI.Components.Base.RoundedTextButton)
 local RoundedImageLabel = require(game.ReplicatedStorage.UI.Components.Base.RoundedImageLabel)
 
+local Actions = require(game.ReplicatedStorage.Actions)
+
 local MainMenuUI = Roact.Component:extend("MainMenuUI")
 
 function MainMenuUI:init()
@@ -63,7 +65,8 @@ function MainMenuUI:render()
         Size = UDim2.new(1, 0, 1, 0),
         Position = UDim2.fromScale(0.5,0.5),
         AnchorPoint = Vector2.new(0.5,0.5),
-        Image = "http://www.roblox.com/asset/?id=6800827231"
+        Image = "rbxassetid://6859763885",
+        ImageColor3 = Color3.fromRGB(100,100,100)
     }, {
         Logo = e(RoundedImageLabel, {
             Image = "rbxassetid://6224561143";
@@ -82,16 +85,29 @@ function MainMenuUI:render()
         }),
         AudioVisualizer = e(AudioVisualizer),
         SongBox = e(MusicBox, {
-            Size = UDim2.fromScale(0.35, 0.15);
+            Size = UDim2.fromScale(0.35, 0.1648);
             Position = UDim2.fromScale(0.025, 0.02);
-            currentAudioName = self.state.currSFXName,
-            currentAudioArtist = self.state.currSFXArtist,
-            onClick = function()
+            SongKey = self.props.songKey;
+            OnPauseToggle = function()
                 if self.soundObj.IsPlaying then
                     self.soundObj:Pause()
                 else
                     self.soundObj:Resume()
                 end
+            end,
+            OnBack = function()
+                local newSongKey = math.clamp(self.props.songKey - 1, 1, SongDatabase:get_key_count())
+
+                self.props.setSongKey(newSongKey)
+
+                self:fadePreview(newSongKey)
+            end,
+            OnNext = function()
+                local newSongKey = math.clamp(self.props.songKey + 1, 1, SongDatabase:get_key_count())
+
+                self.props.setSongKey(newSongKey)
+
+                self:fadePreview(newSongKey)
             end
         }),
         ButtonContainer = e(RoundedFrame, {
@@ -122,28 +138,8 @@ function MainMenuUI:render()
                 end
             }, {
                 UITextSizeConstraint = e("UITextSizeConstraint", {
-                    MinTextSize = 8;
-                    MaxTextSize = 17;
-                })
-            });
-            MultiButton = e(RoundedTextButton, {
-                TextXAlignment = Enum.TextXAlignment.Left;
-                BackgroundColor3 = Color3.fromRGB(22, 22, 22);
-                BorderMode = Enum.BorderMode.Inset,
-                BorderSizePixel = 0,
-                Size = UDim2.fromScale(1, 0.125),
-                Text = "  Multiplayer";
-                TextScaled = true;
-                TextColor3 = Color3.fromRGB(255, 255, 255);
-                LayoutOrder = 5;
-                HoldSize = UDim2.fromScale(0.95, 0.125),
-                OnClick = function()
-                    self.props.history:push("/multiplayer")
-                end
-            }, {
-                UITextSizeConstraint = e("UITextSizeConstraint", {
-                    MinTextSize = 8;
-                    MaxTextSize = 17;
+                    MinTextSize = 10;
+                    MaxTextSize = 15;
                 })
             });
             ScoresButton = e(RoundedTextButton, {
@@ -162,8 +158,8 @@ function MainMenuUI:render()
                 end
             }, {
                 UITextSizeConstraint = e("UITextSizeConstraint", {
-                    MinTextSize = 8;
-                    MaxTextSize = 17;
+                    MinTextSize = 10;
+                    MaxTextSize = 15;
                 })
             });
 
@@ -183,8 +179,8 @@ function MainMenuUI:render()
                 end
             }, {
                 UITextSizeConstraint = e("UITextSizeConstraint", {
-                    MinTextSize = 8;
-                    MaxTextSize = 17;
+                    MinTextSize = 10;
+                    MaxTextSize = 15;
                 })
             });
             GlobalLeaderboardButton = e(RoundedTextButton, {
@@ -203,8 +199,8 @@ function MainMenuUI:render()
                 end
             }, {
                 UITextSizeConstraint = e("UITextSizeConstraint", {
-                    MinTextSize = 8;
-                    MaxTextSize = 17;
+                    MinTextSize = 10;
+                    MaxTextSize = 15;
                 })
             });
         });
@@ -225,6 +221,12 @@ function MainMenuUI:render()
     
 end
 
+function MainMenuUI:fadePreview(songKey)
+    self.props.previewController:PlayId(SongDatabase:get_data_for_key(songKey).AudioAssetId, function(audio)
+        audio.TimePosition = audio.TimeLength * 0.33
+    end)
+end
+
 local Injected = withInjection(MainMenuUI, {
     previewController = "PreviewController"
 })
@@ -233,5 +235,12 @@ return RoactRodux.connect(function(state)
     return {
         songKey = state.options.transient.SongKey,
         permissions = state.permissions
+    }
+end,
+function(dispatch)
+    return {
+        setSongKey = function(key)
+            dispatch(Actions.setTransientOption("SongKey", key))
+        end
     }
 end)(Injected)
