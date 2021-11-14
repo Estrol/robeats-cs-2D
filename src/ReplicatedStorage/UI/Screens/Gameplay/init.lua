@@ -36,11 +36,11 @@ Gameplay.SpreadString = "<font color=\"rgb(125, 125, 125)\">%d</font> <font colo
 
 function Gameplay:init()
     -- Get the score service
-
+    
     local ScoreService = Knit.GetService("ScoreService")
-
+    
     -- Set gameplay state
-
+    
     self:setState({
         accuracy = 0,
         score = 0,
@@ -53,35 +53,37 @@ function Gameplay:init()
         misses = 0,
         loaded = false
     })
-
+    
     -- Set up time left bib
-
+    
     self.timeLeft, self.setTimeLeft = Roact.createBinding(0)
-
+    
     -- Set up hit deviance parent reference
-
+    
     self.hitDevianceRef = Roact.createRef()
-
+    
     if not self.props.options.Use2DLane then
         local stagePlat = EnvironmentSetup:get_element_protos_folder().NoteTrackSystemProto.TrackBG.Union
         stagePlat.Transparency = self.props.options.BaseTransparency
     end
     
     -- Set FOV and Time of Day
-
+    
     workspace.CurrentCamera.FieldOfView = self.props.options.FOV
     Lighting.TimeOfDay = self.props.options.TimeOfDay
-
+    
     -- Turn PlayerList & Chat off
     game.StarterGui:SetCoreGuiEnabled("PlayerList", not self.props.options.HidePlayerList)
     game.StarterGui:SetCoreGuiEnabled("Chat", not self.props.options.HideChat)
 
+    EnvironmentSetup:set_gui_inset(true);
+    
     -- 2D Properties
     local use_upscroll = self.props.options.Upscroll
     local lane_2d = self.props.options.Use2DLane
-
+    
     -- Create the game instance
-
+    
     local _game = RobeatsGame:new(EnvironmentSetup:get_game_environment_center_position())
     _game._input:set_keybinds({
         (lane_2d and use_upscroll) and self.props.options.Keybind4 or self.props.options.Keybind1,
@@ -100,35 +102,35 @@ function Gameplay:init()
     end
     
     -- Load the map
-
+    
     _game:load(self.props.options.SongKey, GameSlot.SLOT_1, self.props.options)
-
+    
     -- Bind the game loop to every frame
     
     self.everyFrameConnection = SPUtil:bind_to_frame(function(dt)
         if _game._audio_manager:get_just_finished() then
             _game:set_mode(RobeatsGame.Mode.GameEnded)
         end
-
+        
         -- Handle starting the game if the audio and its data has loaded!
-
+        
         if _game._audio_manager:is_ready_to_play() and not self.state.loaded then
             self:setState({
                 loaded = true
             })
             _game:start_game()
         end
-
+        
         -- If we have reached the end of the game, trigger cleanup
-
+        
         if _game:get_mode() == RobeatsGame.Mode.GameEnded then
             self.everyFrameConnection:Disconnect()
-
+            
             local marvelouses, perfects, greats, goods, bads, misses, maxChain = _game._score_manager:get_end_records()
             local hits = _game._score_manager:get_hits()
             local mean = _game._score_manager:get_mean()
             local rating = Rating:get_rating_from_accuracy(self.props.options.SongKey, self.state.accuracy, self.props.options.SongRate / 100)
-
+            
             if (not self.forcedQuit) and (self.props.options.TimingPreset == "Standard") then
                 local md5Hash = SongDatabase:get_md5_hash_for_key(self.props.options.SongKey)
                 ScoreService:SubmitScorePromise(
@@ -224,8 +226,6 @@ end
 
 function Gameplay:render()
     if not self.state.loaded then
-        EnvironmentSetup:set_gui_inset(true);
-
         return Roact.createFragment({
             LoadingWheel = e(LoadingWheel, {
                 AnchorPoint = Vector2.new(0, 0.5),
