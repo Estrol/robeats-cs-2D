@@ -156,7 +156,7 @@ function SongInfoDisplay:render()
                 UITextSizeConstraint = e("UITextSizeConstraint", {
                     MaxTextSize = 40,
                 })
-            })
+            }),
         }),
         NpsGraph = e(NpsGraph, {
             Size = UDim2.fromScale(0.3, 0.45),
@@ -234,6 +234,13 @@ function SongInfoDisplay:render()
                 end,
                 LayoutOrder = 8
             });
+            MapperDisplay = e(GridInfoDisplay, {
+                Value = SongDatabase:get_mapper_for_key(self.props.SongKey),
+                FormatValue = function(value)
+                    return string.format("Mapped by: %s", value)
+                end,
+                LayoutOrder = 9
+            })
         }),
         RateDown = self.props.ShowRateButtons and e(RoundedTextButton, {
             Text = "-",

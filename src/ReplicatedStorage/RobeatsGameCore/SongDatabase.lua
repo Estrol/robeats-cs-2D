@@ -98,6 +98,16 @@ function SongDatabase:new()
 		return songdata.AudioDescription
 	end
 
+	function self:get_mapper_for_key(key)
+		local songdata = self:get_data_for_key(key)
+		
+		if songdata.AudioMapper ~= nil then
+			return songdata.AudioMapper
+		else
+			return "Unknown"
+		end
+	end
+
 	function self:get_song_length_for_key(key, rate)
 		local hit_objects = self:get_hit_objects_for_key(key)
 		local last_hit_ob = hit_objects[#hit_objects]
