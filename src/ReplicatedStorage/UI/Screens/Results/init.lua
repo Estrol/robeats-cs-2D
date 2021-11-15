@@ -205,6 +205,21 @@ function Results:render()
 			OnClick = function()
 				self.props.history:push("/select")
 			end
+		});
+
+		RestartMap = Roact.createElement(RoundedTextButton, {
+			BackgroundColor3 = Color3.fromRGB(50, 144, 50);
+			AnchorPoint = Vector2.new(0, 1);
+			Position = UDim2.fromScale(0.175, 0.98);
+			Size = UDim2.fromScale(0.15,0.065);
+			HoldSize = UDim2.fromScale(0.14, 0.065);
+			Text = "Restart Map";
+			TextColor3 = Color3.fromRGB(255, 255, 255);
+			TextSize = 16,
+			ZIndex = 5,
+			OnClick = function()
+				self.props.history:push("/play")
+			end
 		})
 	})
 end
