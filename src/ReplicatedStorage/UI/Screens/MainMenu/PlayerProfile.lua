@@ -1,6 +1,8 @@
 local Roact = require(game.ReplicatedStorage.Packages.Roact)
 local e = Roact.createElement
 
+local Llama = require(game.ReplicatedStorage.Packages.Llama)
+
 local withInjection = require(game.ReplicatedStorage.UI.Components.HOCs.withInjection)
 
 local RoundedFrame = require(game.ReplicatedStorage.UI.Components.Base.RoundedFrame)
@@ -26,7 +28,7 @@ function PlayerProfile:init()
     })
 
     self.scoreService:GetProfilePromise():andThen(function(profile)
-        if profile then
+        if not Llama.isEmpty(profile) then
             local tier = self.props.tierService:GetTierFromRating(profile.Rating)
 
             self:setState({
@@ -107,7 +109,7 @@ function PlayerProfile:render()
                RichText = true,
                TextXAlignment = Enum.TextXAlignment.Left,
                TextColor3 = Color3.fromRGB(255, 255, 255),
-               Text = string.format("%s <font color=\"#b3b3b3\">[%s]</font>", self.state.playerName, self.state.tier..(if self.state.division then string.format(" %d", self.state.division) else "")),
+               Text = if self.state.tier then string.format("%s <font color=\"#b3b3b3\">[%s]</font>", self.state.playerName, self.state.tier..(if self.state.division then string.format(" %d", self.state.division) else "")) else self.state.playerName,
                TextScaled = true,
                BackgroundTransparency = 1
            }),
