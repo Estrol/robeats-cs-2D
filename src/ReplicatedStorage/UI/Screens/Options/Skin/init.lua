@@ -41,6 +41,11 @@ end
 
 function Skin:applyGameplayFrame()
     local skin = Skins:get_skin(self.props.selectedSkin)
+
+    if not skin then
+        return
+    end
+
     local mount = self.gameplayFrame:getValue()
 
     if mount:FindFirstChild("GameplayFrame") then
