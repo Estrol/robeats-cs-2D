@@ -462,7 +462,7 @@ function HeldNote:new(
 	--[[Override--]] function self:test_release()
 		if _state == HeldNote.State.Holding or _state == HeldNote.State.HoldMissedActive then
 			local time_to_end = _game._audio_manager:get_current_time_ms() - get_tail_hit_time()
-			local did_hit, note_result = NoteResult:timedelta_to_result(time_to_end, _game)
+			local did_hit, note_result = NoteResult:release_timedelta_to_result(time_to_end, _game)
 
 			if did_hit then
 				return did_hit, note_result, RenderableHit:new(get_tail_hit_time(), time_to_end, note_result)
