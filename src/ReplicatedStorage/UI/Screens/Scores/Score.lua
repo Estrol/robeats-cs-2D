@@ -19,6 +19,10 @@ Score.defaultProps = {
 
 function Score:render()
     local songKey = SongDatabase:get_key_for_hash(self.props.SongMD5Hash)
+    
+    if songKey == SongDatabase:invalid_songkey() then
+        return
+    end
 
     local _, gradeName, gradeColor = Grade:get_grade_from_accuracy(self.props.Accuracy)
 
