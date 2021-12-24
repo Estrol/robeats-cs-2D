@@ -10,11 +10,7 @@ local ModerationService = Knit.CreateService {
 local RunService
 
 local PermissionsService
-<<<<<<< HEAD
-local TagService
-=======
 local AuthService
->>>>>>> development
 
 local Raxios
 
@@ -33,18 +29,9 @@ function ModerationService:OnPlayerAdded(player)
         query = { userid = player.UserId, auth = AuthService.APIKey }
     }):json()
 
-<<<<<<< HEAD
-            if ban then
-                player:Kick(ban.Reason)
-            end
-        end)
-
-    ModerationService:SetTag(player)
-=======
     if ban then
         player:Kick(ban.Reason)
     end
->>>>>>> development
 end
 
 
