@@ -1,0 +1,22 @@
+[package]
+name = "kisperal/robeats-cs"
+version = "0.1.0"
+registry = "https://github.com/UpliftGames/wally-index"
+realm = "shared"
+
+[dependencies]
+Roact = "roblox/roact@1.4.2"
+Rodux = "roblox/rodux@3.0.0"
+RoactRodux = "roblox/roact-rodux@0.3.0"
+Fitumi = "bytebit/fitumi@1.0.11"
+Llama = "shanebutt/llama@1.1.0"
+RoactFlipper = "reselim/roact-flipper@1.1.0"
+RoactRouter = "thenerdie/roact-router@1.0.0"
+ParseServer = "thenerdie/rbx-parse-server@0.1.3"
+DataStoreService = "nomer888/mockdatastoreservice@1.0.1"
+Flipper = "reselim/flipper@2.0.0"
+Raxios = "thenerdie/raxios@1.0.1"
+Knit = "sleitnick/knit@^1"
+Promise = "evaera/promise@3.1.0"
+Trove = "sleitnick/trove@0.1.3"
+Signal = "sleitnick/signal@1.0.1"
