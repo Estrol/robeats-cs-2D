@@ -71,60 +71,6 @@ function ScoreService:CalculateAverageAccuracy(scores)
     return accuracy / #scores
 end
 
-<<<<<<< HEAD
-function ScoreService:RefreshProfile(player)
-    local scores, succeeded = self:GetPlayerScores(player.UserId)
-
-    if succeeded then
-        local _succeeded, slots = Global
-                :query()
-                :where({
-                    UserId = player.UserId
-                })
-                :execute()
-                :await()
-
-        if _succeeded then
-            local slot = slots[1]
-
-            if slot then
-                Global
-                    :update(slot.objectId, {
-                        TotalMapsPlayed = {
-                            __op = "Increment",
-                            amount = 1
-                        },
-                        Rating = ScoreService:CalculateRating(scores),
-                        Accuracy = ScoreService:CalculateAverageAccuracy(scores),
-                        PlayerName = player.Name,
-                        UserId = player.UserId
-                    })
-                    :andThen(function(document)
-                        DebugOut:puts("Global leaderboard slot successfully updated!")
-                    end)
-                else
-                    Global
-                        :create({
-                            TotalMapsPlayed = 1,
-                            Rating = ScoreService:CalculateRating(scores),
-                            Accuracy = ScoreService:CalculateAverageAccuracy(scores),
-                            PlayerName = player.Name,
-                            CountryRegion = LocalizationService:GetCountryRegionForPlayerAsync(player),
-                            Allowed = true,
-                            UserId = player.UserId
-                        })
-                        :andThen(function(document)
-                            DebugOut:puts("Global leaderboard slot successfully created!")
-                        end)
-            end
-        end
-    else
-        warn("Global leaderboard slot could not be updated because retrieving user scores failed! Error:", scores)
-    end
-end
-
-=======
->>>>>>> development
 function ScoreService:IsBanned(player)
     return Raxios.get(url "/bans", {
         userid = player.UserId,
