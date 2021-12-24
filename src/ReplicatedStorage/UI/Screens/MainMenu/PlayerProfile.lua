@@ -1,6 +1,8 @@
 local Roact = require(game.ReplicatedStorage.Packages.Roact)
 local e = Roact.createElement
 
+local Llama = require(game.ReplicatedStorage.Packages.Llama)
+
 local withInjection = require(game.ReplicatedStorage.UI.Components.HOCs.withInjection)
 
 local RoundedFrame = require(game.ReplicatedStorage.UI.Components.Base.RoundedFrame)
@@ -25,17 +27,17 @@ function PlayerProfile:init()
         loaded = false
     })
 
-    self.scoreService:GetProfilePromise():andThen(function(profile)
-        if profile then
-            local tier = self.props.tierService:GetTierFromRating(profile.Rating)
+    self.scoreService:GetProfile():andThen(function(profile)
+        if not Llama.isEmpty(profile) then
+            local succeeded, tier = self.props.tierService:GetTierFromRating(profile.Rating):await()
 
             self:setState({
                 rank = profile.Rank,
                 rating = profile.Rating or 0,
                 accuracy = profile.Accuracy or 0,
                 totalMapsPlayed = profile.TotalMapsPlayed or 0,
-                tier = tier.name,
-                division = tier.division,
+                tier = if succeeded then tier.name else nil,
+                division = if succeeded then tier.division else nil,
                 loaded = true
             })
         else
@@ -107,7 +109,7 @@ function PlayerProfile:render()
                RichText = true,
                TextXAlignment = Enum.TextXAlignment.Left,
                TextColor3 = Color3.fromRGB(255, 255, 255),
-               Text = string.format("%s <font color=\"#b3b3b3\">[%s]</font>", self.state.playerName, self.state.tier..(if self.state.division then string.format(" %d", self.state.division) else "")),
+               Text = if self.state.tier then string.format("%s <font color=\"#b3b3b3\">[%s]</font>", self.state.playerName, self.state.tier..(if self.state.division then string.format(" %d", self.state.division) else "")) else self.state.playerName,
                TextScaled = true,
                BackgroundTransparency = 1
            }),

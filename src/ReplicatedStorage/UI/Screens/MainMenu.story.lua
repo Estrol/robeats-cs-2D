@@ -7,7 +7,7 @@ local OptionsReducer = require(game.ReplicatedStorage.Reducers.OptionsReducer)
 local PermissionsReducer = require(game.ReplicatedStorage.Reducers.PermissionsReducer)
 local MultiplayerReducer = require(game.ReplicatedStorage.Reducers.MultiplayerReducer)
 
-local Promise = require(game.ReplicatedStorage.Knit.Util.Promise)
+local Promise = require(game.ReplicatedStorage.Packages.Promise)
 
 local Actions = require(game.ReplicatedStorage.Actions)
 
