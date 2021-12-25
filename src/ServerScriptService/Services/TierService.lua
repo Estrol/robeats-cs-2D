@@ -8,14 +8,14 @@ local TierService = Knit.CreateService {
 }
 
 local TierRatingMap = {
-    { name = "Grandmaster", minRating = 65 },
-    { name = "Master", minRating = 55 },
-    { name = "Diamond", minRating = 45 },
-    { name = "Platinum", minRating = 35 },
+    { name = "Prism", minRating = 65 },
+    { name = "Ultraviolet", minRating = 55 },
+    { name = "Emerald", minRating = 45 },
+    { name = "Diamond", minRating = 35 },
     { name = "Gold", minRating = 27 },
     { name = "Silver", minRating = 18 },
     { name = "Bronze", minRating = 11 },
-    { name = "Aluminum", minRating = 0 }
+    { name = "Tin", minRating = 0 }
 }
 
 function TierService:GetTierFromRating(rating)

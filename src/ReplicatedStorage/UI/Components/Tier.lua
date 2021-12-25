@@ -14,14 +14,14 @@ Tier.defaultProps = {
 }
 
 Tier.Images = {
-    Aluminum = { "rbxassetid://7989701214", "rbxassetid://7989699108", "rbxassetid://7989698178" },
-    Bronze = { "rbxassetid://7989698032", "rbxassetid://7989697690", "rbxassetid://7989697392" },
-    Silver = { "rbxassetid://7989697204", "rbxassetid://7989697045", "rbxassetid://7989696784" },
-    Gold = { "rbxassetid://7989701026", "rbxassetid://7989700857", "rbxassetid://7989700681" },
-    Platinum = { "rbxassetid://7989700475", "rbxassetid://7989700256", "rbxassetid://7989700104" },
-    Diamond = { "rbxassetid://7989699899", "rbxassetid://7989699697", "rbxassetid://7989699464" },
-    Master = { "rbxassetid://7989699316", "rbxassetid://7989698831", "rbxassetid://7989698577" },
-    Grandmaster = { "rbxassetid://7989698336" }
+    Tin = { "rbxassetid://8027526017", "rbxassetid://8027525773", "rbxassetid://8027525646" },
+    Bronze = { "rbxassetid://8027529526", "rbxassetid://8027529397", "rbxassetid://8027529224" },
+    Silver = { "rbxassetid://8027527118", "rbxassetid://8027526869", "rbxassetid://8027526667" },
+    Gold = { "rbxassetid://8027527946", "rbxassetid://8027527771", "rbxassetid://8027527509" },
+    Diamond = { "rbxassetid://8027528965", "rbxassetid://8027528758", "rbxassetid://8027528639" },
+    Emerald = { "rbxassetid://8027528504", "rbxassetid://8027528214", "rbxassetid://8027528067" },
+    Ultraviolet = { "rbxassetid://8027525523", "rbxassetid://8027525387", "rbxassetid://8027525045" },
+    Prism = { "rbxassetid://8027527255" }
 }
 
 function Tier:render()
