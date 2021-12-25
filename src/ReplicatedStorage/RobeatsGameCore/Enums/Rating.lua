@@ -10,9 +10,9 @@ function Rating:get_rating_from_accuracy(song_key, accuracy, rate)
 
 	if rate then
 		if rate >= 1 then
-			ratemult = 1 + (rate-1) * 0.6
+			ratemult = 1 + (rate-1) * 1.75
 		else
-			ratemult = 1 + (rate-1) * 2
+			ratemult = 1 + (rate-1) * 1.6
 		end
 	end
 
