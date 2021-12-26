@@ -48,7 +48,7 @@ function Scores:render()
 
                 self.props.history:push("/results", Llama.Dictionary.join(score, {
                     SongKey = SongDatabase:get_key_for_hash(score.SongMD5Hash),
-                    TimePlayed = DateTime.fromIsoDate(score.updatedAt).UnixTimestamp,
+                    TimePlayed = DateTime.fromIsoDate(score._updated_at).UnixTimestamp,
                     Hits = hits
                 }))
             end

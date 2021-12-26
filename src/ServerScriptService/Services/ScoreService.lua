@@ -80,87 +80,30 @@ end
 
 function ScoreService.Client:SubmitScore(player, songMD5Hash, rating, score, marvelouses, perfects, greats, goods, bads, misses, accuracy, maxChain, mean, rate, mods)
     if RateLimitService:CanProcessRequestWithRateLimit(player, "SubmitScore", 1) then
-        local banned, reason = ScoreService:IsBanned(player)
-
-        if banned then
-            player:Kick(reason)
-            return
-        end
-
-        if rating >= 85 then
-            ModerationService:BanUser(player.UserId, "Suspicious score detected")
-            return
-        end
-
-        local succeeded, documents = Scores
-            :query()
-            :where({
+        Raxios.post(url "/scores", {
+            query = {
+                userid = player.UserId,
+                auth = AuthService.APIKey
+            },
+            data = {
+                UserId = player.UserId,
+                PlayerName = player.DisplayName,
+                Rating = rating,
+                Score = score,
+                Marvelouses = marvelouses,
+                Perfects = perfects,
+                Greats = greats,
+                Goods = goods,
+                Bads = bads,
+                Misses = misses,
+                Mean = mean,
+                Accuracy = accuracy,
+                Rate = rate,
+                MaxChain = maxChain,
                 SongMD5Hash = songMD5Hash,
-                UserId = player.UserId
-            })
-            :execute()
-            :await()
-
-        if succeeded then
-            local oldScore = documents[1]
-
-            if not oldScore then
-                succeeded = Scores:create({
-                    UserId = player.UserId,
-                    PlayerName = player.DisplayName,
-                    Rating = rating,
-                    Score = score,
-                    Marvelouses = marvelouses,
-                    Perfects = perfects,
-                    Greats = greats,
-                    Goods = goods,
-                    Bads = bads,
-                    Misses = misses,
-                    Mean = mean,
-                    Accuracy = accuracy,
-                    Rate = rate,
-                    MaxChain = maxChain,
-                    SongMD5Hash = songMD5Hash,
-                    Mods = mods,
-                    Allowed = true
-                })
-                :await()
-                ScoreService:RefreshProfile(player)
-                return succeeded
-            end
-
-            local overwrite = false
-
-            if oldScore.Rating == 0 and rating == 0 then
-                overwrite = score > oldScore.Score
-            else
-                overwrite = rating > oldScore.Rating
-            end
-
-            if overwrite then
-                Scores:update(oldScore.objectId, {
-                    PlayerName = player.DisplayName,
-                    Rating = rating,
-                    Score = score,
-                    Marvelouses = marvelouses,
-                    Perfects = perfects,
-                    Greats = greats,
-                    Goods = goods,
-                    Bads = bads,
-                    Misses = misses,
-                    Mean = mean,
-                    Accuracy = accuracy,
-                    Rate = rate,
-                    Mods = mods
-                }):await()
-            end
-
-            ScoreService:RefreshProfile(player)
-        else
-            return false
-        end
-        
-        return succeeded
+                Mods = mods
+            }
+        })
     end
 end
 

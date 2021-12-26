@@ -100,7 +100,7 @@ function SongSelect:render()
 
                 self.props.history:push("/results", Llama.Dictionary.join(stats, {
                     SongKey = SongDatabase:get_key_for_hash(stats.SongMD5Hash),
-                    TimePlayed = DateTime.fromIsoDate(stats.updatedAt).UnixTimestamp,
+                    TimePlayed = DateTime.fromIsoDate(stats._updated_at).UnixTimestamp,
                     Hits = hits
                 }))
             end,

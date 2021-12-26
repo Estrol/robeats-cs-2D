@@ -114,7 +114,7 @@ function LeaderboardSlot:render()
                     Text = "Delete score",
                     Color = Color3.fromRGB(238, 8, 8),
                     OnClick = function()
-                        self.props.OnDelete(self.props.Data.objectId)
+                        self.props.OnDelete(self.props.Data._id)
                     end
                 },
                 {

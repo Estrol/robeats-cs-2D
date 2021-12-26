@@ -45,7 +45,7 @@ function Leaderboard:render()
         UserId = game.Players.LocalPlayer.UserId,
         Rating = self.props.LocalRating,
         Accuracy = self.props.LocalAccuracy,
-        objectId = localSlot
+        _id = localSlot
     })
 
     table.sort(scores, function(a, b)
@@ -59,10 +59,10 @@ function Leaderboard:render()
             Rating = itr_score.Rating,
             Accuracy = itr_score.Accuracy,
             Place = itr_score_index,
-            IsLocalProfile = itr_score.objectId == localSlot
+            IsLocalProfile = itr_score._id == localSlot
         })
 
-        children[itr_score.objectId] = itr_score_element
+        children[itr_score._id] = itr_score_element
     end
 
     return e(RoundedFrame, {
