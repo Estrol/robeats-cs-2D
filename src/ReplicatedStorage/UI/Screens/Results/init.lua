@@ -66,7 +66,7 @@ function Results:render()
 	local hits = state.Hits or {}
 	local mean = state.Mean or 0
 
-	local moment = DateTime.fromUnixTimestamp(state.TimePlayed):ToLocalTime()
+	local moment = if state.TimePlayed then DateTime.fromUnixTimestamp(state.TimePlayed):ToLocalTime() else nil
 
     return Roact.createElement("Frame", {
 		BackgroundColor3 = Color3.fromRGB(0,0,0),
@@ -158,7 +158,7 @@ function Results:render()
 				AspectRatio = 1
 			})
 		}),
-		PlayedAt = Roact.createElement(RoundedTextLabel, {
+		PlayedAt = if moment then Roact.createElement(RoundedTextLabel, {
 			Position = UDim2.fromScale(0.787, 0.306),
 			AnchorPoint = Vector2.new(0.5, 0.5),
 			Size = UDim2.fromScale(0.728, 0.046),
@@ -172,7 +172,7 @@ function Results:render()
 			UITextSizeConstraint = Roact.createElement("UITextSizeConstraint", {
 				MaxTextSize = 25
 			})
-		}),
+		}) else nil,
 		Background = Roact.createElement(RoundedImageLabel, {
 			Position = UDim2.fromScale(1, 0),
 			AnchorPoint = Vector2.new(1, 0),
