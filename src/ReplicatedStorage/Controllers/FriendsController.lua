@@ -9,13 +9,17 @@ function FriendsController:KnitInit()
 
     self.Friends = {}
 
-    repeat
+    while true do
         table.foreachi(pages:GetCurrentPage(), function(i, friend)
             table.insert(self.Friends, friend.Id)
         end)
 
+        if pages.IsFinished then
+            break
+        end
+
         pages:AdvanceToNextPageAsync()
-    until pages.IsFinished
+    end
 end
 
 function FriendsController:IsFriend(id)
