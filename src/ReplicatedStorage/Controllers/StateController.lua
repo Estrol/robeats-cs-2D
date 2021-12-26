@@ -10,7 +10,9 @@ local PermissionsService
 function StateController:KnitStart()
     PermissionsService = Knit.GetService("PermissionsService")
 
-    State.Store:dispatch(Actions.setAdmin(PermissionsService:HasModPermissions()))
+    local _, hasAdmin = PermissionsService:HasModPermissions():await()
+
+    State.Store:dispatch(Actions.setAdmin(hasAdmin))
 end
 
 return StateController
