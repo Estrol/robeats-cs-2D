@@ -191,7 +191,7 @@ function LeaderboardSlot:render()
                 Position = UDim2.new(1.25, 0, 0, 0),
                 Size = UDim2.new(15.3, 0, 0.55, 0),
                 Font = Enum.Font.GothamSemibold,
-                Text = self.props.Data.PlayerName,
+                Text = if self.props.friendsController:IsFriend(self.props.Data.UserId) then "👥 " .. self.props.Data.PlayerName else self.props.Data.PlayerName,
                 TextColor3 = (self.props.Data.UserId == localUserId) and Color3.fromRGB(25, 207, 231) or Color3.fromRGB(94, 94, 94),
                 TextScaled = true,
                 TextXAlignment = Enum.TextXAlignment.Left,
@@ -261,4 +261,8 @@ function LeaderboardSlot:render()
     })
 end
 
-return LeaderboardSlot
+local Injected = withInjection(LeaderboardSlot, {
+    friendsController = "FriendsController"
+})
+
+return Injected

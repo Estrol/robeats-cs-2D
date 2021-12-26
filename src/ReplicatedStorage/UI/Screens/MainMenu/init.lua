@@ -115,28 +115,6 @@ function MainMenuUI:render()
                 SortOrder = Enum.SortOrder.LayoutOrder;
                 VerticalAlignment = Enum.VerticalAlignment.Bottom;
             });
-
-            MultiButton = e(RoundedTextButton, {
-                TextXAlignment = Enum.TextXAlignment.Left;
-                BackgroundColor3 = Color3.fromRGB(22, 22, 22);
-                BorderMode = Enum.BorderMode.Inset,
-                BorderSizePixel = 0,
-                Size = UDim2.fromScale(1, 0.125),
-                Text = "  Multiplayer";
-                TextScaled = true;
-                TextColor3 = Color3.fromRGB(255, 255, 255);
-                LayoutOrder = 5;
-                HoldSize = UDim2.fromScale(0.95, 0.125),
-                OnClick = function()
-                    self.props.history:push("/multiplayer")
-                end
-            }, {
-                UITextSizeConstraint = e("UITextSizeConstraint", {
-                    MinTextSize = 10;
-                    MaxTextSize = 15;
-                })
-            }),
-
             PlayButton = e(RoundedTextButton, {
                 TextXAlignment = Enum.TextXAlignment.Left;
                 BackgroundColor3 = Color3.fromRGB(22, 22, 22);

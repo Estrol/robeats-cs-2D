@@ -207,7 +207,7 @@ function Results:render()
 			end
 		});
 
-		RestartMap = Roact.createElement(RoundedTextButton, {
+		RestartMap = if not self.props.location.state.Viewing then Roact.createElement(RoundedTextButton, {
 			BackgroundColor3 = Color3.fromRGB(50, 144, 50);
 			AnchorPoint = Vector2.new(0, 1);
 			Position = UDim2.fromScale(0.175, 0.98);
@@ -220,7 +220,7 @@ function Results:render()
 			OnClick = function()
 				self.props.history:push("/play")
 			end
-		})
+		}) else nil
 	})
 end
 

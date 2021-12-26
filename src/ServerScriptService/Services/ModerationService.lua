@@ -49,22 +49,17 @@ function ModerationService:KnitStart()
 end
 
 function ModerationService:BanUser(userId, reason)
-    local success, result = ParseServer.Functions.call("ban", {
-        userid = userId,
-        reason = reason
+    pcall(Raxios.post, url "/bans", {
+        query = {
+            userid = userId,
+            reason = reason
+        }
     })
-    :await()
-
-    if success then
-        DebugOut:puts("Successfully banned user %d", userId)
-    else
-        warn("An error occured!\n", result) 
-    end
 
     local player = game.Players:GetPlayerByUserId(userId)
 
     if player then
-        player:Kick(string.format("%d - Server", reason))
+        player:Kick(reason)
     end
 end
 
@@ -75,23 +70,7 @@ function ModerationService.Client:BanUser(moderator, userId, reason)
             return
         end
 
-        local success, result = ParseServer.Functions.call("ban", {
-            userid = userId,
-            reason = reason
-        })
-        :await()
-
-        if success then
-            DebugOut:puts("Successfully banned user %d", userId)
-        else
-            warn("An error occured!\n", result) 
-        end
-
-        local player = game.Players:GetPlayerByUserId(userId)
-
-        if player then
-            player:Kick(string.format("%d - %d",reason, moderator.Name))
-        end
+        ModerationService:BanUser(userId, reason)
     end
 end
 

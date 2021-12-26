@@ -161,15 +161,10 @@ function ScoreService.Client:GetPlayerScores(player, userId)
 end
 
 function ScoreService.Client:DeleteScore(moderator, objectId)
-    if RateLimitService:CanProcessRequestWithRateLimit(moderator, "DeleteScore", 4) then
-        if PermissionsService:HasModPermissions(moderator) then
-            local succeeded, result = Scores:delete(objectId)
-                :await()
-            
-            if not succeeded then
-                warn(result)
-            end
-        end
+    if RateLimitService:CanProcessRequestWithRateLimit(moderator, "DeleteScore", 4) and PermissionsService:HasModPermissions(moderator) then
+        return Raxios.delete(url "/scores", {
+            query = { id = objectId, auth = AuthService.APIKey }
+        }):json()
     end
 end
 

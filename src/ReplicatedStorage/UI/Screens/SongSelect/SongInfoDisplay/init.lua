@@ -147,7 +147,7 @@ function SongInfoDisplay:render()
                 TextTransparency = self.motorBinding:map(function(a)
                     return 1-a.title
                 end);
-                Text = SongDatabase:get_artist_for_key(self.props.SongKey),
+                Text = string.format("%s // %s", SongDatabase:get_artist_for_key(self.props.SongKey), SongDatabase:get_mapper_for_key(self.props.SongKey)),
                 TextColor3 = Color3.fromRGB(255, 187, 14),
                 TextScaled = true,
                 LayoutOrder = 1,
@@ -233,13 +233,6 @@ function SongInfoDisplay:render()
                     return string.format("Total Length: %s", SPUtil:format_ms_time(value))
                 end,
                 LayoutOrder = 8
-            });
-            MapperDisplay = e(GridInfoDisplay, {
-                Value = SongDatabase:get_mapper_for_key(self.props.SongKey),
-                FormatValue = function(value)
-                    return string.format("Mapped by: %s", value)
-                end,
-                LayoutOrder = 9
             })
         }),
         RateDown = self.props.ShowRateButtons and e(RoundedTextButton, {
