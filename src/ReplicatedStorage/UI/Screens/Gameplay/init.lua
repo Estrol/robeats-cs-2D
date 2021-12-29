@@ -14,6 +14,7 @@ local DebugOut = require(game.ReplicatedStorage.Shared.DebugOut)
 local NoteResult= require(game.ReplicatedStorage.RobeatsGameCore.Enums.NoteResult)
 
 local Leaderboard = require(script.Leaderboard)
+local StatCard = require(script.StatCard)
 
 local AnimatedNumberLabel = require(game.ReplicatedStorage.UI.Components.Base.AnimatedNumberLabel)
 local RoundedTextLabel = require(game.ReplicatedStorage.UI.Components.Base.RoundedTextLabel)
@@ -258,8 +259,6 @@ function Gameplay:render()
         })
     end
 
-    local MA = (self.state.perfects) == 0 and 0 or self.state.marvelouses / self.state.perfects
-
     local laneCoverY
     local laneCoverPosY
     local laneCoverRotation
@@ -291,6 +290,12 @@ function Gameplay:render()
         })
     end
 
+    local statCardPosition = UDim2.fromScale(0.7, 0.2)
+
+    if self.props.options.Use2DLane then
+        statCardPosition =  UDim2.fromScale((self.props.options.PlayfieldWidth / 100 / 2) + 0.53, 0.2)
+    end
+
     return Roact.createFragment({
         Score = e(AnimatedNumberLabel, {
             Size = UDim2.fromScale(0.2, 0.12),
@@ -309,22 +314,15 @@ function Gameplay:render()
                 MaxTextSize = 40
             })
         }),
-        Accuracy = e(AnimatedNumberLabel, {
-            Size = UDim2.fromScale(0.2, 0.085),
-            TextColor3 = Color3.fromRGB(228, 228, 228),
-            Position = UDim2.fromScale(0.98, 0.07),
-            TextXAlignment = Enum.TextXAlignment.Right,
-            AnchorPoint = Vector2.new(1, 0),
-            BackgroundTransparency = 1,
-            Value = self.state.accuracy,
-            FormatValue = function(a)
-                return string.format("%0.2f%%", a)
-            end,
-            TextScaled = true
-        }, {
-            UITextSizeConstraint = Roact.createElement("UITextSizeConstraint", {
-                MaxTextSize = 18
-            })
+        StatCard = e(StatCard, {
+            Position = statCardPosition,
+            Marvelouses = self.state.marvelouses,
+            Perfects = self.state.perfects,
+            Greats = self.state.greats,
+            Goods = self.state.goods,
+            Bads = self.state.bads,
+            Misses = self.state.misses,
+            Accuracy = self.state.accuracy
         }),
         TimeLeft = e(RoundedTextLabel, {
             Size = UDim2.fromScale(0.115, 0.035),
@@ -361,23 +359,6 @@ function Gameplay:render()
                 self.forcedQuit = true
                 self._game:set_mode(RobeatsGame.Mode.GameEnded)
             end
-        }),
-        Spread = e(RoundedTextLabel, {
-            RichText = true,
-            Size = UDim2.fromScale(0.3, 0.08),
-            TextYAlignment = Enum.TextYAlignment.Bottom,
-            TextXAlignment = Enum.TextXAlignment.Right,
-            AnchorPoint = Vector2.new(1, 0),
-            TextColor3 = Color3.fromRGB(255, 255, 255),
-            BackgroundTransparency = 1,
-            Position = UDim2.fromScale(0.98, 0.89),
-            TextScaled = true,
-            Text = string.format(self.SpreadString,
-                self.state.marvelouses, self.state.perfects, self.state.greats, self.state.goods, self.state.bads, self.state.misses, MA)
-        }, {
-            UITextSizeConstraint = e("UITextSizeConstraint", {
-                MaxTextSize = 25
-            })
         }),
         Leaderboard = leaderboard,
         HitDeviance = e(RoundedFrame, {
