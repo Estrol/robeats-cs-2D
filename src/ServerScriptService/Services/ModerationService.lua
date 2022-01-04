@@ -52,7 +52,8 @@ function ModerationService:BanUser(userId, reason)
     pcall(Raxios.post, url "/bans", {
         query = {
             userid = userId,
-            reason = reason
+            reason = reason,
+            auth = AuthService.APIKey
         }
     })
 
