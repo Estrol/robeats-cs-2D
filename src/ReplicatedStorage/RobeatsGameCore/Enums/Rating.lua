@@ -10,21 +10,14 @@ end
 
 local Rating = {}
 
-function Rating:get_rating_from_accuracy(song_key, accuracy, rate)
-    rate = rate or 1
+function Rating:get_rating(difficulty, accuracy)
+	return difficulty * weightingPercentage(accuracy) / 100
+end
 
-    local difficulty = SongDatabase:get_data_for_key(song_key).AudioDifficulty
-    local ratemult = 1
+function Rating:get_rating_from_song_key(song_key, accuracy, rate)
+	local difficulty = SongDatabase:get_difficulty_for_key(song_key, rate)
 
-	if rate then
-		if rate >= 1 then
-			ratemult = 1 + (rate-1) * 1.3
-		else
-			ratemult = 1 + (rate - 1) * 1.15
-		end
-	end
-
-	return ratemult *  difficulty * weightingPercentage(accuracy)/100
+	return self:get_rating(difficulty, accuracy)
 end
 
 return Rating

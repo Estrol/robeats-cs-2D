@@ -130,7 +130,7 @@ function Gameplay:init()
             local marvelouses, perfects, greats, goods, bads, misses, maxChain = _game._score_manager:get_end_records()
             local hits = _game._score_manager:get_hits()
             local mean = _game._score_manager:get_mean()
-            local rating = Rating:get_rating_from_accuracy(self.props.options.SongKey, self.state.accuracy, self.props.options.SongRate / 100)
+            local rating = Rating:get_rating_from_song_key(self.props.options.SongKey, self.state.accuracy, self.props.options.SongRate / 100)
             
             if (not self.forcedQuit) and (self.props.options.TimingPreset == "Standard") then
                 local md5Hash = SongDatabase:get_md5_hash_for_key(self.props.options.SongKey)
@@ -284,7 +284,7 @@ function Gameplay:render()
     if not self.props.options.HideLeaderboard then
         leaderboard = e(Leaderboard, {
             SongKey = self.props.options.SongKey,
-            LocalRating = Rating:get_rating_from_accuracy(self.props.options.SongKey, self.state.accuracy, self.props.options.SongRate / 100),
+            LocalRating = Rating:get_rating_from_song_key(self.props.options.SongKey, self.state.accuracy, self.props.options.SongRate / 100),
             LocalAccuracy = self.state.accuracy,
             Position = LeaderboardPositions[self.props.options.InGameLeaderboardPosition]
         })
