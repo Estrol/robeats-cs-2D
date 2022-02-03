@@ -67,7 +67,12 @@ end
 function Results:render()
 	local state = self.props.location.state
 
-	local moment = DateTime.fromUnixTimestamp(state.TimePlayed):ToLocalTime()
+	local grade = Grade:get_grade_from_accuracy(state.Accuracy)
+
+	local hits = state.Hits or {}
+	local mean = state.Mean or 0
+
+	local moment = if state.TimePlayed then DateTime.fromUnixTimestamp(state.TimePlayed):ToLocalTime() else nil
 
 	local playerSelection
 
@@ -216,7 +221,7 @@ function Results:render()
 				AspectRatio = 1
 			})
 		}),
-		PlayedAt = Roact.createElement(RoundedTextLabel, {
+		PlayedAt = if moment then Roact.createElement(RoundedTextLabel, {
 			Position = UDim2.fromScale(0.787, 0.306),
 			AnchorPoint = Vector2.new(0.5, 0.5),
 			Size = UDim2.fromScale(0.728, 0.046),
@@ -230,7 +235,7 @@ function Results:render()
 			UITextSizeConstraint = Roact.createElement("UITextSizeConstraint", {
 				MaxTextSize = 25
 			})
-		}),
+		}) else nil,
 		Background = Roact.createElement(RoundedImageLabel, {
 			Position = UDim2.fromScale(1, 0),
 			AnchorPoint = Vector2.new(1, 0),
@@ -272,7 +277,7 @@ function Results:render()
 			end
 		});
 
-		RestartMap = Roact.createElement(RoundedTextButton, {
+		RestartMap = if not self.props.location.state.Viewing then Roact.createElement(RoundedTextButton, {
 			BackgroundColor3 = Color3.fromRGB(50, 144, 50);
 			AnchorPoint = Vector2.new(0, 1);
 			Position = UDim2.fromScale(0.175, 0.98);
@@ -285,7 +290,7 @@ function Results:render()
 			OnClick = function()
 				self.props.history:push("/play")
 			end
-		})
+		}) else nil
 	})
 end
 

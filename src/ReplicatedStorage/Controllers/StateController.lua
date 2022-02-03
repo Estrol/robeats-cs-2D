@@ -25,7 +25,6 @@ function StateController:KnitInit()
         
     self.Store = Rodux.Store.new(combinedReducers)
 
-    self.Store:dispatch(Actions.setAdmin(PermissionsService:HasModPermissions()))
     self.Store:dispatch(Actions.setTransientOption("SongKey", math.random(1, SongDatabase:get_key_count())))
 end
 
@@ -39,6 +38,9 @@ function StateController:KnitStart()
     end)
 
     self.Store:dispatch({ type = "setState", state = StateService:GetState() })
+    local _, hasAdmin = PermissionsService:HasModPermissions():await()
+
+    self.Store:dispatch(Actions.setAdmin(hasAdmin))
 end
 
 return StateController

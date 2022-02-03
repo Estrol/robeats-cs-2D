@@ -63,7 +63,7 @@ function InputUtil:new()
 		end)
 
 		userinput_service.InputBegan:connect(function(input, gameProcessed)
-			if input.UserInputType == Enum.UserInputType.Keyboard then
+			if input.UserInputType == Enum.UserInputType.Keyboard or input.UserInputType == Enum.UserInputType.Gamepad1 then
 				self:input_began(input.KeyCode)
 
 			elseif input.UserInputType == Enum.UserInputType.MouseButton1 then
@@ -83,7 +83,7 @@ function InputUtil:new()
 		end)
 
 		userinput_service.InputEnded:connect(function(input, gameProcessed)
-			if input.UserInputType == Enum.UserInputType.Keyboard then
+			if input.UserInputType == Enum.UserInputType.Keyboard or input.UserInputType == Enum.UserInputType.Gamepad1 then
 				self:input_ended(input.KeyCode)
 
 			elseif input.UserInputType == Enum.UserInputType.MouseButton1 then

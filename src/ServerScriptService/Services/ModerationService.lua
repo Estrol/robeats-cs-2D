@@ -51,63 +51,43 @@ function ModerationService:KnitStart()
 end
 
 function ModerationService:BanUser(userId, reason)
-    local success, result = ParseServer.Functions.call("ban", {
-        userid = userId,
-        reason = reason
+    pcall(Raxios.post, url "/bans", {
+        query = {
+            userid = userId,
+            reason = reason,
+            auth = AuthService.APIKey
+        }
     })
-    :await()
-
-    if success then
-        DebugOut:puts("Successfully banned user %d", userId)
-    else
-        warn("An error occured!\n", result) 
-    end
 
     local player = game.Players:GetPlayerByUserId(userId)
 
     if player then
-        player:Kick(string.format("%d - Server", reason))
+        player:Kick(reason)
     end
 end
 
 function ModerationService.Client:BanUser(moderator, userId, reason)
     if PermissionsService:HasModPermissions(moderator) then
         if moderator.UserId == userId then
-            warn("Moderator tried to take action on self!")
+            warn("You can't do that silly")
             return
         end
 
-        local success, result = ParseServer.Functions.call("ban", {
-            userid = userId,
-            reason = reason
-        })
-        :await()
-
-        if success then
-            DebugOut:puts("Successfully banned user %d", userId)
-        else
-            warn("An error occured!\n", result) 
-        end
-
-        local player = game.Players:GetPlayerByUserId(userId)
-
-        if player then
-            player:Kick(string.format("%d - %d",reason, moderator.Name))
-        end
+        ModerationService:BanUser(userId, reason .. " | Moderator: ".. moderator.Name)
     end
 end
 
 function ModerationService.Client:KickUser(moderator, userId, reason)
     if PermissionsService:HasModPermissions(moderator) then
         if moderator.UserId == userId then
-            warn("Moderator tried to take action on self!")
+            warn("N O P E")
             return
         end
         
         local player = game.Players:GetPlayerByUserId(userId)
 
         if player then
-            player:Kick(reason)
+            player:Kick(reason .. " | Moderator: " .. moderator.Name)
         end
     end
 end

@@ -101,7 +101,8 @@ function RoactController:GetDependencies()
         ModerationService = Knit.GetService("ModerationService"),
         PreviewController = Knit.GetController("PreviewController"),
         MultiplayerService = Knit.GetService("MultiplayerService"),
-        TierService = Knit.GetService("TierService")
+        TierService = Knit.GetService("TierService"),
+        FriendsController = Knit.GetController("FriendsController")
     }
 end
 

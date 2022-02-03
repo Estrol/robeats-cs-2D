@@ -8,7 +8,7 @@ function SettingsController:KnitStart()
     local store = Knit.GetController("StateController").Store
     local SettingsService = Knit.GetService("SettingsService")
 
-    local settings = SettingsService:GetSettings()
+    local _, settings = SettingsService:GetSettings():await()
 
     if settings then
         for i, v in pairs(settings) do
