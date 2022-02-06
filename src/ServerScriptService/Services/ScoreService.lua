@@ -71,13 +71,6 @@ function ScoreService:CalculateAverageAccuracy(scores)
     return accuracy / #scores
 end
 
-function ScoreService:IsBanned(player)
-    return Raxios.get(url "/bans", {
-        userid = player.UserId,
-        auth = AuthService.APIKey
-    })
-end
-
 function ScoreService.Client:SubmitScore(player, data)
     if RateLimitService:CanProcessRequestWithRateLimit(player, "SubmitScore", 1) then
         Raxios.post(url "/scores", {
