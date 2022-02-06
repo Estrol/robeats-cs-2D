@@ -78,7 +78,7 @@ function ScoreService:IsBanned(player)
     })
 end
 
-function ScoreService.Client:SubmitScore(player, songMD5Hash, rating, score, marvelouses, perfects, greats, goods, bads, misses, accuracy, maxChain, mean, rate, mods)
+function ScoreService.Client:SubmitScore(player, data)
     if RateLimitService:CanProcessRequestWithRateLimit(player, "SubmitScore", 1) then
         Raxios.post(url "/scores", {
             query = {
@@ -88,20 +88,20 @@ function ScoreService.Client:SubmitScore(player, songMD5Hash, rating, score, mar
             data = {
                 UserId = player.UserId,
                 PlayerName = player.Name,
-                Rating = rating,
-                Score = score,
-                Marvelouses = marvelouses,
-                Perfects = perfects,
-                Greats = greats,
-                Goods = goods,
-                Bads = bads,
-                Misses = misses,
-                Mean = mean,
-                Accuracy = accuracy,
-                Rate = rate,
-                MaxChain = maxChain,
-                SongMD5Hash = songMD5Hash,
-                Mods = mods
+                Rating = data.Rating,
+                Score = data.Score,
+                Marvelouses = data.Marvelouses,
+                Perfects = data.Perfects,
+                Greats = data.Greats,
+                Goods = data.Goods,
+                Bads = data.Bads,
+                Misses = data.Misses,
+                Mean = data.Mean,
+                Accuracy = data.Accuracy,
+                Rate = data.Rate,
+                MaxChain = data.MaxChain,
+                SongMD5Hash = data.SongMD5Hash,
+                Mods = data.Mods
             }
         })
     end

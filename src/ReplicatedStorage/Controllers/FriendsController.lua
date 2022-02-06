@@ -5,10 +5,10 @@ local Knit = require(game:GetService("ReplicatedStorage").Packages.Knit)
 local FriendsController = Knit.CreateController { Name = "FriendsController" }
 
 function FriendsController:KnitInit()
+    self.Friends = {}
+    
     pcall(function()
         local pages = game.Players:GetFriendsAsync(game.Players.LocalPlayer.UserId)
-
-        self.Friends = {}
 
         while true do
             table.foreachi(pages:GetCurrentPage(), function(i, friend)

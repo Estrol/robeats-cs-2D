@@ -46,7 +46,7 @@ function Gameplay:init()
         accuracy = 0,
         score = 0,
         chain = 0,
-        maxCombo = 0,
+        maxChain = 0,
         marvelouses = 0,
         perfects = 0,
         greats = 0,
@@ -105,8 +105,11 @@ function Gameplay:init()
     
     -- Load the map
 
-    _game:load(self.props.match and self.props.match.selectedSongKey or self.props.options.SongKey, GameSlot.SLOT_1, Llama.Dictionary.join(self.props.options, {
-        SongRate = self.props.match and self.props.match.songRate or self.props.options.SongRate
+    self.songKey = if self.props.room then self.props.room.selectedSongKey else self.props.options.SongKey
+    self.songRate = if self.props.room then self.props.room.songRate else self.props.options.SongRate
+
+    _game:load(self.songKey, GameSlot.SLOT_1, Llama.Dictionary.join(self.props.options, {
+        SongRate = self.songRate
     }))
 
     -- Bind the game loop to every frame
@@ -121,8 +124,8 @@ function Gameplay:init()
         -- Handle starting the game if the audio and its data has loaded!
 
         if not self.state.loaded and _game._audio_manager:is_ready_to_play() and self:allPlayersLoaded() then
-            if self.props.match then
-                self.props.multiplayerService:SetReady(self.props.roomId, true)
+            if self.props.room then
+                self.props.multiplayerService:SetLoaded(self.props.roomId, true)
             end
             
             self:setState({
@@ -147,10 +150,10 @@ function Gameplay:init()
 
         -- Every second, send match stats to the server
 
-        if self.props.match and _send_every:do_flash() then
+        if self.props.room and _send_every:do_flash() then
             self.props.multiplayerService:SetMatchStats(self.props.roomId, {
                 score = self.state.score,
-                rating = Rating:get_rating_from_accuracy(self.props.options.SongKey, self.state.accuracy, self.props.match.songRate / 100),
+                rating = Rating:get_rating(self.props.options.SongKey, self.state.accuracy, self.props.room.songRate / 100),
                 accuracy = self.state.accuracy,
                 marvelouses = self.state.marvelouses,
                 perfects = self.state.perfects,
@@ -158,15 +161,13 @@ function Gameplay:init()
                 goods = self.state.goods,
                 bads = self.state.bads,
                 misses = self.state.misses,
-                maxCombo = self.state.maxCombo,
+                maxChain = self.state.maxChain,
             })
-
-            -- print(self.props.match.players)
         end
 
         -- If the match no longer exists, quit the game
 
-        if not self.props.match and self.props.roomId then
+        if not self.props.room and self.props.roomId then
             _game:set_mode(RobeatsGame.Mode.GameEnded)
         end
 
@@ -201,7 +202,7 @@ function Gameplay:init()
             score = _game._score_manager:get_score(),
             accuracy = _game._score_manager:get_accuracy() * 100,
             chain = _game._score_manager:get_chain(),
-            maxCombo = args[7],
+            maxChain = args[7],
             marvelouses = args[1],
             perfects = args[2],
             greats = args[3],
@@ -227,116 +228,76 @@ function Gameplay:onGameplayEnd()
         EnvironmentSetup:teardown_2d_environment()
     end
 
-    local marvelouses, perfects, greats, goods, bads, misses, maxChain = self._game._score_manager:get_end_records()
-    local hits = self._game._score_manager:get_hits()
+    local records = self._game._score_manager:get_end_records()
+
     local mean = self._game._score_manager:get_mean()
     local rating = Rating:get_rating_from_accuracy(self.props.options.SongKey, self.state.accuracy, self.props.options.SongRate / 100)
 
+    local finalRecords = Llama.Dictionary.join(records, {
+        Mean = mean,
+        Rating = rating,
+        Mods = self.props.options.Mods,
+        SongMD5Hash = SongDatabase:get_hash_for_key(self.songKey)
+    })
+
     if (not self.forcedQuit) and (self.props.options.TimingPreset == "Standard") then
-        self:submitScore(
-            hits,
-            SongDatabase:get_md5_hash_for_key(self.props.options.SongKey),
-            rating,
-            self.state.score,
-            marvelouses,
-            perfects,
-            greats,
-            goods,
-            bads,
-            misses,
-            self.state.accuracy,
-            maxChain,
-            mean,
-            self.props.match.songRate or self.props.options.SongRate,
-            self.props.options.Mods)
+        self:submitScore(finalRecords)
     end
     
-    if self.forcedQuit and self.props.match then
-        self.props.multiplayerService:LeaveRoomPromise(self.props.roomId):andThen(function()
+    local resultsRecords = Llama.Dictionary.join(finalRecords, {
+        SongKey = self.props.room.selectedSongKey,
+        PlayerName = game.Players.LocalPlayer.Name,
+        TimePlayed = DateTime.now().UnixTimestamp,
+        Match = self.props.room,
+        RoomId = self.props.roomId
+    })
+
+    if self.forcedQuit and self.props.room then
+        self.props.multiplayerService:LeaveRoom(self.props.roomId):andThen(function()
             self.props.history:push("/multiplayer", {
                 goToHome = true
             })
         end)
-    elseif self.props.match then
-        self.props.multiplayerService:SetMatchStatsPromise(self.props.roomId, {
-            score = self.state.score,
-            rating = Rating:get_rating_from_accuracy(self.props.options.SongKey, self.state.accuracy, self.props.options.SongRate / 100),
-            accuracy = self.state.accuracy,
-            marvelouses = self.state.marvelouses,
-            perfects = self.state.perfects,
-            greats = self.state.greats,
-            goods = self.state.goods,
-            bads = self.state.bads,
-            misses = self.state.misses,
-            maxCombo = self.state.maxCombo,
-            mean = mean,
-            hits = hits
-        })
-        :andThen(function()
-            self.props.multiplayerService:SetReadyPromise(self.props.roomId, false)
-                :andThen(function()
-                    self.onMultiplayerGameEnded.Event:Connect(function()
-                        self.props.history:push("/results", {
-                            Score = self.state.score,
-                            Accuracy = self.state.accuracy,
-                            Marvelouses = marvelouses,
-                            Perfects = perfects,
-                            Greats = greats,
-                            Goods = goods,
-                            Bads = bads,
-                            Misses = misses,
-                            MaxChain = maxChain,
-                            Hits = hits,
-                            Mean = mean,
-                            Rating = rating,
-                            SongKey = self.props.match.selectedSongKey,
-                            PlayerName = game.Players.LocalPlayer.Name,
-                            Rate = self.props.match.songRate,
-                            TimePlayed = DateTime.now().UnixTimestamp,
-                            Match = self.props.match,
-                            RoomId = self.props.roomId
-                        })
-                    end)
+    elseif self.props.room then
+        local multiRecords = {}
+
+        for k, v in pairs(finalRecords) do
+            local firstCharacter = string.sub(k, 1, 1):lower()
+            local newKey = firstCharacter .. string.sub(k:len() - (k:len() - 1), k:len())
+
+            multiRecords[newKey] = v
+        end
+
+        self.props.multiplayerService:SetMatchStats(self.props.roomId, multiRecords)
+            :andThen(function()
+                return self.props.multiplayerService:SetFinished(self.props.roomId, true)
+            end)
+            :andThen(function(finished)
+                finished:andThen(function()
+                    self.onMultiplayerGameEnded.Event:Wait()
+
+                    self.props.history:push("/results", resultsRecords)
                 end)
-        end)
+            end)
     else
-        self.props.history:push("/results", {
-            Score = self.state.score,
-            Accuracy = self.state.accuracy,
-            Marvelouses = marvelouses,
-            Perfects = perfects,
-            Greats = greats,
-            Goods = goods,
-            Bads = bads,
-            Misses = misses,
-            MaxChain = maxChain,
-            Hits = hits,
-            Mean = mean,
-            Rating = rating,
-            SongKey = self.props.options.SongKey,
-            PlayerName = game.Players.LocalPlayer.Name,
-            Rate = self.props.options.SongRate,
-            TimePlayed = DateTime.now().UnixTimestamp
-        })
+        self.props.history:push("/results", resultsRecords)
     end
 end
 
 function Gameplay:allPlayersLoaded()
-    return self.props.match and #Llama.Dictionary.filter(self.props.match.players, function(player)
-        return not player.ready
+    return self.props.room and #Llama.Dictionary.filter(self.props.room.players, function(player)
+        return not player.loaded
     end) == 0 or true
 end
 
-function Gameplay:submitScore(hits, ...)
-    local args = {...}
-    self.props.scoreService:SubmitScorePromise(unpack(args))
+function Gameplay:submitScore(records)
+    self.props.scoreService:SubmitScorePromise(records)
         :andThen(function()
             local moment = DateTime.now():ToLocalTime()
             DebugOut:puts("Score submitted at %d:%d:%d", moment.Hour, moment.Minute, moment.Second)
         end)
         :andThen(function()
-            local md5Hash = select(1, unpack(args))
-            self.props.scoreService:SubmitGraph(md5Hash, hits)
+            self.props.scoreService:SubmitGraph(records.SongMD5Hash, records.Hits)
         end)
 end
 
@@ -397,9 +358,9 @@ function Gameplay:render()
     local leaderboard
 
     if not self.props.options.HideLeaderboard then
-        if self.props.match then
+        if self.props.room then
             leaderboard = e(MultiplayerLeaderboard, {
-                Scores = self.props.match.players,
+                Scores = self.props.room.players,
                 Position = LeaderboardPositions[self.props.options.InGameLeaderboardPosition]
             })
         else
@@ -524,10 +485,11 @@ local Injected = withInjection(Gameplay, {
 })
 
 return RoactRodux.connect(function(state, props)
-    return Llama.Dictionary.join(props, {
+    local roomId = props.location.state.roomId
+
+    return {
         options = Llama.Dictionary.join(state.options.persistent, state.options.transient),
-        match = props.location.state.roomId and state.multiplayer.matches[props.location.state.roomId],
-        room = props.location.state.roomId and state.multiplayer.rooms[props.location.state.roomId],
-        roomId = props.location.state.roomId
-    })
+        room = if roomId then state.multiplayer.rooms[roomId] else nil,
+        roomId = roomId
+    }
 end)(Injected)

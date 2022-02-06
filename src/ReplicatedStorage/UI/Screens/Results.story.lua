@@ -38,7 +38,7 @@ return function(target)
                     bads = 1,
                     misses = 36,
                     mean = -3,
-                    maxCombo = 312
+                    maxChain = 312
                 },
                 {
                     player = {
@@ -55,7 +55,7 @@ return function(target)
                     bads = 12,
                     misses = 57,
                     mean = 2,
-                    maxCombo = 233
+                    maxChain = 233
                 },
                 {
                     player = {
@@ -72,7 +72,7 @@ return function(target)
                     bads = 25,
                     misses = 234,
                     mean = 2,
-                    maxCombo = 233
+                    maxChain = 233
                 }
             }
         },

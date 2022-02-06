@@ -106,7 +106,7 @@ function Results:render()
 			bads = player.bads,
 			misses = player.misses,
 			mean = player.mean,
-			maxCombo = player.maxCombo,
+			maxChain = player.maxChain,
 			playerName = player.player.Name,
 			hits = player.hits
 		}
@@ -122,7 +122,7 @@ function Results:render()
 			bads = state.Bads,
 			misses = state.Misses,
 			mean = state.Mean,
-			maxCombo = state.MaxChain,
+			maxChain = state.MaxChain,
 			playerName = state.PlayerName
 		}
 	end
@@ -197,7 +197,7 @@ function Results:render()
 				};
 				{
 					Name = "Max Combo";
-					Value = scoreData.maxCombo
+					Value = scoreData.maxChain
 				};
 				{
 					Name = "Mean";

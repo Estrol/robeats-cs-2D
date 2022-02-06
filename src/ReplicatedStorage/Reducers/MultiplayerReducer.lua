@@ -26,7 +26,8 @@ local function createPlayer(player)
         bads = 0,
         misses = 0,
         mean = 0,
-        ready = false
+        loaded = false,
+        finished = false
     }
 end
 
@@ -92,28 +93,63 @@ return createReducer(defaultState, {
         })
     end,
     startMatch = function(state, action)
+        local players = copyDeep(state.rooms[action.roomId].players)
+
+        table.foreach(players, function(_, player)
+            player.loaded = false
+            player.finished = false
+        end)
+
         return join(state, {
             rooms = join(state.rooms, {
                 [action.roomId] = join(state.rooms[action.roomId], {
-                    inProgress = true
+                    players = players,
+                    inProgress = true,
                 })
             })
         })
     end,
     abortMatch = function(state, action)
+        local players = copyDeep(state.rooms[action.roomId].players)
+
+        table.foreach(players, function(_, player)
+            player.finished = true
+        end)
+
         return join(state, {
             rooms = join(state.rooms, {
                 [action.roomId] = join(state.rooms[action.roomId], {
+                    players = players,
                     inProgress = false
                 })
             })
         }) 
     end,
-    setReady = function(state, action)
+    setLoaded = function(state, action)
         local mutableState = copyDeep(state)
 
         local room = mutableState.rooms[action.roomId]
-        room.players[tostring(action.userId)].ready = action.value
+        room.players[tostring(action.userId)].loaded = action.value
+
+        return mutableState
+    end,
+    setFinished = function(state, action)
+        local mutableState = copyDeep(state)
+
+        local room = mutableState.rooms[action.roomId]
+        room.players[tostring(action.userId)].finished = action.value
+
+        local finished = 0
+
+        for _, player in pairs(room.players) do
+            if player.finished == true then
+                finished += 1
+            end
+        end
+
+        if finished == #room.players then
+            room.inProgress = false
+        end
 
         return mutableState
     end,
@@ -135,7 +171,7 @@ return createReducer(defaultState, {
             bads = action.bads,
             misses = action.misses,
             mean = action.mean,
-            maxCombo = action.maxCombo,
+            maxChain = action.maxChain,
             hits = action.hits
         })
 

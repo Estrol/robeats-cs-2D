@@ -92,7 +92,11 @@ function MultiplayerService.Client:StartMatch(player, id)
     local store = StateService.Store
     local state = MultiplayerService:GetState()
 
-    if state.multiplayer.matches[id] and state.multiplayer.matches[id].ongoing then
+    if state.multiplayer.rooms[id] then
+        if state.multiplayer.rooms[id].inProgress then
+            return
+        end
+    else
         return
     end
 
@@ -104,32 +108,17 @@ function MultiplayerService.Client:StartMatch(player, id)
     end
 end
 
-function MultiplayerService.Client:SetReady(player, id, value)
+function MultiplayerService.Client:SetLoaded(player, id, value)
     AssertType:is_string(id)
     
     local store = StateService.Store
 
     store:dispatch({
-        type = "setReady",
+        type = "setLoaded",
         roomId = id,
         userId = player.UserId,
         value = value
     })
-
-    if not value then
-        local state = MultiplayerService:GetState()
-
-        local readyPlayers = #Llama.Dictionary.filter(state.multiplayer.matches[id].players, function(matchPlayer)
-            return matchPlayer.ready
-        end)
-
-        if readyPlayers == 0 then
-            store:dispatch({
-                type = "endMatch",
-                roomId = id
-            })
-        end
-    end
 end
 
 function MultiplayerService.Client:SetSongKey(player, id, key)
