@@ -45,8 +45,8 @@ end
 function Room:render()
     local players = Llama.Dictionary.map(self.props.room.players, function(player)
         return e(Player, {
-            Name = player.Name,
-            UserId = player.UserId
+            Name = player.player.Name,
+            UserId = player.player.UserId
         })
     end)
 
@@ -138,10 +138,11 @@ local Injected = withInjection(Room, {
 return RoactRodux.connect(function(state, props)
     local userId = game.Players.LocalPlayer and game.Players.LocalPlayer.UserId
 
+    local roomId = props.location.state.roomId
+
     return {
-        room = state.multiplayer.rooms[props.location.state.roomId],
-        roomId = props.location.state.roomId,
-        match = state.multiplayer.matches[props.location.state.roomId],
-        isHost = state.multiplayer.rooms[props.location.state.roomId].host and userId == state.multiplayer.rooms[props.location.state.roomId].host.UserId or false
+        room = state.multiplayer.rooms[roomId],
+        roomId = roomId,
+        isHost = state.multiplayer.rooms[roomId].host and userId == state.multiplayer.rooms[roomId].host.UserId or false
     }
 end)(Injected)

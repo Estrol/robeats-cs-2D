@@ -28,7 +28,7 @@ function Multiplayer:render()
             SongKey = room.selectedSongKey,
             OnJoinClick = function(roomId)
                 if not room.inProgress then
-                    self.props.multiplayerService:JoinRoomPromise(roomId):andThen(function()
+                    self.props.multiplayerService:JoinRoom(roomId):andThen(function()
                         self.props.history:push("/room", {
                             roomId = roomId
                         })
@@ -68,7 +68,7 @@ function Multiplayer:render()
             Text = "Create",
             TextSize = 12,
             OnClick = function()
-                self.props.multiplayerService:AddRoomPromise("unforget", "me"):andThen(function(id)
+                self.props.multiplayerService:AddRoom("unforget", "me"):andThen(function(id)
                     self.props.history:push("/room", {
                         roomId = id
                     })

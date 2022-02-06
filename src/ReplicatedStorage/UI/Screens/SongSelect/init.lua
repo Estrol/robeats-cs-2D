@@ -226,10 +226,10 @@ local Injected = withInjection(SongSelect, {
 })
 
 return RoactRodux.connect(function(state, props)
-    return Llama.Dictionary.join(props, {
+    return {
         options = Llama.Dictionary.join(state.options.persistent, state.options.transient),
         permissions = state.permissions
-    })
+    }
 end, function(dispatch)
     return {
         setSongKey = function(songKey)

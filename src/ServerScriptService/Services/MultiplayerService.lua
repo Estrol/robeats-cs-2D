@@ -1,4 +1,4 @@
-local Knit = require(game:GetService("ReplicatedStorage").Knit)
+local Knit = require(game:GetService("ReplicatedStorage").Packages.Knit)
 local HttpService = game:GetService("HttpService")
 
 local MultiplayerService = Knit.CreateService {
@@ -16,18 +16,6 @@ function MultiplayerService:KnitStart()
     game.Players.PlayerRemoving:Connect(function(player)
         local store = StateService.Store
         local state = MultiplayerService:GetState()
-
-        for id, match in pairs(state.multiplayer.matches) do
-            for _, matchPlayer in pairs(match.players) do
-                if matchPlayer.player == player then
-                    store:dispatch({
-                        type = "removeMatchPlayer",
-                        roomId = id,
-                        player = player
-                    })
-                end
-            end
-        end
 
         for id, room in pairs(state.multiplayer.rooms) do
             if table.find(room.players, player) then
@@ -95,16 +83,6 @@ function MultiplayerService.Client:LeaveRoom(player, id)
             player = player,
             roomId = id
         })
-
-        local match = state.multiplayer.matches[id]
-
-        if match and match.players[tostring(player.UserId)] then
-            store:dispatch({
-                type = "removeMatchPlayer",
-                roomId = id,
-                player = player
-            })
-        end
     end
 end
 
