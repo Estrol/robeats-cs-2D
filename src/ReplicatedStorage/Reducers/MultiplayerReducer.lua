@@ -98,6 +98,13 @@ return createReducer(defaultState, {
         table.foreach(players, function(_, player)
             player.loaded = false
             player.finished = false
+
+            -- Reset stats
+            for k, v in pairs(player) do
+                if typeof(v) == "number" then
+                    player[k] = v
+                end
+            end
         end)
 
         return join(state, {
@@ -147,7 +154,7 @@ return createReducer(defaultState, {
             end
         end
 
-        if finished == #room.players then
+        if finished == Llama.Dictionary.count(room.players) then
             room.inProgress = false
         end
 

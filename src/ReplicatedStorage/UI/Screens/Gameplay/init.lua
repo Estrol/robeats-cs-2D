@@ -113,7 +113,9 @@ function Gameplay:init()
     }))
 
     -- Bind the game loop to every frame
-    
+
+    self.onMultiplayerGameEnded = Instance.new("BindableEvent")
+
     local _send_every = FlashEvery:new(1)
 
     self.everyFrameConnection = SPUtil:bind_to_frame(function(dt)
@@ -153,7 +155,7 @@ function Gameplay:init()
         if self.props.room and _send_every:do_flash() then
             self.props.multiplayerService:SetMatchStats(self.props.roomId, {
                 score = self.state.score,
-                rating = Rating:get_rating(self.props.options.SongKey, self.state.accuracy, self.props.room.songRate / 100),
+                rating = Rating:get_rating_from_song_key(self.props.options.SongKey, self.state.accuracy, self.props.room.songRate / 100),
                 accuracy = self.state.accuracy,
                 marvelouses = self.state.marvelouses,
                 perfects = self.state.perfects,
@@ -173,8 +175,6 @@ function Gameplay:init()
 
         self.setTimeLeft(_game._audio_manager:get_song_length_ms() - _game._audio_manager:get_current_time_ms())
     end)
-
-    self.onMultiplayerGameEnded = Instance.new("BindableEvent")
 
     -- Hook into onStatsChanged to monitor when stats change in ScoreManager
 
@@ -219,6 +219,8 @@ end
 
 function Gameplay:didUpdate()
     if self.props.room and not self.props.room.inProgress then
+        print(self.props.room)
+        
         self.onMultiplayerGameEnded:Fire()
     end
 end
@@ -230,21 +232,24 @@ function Gameplay:onGameplayEnd()
 
     local records = self._game._score_manager:get_end_records()
 
+    local hits = self._game._score_manager:get_hits()
     local mean = self._game._score_manager:get_mean()
-    local rating = Rating:get_rating_from_accuracy(self.props.options.SongKey, self.state.accuracy, self.props.options.SongRate / 100)
+    local rating = Rating:get_rating_from_song_key(self.props.options.SongKey, self.state.accuracy, self.props.options.SongRate / 100)
 
     local finalRecords = Llama.Dictionary.join(records, {
         Mean = mean,
         Rating = rating,
         Mods = self.props.options.Mods,
-        SongMD5Hash = SongDatabase:get_hash_for_key(self.songKey)
+        SongMD5Hash = SongDatabase:get_hash_for_key(self.songKey),
+        Rate = self.songRate
     })
 
     if (not self.forcedQuit) and (self.props.options.TimingPreset == "Standard") then
-        self:submitScore(finalRecords)
+        self:submitScore(finalRecords, hits)
     end
     
     local resultsRecords = Llama.Dictionary.join(finalRecords, {
+        Hits = hits,
         SongKey = self.props.room.selectedSongKey,
         PlayerName = game.Players.LocalPlayer.Name,
         TimePlayed = DateTime.now().UnixTimestamp,
@@ -270,12 +275,10 @@ function Gameplay:onGameplayEnd()
 
         self.props.multiplayerService:SetMatchStats(self.props.roomId, multiRecords)
             :andThen(function()
-                return self.props.multiplayerService:SetFinished(self.props.roomId, true)
-            end)
-            :andThen(function(finished)
-                finished:andThen(function()
-                    self.onMultiplayerGameEnded.Event:Wait()
+                self.props.multiplayerService:SetFinished(self.props.roomId, true)
 
+                task.spawn(function()
+                    self.onMultiplayerGameEnded.Event:Wait()
                     self.props.history:push("/results", resultsRecords)
                 end)
             end)
@@ -290,15 +293,17 @@ function Gameplay:allPlayersLoaded()
     end) == 0 or true
 end
 
-function Gameplay:submitScore(records)
-    self.props.scoreService:SubmitScorePromise(records)
-        :andThen(function()
-            local moment = DateTime.now():ToLocalTime()
-            DebugOut:puts("Score submitted at %d:%d:%d", moment.Hour, moment.Minute, moment.Second)
-        end)
-        :andThen(function()
-            self.props.scoreService:SubmitGraph(records.SongMD5Hash, records.Hits)
-        end)
+function Gameplay:submitScore(records, hits)
+    print(records)
+
+    -- self.props.scoreService:SubmitScorePromise(records)
+    --     :andThen(function()
+    --         local moment = DateTime.now():ToLocalTime()
+    --         DebugOut:puts("Score submitted at %d:%d:%d", moment.Hour, moment.Minute, moment.Second)
+    --     end)
+    --     :andThen(function()
+    --         self.props.scoreService:SubmitGraph(records.SongMD5Hash, records.Hits)
+    --     end)
 end
 
 function Gameplay:render()
@@ -366,7 +371,7 @@ function Gameplay:render()
         else
             leaderboard = e(Leaderboard, {
                 SongKey = self.props.options.SongKey,
-                LocalRating = Rating:get_rating_from_accuracy(self.props.options.SongKey, self.state.accuracy, self.props.options.SongRate / 100),
+                LocalRating = Rating:get_rating_from_song_key(self.props.options.SongKey, self.state.accuracy, self.props.options.SongRate / 100),
                 LocalAccuracy = self.state.accuracy, 
                 Position = LeaderboardPositions[self.props.options.InGameLeaderboardPosition]
             })

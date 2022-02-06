@@ -52,8 +52,7 @@ function ScoreManager:new(_game)
 			Bads = _bad_count,
 			Misses = _miss_count,
 			MaxChain = _max_chain,
-			Accuracy = self:get_accuracy() * 100,
-			Hits = _hits
+			Accuracy = self:get_accuracy() * 100
 		}
 	end
 

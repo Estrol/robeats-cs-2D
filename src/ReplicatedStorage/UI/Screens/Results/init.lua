@@ -290,7 +290,9 @@ function Results:render()
 			OnClick = function()
 				self.props.history:push("/play")
 			end
-		}) else nil
+		}) else nil,
+
+		PlayerSelection = playerSelection
 	})
 end
 

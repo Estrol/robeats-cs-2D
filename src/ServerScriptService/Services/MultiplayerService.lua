@@ -121,6 +121,19 @@ function MultiplayerService.Client:SetLoaded(player, id, value)
     })
 end
 
+function MultiplayerService.Client:SetFinished(player, id, value)
+    AssertType:is_string(id)
+    
+    local store = StateService.Store
+
+    store:dispatch({
+        type = "setFinished",
+        roomId = id,
+        userId = player.UserId,
+        value = value
+    })
+end
+
 function MultiplayerService.Client:SetSongKey(player, id, key)
     AssertType:is_string(id)
 
