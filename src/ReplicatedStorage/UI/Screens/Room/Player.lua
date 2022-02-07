@@ -1,4 +1,6 @@
+local Players = game:GetService("Players")
 local Roact = require(game.ReplicatedStorage.Packages.Roact)
+local RoactRodux = require(game.ReplicatedStorage.Packages.RoactRodux)
 local e = Roact.createElement
 
 local withInjection = require(game.ReplicatedStorage.UI.Components.HOCs.withInjection)
@@ -20,7 +22,12 @@ Player.defaultProps = {
 }
 
 function Player:init()
-    
+    self.props.tierService:GetTierFromRating(self.props.Profile.Rating):andThen(function(tier)
+        self:setState({
+            tier = tier.name,
+            division = tier.division
+        })
+    end)
 end
 
 function Player:render()
@@ -55,7 +62,7 @@ function Player:render()
                 Position = UDim2.fromScale(1.3, 0.5),
                 Size = UDim2.fromScale(5, 0.55),
                 TextXAlignment = Enum.TextXAlignment.Left,
-                Text = self.props.Name
+                Text = if self.props.Profile then string.format("#%d | %0.2f [%s]", self.props.Profile.Rank, self.props.Profile.Rating, if self.state.tier then self.state.tier .. " " .. tostring(self.state.division) else "...") else "???"
             }, {
                 UITextSizeConstraint = e("UITextSizeConstraint", {
                     MaxTextSize = 15
@@ -85,4 +92,12 @@ function Player:render()
     })
 end
 
-return Player
+local Injected = withInjection(Player, {
+    tierService = "TierService"
+})
+
+return RoactRodux.connect(function(state, props)
+    return {
+        Profile = state.profiles[tostring(props.UserId)]
+    }
+end)(Injected)

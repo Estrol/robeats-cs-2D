@@ -3,6 +3,7 @@ local Knit = require(game:GetService("ReplicatedStorage").Packages.Knit)
 local Rodux = require(game.ReplicatedStorage.Packages.Rodux)
 
 local MultiplayerReducer = require(game.ReplicatedStorage.Reducers.MultiplayerReducer)
+local ProfileReducer = require(game.ReplicatedStorage.Reducers.ProfileReducer)
 
 local StateService = Knit.CreateService {
     Name = "StateService";
@@ -18,7 +19,8 @@ end
 
 function StateService:KnitInit()
     local combinedReducers = Rodux.combineReducers({
-        multiplayer = MultiplayerReducer
+        multiplayer = MultiplayerReducer,
+        profiles = ProfileReducer
     })
 
     self.Store = Rodux.Store.new(combinedReducers, nil, { replicationMiddleware })

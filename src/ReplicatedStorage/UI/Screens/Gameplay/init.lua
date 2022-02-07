@@ -268,7 +268,7 @@ function Gameplay:onGameplayEnd()
 
         for k, v in pairs(finalRecords) do
             local firstCharacter = string.sub(k, 1, 1):lower()
-            local newKey = firstCharacter .. string.sub(k:len() - (k:len() - 1), k:len())
+            local newKey = firstCharacter .. string.sub(k, 2, k:len())
 
             multiRecords[newKey] = v
         end
@@ -296,14 +296,14 @@ end
 function Gameplay:submitScore(records, hits)
     print(records)
 
-    -- self.props.scoreService:SubmitScorePromise(records)
-    --     :andThen(function()
-    --         local moment = DateTime.now():ToLocalTime()
-    --         DebugOut:puts("Score submitted at %d:%d:%d", moment.Hour, moment.Minute, moment.Second)
-    --     end)
-    --     :andThen(function()
-    --         self.props.scoreService:SubmitGraph(records.SongMD5Hash, records.Hits)
-    --     end)
+    self.props.scoreService:SubmitScore(records)
+        :andThen(function()
+            local moment = DateTime.now():ToLocalTime()
+            DebugOut:puts("Score submitted at %d:%d:%d", moment.Hour, moment.Minute, moment.Second)
+        end)
+        :andThen(function()
+            self.props.scoreService:SubmitGraph(records.SongMD5Hash, hits)
+        end)
 end
 
 function Gameplay:render()

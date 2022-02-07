@@ -13,7 +13,9 @@ local PermissionsService
 local ModerationService
 local RateLimitService
 local AuthService
+local StateService
 
+local Llama
 local Raxios
 
 local ScoreService = Knit.CreateService({
@@ -30,8 +32,33 @@ function ScoreService:KnitInit()
     ModerationService = Knit.GetService("ModerationService")
     RateLimitService = Knit.GetService("RateLimitService")
     AuthService = Knit.GetService("AuthService")
+    StateService = Knit.GetService("StateService")
 
+    Llama = require(game.ReplicatedStorage.Packages.Llama)    
     Raxios = require(game.ReplicatedStorage.Packages.Raxios)
+end
+
+function ScoreService:KnitStart()
+    local function onPlayerAdded(player)
+        local profile = self:GetProfile(player)
+
+        if Llama.Dictionary.count(profile) > 0 then
+            StateService.Store:dispatch({ type = "addProfile", player = player, profile = profile })
+        end
+    end
+
+    game.Players.PlayerAdded:Connect(onPlayerAdded)
+    game.Players.PlayerRemoving:Connect(function(player)
+        local state = StateService.Store:getState()
+
+        if state.profiles[tostring(player.UserId)] then
+            StateService.Store:dispatch({ type = "removeProfile", player = player })
+        end
+    end)
+
+    table.foreachi(game.Players:GetPlayers(), function(_, player)
+        task.spawn(onPlayerAdded, player)
+    end)
 end
 
 function ScoreService:_GetGraphKey(userId, songMD5Hash)
@@ -71,6 +98,16 @@ function ScoreService:CalculateAverageAccuracy(scores)
     return accuracy / #scores
 end
 
+function ScoreService:GetProfile(player)
+    if RateLimitService:CanProcessRequestWithRateLimit(player, "GetProfile", 2) then
+        return Raxios.get(url "/profiles", {
+            query = { userid = player.UserId, auth = AuthService.APIKey }
+        }):json()
+    end
+
+    return {}
+end
+
 function ScoreService.Client:SubmitScore(player, data)
     if RateLimitService:CanProcessRequestWithRateLimit(player, "SubmitScore", 1) then
         Raxios.post(url "/scores", {
@@ -97,6 +134,12 @@ function ScoreService.Client:SubmitScore(player, data)
                 Mods = data.Mods
             }
         })
+
+        local profile = ScoreService:GetProfile(player)
+
+        if Llama.Dictionary.count(profile) > 0 then
+            StateService.Store:dispatch({ type = "updateProfile", player = player, profile = profile })
+        end
     end
 end
 
@@ -128,13 +171,7 @@ function ScoreService.Client:GetScores(player, songMD5Hash, limit, songRate)
 end
 
 function ScoreService.Client:GetProfile(player)
-    if RateLimitService:CanProcessRequestWithRateLimit(player, "GetProfile", 2) then
-        return Raxios.get(url "/profiles", {
-            query = { userid = player.UserId, auth = AuthService.APIKey }
-        }):json()
-    end
-
-    return {}
+    return ScoreService:GetProfile(player)
 end
 
 function ScoreService.Client:GetGlobalLeaderboard(player)
