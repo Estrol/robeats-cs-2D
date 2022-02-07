@@ -63,6 +63,16 @@ function SongSelect:init()
     self.Trove:Add(onOptionsKeyPressed)
 end
 
+function SongSelect:onPlay()
+    if self.props.location.state.roomId then
+        self.props.multiplayerService:SetSongKey(self.props.location.state.roomId, self.props.options.SongKey)
+        self.props.multiplayerService:SetSongRate(self.props.location.state.roomId, self.props.options.SongRate)
+        self.props.history:goBack()
+    else
+        self.props.history:push("/play")
+    end
+end
+
 function SongSelect:render()
     return e(RoundedFrame, {
 
@@ -81,7 +91,7 @@ function SongSelect:render()
             Position = UDim2.fromScale(0.995, 0.985),
             OnSongSelected = function(key)
                 if self.props.options.SongKey == key then
-                    self.props.history:push("/play")
+                    self:onPlay()
                 else
                     self.props.setSongKey(key)
                 end
@@ -129,12 +139,7 @@ function SongSelect:render()
                     Text = self.props.location.state.roomId and "Select" or "Play",
                     Color = self.props.location.state.roomId and Color3.fromRGB(50, 77, 94) or Color3.fromRGB(8, 153, 32),
                     OnClick = function()
-                        if self.props.location.state.roomId then
-                            self.props.multiplayerService:SetSongKey(self.props.location.state.roomId, self.props.options.SongKey)
-                            self.props.history:goBack()
-                        else
-                            self.props.history:push("/play")
-                        end
+                        self:onPlay()
                     end
                 },
                 {
@@ -153,13 +158,13 @@ function SongSelect:render()
                         })
                     end
                 },
-                {
+                if not self.props.location.state.roomId then {
                     Text = "Main Menu",
                     Color = Color3.fromRGB(37, 37, 37),
                     OnClick = function()
                         self.props.history:push("/")
                     end
-                }
+                } else nil
             }
         }),
         ModSelection = e(ModSelection, {

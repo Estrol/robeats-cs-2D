@@ -155,7 +155,7 @@ function Gameplay:init()
         if self.props.room and _send_every:do_flash() then
             self.props.multiplayerService:SetMatchStats(self.props.roomId, {
                 score = self.state.score,
-                rating = Rating:get_rating_from_song_key(self.props.options.SongKey, self.state.accuracy, self.props.room.songRate / 100),
+                rating = Rating:get_rating_from_song_key(self.songKey, self.state.accuracy, self.songRate / 100),
                 accuracy = self.state.accuracy,
                 marvelouses = self.state.marvelouses,
                 perfects = self.state.perfects,
@@ -234,7 +234,7 @@ function Gameplay:onGameplayEnd()
 
     local hits = self._game._score_manager:get_hits()
     local mean = self._game._score_manager:get_mean()
-    local rating = Rating:get_rating_from_song_key(self.props.options.SongKey, self.state.accuracy, self.props.options.SongRate / 100)
+    local rating = Rating:get_rating_from_song_key(self.songKey, self.state.accuracy, self.props.options.SongRate / 100)
 
     local finalRecords = Llama.Dictionary.join(records, {
         Mean = mean,
@@ -250,7 +250,7 @@ function Gameplay:onGameplayEnd()
     
     local resultsRecords = Llama.Dictionary.join(finalRecords, {
         Hits = hits,
-        SongKey = self.props.room.selectedSongKey,
+        SongKey = self.songKey,
         PlayerName = game.Players.LocalPlayer.Name,
         TimePlayed = DateTime.now().UnixTimestamp,
         Match = self.props.room,
@@ -370,8 +370,8 @@ function Gameplay:render()
             })
         else
             leaderboard = e(Leaderboard, {
-                SongKey = self.props.options.SongKey,
-                LocalRating = Rating:get_rating_from_song_key(self.props.options.SongKey, self.state.accuracy, self.props.options.SongRate / 100),
+                SongKey = self.songKey,
+                LocalRating = Rating:get_rating_from_song_key(self.songKey, self.state.accuracy, self.props.options.SongRate / 100),
                 LocalAccuracy = self.state.accuracy, 
                 Position = LeaderboardPositions[self.props.options.InGameLeaderboardPosition]
             })

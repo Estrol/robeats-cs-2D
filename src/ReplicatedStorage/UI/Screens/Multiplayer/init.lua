@@ -27,14 +27,13 @@ function Multiplayer:render()
             SongRate = room.songRate,
             SongKey = room.selectedSongKey,
             OnJoinClick = function(roomId)
-                if not room.inProgress then
-                    self.props.multiplayerService:JoinRoom(roomId):andThen(function()
-                        self.props.history:push("/room", {
-                            roomId = roomId
-                        })
-                    end)
-                end
-            end
+                self.props.multiplayerService:JoinRoom(roomId):andThen(function()
+                    self.props.history:push("/room", {
+                        roomId = roomId
+                    })
+                end)
+            end,
+            InProgess = room.inProgress
         })
     end
 

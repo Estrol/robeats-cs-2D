@@ -39,7 +39,7 @@ function Player:render()
                 Position = UDim2.fromScale(1.3, 0.04),
                 Size = UDim2.fromScale(5, 0.55),
                 TextXAlignment = Enum.TextXAlignment.Left,
-                Text = self.props.Name
+                Text = (if self.props.IsHost then "👑 " else "") .. self.props.Name
             }, {
                 UITextSizeConstraint = e("UITextSizeConstraint", {
                     MaxTextSize = 60

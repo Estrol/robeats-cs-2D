@@ -93,13 +93,15 @@ function Room:render()
             HoldSize = UDim2.fromScale(0.06, 0.06),
             AnchorPoint = Vector2.new(0.5, 0.5),
             Position = UDim2.fromScale(0.953, 0.82),
-            BackgroundColor3 = Color3.fromRGB(35, 65, 44),
+            BackgroundColor3 = if self.props.InProgess then  Color3.fromRGB(46, 46, 46) else Color3.fromRGB(35, 65, 44),
             TextColor3 = Color3.fromRGB(255, 255, 255),
             Text = "Join",
             TextSize = 15,
             ZIndex = 2,
             OnClick = function()
-                self.props.OnJoinClick(self.props.RoomId)
+                if not self.props.InProgess then
+                    self.props.OnJoinClick(self.props.RoomId)
+                end
             end
         }),
     })

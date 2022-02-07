@@ -41,7 +41,11 @@ function Results:init()
 		[Grade.F] = "http://www.roblox.com/asset/?id=5896148143"
 	}
 	
-	self.backOutConnection = SPUtil:bind_to_key(Enum.KeyCode.Return, function()
+	self.backOutConnection = SPUtil:bind_to_key(Enum.KeyCode.Tilde, function()
+		if self.props.location.state.Match then
+			return
+		end
+
 		if self.props.location.state.goToMultiSelect then
 			self.props.history:push("/multiplayer")
 			return
@@ -277,7 +281,7 @@ function Results:render()
 			end
 		});
 
-		RestartMap = if not self.props.location.state.Viewing then Roact.createElement(RoundedTextButton, {
+		RestartMap = if (not self.props.location.state.Viewing and not match) then Roact.createElement(RoundedTextButton, {
 			BackgroundColor3 = Color3.fromRGB(50, 144, 50);
 			AnchorPoint = Vector2.new(0, 1);
 			Position = UDim2.fromScale(0.175, 0.98);

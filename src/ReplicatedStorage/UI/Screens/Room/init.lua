@@ -46,7 +46,8 @@ function Room:render()
     local players = Llama.Dictionary.map(self.props.room.players, function(player)
         return e(Player, {
             Name = player.player.Name,
-            UserId = player.player.UserId
+            UserId = player.player.UserId,
+            IsHost = player.player == self.props.room.host
         })
     end)
 

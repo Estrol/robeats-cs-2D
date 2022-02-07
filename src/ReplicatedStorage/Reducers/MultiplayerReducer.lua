@@ -68,12 +68,12 @@ return createReducer(defaultState, {
         local roomPlayers = removeKey(state.rooms[action.roomId].players, tostring(action.player.UserId))
 
         local room = state.rooms[action.roomId]
-        local host
+        local host = room.host
 
-        if room.host == action.player then
-            local players = Llama.Dictionary.values(room.players)
+        if host == action.player then
+            local players = Llama.Dictionary.values(roomPlayers)
 
-            host = players[math.random(1, #players)]
+            host = players[math.random(1, #players)].player
         end
 
         return join(state, {
