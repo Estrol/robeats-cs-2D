@@ -47,7 +47,11 @@ function Room:render()
         return e(Player, {
             Name = player.player.Name,
             UserId = player.player.UserId,
-            IsHost = player.player == self.props.room.host
+            IsHost = player.player == self.props.room.host,
+            IsLocalPlayerHost = game.Players.LocalPlayer == self.props.room.host,
+            OnHostTransfer = function(userId)
+                self.props.multiplayerService:TransferHost(self.props.roomId, userId)
+            end
         })
     end)
 

@@ -18,12 +18,14 @@ function MultiplayerService:KnitStart()
         local state = MultiplayerService:GetState()
 
         for id, room in pairs(state.multiplayer.rooms) do
-            if table.find(room.players, player) then
-                store:dispatch({
-                    type = "removePlayer",
-                    roomId = id,
-                    player = player
-                })
+            for _, roomPlayer in pairs(room.players) do
+                if roomPlayer.player == player then
+                    store:dispatch({
+                        type = "removePlayer",
+                        roomId = id,
+                        player = player
+                    })
+                end
             end
         end
     end)
@@ -118,6 +120,25 @@ function MultiplayerService.Client:SetLoaded(player, id, value)
         roomId = id,
         userId = player.UserId,
         value = value
+    })
+end
+
+function MultiplayerService.Client:TransferHost(player, id, newHostUserId)
+    AssertType:is_number(newHostUserId)
+
+    local newHost = game.Players:GetPlayerByUserId(newHostUserId)
+
+    assert(newHost, "Host must exist in server")
+
+    local store = StateService.Store
+    local state = MultiplayerService:GetState()
+
+    assert(state.multiplayer.rooms[id].host == player, "Non-host tried to set host")
+
+    store:dispatch({
+        type = "setHost",
+        roomId = id,
+        host = newHost
     })
 end
 

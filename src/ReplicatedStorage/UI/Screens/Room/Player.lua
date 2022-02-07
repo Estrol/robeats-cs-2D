@@ -13,7 +13,10 @@ local Player = Roact.Component:extend("Player")
 
 Player.defaultProps = {
     Name = "Player",
-    UserId = 0
+    UserId = 0,
+    OnHostTransfer = function()
+        
+    end
 }
 
 function Player:init()
@@ -61,7 +64,24 @@ function Player:render()
             UIAspectRatioConstraint = e("UIAspectRatioConstraint", {
                 AspectRatio = 1
             })
-        })
+        }),
+        TransferHost = if (not self.props.IsHost and self.props.IsLocalPlayerHost) then e(RoundedTextButton, {
+            Position = UDim2.fromScale(0.975, 0.5),
+            Size = UDim2.fromScale(0.18, 0.6),
+            AnchorPoint = Vector2.new(1, 0.5),
+            Text = "Transfer Host",
+            TextColor3 = Color3.fromRGB(255, 255, 255),
+            TextScaled = true,
+            HoldSize = UDim2.fromScale(0.18, 0.6),
+            HighlightBackgroundColor3 = Color3.fromRGB(24, 24, 24),
+            OnClick = function()
+                self.props.OnHostTransfer(self.props.UserId)
+            end
+        }, {
+            UITextSizeConstraint = e("UITextSizeConstraint", {
+                MaxTextSize = 15
+            })
+        }) else nil,
     })
 end
 
