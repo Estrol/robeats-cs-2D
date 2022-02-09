@@ -24,7 +24,7 @@ function MultiplayerLeaderboard:render()
     local scores = Llama.Dictionary.values(self.props.Scores)
 
     table.sort(scores, function(a, b)
-        return a.rating > b.rating
+        return a.score > b.score
     end)
 
     local children = Llama.Dictionary.map(scores, function(itr_score, itr_score_index)
@@ -33,7 +33,7 @@ function MultiplayerLeaderboard:render()
         return e(LeaderboardSlot, {
            PlayerName = player.Name,
            UserId = player.UserId,
-           Rating = itr_score.rating,
+           Score = itr_score.score,
            Accuracy = itr_score.accuracy,
            Place = itr_score_index,
            IsLocalProfile = player.UserId == game.Players.LocalPlayer.UserId

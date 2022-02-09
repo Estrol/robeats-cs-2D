@@ -25,7 +25,7 @@ function PlayerSelection:render()
     local playersList = Llama.Dictionary.values(self.props.Players)
 
     table.sort(playersList, function(a, b)
-        return a.rating > b.rating
+        return a.score > b.score
     end)
 
     local players = Llama.List.map(playersList, function(player, index)
