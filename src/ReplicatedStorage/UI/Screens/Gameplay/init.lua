@@ -116,7 +116,7 @@ function Gameplay:init()
 
     self.onMultiplayerGameEnded = Instance.new("BindableEvent")
 
-    local _send_every = FlashEvery:new(1)
+    local _send_every = FlashEvery:new(0.5)
 
     self.everyFrameConnection = SPUtil:bind_to_frame(function(dt)
         if _game._audio_manager:get_just_finished() then
