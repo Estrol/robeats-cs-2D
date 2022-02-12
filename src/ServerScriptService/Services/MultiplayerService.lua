@@ -12,6 +12,8 @@ local StateService
 
 local AssertType
 
+local Passwords = {}
+
 function MultiplayerService:KnitStart()
     game.Players.PlayerRemoving:Connect(function(player)
         local store = StateService.Store
@@ -49,12 +51,16 @@ end
 function MultiplayerService.Client:AddRoom(player, name, password)
     local id = HttpService:GenerateGUID(false)
 
+    if password ~= "" then
+        Passwords[id] = password
+    end
+
     StateService.Store:dispatch({
         type = "createRoom",
         name = name,
         id = id,
         player = player,
-        password = password
+        locked = password ~= ""
     })
 
     return id
@@ -183,7 +189,7 @@ function MultiplayerService.Client:SetSongRate(player, id, rate)
     end
 end
 
-function MultiplayerService.Client:JoinRoom(player, id)
+function MultiplayerService.Client:JoinRoom(player, id, password)
     AssertType:is_string(id)
 
     local store = StateService.Store
@@ -193,11 +199,19 @@ function MultiplayerService.Client:JoinRoom(player, id)
         return
     end
 
+    if Passwords[id] then
+        if Passwords[id] ~= password then
+            return false
+        end
+    end
+
     store:dispatch({
         type = "addPlayer",
         player = player,
         roomId = id
     })
+
+    return true
 end
 
 function MultiplayerService.Client:SetMatchStats(player, id, stats)

@@ -34,7 +34,8 @@ function Room:render()
             Position = UDim2.fromScale(0.015, 0.04),
             Size = UDim2.fromScale(1, 0.35),
             TextXAlignment = Enum.TextXAlignment.Left,
-            Text = self.props.Name
+            Text = if self.props.Locked then "🔒 " .. self.props.Name else self.props.Name,
+            TextTruncate = Enum.TextTruncate.AtEnd
         }, {
             UITextSizeConstraint = e("UITextSizeConstraint", {
                 MaxTextSize = 60

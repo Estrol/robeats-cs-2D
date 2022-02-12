@@ -46,7 +46,8 @@ return createReducer(defaultState, {
             host = action.player,
             selectedSongKey = 1,
             inProgress = false,
-            songRate = 100
+            songRate = 100,
+            locked = action.locked,
         }
 
         return join(state, {

@@ -7,13 +7,19 @@ local RoundedAutoScrollingFrame = require(game.ReplicatedStorage.UI.Components.B
 local RoundedTextButton = require(game.ReplicatedStorage.UI.Components.Base.RoundedTextButton)
 
 local Room = require(script.Room)
+local RoomDialog = require(script.RoomDialog)
+local JoinLockedRoomDialog = require(script.JoinLockedRoomDialog)
 
 local withInjection = require(game.ReplicatedStorage.UI.Components.HOCs.withInjection)
 
 local Multiplayer = Roact.Component:extend("Multiplayer")
 
 function Multiplayer:init()
-    
+    self:setState({
+        roomDialogOpen = false,
+        lockedRoomDialogOpen = false,
+        interestedRoom = nil
+    })
 end
 
 function Multiplayer:render()
@@ -26,14 +32,23 @@ function Multiplayer:render()
             Players = room.players,
             SongRate = room.songRate,
             SongKey = room.selectedSongKey,
+            Locked = room.locked,
             OnJoinClick = function(roomId)
-                self.props.multiplayerService:JoinRoom(roomId):andThen(function()
-                    self.props.history:push("/room", {
-                        roomId = roomId
-                    })
+                self.props.multiplayerService:JoinRoom(roomId):andThen(function(joined)
+                    if joined then
+                        self.props.history:push("/room", {
+                            roomId = roomId
+                        })
+                    else
+                        self:setState({
+                            lockedRoomDialogOpen = true,
+                            interestedRoom = roomId
+                        })
+                    end
                 end)
             end,
-            InProgess = room.inProgress
+            InProgess = room.inProgress,
+            Host = room.host
         })
     end
 
@@ -67,18 +82,48 @@ function Multiplayer:render()
             Text = "Create",
             TextSize = 12,
             OnClick = function()
-                self.props.multiplayerService:AddRoom("unforget", "me"):andThen(function(id)
-                    self.props.history:push("/room", {
-                        roomId = id
-                    })
-                end)
+                self:setState({
+                    roomDialogOpen = true
+                })
             end
         }),
         Rooms = e(RoundedAutoScrollingFrame, {
             Size = UDim2.fromScale(0.95, 0.95),
             Position = UDim2.fromScale(0.5, 0.5),
             AnchorPoint = Vector2.new(0.5, 0.5)
-        }, rooms)
+        }, rooms),
+        RoomDialog = e(RoomDialog, {
+            IsOpen = self.state.roomDialogOpen,
+            OnBack = function()
+                self:setState({
+                    roomDialogOpen = false
+                })
+            end,
+            OnRoomCreate = function(data)
+                self.props.multiplayerService:AddRoom(data.name, data.password):andThen(function(id)
+                    self.props.history:push("/room", {
+                        roomId = id
+                    })
+                end)
+            end
+        }),
+        JoinLockedRoomDialog = e(JoinLockedRoomDialog, {
+            IsOpen = self.state.lockedRoomDialogOpen,
+            OnBack = function()
+                self:setState({
+                    lockedRoomDialogOpen = false
+                })
+            end,
+            OnJoin = function(data)
+                self.props.multiplayerService:JoinRoom(self.state.interestedRoom, data.password):andThen(function(joined)
+                    if joined then
+                        self.props.history:push("/room", {
+                            roomId = self.state.interestedRoom
+                        })
+                    end
+                end)
+            end
+        })
     })
 end
 
