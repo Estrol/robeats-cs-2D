@@ -105,6 +105,10 @@ function SongSelect:render()
             SongRate = self.state.filterByRate and self.props.options.SongRate or nil,
             IsAdmin = self.props.permissions.isAdmin,
             OnLeaderboardSlotClicked = function(stats)
+                if self.props.location.state.roomId then
+                    return
+                end
+
                 local _, hits = self.scoreService:GetGraph(stats.UserId, stats.SongMD5Hash)
                     :await()
 

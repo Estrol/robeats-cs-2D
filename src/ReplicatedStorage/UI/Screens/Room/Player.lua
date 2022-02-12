@@ -62,7 +62,7 @@ function Player:render()
                 Position = UDim2.fromScale(1.3, 0.5),
                 Size = UDim2.fromScale(5, 0.55),
                 TextXAlignment = Enum.TextXAlignment.Left,
-                Text = if self.props.Profile then string.format("#%d | %0.2f [%s]", self.props.Profile.Rank, self.props.Profile.Rating, if self.state.tier then self.state.tier .. " " .. tostring(self.state.division) else "...") else "???"
+                Text = if self.props.Profile then string.format("#%d | %0.2f [%s]", self.props.Profile.Rank, self.props.Profile.Rating, if self.state.tier then self.state.tier .. (if self.state.division then " " .. tostring(self.state.division) else "") else "...") else "???"
             }, {
                 UITextSizeConstraint = e("UITextSizeConstraint", {
                     MaxTextSize = 15

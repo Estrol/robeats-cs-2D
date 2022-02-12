@@ -43,7 +43,8 @@ function RoomDialog:render()
         end),
         Size = UDim2.fromScale(0.3, 0.3),
         AnchorPoint = Vector2.new(0.5, 0.5),
-        BackgroundColor3 = Color3.fromRGB(22, 22, 22)
+        BackgroundColor3 = Color3.fromRGB(22, 22, 22),
+        ZIndex = 2
     }, {
         Title = e(RoundedTextLabel, {
             Size = UDim2.fromScale(1, 0.1),

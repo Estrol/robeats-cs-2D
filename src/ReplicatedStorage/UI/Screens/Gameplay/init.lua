@@ -234,7 +234,7 @@ function Gameplay:onGameplayEnd()
 
     local hits = self._game._score_manager:get_hits()
     local mean = self._game._score_manager:get_mean()
-    local rating = Rating:get_rating_from_song_key(self.songKey, self.state.accuracy, self.props.options.SongRate / 100)
+    local rating = Rating:get_rating_from_song_key(self.songKey, self.state.accuracy, self.songRate / 100)
 
     local finalRecords = Llama.Dictionary.join(records, {
         Mean = mean,
