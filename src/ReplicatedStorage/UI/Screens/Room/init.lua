@@ -15,6 +15,8 @@ local RoundedTextButton = require(game.ReplicatedStorage.UI.Components.Base.Roun
 
 local Player = require(script.Player)
 
+local Chat = require(game.ReplicatedStorage.UI.Components.Chat)
+
 local Room = Roact.Component:extend("Room")
 
 function Room:init()
@@ -127,7 +129,13 @@ function Room:render()
         Players = e(RoundedAutoScrollingFrame, {
             Size = UDim2.fromScale(0.567, 0.68),
             Position = UDim2.fromScale(0.01, 0.23)
-        }, players)
+        }, players),
+        Chat = e(Chat, {
+            Position = UDim2.fromScale(0.58, 0.23),
+            Size = UDim2.fromScale(0.405, 0.68),
+            AnchorPoint = Vector2.new(0, 0.5),
+            Channel = self.props.roomId
+        })
     })
 end
 

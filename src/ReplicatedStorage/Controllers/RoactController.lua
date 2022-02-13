@@ -92,6 +92,11 @@ function RoactController:GetRoutes()
             exact = true,
             component = Room
         })
+        -- Chat = Roact.createElement(RoactRouter.Route, {
+        --     path = "/",
+        --     always = true,
+        --     component = Chat
+        -- })
     }
 end
 
@@ -102,7 +107,8 @@ function RoactController:GetDependencies()
         PreviewController = Knit.GetController("PreviewController"),
         MultiplayerService = Knit.GetService("MultiplayerService"),
         TierService = Knit.GetService("TierService"),
-        FriendsController = Knit.GetController("FriendsController")
+        FriendsController = Knit.GetController("FriendsController"),
+        ChatService = Knit.GetService("ChatService")
     }
 end
 
