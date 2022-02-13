@@ -22,11 +22,7 @@ function MultiplayerService:KnitStart()
         for id, room in pairs(state.multiplayer.rooms) do
             for _, roomPlayer in pairs(room.players) do
                 if roomPlayer.player == player then
-                    store:dispatch({
-                        type = "removePlayer",
-                        roomId = id,
-                        player = player
-                    })
+                    self:LeaveRoom(player, id)
                 end
             end
         end
@@ -46,6 +42,44 @@ end
 function MultiplayerService:IsHost(player, id)
     local state = self:GetState()
     return state.multiplayer.rooms[id].host == player
+end
+
+function MultiplayerService:LeaveRoom(player, id)
+    AssertType:is_string(id)
+
+    local store = StateService.Store
+    local state = MultiplayerService:GetState()
+
+    local room = state.multiplayer.rooms[id]
+
+    if room.players[tostring(player.UserId)] then
+        if Llama.Dictionary.count(room.players) == 1 then
+            MultiplayerService:RemoveRoom(id)
+            return
+        end
+
+        store:dispatch({
+            type = "removePlayer",
+            player = player,
+            roomId = id
+        })
+
+        if MultiplayerService:IsHost(player, id) then
+            local players = Llama.Dictionary.filter(room.players, function(compPlayer)
+                return compPlayer.player ~= player
+            end)
+
+            players = Llama.Dictionary.values(players)
+
+            local newHost = players[math.random(1, #players)]
+            
+            store:dispatch({
+                type = "setHost",
+                roomId = id,
+                host = newHost.player
+            })
+        end
+    end
 end
 
 function MultiplayerService.Client:AddRoom(player, name, password)
@@ -73,48 +107,8 @@ function MultiplayerService:RemoveRoom(id)
     })
 end
 
-function MultiplayerService.Client:LeaveRoom(player, id)
-    AssertType:is_string(id)
-
-    local store = StateService.Store
-    local state = MultiplayerService:GetState()
-
-    local room = state.multiplayer.rooms[id]
-
-    if room.players[tostring(player.UserId)] then
-        if Llama.Dictionary.count(room.players) == 1 then
-            MultiplayerService:RemoveRoom(id)
-            return
-        end
-
-        store:dispatch({
-            type = "removePlayer",
-            player = player,
-            roomId = id
-        })
-
-        if MultiplayerService:IsHost(player, id) then
-            print("Host left")
-
-            local players = Llama.Dictionary.filter(room.players, function(compPlayer)
-                return compPlayer.player ~= player
-            end)
-
-            players = Llama.Dictionary.values(players)
-
-            print(players)
-
-            local newHost = players[math.random(1, #players)]
-            
-            print("New host: " .. newHost.player.Name)
-            
-            store:dispatch({
-                type = "setHost",
-                roomId = id,
-                host = newHost.player
-            })
-        end
-    end
+function MultiplayerService.Client:LeaveRoom(...)
+    return MultiplayerService:LeaveRoom(...)
 end
 
 function MultiplayerService.Client:StartMatch(player, id)
