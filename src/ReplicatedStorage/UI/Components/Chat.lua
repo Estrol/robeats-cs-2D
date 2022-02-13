@@ -66,7 +66,7 @@ function Chat:render()
                 Text = string.format("<font color=\"#A1A1A1\">%s:</font> %s", message.player.Name, message.message),
                 RichText = true,
                 Size = UDim2.new(0.95, 0, 0, 18),
-                TextSize = 14,
+                TextSize = 16,
                 TextColor3 = Color3.fromRGB(255, 255, 255),
                 BackgroundTransparency = 1,
                 TextXAlignment = Enum.TextXAlignment.Left,
@@ -98,7 +98,7 @@ function Chat:render()
         }, messages),
         MessageTextBox = e(RoundedTextBox, {
             Position = UDim2.fromScale(0.5, 0.98),
-            Size = UDim2.new(0.97, 0, 0, 20),
+            Size = UDim2.new(0.97, 0, 0, 25),
             AnchorPoint = Vector2.new(0.5, 1),
             TextSize = 14,
             TextColor3 = Color3.fromRGB(255, 255, 255),
