@@ -66,8 +66,11 @@ function MultiplayerService.Client:AddRoom(player, name, password)
     return id
 end
 
-function MultiplayerService.Client:RemoveRoom(player)
-
+function MultiplayerService:RemoveRoom(id)
+    StateService.Store:dispatch({
+        type = "removeRoom",
+        roomId = id
+    })
 end
 
 function MultiplayerService.Client:LeaveRoom(player, id)
@@ -80,17 +83,37 @@ function MultiplayerService.Client:LeaveRoom(player, id)
 
     if room.players[tostring(player.UserId)] then
         if Llama.Dictionary.count(room.players) == 1 then
-            store:dispatch({
-                type = "removeRoom",
-                roomId = id
-            })
+            MultiplayerService:RemoveRoom(id)
             return
         end
+
         store:dispatch({
             type = "removePlayer",
             player = player,
             roomId = id
         })
+
+        if MultiplayerService:IsHost(player, id) then
+            print("Host left")
+
+            local players = Llama.Dictionary.filter(room.players, function(compPlayer)
+                return compPlayer.player ~= player
+            end)
+
+            players = Llama.Dictionary.values(players)
+
+            print(players)
+
+            local newHost = players[math.random(1, #players)]
+            
+            print("New host: " .. newHost.player.Name)
+            
+            store:dispatch({
+                type = "setHost",
+                roomId = id,
+                host = newHost.player
+            })
+        end
     end
 end
 
