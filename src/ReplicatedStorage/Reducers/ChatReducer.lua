@@ -1,7 +1,7 @@
 local Rodux = require(game.ReplicatedStorage.Packages.Rodux)
 local Llama = require(game.ReplicatedStorage.Packages.Llama)
 
-local MAX_MESSAGE_HISTORY = 200
+local MAX_MESSAGE_HISTORY = 100
 
 local defaultState = {
     messages = {}
