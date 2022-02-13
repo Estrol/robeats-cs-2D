@@ -11,6 +11,8 @@ local RoundedTextLabel = require(game.ReplicatedStorage.UI.Components.Base.Round
 local RoundedImageLabel = require(game.ReplicatedStorage.UI.Components.Base.RoundedImageLabel)
 local RoundedTextButton = require(game.ReplicatedStorage.UI.Components.Base.RoundedTextButton)
 
+local Tier = require(game.ReplicatedStorage.UI.Components.Tier)
+
 local Player = Roact.Component:extend("Player")
 
 Player.defaultProps = {
@@ -22,6 +24,10 @@ Player.defaultProps = {
 }
 
 function Player:init()
+    if not self.props.Profile then
+        return
+    end
+
     self.props.tierService:GetTierFromRating(self.props.Profile.Rating):andThen(function(tier)
         self:setState({
             tier = tier.name,
@@ -42,11 +48,21 @@ function Player:render()
             Size = UDim2.new(0.07, 0, 0.75, 0),
             Image = string.format("https://www.roblox.com/headshot-thumbnail/image?userid=%d&width=420&height=420&format=png", self.props.UserId)
         }, {
+            Tier = e(Tier, {
+                imageLabelProps = {
+                    Size = UDim2.fromScale(0.5, 0.5),
+                    Position = UDim2.fromScale(1.53, 0.04),
+                    AnchorPoint = Vector2.new(0.5, 0),
+                    BackgroundColor3 = Color3.fromRGB(13, 13, 13),
+                },
+                tier = self.state.tier,
+                division = self.state.division
+            }),
             Name = e(RoundedTextLabel, {
                 BackgroundTransparency = 1,
                 TextColor3 = Color3.fromRGB(255, 208, 87),
                 TextScaled = true,
-                Position = UDim2.fromScale(1.3, 0.04),
+                Position = UDim2.fromScale(1.9, 0.04),
                 Size = UDim2.fromScale(5, 0.55),
                 TextXAlignment = Enum.TextXAlignment.Left,
                 Text = (if self.props.IsHost then "👑 " else "") .. self.props.Name
