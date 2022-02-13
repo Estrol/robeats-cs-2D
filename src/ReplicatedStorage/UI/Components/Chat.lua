@@ -105,7 +105,6 @@ function Chat:render()
             BackgroundColor3 = Color3.fromRGB(27, 27, 27),
             ClearTextOnFocus = false,
             TextXAlignment = Enum.TextXAlignment.Left,
-            TextYAlignment = Enum.TextYAlignment.Top,
             LayoutOrder = 1,
             TextWrapped = true,
             Text = self.state.message,

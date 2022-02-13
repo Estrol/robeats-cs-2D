@@ -1,4 +1,6 @@
+local ProximityPromptService = game:GetService("ProximityPromptService")
 local Roact = require(game.ReplicatedStorage.Packages.Roact)
+local RoactRodux = require(game.ReplicatedStorage.Packages.RoactRodux)
 local Llama = require(game.ReplicatedStorage.Packages.Llama)
 local e = Roact.createElement
 
@@ -54,6 +56,18 @@ function Results:init()
 	end)
 end
 
+function Results:didUpdate(prevProps)
+	print(self.props)
+
+	if self.props.match and (prevProps.inProgress ~= self.props.inProgress) and self.props.inProgress then
+		self.props.history:push("/play", {
+            roomId = self.props.location.state.RoomId
+        })
+	else
+		self.lastInProgress = match.inProgress
+	end
+end
+
 function Results:didMount()
 	if self.knit then
 		local PreviewController = self.knit.GetController("PreviewController")
@@ -80,7 +94,7 @@ function Results:render()
 
 	local playerSelection
 
-	local match = self.props.location.state.Match
+	local match = self.props.match
 
 	if match then
 		playerSelection = e(PlayerSelection, {
@@ -300,4 +314,13 @@ function Results:render()
 	})
 end
 
-return Results
+return RoactRodux.connect(function(state, props)
+	local roomId = props.location.state.RoomId
+	local match = if roomId then state.multiplayer.rooms[roomId] else nil
+
+	return {
+		roomId = roomId,
+		match = match,
+		inProgress = if match then match.inProgress else nil,
+	}
+end)(Results)

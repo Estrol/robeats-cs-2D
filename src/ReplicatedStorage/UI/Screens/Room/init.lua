@@ -128,7 +128,10 @@ function Room:render()
         }),
         Players = e(RoundedAutoScrollingFrame, {
             Size = UDim2.fromScale(0.567, 0.68),
-            Position = UDim2.fromScale(0.01, 0.23)
+            Position = UDim2.fromScale(0.01, 0.23),
+            UIListLayoutProps = {
+                Padding = UDim.new(0, 5)
+            }
         }, players),
         Chat = e(Chat, {
             Position = UDim2.fromScale(0.58, 0.23),
