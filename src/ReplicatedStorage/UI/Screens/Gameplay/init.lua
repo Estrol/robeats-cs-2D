@@ -219,8 +219,6 @@ end
 
 function Gameplay:didUpdate()
     if self.props.room and not self.props.room.inProgress then
-        print(self.props.room)
-        
         self.onMultiplayerGameEnded:Fire()
     end
 end

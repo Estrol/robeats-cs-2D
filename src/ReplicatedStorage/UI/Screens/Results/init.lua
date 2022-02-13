@@ -57,14 +57,10 @@ function Results:init()
 end
 
 function Results:didUpdate(prevProps)
-	print(self.props)
-
-	if self.props.match and (prevProps.inProgress ~= self.props.inProgress) and self.props.inProgress then
+	if self.props.room and (prevProps.inProgress ~= self.props.inProgress) and self.props.inProgress then
 		self.props.history:push("/play", {
             roomId = self.props.location.state.RoomId
         })
-	else
-		self.lastInProgress = match.inProgress
 	end
 end
 
@@ -94,11 +90,11 @@ function Results:render()
 
 	local playerSelection
 
-	local match = self.props.match
+	local room = self.props.room
 
-	if match then
+	if room then
 		playerSelection = e(PlayerSelection, {
-			Players = match.players,
+			Players = room.players,
 			SelectedPlayer = self.state.selectedScoreUserId,
 			OnPlayerSelected = function(id)
 				self:setState({
@@ -111,7 +107,7 @@ function Results:render()
 	local scoreData
 
 	if self.state.selectedScoreUserId and self.state.selectedScoreUserId ~= (game.Players.LocalPlayer and game.Players.LocalPlayer.UserId or 0) then
-		local player = match.players[tostring(state.Match.players[tostring(self.state.selectedScoreUserId)].player.UserId)]
+		local player = room.players[tostring(state.Match.players[tostring(self.state.selectedScoreUserId)].player.UserId)]
 
 		scoreData = {
 			score = player.score,
@@ -284,7 +280,7 @@ function Results:render()
 			TextSize = 16,
 			ZIndex = 5,
 			OnClick = function()
-				if match then
+				if room then
 					self.props.history:push("/room", {
 						roomId = state.RoomId,
 						goToMultiSelect = true
@@ -295,7 +291,7 @@ function Results:render()
 			end
 		});
 
-		RestartMap = if (not self.props.location.state.Viewing and not match) then Roact.createElement(RoundedTextButton, {
+		RestartMap = if (not self.props.location.state.Viewing and not room) then Roact.createElement(RoundedTextButton, {
 			BackgroundColor3 = Color3.fromRGB(50, 144, 50);
 			AnchorPoint = Vector2.new(0, 1);
 			Position = UDim2.fromScale(0.175, 0.98);
@@ -316,11 +312,11 @@ end
 
 return RoactRodux.connect(function(state, props)
 	local roomId = props.location.state.RoomId
-	local match = if roomId then state.multiplayer.rooms[roomId] else nil
+	local room = if roomId then state.multiplayer.rooms[roomId] else nil
 
 	return {
 		roomId = roomId,
-		match = match,
-		inProgress = if match then match.inProgress else nil,
+		room = room,
+		inProgress = if room then room.inProgress else nil,
 	}
 end)(Results)

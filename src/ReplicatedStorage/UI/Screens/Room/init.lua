@@ -103,7 +103,7 @@ function Room:render()
             BackgroundColor3 = self.props.isHost and Color3.fromRGB(64, 121, 121) or Color3.fromRGB(51, 51, 51),
             TextColor3 = Color3.fromRGB(255, 255, 255),
             Text = "Change Song",
-            TextSize = 9,
+            TextScaled = true,
             OnClick = function()
                 if self.props.isHost then
                     self.props.history:push("/select", {
@@ -111,6 +111,10 @@ function Room:render()
                     })
                 end
             end
+        }, {
+            UITextSizeConstraint = e("UITextSizeConstraint", {
+                MaxTextSize = 9
+            })
         }),
         SongInfoDisplay = e(SongInfoDisplay, {
             ShowRateButtons = self.props.isHost,

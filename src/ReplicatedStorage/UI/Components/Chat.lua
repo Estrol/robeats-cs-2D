@@ -26,25 +26,9 @@ Chat.defaultProps = {
 function Chat:init()
     self.trove = Trove.new()
 
-    self.state = {
+    self:setState({
         message = ""
-    }
-
-    self.trove:Construct(function()
-        return game:GetService("UserInputService").InputBegan:Connect(function(input)
-            if input.KeyCode == Enum.KeyCode.Return then
-                if self.state.message == "" then
-                    return
-                end
-
-                self.props.chatService:Chat(self.props.Channel, self.state.message)
-    
-                self:setState({
-                    message = ""
-                })
-            end
-        end)
-    end)
+    })
 
     self.scrollingFrame = Roact.createRef()
 end
@@ -106,12 +90,27 @@ function Chat:render()
             ClearTextOnFocus = false,
             TextXAlignment = Enum.TextXAlignment.Left,
             LayoutOrder = 1,
-            TextWrapped = true,
             Text = self.state.message,
+            TextWrapped = true,
             PlaceholderText = "Type a message...",
             [Roact.Change.Text] = function(message)
                 self:setState({
                     message = message.Text
+                })
+            end,
+            [Roact.Event.FocusLost] = function(_, enterPressed)
+                if not enterPressed then
+                    return
+                end
+
+                if self.state.message == "" then
+                    return
+                end
+                
+                self.props.chatService:Chat(self.props.Channel, self.state.message)
+
+                self:setState({
+                    message = ""
                 })
             end
         })
