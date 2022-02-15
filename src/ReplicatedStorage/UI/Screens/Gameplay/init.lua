@@ -2,6 +2,7 @@ local Roact = require(game.ReplicatedStorage.Packages.Roact)
 local RoactRodux = require(game.ReplicatedStorage.Packages.RoactRodux)
 local Llama = require(game.ReplicatedStorage.Packages.Llama)
 local e = Roact.createElement
+local f = Roact.createFragment
 
 local SPUtil = require(game.ReplicatedStorage.Shared.SPUtil)
 local CurveUtil = require(game.ReplicatedStorage.Shared.CurveUtil)
@@ -34,6 +35,8 @@ local Knit = require(game:GetService("ReplicatedStorage").Packages.Knit)
 local withInjection = require(game.ReplicatedStorage.UI.Components.HOCs.withInjection)
 
 local Lighting = game:GetService("Lighting")
+local UserInputService = game:GetService("UserInputService")
+local GuiService = game:GetService("GuiService")
 
 local Gameplay = Roact.Component:extend("Gameplay")
 
@@ -68,7 +71,10 @@ function Gameplay:init()
         local stagePlat = EnvironmentSetup:get_element_protos_folder().NoteTrackSystemProto.TrackBG.Union
         stagePlat.Transparency = self.props.options.BaseTransparency
     end
-    
+
+    --Is the player on mobile
+    self.numLanes = 4
+
     -- Set FOV and Time of Day
     
     workspace.CurrentCamera.FieldOfView = self.props.options.FOV
@@ -382,6 +388,30 @@ function Gameplay:render()
         statCardPosition =  UDim2.fromScale((self.props.options.PlayfieldWidth / 100 / 2) + 0.53, 0.2)
     end
 
+    --[[
+        TODO:
+         - Implement option to toggle these dividers
+         - Make transparency change, do something about it
+         - Try not to cry because Roact is a pain
+    ]]
+
+    local sections = {}
+
+    if UserInputService.TouchEnabled and not UserInputService.KeyboardEnabled and not UserInputService.MouseEnabled and not UserInputService.GamepadEnabled and not GuiService:IsTenFootInterface() then
+        if self.props.options.DividersEnabled then
+            for i = 0, self.numLanes do
+                local el = e(RoundedFrame, {
+                    BackgroundColor3 = Color3.fromRGB(math.random(0,255), math.random(0,255), math.random(0,255)),
+                    Size = UDim2.fromScale(1/self.numLanes, 1),
+                    Position = UDim2.fromScale(i/self.numLanes, 0),
+                    Transparency = 0.5,
+                    ZIndex = 0
+                })
+                table.insert(sections, el)
+            end
+        end
+    end
+
     return Roact.createFragment({
         Score = e(AnimatedNumberLabel, {
             Size = UDim2.fromScale(0.2, 0.12),
@@ -447,6 +477,7 @@ function Gameplay:render()
             end
         }),
         Leaderboard = leaderboard,
+        Sections = f(sections),
         HitDeviance = e(RoundedFrame, {
            Position = self.props.options.Use2DLane and UDim2.fromScale(0.5, 0.635) or UDim2.fromScale(0.5, 0.95),
            Size = self.props.options.Use2DLane and UDim2.fromScale(0.15, 0.014) or UDim2.fromScale(0.15, 0.05),

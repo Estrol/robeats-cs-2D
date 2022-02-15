@@ -27,7 +27,7 @@ local ButtonValue = require(script.ButtonValue)
 
 local Options = Roact.Component:extend("Options")
 
-Options.categoryList = {"⚙ General", "🖥️ Interface", "➕ Extra", "⬜ 2D"}
+Options.categoryList = {"⚙ General", "🖥️ Interface", "➕ Extra", "⬜ 2D", "Mobile"}
 
 function noop() end
 
@@ -334,6 +334,14 @@ function Options:getSettingElements()
             Name = "Select Skin",
             ButtonText = "Open Skin Selection Panel",
             LayoutOrder = 6
+        })
+    end):case(5, function()
+        elements.DividersEnabled = e(BoolValue, {
+            Value = self.props.options.DividersEnabled,
+            OnChanged = function(value)
+                self.props.setOption("DividersEnabled", value)
+            end,
+            Name = "Mobile Dividers Enabled"
         })
     end)
     
