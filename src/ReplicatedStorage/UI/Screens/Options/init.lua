@@ -27,7 +27,7 @@ local ButtonValue = require(script.ButtonValue)
 
 local Options = Roact.Component:extend("Options")
 
-Options.categoryList = {"⚙ General", "🖥️ Interface", "➕ Extra", "⬜ 2D", "Mobile"}
+Options.categoryList = {"⚙ General", "🖥️ Interface", "➕ Extra", "⬜ 2D", "📱 Mobile"}
 
 function noop() end
 

@@ -14,10 +14,12 @@ local SongDatabase = require(game.ReplicatedStorage.RobeatsGameCore.SongDatabase
 local DebugOut = require(game.ReplicatedStorage.Shared.DebugOut)
 local NoteResult= require(game.ReplicatedStorage.RobeatsGameCore.Enums.NoteResult)
 local FlashEvery = require(game.ReplicatedStorage.Shared.FlashEvery)
+local InputUtil = require(game.ReplicatedStorage.Shared.InputUtil)
 
 local Leaderboard = require(script.Leaderboard)
 local MultiplayerLeaderboard = require(script.MultiplayerLeaderboard)
 local StatCard = require(script.StatCard)
+local Divider = require(script.Divider)
 
 local AnimatedNumberLabel = require(game.ReplicatedStorage.UI.Components.Base.AnimatedNumberLabel)
 local RoundedTextLabel = require(game.ReplicatedStorage.UI.Components.Base.RoundedTextLabel)
@@ -30,19 +32,22 @@ local LeaderboardPositions = require(game.ReplicatedStorage.LeaderboardPositions
 
 local withHitDeviancePoint = require(script.Decorators.withHitDeviancePoint)
 
-local Knit = require(game:GetService("ReplicatedStorage").Packages.Knit)
+local Trove = require(game.ReplicatedStorage.Packages.Trove)
 
 local withInjection = require(game.ReplicatedStorage.UI.Components.HOCs.withInjection)
 
 local Lighting = game:GetService("Lighting")
 local UserInputService = game:GetService("UserInputService")
 local GuiService = game:GetService("GuiService")
+local TweenService = game:GetService("TweenService")
 
 local Gameplay = Roact.Component:extend("Gameplay")
 
 Gameplay.SpreadString = "<font color=\"rgb(125, 125, 125)\">%d</font> <font color=\"rgb(55, 55, 55)\">/</font> <font color=\"rgb(99, 91, 15)\">%d</font> <font color=\"rgb(55, 55, 55)\">/</font> <font color=\"rgb(23, 99, 15)\">%d</font> <font color=\"rgb(55, 55, 55)\">/</font> <font color=\"rgb(15, 39, 99)\">%d</font> <font color=\"rgb(55, 55, 55)\">/</font> <font color=\"rgb(91, 15, 99)\">%d</font> <font color=\"rgb(55, 55, 55)\">/</font> <font color=\"rgb(99, 15, 21)\">%d</font> | %0.1f M/P"
 
 function Gameplay:init()
+    self.trove = Trove.new()
+
     -- Set gameplay state
     
     self:setState({
@@ -56,7 +61,9 @@ function Gameplay:init()
         goods = 0,
         bads = 0,
         misses = 0,
-        loaded = false
+        loaded = false,
+        dividerPresses = { false, false, false, false },
+        isMobile = UserInputService.TouchEnabled
     })
     
     -- Set up time left bib
@@ -218,9 +225,69 @@ function Gameplay:init()
         })
     end)
 
+    self.trove:Connect(UserInputService.LastInputTypeChanged, function(inputType)
+        if inputType == Enum.UserInputType.Touch and not self.state.isMobile then
+            self:setState({
+                isMobile = true
+            })
+        elseif inputType == Enum.UserInputType.Keyboard or inputType == Enum.UserInputType.MouseMovement or inputType == Enum.UserInputType.MouseButton1 or inputType == Enum.UserInputType.MouseButton2 and self.state.isMobile then
+            self:setState({
+                isMobile = false
+            })
+        end
+    end)
+
     -- Expose the game instance to the rest of the component
 
     self._game = _game
+end
+
+function Gameplay:didMount()
+    local _input = self._game._input
+
+    self.trove:Construct(function()
+        return _input.InputBegan.Event:Connect(function(keycode)
+            local track
+
+            if InputUtil.KEYCODE_TOUCH_TRACK1 == keycode then
+                track = 1
+            elseif InputUtil.KEYCODE_TOUCH_TRACK2 == keycode then
+                track = 2
+            elseif InputUtil.KEYCODE_TOUCH_TRACK3 == keycode then
+                track = 3
+            elseif InputUtil.KEYCODE_TOUCH_TRACK4 == keycode then
+                track = 4
+            end
+
+            if track then
+                self:setState({
+                    dividerPresses = Llama.List.set(self.state.dividerPresses, track, true)
+                })
+            end
+        end)
+    end)
+
+    self.trove:Construct(function()
+        return _input.InputEnded.Event:Connect(function(keycode)
+            local track
+
+            if InputUtil.KEYCODE_TOUCH_TRACK1 == keycode then
+                track = 1
+            elseif InputUtil.KEYCODE_TOUCH_TRACK2 == keycode then
+                track = 2
+            elseif InputUtil.KEYCODE_TOUCH_TRACK3 == keycode then
+                track = 3
+            elseif InputUtil.KEYCODE_TOUCH_TRACK4 == keycode then
+                track = 4
+            end
+
+            if track then
+                self:setState({
+                    dividerPresses = Llama.List.set(self.state.dividerPresses, track, false)
+                })
+            end
+        end)
+    end)
 end
 
 function Gameplay:didUpdate()
@@ -298,8 +365,6 @@ function Gameplay:allPlayersLoaded()
 end
 
 function Gameplay:submitScore(records, hits)
-    print(records)
-
     self.props.scoreService:SubmitScore(records)
         :andThen(function()
             local moment = DateTime.now():ToLocalTime()
@@ -387,28 +452,18 @@ function Gameplay:render()
     if self.props.options.Use2DLane then
         statCardPosition =  UDim2.fromScale((self.props.options.PlayfieldWidth / 100 / 2) + 0.53, 0.2)
     end
-
-    --[[
-        TODO:
-         - Implement option to toggle these dividers
-         - Make transparency change, do something about it
-         - Try not to cry because Roact is a pain
-    ]]
-
+    
     local sections = {}
 
-    if UserInputService.TouchEnabled and not UserInputService.KeyboardEnabled and not UserInputService.MouseEnabled and not UserInputService.GamepadEnabled and not GuiService:IsTenFootInterface() then
-        if self.props.options.DividersEnabled then
-            for i = 0, self.numLanes do
-                local el = e(RoundedFrame, {
-                    BackgroundColor3 = Color3.fromRGB(math.random(0,255), math.random(0,255), math.random(0,255)),
-                    Size = UDim2.fromScale(1/self.numLanes, 1),
-                    Position = UDim2.fromScale(i/self.numLanes, 0),
-                    Transparency = 0.5,
-                    ZIndex = 0
-                })
-                table.insert(sections, el)
-            end
+    if self.state.isMobile and self.props.options.DividersEnabled then
+        for i = 0, self.numLanes - 1 do
+            local el = e(Divider, {
+                Lane = i,
+                LaneCount = self.numLanes,
+                Pressed = self.state.dividerPresses[i + 1]
+            })
+
+            table.insert(sections, el)
         end
     end
 
@@ -511,6 +566,8 @@ function Gameplay:willUnmount()
     self._game:teardown()
     self.everyFrameConnection:Disconnect()
     self.onMultiplayerGameEnded:Destroy()
+
+    self.trove:Destroy()
 end
 
 local Injected = withInjection(Gameplay, {

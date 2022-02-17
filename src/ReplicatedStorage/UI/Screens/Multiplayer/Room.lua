@@ -90,10 +90,10 @@ function Room:render()
             }),
         }),
         JoinButton = e(RoundedTextButton, {
-            Size = UDim2.fromScale(0.075, 0.2),
-            HoldSize = UDim2.fromScale(0.06, 0.06),
+            Size = UDim2.fromScale(0.075, 0.3),
+            HoldSize = UDim2.fromScale(0.075, 0.3),
             AnchorPoint = Vector2.new(0.5, 0.5),
-            Position = UDim2.fromScale(0.953, 0.82),
+            Position = UDim2.fromScale(0.953, 0.74),
             BackgroundColor3 = if self.props.InProgess then  Color3.fromRGB(46, 46, 46) else Color3.fromRGB(35, 65, 44),
             TextColor3 = Color3.fromRGB(255, 255, 255),
             Text = "Join",
