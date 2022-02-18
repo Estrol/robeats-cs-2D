@@ -64,8 +64,8 @@ function Multiplayer:render()
             TextColor3 = Color3.fromRGB(255, 255, 255),
             Text = "Back",
             TextSize = 12,
+            ZIndex = 2,
             OnClick = function()
-                print("jkindfjlmkdfgkjnfdkjlnfdgkjln")
                 self.props.history:push("/")
             end
         }),
