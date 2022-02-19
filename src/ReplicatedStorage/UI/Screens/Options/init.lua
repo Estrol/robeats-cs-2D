@@ -417,6 +417,7 @@ function Options:render()
         Visible = self.motorBinding:map(function(a)
             return a > 0
         end),
+        BackgroundColor3 = Color3.fromRGB(22, 22, 22),
         Size = UDim2.fromScale(0.8, 0.8),
         AnchorPoint = Vector2.new(0.5, 0.5),
         ZIndex = 3
