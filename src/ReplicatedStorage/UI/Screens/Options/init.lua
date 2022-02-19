@@ -27,6 +27,8 @@ local EnumValue = require(script.EnumValue)
 local ColorValue = require(script.ColorValue)
 local ButtonValue = require(script.ButtonValue)
 
+local withInjection = require(game.ReplicatedStorage.UI.Components.HOCs.withInjection)
+
 local Options = Roact.Component:extend("Options")
 
 Options.categoryList = {"⚙ General", "🖥️ Interface", "➕ Extra", "⬜ 2D", "📱 Mobile"}
@@ -42,9 +44,17 @@ function Options:init()
         skinMenuOpen = false
     })
 
-    if RunService:IsRunning() then
-        self.knit = require(game:GetService("ReplicatedStorage").Packages.Knit)
-    end
+    self.motor:onComplete(function()
+        if self.motor:getValue() == 0 then
+            self.props.settingsService:SetSettings(self.props.options)
+                :andThen(function()
+                    DebugOut:puts("Successfully saved settings!")
+                end)
+                :catch(function()
+                    DebugOut:warnf("There was an error saving settings!")
+                end)
+        end
+    end)
 end
 
 function Options:getSettingElements()
@@ -357,11 +367,18 @@ end
 function Options:render()
     if self.state.skinMenuOpen then
         return e(Skin, {
+            Position = self.motorBinding:map(function(a)
+                return UDim2.fromScale(1.5, 0.5):Lerp(UDim2.fromScale(0.5, 0.5), a)
+            end),
+            Visible = self.motorBinding:map(function(a)
+                return a > 0
+            end),
             OnBack = function()
                 self:setState({
                     skinMenuOpen = false
                 })
-            end
+            end,
+            ZIndex = 3
         })
     end
 
@@ -468,18 +485,9 @@ function Options:didUpdate()
     }))
 end
 
-function Options:willUnmount()
-    if self.knit then
-        local SettingsService = self.knit.GetService("SettingsService")
-        SettingsService:SetSettings(self.props.options)
-        :andThen(function()
-            DebugOut:puts("Successfully saved settings!")
-        end)
-        :catch(function()
-            DebugOut:warnf("There was an error saving settings!")
-        end)
-    end
-end
+local Injected = withInjection(Options, {
+    settingsService = "SettingsService"
+})
 
 return RoactRodux.connect(function(state)
     return {
@@ -492,4 +500,4 @@ function(dispatch)
             dispatch(Actions.setPersistentOption(...))
         end
     }
-end)(Options)
+end)(Injected)
