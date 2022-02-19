@@ -2,6 +2,8 @@ local Roact = require(game.ReplicatedStorage.Packages.Roact)
 local Rodux = require(game.ReplicatedStorage.Packages.Rodux)
 local Llama = require(game.ReplicatedStorage.Packages.Llama)
 local RoactRodux = require(game.ReplicatedStorage.Packages.RoactRodux)
+local Flipper = require(game.ReplicatedStorage.Packages.Flipper)
+local RoactFlipper = require(game.ReplicatedStorage.Packages.RoactFlipper)
 local e = Roact.createElement
 local f = Roact.createFragment
 local SPUtil = require(game.ReplicatedStorage.Shared.SPUtil)
@@ -32,6 +34,9 @@ Options.categoryList = {"⚙ General", "🖥️ Interface", "➕ Extra", "⬜ 2D
 function noop() end
 
 function Options:init()
+    self.motor = Flipper.SingleMotor.new(self.props.location.state.OptionsVisible and 1 or 0)
+    self.motorBinding = RoactFlipper.getBinding(self.motor)
+
     self:setState({
         selectedCategory = 1,
         skinMenuOpen = false
@@ -406,10 +411,18 @@ function Options:render()
     end
 
     return e(RoundedFrame, {
-        Size = UDim2.fromScale(1, 1)
+        Position = self.motorBinding:map(function(a)
+            return UDim2.fromScale(1.5, 0.5):Lerp(UDim2.fromScale(0.5, 0.5), a)
+        end),
+        Visible = self.motorBinding:map(function(a)
+            return a > 0
+        end),
+        Size = UDim2.fromScale(0.8, 0.8),
+        AnchorPoint = Vector2.new(0.5, 0.5),
+        ZIndex = 3
     }, {
         SettingsContainer = e(RoundedAutoScrollingFrame, {
-            Size = UDim2.fromScale(0.55, 0.8),
+            Size = UDim2.fromScale(0.6, 0.8),
             AnchorPoint = Vector2.new(0, 0.5),
             Position = UDim2.fromScale(0.32, 0.5),
             BackgroundColor3 = Color3.fromRGB(23, 23, 23),
@@ -421,9 +434,9 @@ function Options:render()
             Options = f(options)
         }),
         SettingsCategoriesContainer = e(RoundedAutoScrollingFrame, {
-            Size = UDim2.fromScale(0.2, 0.8),
+            Size = UDim2.fromScale(0.23, 0.8),
             AnchorPoint = Vector2.new(0, 0.5),
-            Position = UDim2.fromScale(0.1, 0.5),
+            Position = UDim2.fromScale(0.08, 0.5),
             BackgroundColor3 = Color3.fromRGB(23, 23, 23),
             UIListLayoutProps = {
                 Padding = UDim.new(0, 4),
@@ -435,7 +448,7 @@ function Options:render()
             Size = UDim2.fromScale(0.05, 0.05),
             HoldSize = UDim2.fromScale(0.06, 0.06),
             AnchorPoint = Vector2.new(0.5, 0.5),
-            Position = UDim2.fromScale(0.124, 0.95),
+            Position = UDim2.fromScale(0.05, 0.95),
             BackgroundColor3 = Color3.fromRGB(212, 23, 23),
             TextColor3 = Color3.fromRGB(255, 255, 255),
             Text = "Back",
@@ -445,6 +458,13 @@ function Options:render()
             end
         }),
     })
+end
+
+function Options:didUpdate()
+    self.motor:setGoal(Flipper.Spring.new(self.props.location.state.OptionsVisible and 1 or 0, {
+        frequency = 4,
+        dampingRatio = 1.2
+    }))
 end
 
 function Options:willUnmount()

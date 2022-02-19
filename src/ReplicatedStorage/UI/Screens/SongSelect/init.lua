@@ -150,7 +150,9 @@ function SongSelect:render()
                     Text = "Options",
                     Color = Color3.fromRGB(37, 37, 37),
                     OnClick = function()
-                        self.props.history:push("/options")
+                        self.props.history:push("/select", {
+                            OptionsVisible = true
+                        })
                     end
                 },
                 {

@@ -58,8 +58,7 @@ function RoactController:GetRoutes()
             component = Results
         }),
         Options = Roact.createElement(RoactRouter.Route, {
-            path = "/options",
-            exact = true,
+            alwaysRender = true,
             component = Options
         }),
         Rankings = Roact.createElement(RoactRouter.Route, {
@@ -92,11 +91,6 @@ function RoactController:GetRoutes()
             exact = true,
             component = Room
         })
-        -- Chat = Roact.createElement(RoactRouter.Route, {
-        --     path = "/",
-        --     always = true,
-        --     component = Chat
-        -- })
     }
 end
 

@@ -84,19 +84,6 @@ function Multiplayer:render()
                 })
             end
         }),
-        -- OkButton = e(RoundedTextButton, {
-        --     Size = UDim2.fromScale(0.05, 0.05),
-        --     HoldSize = UDim2.fromScale(0.06, 0.06),
-        --     AnchorPoint = Vector2.new(0.5, 0.5),
-        --     Position = UDim2.fromScale(0.04, 0.95),
-        --     BackgroundColor3 = Color3.fromRGB(40, 78, 45),
-        --     TextColor3 = Color3.fromRGB(255, 255, 255),
-        --     Text = "OK",
-        --     TextSize = 12,
-        --     OnClick = function()
-        --         print("OK")
-        --     end
-        -- }),
         Rooms = e(RoundedAutoScrollingFrame, {
             Size = UDim2.fromScale(0.95, 0.95),
             Position = UDim2.fromScale(0.5, 0.5),

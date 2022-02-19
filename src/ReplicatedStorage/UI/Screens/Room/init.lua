@@ -116,6 +116,26 @@ function Room:render()
                 MaxTextSize = 9
             })
         }),
+        OptionsButton = e(RoundedTextButton, {
+            Size = UDim2.fromScale(0.05, 0.05),
+            HoldSize = UDim2.fromScale(0.06, 0.06),
+            AnchorPoint = Vector2.new(0.5, 0.5),
+            Position = UDim2.fromScale(0.154, 0.95),
+            BackgroundColor3 = Color3.fromRGB(51, 51, 51),
+            TextColor3 = Color3.fromRGB(255, 255, 255),
+            Text = "Options",
+            TextScaled = true,
+            OnClick = function()
+                self.props.history:push("/room", {
+                    roomId = self.props.roomId,
+                    OptionsVisible = true
+                })
+            end
+        }, {
+            UITextSizeConstraint = e("UITextSizeConstraint", {
+                MaxTextSize = 9
+            })
+        }),
         SongInfoDisplay = e(SongInfoDisplay, {
             ShowRateButtons = self.props.isHost,
             OnUprate = function()
