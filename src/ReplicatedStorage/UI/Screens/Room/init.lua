@@ -126,10 +126,12 @@ function Room:render()
             Text = "Options",
             TextScaled = true,
             OnClick = function()
-                self.props.history:push("/room", {
-                    roomId = self.props.roomId,
-                    OptionsVisible = true
-                })
+                if not self.props.location.state.OptionsVisible then
+                    self.props.history:push("/room", {
+                        roomId = self.props.roomId,
+                        OptionsVisible = true
+                    })
+                end
             end
         }, {
             UITextSizeConstraint = e("UITextSizeConstraint", {

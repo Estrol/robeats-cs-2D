@@ -175,9 +175,11 @@ function MainMenuUI:render()
                 LayoutOrder = 2;
                 HoldSize = UDim2.fromScale(0.95, 0.125),
                 OnClick = function()
-                    self.props.history:push("/", {
-                        OptionsVisible = true
-                    })
+                    if not self.props.location.state.OptionsVisible then
+                        self.props.history:push("/", {
+                            OptionsVisible = true
+                        })
+                    end
                 end
             }, {
                 UITextSizeConstraint = e("UITextSizeConstraint", {
