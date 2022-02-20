@@ -15,7 +15,6 @@ LeaderboardSlot.defaultProps = {
     Rating = 0,
     Accuracy = 0,
     Place = 20,
-    Score = 0,
     IsLocalProfile = false
 }
 
