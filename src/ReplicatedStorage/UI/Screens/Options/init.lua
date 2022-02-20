@@ -478,7 +478,11 @@ function Options:render()
     })
 end
 
-function Options:didUpdate()
+function Options:didUpdate(prevProps)
+    if self.props.location.state.OptionsVisible == prevProps.location.state.OptionsVisible then
+        return
+    end
+
     self.motor:setGoal(Flipper.Spring.new(self.props.location.state.OptionsVisible and 1 or 0, {
         frequency = 4,
         dampingRatio = 1.2
