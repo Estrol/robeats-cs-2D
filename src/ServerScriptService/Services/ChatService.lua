@@ -22,7 +22,7 @@ function ChatService:KnitInit()
 end
 
 function ChatService.Client:Chat(player, channel, message)
-    if not RateLimitService:CanProcessRequestWithRateLimit(player, "Chat", 0.5) then
+    if not RateLimitService:CanProcessRequestWithRateLimit(player, "Chat", 3) then
         return
     end
 

@@ -34,7 +34,7 @@ function LeaderboardSlot:didUpdate()
 end
 
 function LeaderboardSlot:shouldUpdate(prevProps)
-    return prevProps.Rating ~= self.props.Rating or prevProps.Score ~= self.props.Score or prevProps.Accuracy ~= self.props.Accuracy
+    return prevProps.Rating ~= self.props.Rating or prevProps.Score ~= self.props.Score or prevProps.Accuracy ~= self.props.Accuracy or prevProps.Place ~= self.props.Place
 end
 
 function LeaderboardSlot:render()

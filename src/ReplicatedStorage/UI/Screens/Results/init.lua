@@ -106,8 +106,8 @@ function Results:render()
 
 	local scoreData
 
-	if self.state.selectedScoreUserId and self.state.selectedScoreUserId ~= (game.Players.LocalPlayer and game.Players.LocalPlayer.UserId or 0) then
-		local player = room.players[tostring(state.Match.players[tostring(self.state.selectedScoreUserId)].player.UserId)]
+	if self.state.selectedScoreUserId and self.state.selectedScoreUserId ~= (game.Players.LocalPlayer and game.Players.LocalPlayer.UserId or 0) and room.players[tostring(self.state.selectedScoreUserId)] then
+		local player = room.players[tostring(self.state.selectedScoreUserId)]
 
 		scoreData = {
 			score = player.score,

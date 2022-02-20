@@ -41,6 +41,11 @@ function MultiplayerService:GetState()
     return StateService.Store:getState()
 end
 
+function MultiplayerService:IsPlayerInRoom(player, id)
+    local state = self:GetState()
+    return state.multiplayer.rooms[id].players[tostring(player.UserId)] ~= nil
+end
+
 function MultiplayerService:IsHost(player, id)
     local state = self:GetState()
     return state.multiplayer.rooms[id].host == player
@@ -54,7 +59,7 @@ function MultiplayerService:LeaveRoom(player, id)
 
     local room = state.multiplayer.rooms[id]
 
-    if room.players[tostring(player.UserId)] then
+    if MultiplayerService:IsPlayerInRoom(player, id) then
         if Llama.Dictionary.count(room.players) == 1 then
             MultiplayerService:RemoveRoom(id)
             return
@@ -124,7 +129,7 @@ end
 function MultiplayerService.Client:LeaveRoom(...)
     local player = select(1, ...)
 
-    if not RateLimitService:CanProcessRequestWithRateLimit(player, "LeaveRoom", 3) then
+    if not RateLimitService:CanProcessRequestWithRateLimit(player, "LeaveRoom", 2) then
         return
     end
 
@@ -132,7 +137,7 @@ function MultiplayerService.Client:LeaveRoom(...)
 end
 
 function MultiplayerService.Client:StartMatch(player, id)
-    if not RateLimitService:CanProcessRequestWithRateLimit(player, "StartMatch", 3) then
+    if not RateLimitService:CanProcessRequestWithRateLimit(player, "StartMatch", 1) then
         return
     end
     
@@ -158,7 +163,11 @@ function MultiplayerService.Client:StartMatch(player, id)
 end
 
 function MultiplayerService.Client:SetLoaded(player, id, value)
-    if not RateLimitService:CanProcessRequestWithRateLimit(player, "SetLoaded", 3) then
+    if not RateLimitService:CanProcessRequestWithRateLimit(player, "SetLoaded", 1) then
+        return
+    end
+
+    if not MultiplayerService:IsPlayerInRoom(player, id) then
         return
     end
 
@@ -176,6 +185,10 @@ end
 
 function MultiplayerService.Client:TransferHost(player, id, newHostUserId)
     if not RateLimitService:CanProcessRequestWithRateLimit(player, "TransferHost", 1) then
+        return
+    end
+
+    if not MultiplayerService:IsPlayerInRoom(player, id) then
         return
     end
 
@@ -198,7 +211,11 @@ function MultiplayerService.Client:TransferHost(player, id, newHostUserId)
 end
 
 function MultiplayerService.Client:SetFinished(player, id, value)
-    if not RateLimitService:CanProcessRequestWithRateLimit(player, "SetFinished", 3) then
+    if not RateLimitService:CanProcessRequestWithRateLimit(player, "SetFinished", 1) then
+        return
+    end
+
+    if not MultiplayerService:IsPlayerInRoom(player, id) then
         return
     end
 
@@ -219,6 +236,10 @@ function MultiplayerService.Client:SetSongKey(player, id, key)
         return
     end
 
+    if not MultiplayerService:IsPlayerInRoom(player, id) then
+        return
+    end
+
     AssertType:is_string(id)
 
     local store = StateService.Store
@@ -233,7 +254,11 @@ function MultiplayerService.Client:SetSongKey(player, id, key)
 end
 
 function MultiplayerService.Client:SetSongRate(player, id, rate)
-    if not RateLimitService:CanProcessRequestWithRateLimit(player, "SetSongRate", 0.1) then
+    if not RateLimitService:CanProcessRequestWithRateLimit(player, "SetSongRate", 5) then
+        return
+    end
+
+    if not MultiplayerService:IsPlayerInRoom(player, id) then
         return
     end
 
@@ -280,7 +305,11 @@ function MultiplayerService.Client:JoinRoom(player, id, password)
 end
 
 function MultiplayerService.Client:SetMatchStats(player, id, stats)
-    if not RateLimitService:CanProcessRequestWithRateLimit(player, "SetMatchStats", 0.1) then
+    if not RateLimitService:CanProcessRequestWithRateLimit(player, "SetMatchStats", 3) then
+        return
+    end
+
+    if not MultiplayerService:IsPlayerInRoom(player, id) then
         return
     end
 
