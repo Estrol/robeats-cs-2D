@@ -280,7 +280,7 @@ function MultiplayerService.Client:JoinRoom(player, id, password)
 end
 
 function MultiplayerService.Client:SetMatchStats(player, id, stats)
-    if not RateLimitService:CanProcessRequestWithRateLimit(player, "SetMatchStats", 0.5) then
+    if not RateLimitService:CanProcessRequestWithRateLimit(player, "SetMatchStats", 0.1) then
         return
     end
 
