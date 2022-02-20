@@ -9,6 +9,7 @@ local ChatService = Knit.CreateService {
     Client = {};
 }
 
+local RateLimitService
 local StateService
 
 function ChatService:KnitInit()
@@ -16,10 +17,15 @@ function ChatService:KnitInit()
 
     AssertType = require(game.ReplicatedStorage.Shared.AssertType)
 
+    RateLimitService = Knit.GetService("RateLimitService")
     StateService = Knit.GetService("StateService")
 end
 
 function ChatService.Client:Chat(player, channel, message)
+    if not RateLimitService:CanProcessRequestWithRateLimit(player, "Chat", 0.5) then
+        return
+    end
+
     AssertType:is_string(message)
 
     message = Chat:FilterStringForBroadcast(message, player)
