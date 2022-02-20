@@ -15,6 +15,7 @@ LeaderboardSlot.defaultProps = {
     Rating = 0,
     Accuracy = 0,
     Place = 20,
+    Score = 0,
     IsLocalProfile = false
 }
 
@@ -30,6 +31,10 @@ end
 
 function LeaderboardSlot:didUpdate()
     self.motor:setGoal(Flipper.Spring.new(self.props.Place, self.springProps))
+end
+
+function LeaderboardSlot:shouldUpdate(prevProps)
+    return prevProps.Rating ~= self.props.Rating or prevProps.Score ~= self.props.Score or prevProps.Accuracy ~= self.props.Accuracy
 end
 
 function LeaderboardSlot:render()

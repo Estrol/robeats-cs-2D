@@ -27,18 +27,22 @@ function MultiplayerLeaderboard:render()
         return a.score > b.score
     end)
 
-    local children = Llama.Dictionary.map(scores, function(itr_score, itr_score_index)
+    local children = {}
+
+    for itr_score_index, itr_score in ipairs(scores) do
         local player = itr_score.player
 
-        return e(LeaderboardSlot, {
-           PlayerName = player.Name,
-           UserId = player.UserId,
-           Score = itr_score.score,
-           Accuracy = itr_score.accuracy,
-           Place = itr_score_index,
-           IsLocalProfile = player.UserId == game.Players.LocalPlayer.UserId
-       })
-    end)
+        if player then
+            children[tostring(player.UserId)] = e(LeaderboardSlot, {
+                PlayerName = player.Name,
+                UserId = player.UserId,
+                Score = itr_score.score,
+                Accuracy = itr_score.accuracy,
+                Place = itr_score_index,
+                IsLocalProfile = player.UserId == game.Players.LocalPlayer.UserId
+            })
+        end
+    end
 
     return e(RoundedFrame, {
         Position = self.props.Position,
