@@ -9,6 +9,7 @@ local MultiplayerService = Knit.CreateService {
 local Llama
 
 local StateService
+local RateLimitService
 
 local AssertType
 
@@ -30,6 +31,7 @@ function MultiplayerService:KnitStart()
 end
 
 function MultiplayerService:KnitInit()
+    RateLimitService = Knit.GetService("RateLimitService")
     StateService = Knit.GetService("StateService")
     Llama = require(game.ReplicatedStorage.Packages.Llama)
     AssertType = require(game.ReplicatedStorage.Shared.AssertType)
@@ -83,7 +85,19 @@ function MultiplayerService:LeaveRoom(player, id)
 end
 
 function MultiplayerService.Client:AddRoom(player, name, password)
+    if not RateLimitService:CanProcessRequestWithRateLimit(player, "AddRoom", 1) then
+        return
+    end
+
     local id = HttpService:GenerateGUID(false)
+
+    local state = MultiplayerService:GetState()
+
+    for _, room in pairs(state.multiplayer.rooms) do
+        if room.players[tostring(player.UserId)] then
+            return
+        end
+    end
 
     if password ~= "" then
         Passwords[id] = password
@@ -108,10 +122,20 @@ function MultiplayerService:RemoveRoom(id)
 end
 
 function MultiplayerService.Client:LeaveRoom(...)
+    local player = select(1, ...)
+
+    if not RateLimitService:CanProcessRequestWithRateLimit(player, "LeaveRoom", 3) then
+        return
+    end
+
     return MultiplayerService:LeaveRoom(...)
 end
 
 function MultiplayerService.Client:StartMatch(player, id)
+    if not RateLimitService:CanProcessRequestWithRateLimit(player, "StartMatch", 3) then
+        return
+    end
+    
     AssertType:is_string(id)
 
     local store = StateService.Store
@@ -134,6 +158,10 @@ function MultiplayerService.Client:StartMatch(player, id)
 end
 
 function MultiplayerService.Client:SetLoaded(player, id, value)
+    if not RateLimitService:CanProcessRequestWithRateLimit(player, "SetLoaded", 3) then
+        return
+    end
+
     AssertType:is_string(id)
     
     local store = StateService.Store
@@ -147,6 +175,10 @@ function MultiplayerService.Client:SetLoaded(player, id, value)
 end
 
 function MultiplayerService.Client:TransferHost(player, id, newHostUserId)
+    if not RateLimitService:CanProcessRequestWithRateLimit(player, "TransferHost", 1) then
+        return
+    end
+
     AssertType:is_number(newHostUserId)
 
     local newHost = game.Players:GetPlayerByUserId(newHostUserId)
@@ -166,6 +198,10 @@ function MultiplayerService.Client:TransferHost(player, id, newHostUserId)
 end
 
 function MultiplayerService.Client:SetFinished(player, id, value)
+    if not RateLimitService:CanProcessRequestWithRateLimit(player, "SetFinished", 3) then
+        return
+    end
+
     AssertType:is_string(id)
     
     local store = StateService.Store
@@ -179,6 +215,10 @@ function MultiplayerService.Client:SetFinished(player, id, value)
 end
 
 function MultiplayerService.Client:SetSongKey(player, id, key)
+    if not RateLimitService:CanProcessRequestWithRateLimit(player, "SetSongKey", 1) then
+        return
+    end
+
     AssertType:is_string(id)
 
     local store = StateService.Store
@@ -193,6 +233,10 @@ function MultiplayerService.Client:SetSongKey(player, id, key)
 end
 
 function MultiplayerService.Client:SetSongRate(player, id, rate)
+    if not RateLimitService:CanProcessRequestWithRateLimit(player, "SetSongRate", 0.1) then
+        return
+    end
+
     AssertType:is_string(id)
 
     local store = StateService.Store
@@ -207,6 +251,10 @@ function MultiplayerService.Client:SetSongRate(player, id, rate)
 end
 
 function MultiplayerService.Client:JoinRoom(player, id, password)
+    if not RateLimitService:CanProcessRequestWithRateLimit(player, "JoinRoom", 1) then
+        return
+    end
+
     AssertType:is_string(id)
 
     local store = StateService.Store
@@ -232,6 +280,10 @@ function MultiplayerService.Client:JoinRoom(player, id, password)
 end
 
 function MultiplayerService.Client:SetMatchStats(player, id, stats)
+    if not RateLimitService:CanProcessRequestWithRateLimit(player, "SetMatchStats", 0.5) then
+        return
+    end
+
     AssertType:is_string(id)
 
     local store = StateService.Store
