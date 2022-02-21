@@ -141,10 +141,14 @@ function Room:render()
         SongInfoDisplay = e(SongInfoDisplay, {
             ShowRateButtons = self.props.isHost,
             OnUprate = function()
-                self.props.multiplayerService:SetSongRate(self.props.roomId, self.props.room.songRate + 5)
+                if self.props.room.songRate < 200 then
+                    self.props.multiplayerService:SetSongRate(self.props.roomId, self.props.room.songRate + 5)
+                end
             end,
             OnDownrate = function()
-                self.props.multiplayerService:SetSongRate(self.props.roomId, self.props.room.songRate - 5)
+                if self.props.room.songRate > 5 then
+                    self.props.multiplayerService:SetSongRate(self.props.roomId, self.props.room.songRate - 5)
+                end
             end,
             SongRate = self.props.room.songRate,
             Position = UDim2.fromScale(0.5, 0.12),
