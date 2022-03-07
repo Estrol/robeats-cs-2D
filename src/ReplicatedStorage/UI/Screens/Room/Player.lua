@@ -13,6 +13,8 @@ local RoundedTextButton = require(game.ReplicatedStorage.UI.Components.Base.Roun
 
 local Tier = require(game.ReplicatedStorage.UI.Components.Tier)
 
+local Tiers = require(game.ReplicatedStorage.Tiers)
+
 local Player = Roact.Component:extend("Player")
 
 Player.defaultProps = {
@@ -28,12 +30,13 @@ function Player:init()
         return
     end
 
-    self.props.tierService:GetTierFromRating(self.props.Profile.Rating):andThen(function(tier)
-        self:setState({
-            tier = tier.name,
-            division = tier.division
-        })
-    end)
+    local tier = Tiers:GetTierFromRating(self.props.Profile.Rating)
+
+    self:setState({
+        tier = tier.name,
+        division = tier.division,
+        subdivision = tier.subdivision
+    })
 end
 
 function Player:render()
@@ -78,7 +81,7 @@ function Player:render()
                 Position = UDim2.fromScale(1.3, 0.5),
                 Size = UDim2.fromScale(5, 0.55),
                 TextXAlignment = Enum.TextXAlignment.Left,
-                Text = if self.props.Profile then string.format("#%d | %0.2f [%s]", self.props.Profile.Rank, self.props.Profile.Rating, if self.state.tier then self.state.tier .. (if self.state.division then " " .. tostring(self.state.division) else "") else "...") else "???"
+                Text = if self.props.Profile then string.format("#%d | %0.2f [%s]", self.props.Profile.Rank, self.props.Profile.Rating, if self.state.tier then self.state.tier .. (if self.state.division then " " .. string.rep("I", self.state.division) .. " Division " .. if self.state.division == 4 then "IV" else string.rep("I", self.state.subdivision) else "") else "...") else "???"
             }, {
                 UITextSizeConstraint = e("UITextSizeConstraint", {
                     MaxTextSize = 15
@@ -108,12 +111,8 @@ function Player:render()
     })
 end
 
-local Injected = withInjection(Player, {
-    tierService = "TierService"
-})
-
 return RoactRodux.connect(function(state, props)
     return {
         Profile = state.profiles[tostring(props.UserId)]
     }
-end)(Injected)
+end)(Player)

@@ -24,6 +24,7 @@ local SpreadDisplay = require(script.SpreadDisplay)
 local DataDisplay = require(script.DataDisplay)
 local SongInfoDisplay = require(game.ReplicatedStorage.UI.Screens.SongSelect.SongInfoDisplay)
 local PlayerSelection = require(script.PlayerSelection)
+local Ranking = require(script.Ranking)
 
 function noop() end
 
@@ -145,6 +146,8 @@ function Results:render()
 
 	scoreData.hits = scoreData.hits or state.Hits or {}
 
+	local viewing = self.props.location.state.Viewing
+
     return Roact.createElement("Frame", {
 		BackgroundColor3 = Color3.fromRGB(0,0,0),
 		BorderSizePixel = 0;
@@ -162,7 +165,7 @@ function Results:render()
 			AnchorPoint = Vector2.new(0.5, 0.5),
 			BackgroundColor3 = Color3.fromRGB(22, 22, 22),
 			BorderSizePixel = 0,
-			Position = UDim2.fromScale(0.832, 0.609),
+			Position = UDim2.fromScale(0.832, 0.609 - (if not viewing then 0.05 else 0)),
 			Size = UDim2.fromScale(0.279, 0.305),
 			bounds = {
 				min = {
@@ -186,7 +189,7 @@ function Results:render()
 		}),
 		SpreadDisplay = Roact.createElement(SpreadDisplay, {
 			AnchorPoint = Vector2.new(0.5, 0.5),
-			Position = UDim2.fromScale(0.555, 0.609),
+			Position = UDim2.fromScale(0.555, 0.609 - (if not viewing then 0.05 else 0)),
 			Size = UDim2.fromScale(0.279, 0.305),
 			Marvelouses = scoreData.marvelouses,
 			Perfects = scoreData.perfects,
@@ -218,7 +221,7 @@ function Results:render()
 					Value = string.format("%0d ms", scoreData.mean);
 				};
 			};
-			Position = UDim2.fromScale(0.696, 0.34);
+			Position = UDim2.fromScale(0.696, 0.34 - (if not viewing then 0.05 else 0));
 			Size = UDim2.fromScale(0.551, 0.09);
 			AnchorPoint = Vector2.new(0.5,0);
 		});
@@ -236,7 +239,7 @@ function Results:render()
 			})
 		}),
 		PlayedAt = if moment then Roact.createElement(RoundedTextLabel, {
-			Position = UDim2.fromScale(0.787, 0.306),
+			Position = UDim2.fromScale(0.787, 0.306 - (if not viewing then 0.05 else 0)),
 			AnchorPoint = Vector2.new(0.5, 0.5),
 			Size = UDim2.fromScale(0.728, 0.046),
 			RichText = true,
@@ -291,7 +294,7 @@ function Results:render()
 			end
 		});
 
-		RestartMap = if (not self.props.location.state.Viewing and not room) then Roact.createElement(RoundedTextButton, {
+		RestartMap = if (not viewing and not room) then Roact.createElement(RoundedTextButton, {
 			BackgroundColor3 = Color3.fromRGB(50, 144, 50);
 			AnchorPoint = Vector2.new(0, 1);
 			Position = UDim2.fromScale(0.175, 0.98);
@@ -306,6 +309,13 @@ function Results:render()
 			end
 		}) else nil,
 
+		Ranking = if (self.props.profile and not viewing and not room) then Roact.createElement(Ranking, {
+			Rating = self.props.profile.Rating,
+			Position = UDim2.fromScale(0.6, 0.95),
+			Size = UDim2.fromScale(0.5, 0.2),
+			AnchorPoint = Vector2.new(0.5, 1)
+		}) else nil,
+
 		PlayerSelection = playerSelection
 	})
 end
@@ -315,6 +325,7 @@ return RoactRodux.connect(function(state, props)
 	local room = if roomId then state.multiplayer.rooms[roomId] else nil
 
 	return {
+		profile = state.profiles[tostring(game.Players.LocalPlayer.UserId)],
 		roomId = roomId,
 		room = room,
 		inProgress = if room then room.inProgress else nil,
