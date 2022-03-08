@@ -38,13 +38,23 @@ function ScoreService:KnitInit()
     Raxios = require(game.ReplicatedStorage.Packages.Raxios)
 end
 
+function ScoreService:PopulateUserProfile(player)
+    local state = StateService.Store:getState()
+
+    if state.profiles[tostring(player.UserId)] then
+        return
+    end
+
+    local profile = self:GetProfile(player)
+
+    if Llama.Dictionary.count(profile) > 0 then
+        StateService.Store:dispatch({ type = "addProfile", player = player, profile = profile })
+    end
+end
+
 function ScoreService:KnitStart()
     local function onPlayerAdded(player)
-        local profile = self:GetProfile(player)
-
-        if Llama.Dictionary.count(profile) > 0 then
-            StateService.Store:dispatch({ type = "addProfile", player = player, profile = profile })
-        end
+        self:PopulateUserProfile(player)
     end
 
     game.Players.PlayerAdded:Connect(onPlayerAdded)

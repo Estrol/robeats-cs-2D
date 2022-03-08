@@ -29,7 +29,7 @@ function Ranking.getDerivedStateFromProps(nextProps, lastState)
         division = tier.division or Roact.None,
         subdivision = tier.subdivision or Roact.None,
         subdivisionUp = if prevTier then tier.subdivision ~= prevTier.subdivision else false,
-        divisionUp = if prevTier then tier.division ~= prevTier.division else false,
+        divisionUp = if prevTier then tier.division ~= prevTier.division or tier.tier ~= prevTier.tier else false,
     }
 end
 
@@ -45,7 +45,7 @@ function Ranking:init()
 end
 
 function Ranking:didUpdate(_, prevState)
-    if self.state.subdivisionUp ~= prevState.subdivisionUp then
+    if self.state.subdivisionUp ~= prevState.subdivisionUp or self.state.divisionUp ~= prevState.divisionUp then
         self.motor:setGoal({
             rankUp = Flipper.Spring.new(if self.state.subdivisionUp then 1 else 0, {
                 frequency = 2,
@@ -93,7 +93,6 @@ function Ranking:render()
             TextXAlignment = Enum.TextXAlignment.Left,
             TextYAlignment = Enum.TextYAlignment.Top,
             Font = Enum.Font.SciFi
-            -- TextTransparency = if self.state.subdivisionUp then 0 else 1
         }) else nil,
         RankUp = e(RoundedTextLabel, {
             Size = UDim2.fromScale(1, 0.4),
