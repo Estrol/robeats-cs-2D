@@ -79,7 +79,7 @@ function Player:render()
                 TextColor3 = Color3.fromRGB(228, 228, 228),
                 TextScaled = true,
                 Position = UDim2.fromScale(1.3, 0.5),
-                Size = UDim2.fromScale(5, 0.55),
+                Size = UDim2.fromScale(6.75, 0.55),
                 TextXAlignment = Enum.TextXAlignment.Left,
                 Text = if self.props.Profile then string.format("#%d | %0.2f [%s]", self.props.Profile.Rank, self.props.Profile.Rating, if self.state.tier then self.state.tier .. (if self.state.division then " " .. string.rep("I", self.state.division) .. " Division " .. if self.state.division == 4 then "IV" else string.rep("I", self.state.subdivision) else "") else "...") else "???"
             }, {

@@ -148,6 +148,8 @@ function Results:render()
 
 	local viewing = self.props.location.state.Viewing
 
+	local shouldShiftUp = not viewing and not room
+
     return Roact.createElement("Frame", {
 		BackgroundColor3 = Color3.fromRGB(0,0,0),
 		BorderSizePixel = 0;
@@ -165,7 +167,7 @@ function Results:render()
 			AnchorPoint = Vector2.new(0.5, 0.5),
 			BackgroundColor3 = Color3.fromRGB(22, 22, 22),
 			BorderSizePixel = 0,
-			Position = UDim2.fromScale(0.832, 0.609 - (if not viewing then 0.05 else 0)),
+			Position = UDim2.fromScale(0.832, 0.609 - (if shouldShiftUp then 0.05 else 0)),
 			Size = UDim2.fromScale(0.279, 0.305),
 			bounds = {
 				min = {
@@ -189,7 +191,7 @@ function Results:render()
 		}),
 		SpreadDisplay = Roact.createElement(SpreadDisplay, {
 			AnchorPoint = Vector2.new(0.5, 0.5),
-			Position = UDim2.fromScale(0.555, 0.609 - (if not viewing then 0.05 else 0)),
+			Position = UDim2.fromScale(0.555, 0.609 - (if shouldShiftUp then 0.05 else 0)),
 			Size = UDim2.fromScale(0.279, 0.305),
 			Marvelouses = scoreData.marvelouses,
 			Perfects = scoreData.perfects,
@@ -221,7 +223,7 @@ function Results:render()
 					Value = string.format("%0d ms", scoreData.mean);
 				};
 			};
-			Position = UDim2.fromScale(0.696, 0.34 - (if not viewing then 0.05 else 0));
+			Position = UDim2.fromScale(0.696, 0.34 - (if shouldShiftUp then 0.05 else 0));
 			Size = UDim2.fromScale(0.551, 0.09);
 			AnchorPoint = Vector2.new(0.5,0);
 		});
@@ -239,7 +241,7 @@ function Results:render()
 			})
 		}),
 		PlayedAt = if moment then Roact.createElement(RoundedTextLabel, {
-			Position = UDim2.fromScale(0.787, 0.306 - (if not viewing then 0.05 else 0)),
+			Position = UDim2.fromScale(0.787, 0.306 - (if shouldShiftUp then 0.05 else 0)),
 			AnchorPoint = Vector2.new(0.5, 0.5),
 			Size = UDim2.fromScale(0.728, 0.046),
 			RichText = true,
@@ -311,9 +313,9 @@ function Results:render()
 
 		Ranking = if (self.props.profile and not viewing and not room) then Roact.createElement(Ranking, {
 			Rating = self.props.profile.Rating,
-			Position = UDim2.fromScale(0.6, 0.95),
+			Position = UDim2.fromScale(0.58, 0.95),
 			Size = UDim2.fromScale(0.5, 0.2),
-			AnchorPoint = Vector2.new(0.5, 1)
+			AnchorPoint = Vector2.new(0, 1)
 		}) else nil,
 
 		PlayerSelection = playerSelection

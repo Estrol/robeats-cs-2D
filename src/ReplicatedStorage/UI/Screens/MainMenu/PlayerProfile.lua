@@ -108,11 +108,11 @@ function PlayerProfile:render()
            }),
            PlayerName = e(RoundedTextLabel, {
                Position = UDim2.fromScale(1.2, 0),
-               Size = UDim2.fromScale(4.5, 0.3),
+               Size = UDim2.fromScale(3.8, 0.3),
                RichText = true,
                TextXAlignment = Enum.TextXAlignment.Left,
                TextColor3 = Color3.fromRGB(255, 255, 255),
-               Text = if self.state.tier then string.format("%s <font color=\"#b3b3b3\">[%s]</font>", self.state.playerName, self.state.tier..(if self.state.division then string.format(" %s Division %s", string.rep("I", self.state.division), if self.state.subdivision == 4 then "IV" else string.rep("I", self.state.subdivision)) else "")) else self.state.playerName,
+               Text = if self.state.tier then string.format("%s <font color=\"#b3b3b3\">[%s]</font>", self.state.playerName, self.state.tier..(if self.state.division then string.format(" %s", string.rep("I", self.state.division)) else "")) else self.state.playerName,
                TextScaled = true,
                BackgroundTransparency = 1
            }),

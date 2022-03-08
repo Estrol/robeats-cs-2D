@@ -1,6 +1,9 @@
 local Roact = require(game.ReplicatedStorage.Packages.Roact)
 local e = Roact.createElement
 
+local Flipper = require(game.ReplicatedStorage.Packages.Flipper)
+local RoactFlipper = require(game.ReplicatedStorage.Packages.RoactFlipper)
+
 local Llama = require(game.ReplicatedStorage.Packages.Llama)
 
 local RoundedImageLabel = require(game.ReplicatedStorage.UI.Components.Base.RoundedImageLabel)
@@ -24,11 +27,52 @@ Tier.Images = {
     Prism = { "rbxassetid://8027527255" }
 }
 
+function Tier.getDerivedStateFromProps(nextProps, lastState)
+    return {
+        tier = nextProps.tier,
+        division = nextProps.division,
+        prevTier = lastState.tier or nextProps.tier,
+        prevDivision = lastState.division or nextProps.division,
+    }
+end
+
+function Tier:init()
+    self.motor = Flipper.GroupMotor.new({
+        rankUp = 0
+    })
+    self.motorBinding = RoactFlipper.getBinding(self.motor)
+end
+
+function Tier:didUpdate()
+    if self.state.tier ~= self.state.prevTier or self.state.division ~= self.state.prevDivision then
+        self.motor:setGoal({
+            rankUp = Flipper.Instant.new(0)
+        })
+        self.motor:step(0)
+        self.motor:setGoal({
+            rankUp = Flipper.Spring.new(1, {
+                frequency = 3,
+                dampingRatio = 4
+            })
+        })
+    end
+end
+
 function Tier:render()
+    local prevImage = self.Images[self.state.prevTier][if self.state.prevDivision then self.state.prevDivision else 1]
     local image = self.Images[self.props.tier][if self.props.division then self.props.division else 1]
 
     local props = Llama.Dictionary.join(self.props.imageLabelProps, {
-        Image = image
+        Image = self.motorBinding:map(function(a)
+            if a.rankUp >= 0.5 then
+                return image
+            end
+
+            return prevImage
+        end),
+        ImageTransparency = self.motorBinding:map(function(a)
+            return if a.rankUp > 0.5 then 1 - a.rankUp else a.rankUp
+        end)
     })
 
     return e(RoundedImageLabel, props, {
