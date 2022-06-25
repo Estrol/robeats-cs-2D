@@ -11,6 +11,8 @@ local SongButton = Roact.Component:extend("SongButton")
 
 local function noop() end
 
+local MIN_ID = 9512577350
+
 SongButton.defaultProps = {
     Size = UDim2.new(1, 0, 0, 75),
     OnClick = noop,
@@ -35,12 +37,15 @@ function SongButton:render()
         return nil
     end
 
+    local song = SongDatabase:get_data_for_key(self.props.SongKey)
+    local id = tonumber(string.match(song.AudioAssetId, "rbxassetid://(%d+)"))
+
     return e(RoundedTextButton, {
         BackgroundTransparency = self.motorBinding:map(function(a)
             return math.clamp(1-a, 0, 0.58)
         end);
-        BackgroundColor3 = self.props.Selected and Color3.fromRGB(30, 95, 85) or Color3.fromRGB(22, 22, 22),
-        HighlightBackgroundColor3 = self.props.Selected and Color3.fromRGB(16, 75, 67) or nil,
+        BackgroundColor3 = if self.props.Selected then Color3.fromRGB(30, 95, 85) else if id < MIN_ID then Color3.fromRGB(36, 21, 21) else Color3.fromRGB(22, 22, 22),
+        HighlightBackgroundColor3 = if self.props.Selected then Color3.fromRGB(16, 75, 67) else if id < MIN_ID then Color3.fromRGB(31, 18, 18) else nil,
         BorderMode = Enum.BorderMode.Inset,
         BorderSizePixel = 0,
         Size = self.props.Size,

@@ -305,10 +305,10 @@ function AudioManager:new(_game)
 			self:update_spawn_notes(dt_scale)
 			_bgm_time_position = math.min(
 				_bgm_time_position + CurveUtil:TimescaleToDeltaTime(dt_scale),
-				_bgm.TimeLength / _rate
+				self:get_song_length_ms() / _rate
 			)
 
-			if _raise_ended_trigger == true then
+			if _raise_ended_trigger == true or if _bgm.IsLoaded then false else self:get_current_time_ms() > self:get_song_length_ms() - _audio_time_offset then
 				_current_mode = AudioManager.Mode.PostPlaying
 			end
 
@@ -365,7 +365,9 @@ function AudioManager:new(_game)
 	end
 
 	function self:get_song_length_ms()
-		return (_bgm.TimeLength * 1000 + _pre_countdown_time_ms) / _rate
+		local _time_length = if _bgm.TimeLength ~= 0 then _bgm.TimeLength else SongDatabase:get_song_length_for_key(_song_key) / 1000
+
+		return _time_length * 1000 / _rate + _pre_countdown_time_ms
 	end
 
 	return self

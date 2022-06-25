@@ -102,7 +102,8 @@ function RoactController:GetDependencies()
         MultiplayerService = Knit.GetService("MultiplayerService"),
         FriendsController = Knit.GetController("FriendsController"),
         ChatService = Knit.GetService("ChatService"),
-        SettingsService = Knit.GetService("SettingsService")
+        SettingsService = Knit.GetService("SettingsService"),
+        SFXController = Knit.GetController("SFXController")
     }
 end
 

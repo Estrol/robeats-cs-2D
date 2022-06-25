@@ -3,6 +3,8 @@ local Llama = require(game.ReplicatedStorage.Packages.Llama)
 local Flipper = require(game.ReplicatedStorage.Packages.Flipper)
 local RoactFlipper = require(game.ReplicatedStorage.Packages.RoactFlipper)
 
+local withInjection = require(game.ReplicatedStorage.UI.Components.HOCs.withInjection)
+
 local RoundedTextButton = Roact.Component:extend("Button")
 
 local function noop() end
@@ -54,6 +56,8 @@ function RoundedTextButton:render()
         BackgroundTransparency = self.props.BackgroundTransparency;
         [Roact.Event.MouseMoved] = self.props.OnMoved;
         [Roact.Event.MouseEnter] = function()
+            self.props.sfxController:Play(self.props.sfxController.BUTTON_HOVER, 0.4)
+
             self.motor:setGoal({
                 tap = Flipper.Spring.new(0.7, {
                     frequency = self.props.Frequency;
@@ -70,6 +74,8 @@ function RoundedTextButton:render()
             })
         end;
         [Roact.Event.MouseButton1Down] = function()
+            self.props.sfxController:Play(self.props.sfxController.BUTTON_CLICK, 1.2)
+
             self.props.OnPress()
             self.motor:setGoal({
                 tap = Flipper.Spring.new(0.9, {
@@ -102,4 +108,6 @@ function RoundedTextButton:render()
     return Roact.createElement("TextButton", props, children)
 end
 
-return RoundedTextButton
+return withInjection(RoundedTextButton, {
+    sfxController = "SFXController"
+})

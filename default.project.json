@@ -31,7 +31,8 @@
 			"$className": "Workspace",
 			"$path": "src/Workspace",
 			"$properties": {
-				"FilteringEnabled": true
+				"FilteringEnabled": true,
+				"Gravity": 0
 			}
 		},
 

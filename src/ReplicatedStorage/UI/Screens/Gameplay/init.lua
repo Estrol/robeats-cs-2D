@@ -63,7 +63,8 @@ function Gameplay:init()
         misses = 0,
         loaded = false,
         dividerPresses = { false, false, false, false },
-        isMobile = UserInputService.TouchEnabled
+        isMobile = UserInputService.TouchEnabled,
+        secondsLeft = 10
     })
     
     -- Set up time left bib
@@ -130,6 +131,7 @@ function Gameplay:init()
     self.onMultiplayerGameEnded = Instance.new("BindableEvent")
 
     local _send_every = FlashEvery:new(0.5)
+    local _update_text = FlashEvery:new(1)
 
     self.everyFrameConnection = SPUtil:bind_to_frame(function(dt)
         if _game._audio_manager:get_just_finished() then
@@ -149,7 +151,7 @@ function Gameplay:init()
             
             _game:start_game()
         end
-        
+
         -- If we have reached the end of the game, trigger cleanup
         
         if _game:get_mode() == RobeatsGame.Mode.GameEnded then
@@ -157,11 +159,32 @@ function Gameplay:init()
             self:onGameplayEnd()
             return
         end
-
+        
         local dt_scale = CurveUtil:DeltaTimeToTimescale(dt)
         _game:update(dt_scale)
-
+        
+        _update_text:update(dt_scale)
         _send_every:update(dt_scale)
+
+        if not self.state.loaded and _update_text:do_flash() then
+            self:setState(function(state)
+                return {
+                    secondsLeft = state.secondsLeft - 1
+                }
+            end)
+
+            if self.state.secondsLeft <= 0 then
+                if self.props.room then
+                    self.props.multiplayerService:SetLoaded(self.props.roomId, true)
+                end
+
+                self:setState({
+                    loaded = true
+                })
+                
+                _game:start_game()
+            end
+        end
 
         -- Every second, send match stats to the server
 
@@ -390,7 +413,7 @@ function Gameplay:render()
                 BackgroundTransparency = 1,
                 TextColor3 = Color3.fromRGB(255, 255, 255),
                 TextSize = 20,
-                Text = "Please wait for the game to load..."
+                Text = string.format("Please wait for the game to load... [%d]", self.state.secondsLeft)
             }),
             Back = e(RoundedTextButton, {
                 Size = UDim2.fromScale(0.1, 0.05),
