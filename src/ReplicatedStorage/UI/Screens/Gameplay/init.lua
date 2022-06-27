@@ -583,9 +583,10 @@ function Gameplay:render()
         }),
         SongProgress = e(RoundedFrame, {
             Size = self.timeLeft:map(function(val)
-                return UDim2.fromScale((self._game._audio_manager:get_song_length_ms() - val) / self._game._audio_manager:get_song_length_ms(), 0.0125)
-            end),  
-            Position = UDim2.fromScale(0, 0.975),
+                return UDim2.fromScale((self._game._audio_manager:get_song_length_ms() - val) / self._game._audio_manager:get_song_length_ms(), 0.0125) + UDim2.fromOffset(5, 0)
+            end),
+            Position = UDim2.fromScale(0, 1) - UDim2.fromOffset(5, 0),
+            AnchorPoint = Vector2.new(0, 1),
             BackgroundColor3 = Color3.new(1,1,1),
             BackgroundTransparency = 0
         })
