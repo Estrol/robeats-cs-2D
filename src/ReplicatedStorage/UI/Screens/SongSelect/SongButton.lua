@@ -11,7 +11,7 @@ local SongButton = Roact.Component:extend("SongButton")
 
 local function noop() end
 
-local MIN_ID = 9512577350
+local MIN_ID = 5567748245
 
 SongButton.defaultProps = {
     Size = UDim2.new(1, 0, 0, 75),
