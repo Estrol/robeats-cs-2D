@@ -4,6 +4,7 @@ local Llama = require(game.ReplicatedStorage.Packages.Llama)
 
 local Promise = require(game.ReplicatedStorage.Packages.Promise)
 
+local SPUtil = require(game.ReplicatedStorage.Shared.SPUtil)
 local SongDatabase = require(game.ReplicatedStorage.RobeatsGameCore.SongDatabase)
 
 local RoundedLargeScrollingFrame = require(game.ReplicatedStorage.UI.Components.Base.RoundedLargeScrollingFrame)
@@ -15,6 +16,18 @@ local SongList = Roact.Component:extend("SongList")
 
 local function noop() end
 
+local function sortByDifficulty(a, b)
+    return a.AudioDifficulty > b.AudioDifficulty
+end
+
+local function sortByAlphabeticalOrder(a, b)
+    if a.AudioFilename == b.AudioFilename then
+        return a.AudioDifficulty > b.AudioDifficulty
+    end
+    
+    return a.AudioFilename < b.AudioFilename
+end
+
 SongList.defaultProps = {
     Size = UDim2.fromScale(1, 1),
     OnSongSelected = noop,
@@ -24,7 +37,7 @@ SongList.defaultProps = {
 function SongList:init()
     self:setState({
         search = "";
-        found = SongDatabase:filter_keys();
+        found = Llama.List.sort(SongDatabase:filter_keys(), sortByAlphabeticalOrder);
         sortByDifficulty = false;
     })
 
@@ -39,16 +52,14 @@ end
 function SongList:didUpdate(_, prevState)
     if (self.state.search ~= prevState.search) or (self.state.sortByDifficulty ~= prevState.sortByDifficulty) then
         Promise.new(function(resolve)
-            if self.state.sortByDifficulty then
-                local found = SongDatabase:filter_keys(self.state.search)
+            local found = SongDatabase:filter_keys(self.state.search)
 
-                resolve(Llama.List.sort(found, function(a, b)
-                    return a.AudioDifficulty > b.AudioDifficulty
-                end))
+            if self.state.sortByDifficulty then
+                resolve(Llama.List.sort(found, sortByDifficulty))
                 return
             end
 
-            resolve(SongDatabase:filter_keys(self.state.search))
+            resolve(Llama.List.sort(found, sortByAlphabeticalOrder))
         end):andThen(function(sorted)
             self:setState({
                 found = sorted
