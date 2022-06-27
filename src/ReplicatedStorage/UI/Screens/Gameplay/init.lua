@@ -580,6 +580,14 @@ function Gameplay:render()
                 }),
                 Rotation = 90
             })
+        }),
+        SongProgress = e(RoundedFrame, {
+            Size = self.timeLeft:map(function(val)
+                return UDim2.fromScale((self._game._audio_manager:get_song_length_ms() - val) / self._game._audio_manager:get_song_length_ms(), 0.0125)
+            end),  
+            Position = UDim2.fromScale(0, 0.975),
+            BackgroundColor3 = Color3.new(1,1,1),
+            BackgroundTransparency = 0
         })
     })
 end
