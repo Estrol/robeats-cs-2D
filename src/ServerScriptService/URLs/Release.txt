@@ -1,1 +1,1 @@
-https://rewrite.robeatscsgame.com/api
+http://161.35.49.68/api
