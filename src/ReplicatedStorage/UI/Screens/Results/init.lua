@@ -77,6 +77,7 @@ end
 
 function Results:willUnmount()
 	self.backOutConnection:Disconnect()
+	PreviewController:Silence()
 end
 
 function Results:render()
