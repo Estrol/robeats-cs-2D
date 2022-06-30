@@ -186,13 +186,31 @@ function Options:getSettingElements()
             LayoutOrder = 3
         })
 
+        elements.ShowProgressBar = e(BoolValue, {
+            Value = self.props.options.ShowProgressBar,
+            OnChanged = function(value)
+                self.props.setOption("ShowProgressBar", value)
+            end,
+            Name = "Show in-game song progress",
+            LayoutOrder = 4
+        })
+
+        elements.ProgressBarColor = e(ColorValue, {
+            Value = self.props.options.ProgressBarColor,
+            OnChanged = function(value)
+                self.props.setOption("ProgressBarColor", value)
+            end,
+            Name = "Song Progress Color",
+            LayoutOrder = 5
+        })
+
         elements.NoteColor = e(ColorValue, {
             Value = self.props.options.NoteColor,
             OnChanged = function(value)
                 self.props.setOption("NoteColor", value)
             end,
             Name = "Note Color",
-            LayoutOrder = 4
+            LayoutOrder = 6
         })
     end)
     --extras

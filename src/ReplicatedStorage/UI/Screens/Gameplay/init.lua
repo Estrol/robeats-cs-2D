@@ -490,6 +490,20 @@ function Gameplay:render()
         end
     end
 
+    local songProgress
+
+    if self.props.options.ShowProgressBar then
+        songProgress = e(RoundedFrame, {
+            Size = self.timeLeft:map(function(val)
+                return UDim2.fromScale((self._game._audio_manager:get_song_length_ms() - val) / self._game._audio_manager:get_song_length_ms(), 0.0125) + UDim2.fromOffset(5, 0)
+            end),
+            Position = UDim2.fromScale(0, 1) - UDim2.fromOffset(5, 0),
+            AnchorPoint = Vector2.new(0, 1),
+            BackgroundColor3 = self.props.options.ProgressBarColor,
+            BackgroundTransparency = 0
+        })
+    end
+
     return Roact.createFragment({
         Score = e(AnimatedNumberLabel, {
             Size = UDim2.fromScale(0.2, 0.12),
@@ -581,15 +595,7 @@ function Gameplay:render()
                 Rotation = 90
             })
         }),
-        SongProgress = e(RoundedFrame, {
-            Size = self.timeLeft:map(function(val)
-                return UDim2.fromScale((self._game._audio_manager:get_song_length_ms() - val) / self._game._audio_manager:get_song_length_ms(), 0.0125) + UDim2.fromOffset(5, 0)
-            end),
-            Position = UDim2.fromScale(0, 1) - UDim2.fromOffset(5, 0),
-            AnchorPoint = Vector2.new(0, 1),
-            BackgroundColor3 = Color3.new(1,1,1),
-            BackgroundTransparency = 0
-        })
+        SongProgress = songProgress
     })
 end
 
