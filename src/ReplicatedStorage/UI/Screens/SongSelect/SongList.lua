@@ -38,7 +38,7 @@ function SongList:init()
     self:setState({
         search = "";
         found = Llama.List.sort(SongDatabase:filter_keys(), sortByAlphabeticalOrder);
-        sortByDifficulty = false;
+        sortByDifficulty = true;
     })
 
     self.OnSearchChanged = function(o)
