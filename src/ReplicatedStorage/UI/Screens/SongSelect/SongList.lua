@@ -37,7 +37,7 @@ SongList.defaultProps = {
 function SongList:init()
     self:setState({
         search = "";
-        found = Llama.List.sort(SongDatabase:filter_keys(), sortByAlphabeticalOrder);
+        found = Llama.List.sort(SongDatabase:filter_keys(), sortByDifficulty);
         sortByDifficulty = true;
     })
 
