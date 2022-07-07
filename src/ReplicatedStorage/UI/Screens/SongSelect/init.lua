@@ -55,7 +55,11 @@ function SongSelect:init()
     local onDownrateKeyPressed = SPUtil:bind_to_key(Enum.KeyCode.Minus, self.downrate)
 
     local onOptionsKeyPressed = SPUtil:bind_to_key_combo({Enum.KeyCode.O, Enum.KeyCode.LeftControl}, function()
-        self.props.history:push("/options")
+        if not self.props.location.state.OptionsVisible then
+            self.props.history:push("/select", {
+                OptionsVisible = true
+            })
+        end
     end)
 
     self.Trove:Add(onUprateKeyPressed)
