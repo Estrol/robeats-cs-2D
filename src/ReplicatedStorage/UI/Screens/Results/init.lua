@@ -17,6 +17,8 @@ local RoundedTextButton = require(game.ReplicatedStorage.UI.Components.Base.Roun
 local RoundedTextLabel = require(game.ReplicatedStorage.UI.Components.Base.RoundedTextLabel)
 local RoundedImageLabel = require(game.ReplicatedStorage.UI.Components.Base.RoundedImageLabel)
 
+local withInjection = require(game.ReplicatedStorage.UI.Components.HOCs.withInjection)
+
 local Results = Roact.Component:extend("Results")
 
 local DotGraph = require(game.ReplicatedStorage.UI.Components.Graph.DotGraph)
@@ -66,18 +68,14 @@ function Results:didUpdate(prevProps)
 end
 
 function Results:didMount()
-	if self.knit then
-		local PreviewController = self.knit.GetController("PreviewController")
-
-		PreviewController:PlayId("rbxassetid://6419511015", function(audio)
-			audio.TimePosition = 0
-		end, 0.12)
-	end
+	self.props.previewController:PlayId("rbxassetid://6419511015", function(audio)
+		audio.TimePosition = 0
+	end, 0.12)
 end
 
 function Results:willUnmount()
 	self.backOutConnection:Disconnect()
-	PreviewController:Silence()
+	self.props.previewController:Silence()
 end
 
 function Results:render()
@@ -323,6 +321,10 @@ function Results:render()
 	})
 end
 
+local Injected = withInjection(Results, {
+	previewController = "PreviewController"
+})
+
 return RoactRodux.connect(function(state, props)
 	local roomId = props.location.state.RoomId
 	local room = if roomId then state.multiplayer.rooms[roomId] else nil
@@ -333,4 +335,4 @@ return RoactRodux.connect(function(state, props)
 		room = room,
 		inProgress = if room then room.inProgress else nil,
 	}
-end)(Results)
+end)(Injected)
