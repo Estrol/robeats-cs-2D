@@ -94,7 +94,10 @@ function RobeatsGame:new(_game_environment_center_position)
 	end
 
 	function self:is_upscroll() return _is_upscroll end
-	function self:set_upscroll_mode(val) _is_upscroll = val end
+	function self:set_upscroll_mode(val) 
+		_is_upscroll = val
+		self._input:invert_keys(val)
+	end
 	--[[ END of 2D Implementations ]]
 
 	function self:set_ln_transparent(val) _ln_transparent = val end

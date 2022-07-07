@@ -95,17 +95,16 @@ function Gameplay:init()
     EnvironmentSetup:set_gui_inset(true);
     
     -- 2D Properties
-    local use_upscroll = self.props.options.Upscroll
     local lane_2d = self.props.options.Use2DLane
     
     -- Create the game instance
     
     local _game = RobeatsGame:new(EnvironmentSetup:get_game_environment_center_position())
     _game._input:set_keybinds({
-        (lane_2d and use_upscroll) and self.props.options.Keybind4 or self.props.options.Keybind1,
-        (lane_2d and use_upscroll) and self.props.options.Keybind3 or self.props.options.Keybind2,
-        (lane_2d and use_upscroll) and self.props.options.Keybind2 or self.props.options.Keybind3,
-        (lane_2d and use_upscroll) and self.props.options.Keybind1 or self.props.options.Keybind4
+        self.props.options.Keybind1,
+        self.props.options.Keybind2,
+        self.props.options.Keybind3,
+        self.props.options.Keybind4
     })
     _game:set_hit_lighting(self.props.options.HitLighting)
     _game:set_ln_tails(self.props.options.HideLNTails)

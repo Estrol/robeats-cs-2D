@@ -56,6 +56,7 @@ function InputUtil:new()
 	self.InputEnded = Instance.new("BindableEvent")
 
 	local keybinds = {}
+	local _is_key_inverted = false;
 
 	function self:cons()
 		userinput_service.TextBoxFocused:connect(function(textbox)
@@ -108,6 +109,10 @@ function InputUtil:new()
 
 	function self:set_keybinds(_keybinds)
 		keybinds = _keybinds
+	end
+
+	function self:invert_keys(val)
+		_is_key_inverted = val
 	end
 	
 	local _track1_end = 0.25
@@ -268,22 +273,40 @@ function InputUtil:new()
 			return false
 		end
 
+		-- because how the upscroll work in the game, we need flip the control
 		if control == InputUtil.KEY_TRACK1 then
-			return active_dict:contains(InputUtil.KEYCODE_TOUCH_TRACK1) or
+			return if _is_key_inverted then 
+				active_dict:contains(InputUtil.KEYCODE_TOUCH_TRACK4) or
+				active_dict:contains(keybinds[4]) 
+			else
+				active_dict:contains(InputUtil.KEYCODE_TOUCH_TRACK1) or
 				active_dict:contains(keybinds[1])
 
 		elseif control == InputUtil.KEY_TRACK2 then
-			return active_dict:contains(InputUtil.KEYCODE_TOUCH_TRACK2) or
+			return if _is_key_inverted then 
+				active_dict:contains(InputUtil.KEYCODE_TOUCH_TRACK3) or
+				active_dict:contains(keybinds[3]) 
+			else
+				active_dict:contains(InputUtil.KEYCODE_TOUCH_TRACK2) or
 				active_dict:contains(keybinds[2])
 
 		elseif control == InputUtil.KEY_TRACK3 then
-			return active_dict:contains(InputUtil.KEYCODE_TOUCH_TRACK3) or
+			return if _is_key_inverted then 
+				active_dict:contains(InputUtil.KEYCODE_TOUCH_TRACK2) or
+				active_dict:contains(keybinds[2]) 
+			else
+				active_dict:contains(InputUtil.KEYCODE_TOUCH_TRACK3) or
 				active_dict:contains(keybinds[3])
 
 		elseif control == InputUtil.KEY_TRACK4 then
-			return active_dict:contains(InputUtil.KEYCODE_TOUCH_TRACK4) or
+			return if _is_key_inverted then 
+				active_dict:contains(InputUtil.KEYCODE_TOUCH_TRACK1) or
+				active_dict:contains(keybinds[1]) 
+			else
+				active_dict:contains(InputUtil.KEYCODE_TOUCH_TRACK4) or
 				active_dict:contains(keybinds[4])
 
+		-- I wonder what these keys are for?
 		elseif control == InputUtil.KEYCODE_TOUCH_TRACK1 then
 			return _down_keys:contains(InputUtil.KEYCODE_TOUCH_TRACK1)
 
