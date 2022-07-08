@@ -20,7 +20,8 @@ function Ban:init()
     self.moderationService = self.props.moderationService
 
     self:setState({
-        banReason = ""
+        banReason = "",
+        banning = false
     })
 end
 
@@ -83,12 +84,17 @@ function Ban:render()
             Position = UDim2.fromScale(0.5, 0.65),
             Size = UDim2.fromScale(0.25, 0.05),
             HoldSize = UDim2.fromScale(0.25, 0.05),
-            BackgroundColor3 = Color3.fromRGB(228, 19, 19),
+            BackgroundColor3 = if self.props.banning then Color3.fromRGB(187, 89, 89) else Color3.fromRGB(228, 19, 19),
             TextColor3 = Color3.fromRGB(255, 255, 255),
-            Text = "Ban",
+            Text = if self.props.banning then "Banning..." else "Ban",
             OnClick = function()
-                self.moderationService:BanUser(state.userId, self.state.banReason)
-                self.props.history:goBack()
+                self:setState({
+                    banning = true
+                })
+
+                self.moderationService:BanUser(state.userId, self.state.banReason):andThen(function()
+                    self.props.history:goBack()
+                end)
             end
         })
     })

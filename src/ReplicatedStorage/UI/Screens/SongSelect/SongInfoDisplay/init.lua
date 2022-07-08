@@ -243,6 +243,7 @@ function SongInfoDisplay:render()
             HoldSize = UDim2.fromScale(0.055, 0.2),
             Position = UDim2.fromScale(0.55, 0.935),
             AnchorPoint = Vector2.new(0, 1),
+            Tooltip = "Decrease the rate of the song by 0.05x",
             OnClick = self.props.OnDownrate
         }),
         RateUp = self.props.ShowRateButtons and e(RoundedTextButton, {
@@ -253,6 +254,7 @@ function SongInfoDisplay:render()
             HoldSize = UDim2.fromScale(0.055, 0.2),
             Position = UDim2.fromScale(0.61, 0.935),
             AnchorPoint = Vector2.new(0, 1),
+            Tooltip = "Increase the rate of the song by 0.05x",
             OnClick = self.props.OnUprate
         })
     })
