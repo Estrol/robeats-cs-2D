@@ -3,6 +3,8 @@ local Llama = require(game.ReplicatedStorage.Packages.Llama)
 local Flipper = require(game.ReplicatedStorage.Packages.Flipper)
 local RoactFlipper = require(game.ReplicatedStorage.Packages.RoactFlipper)
 
+local SPUtil = require(game.ReplicatedStorage.Shared.SPUtil)
+
 local withInjection = require(game.ReplicatedStorage.UI.Components.HOCs.withInjection)
 
 local RoundedTextButton = Roact.Component:extend("Button")
@@ -20,6 +22,7 @@ RoundedTextButton.defaultProps = {
     OnPress = noop;
     OnRelease = noop;
     OnRightPress = noop;
+    OnMouseMoved = noop;
     Frequency = 13;
     dampingRatio = 2.5;
     ZIndex = 1
@@ -28,8 +31,13 @@ RoundedTextButton.defaultProps = {
 function RoundedTextButton:init()
     self.motor = Flipper.GroupMotor.new({
         tap = 0;
+        tooltip = 0
     });
     self.motorBinding = RoactFlipper.getBinding(self.motor)
+
+    self.tooltip = Roact.createRef()
+
+    self.isHovering = false
 end
 
 function RoundedTextButton:render()
@@ -54,8 +62,16 @@ function RoundedTextButton:render()
         end);
         ClipsDescendants = self.props.ClipsDescendants;
         BackgroundTransparency = self.props.BackgroundTransparency;
-        [Roact.Event.MouseMoved] = self.props.OnMoved;
+        [Roact.Event.MouseMoved] = function(object, x, y)
+            local tooltip = self.tooltip:getValue()
+
+            tooltip.Position = UDim2.fromScale(SPUtil:inverse_lerp(object.AbsolutePosition.X, object.AbsolutePosition.X + object.AbsoluteSize.X, x), SPUtil:inverse_lerp(object.AbsolutePosition.Y, object.AbsolutePosition.Y + object.AbsoluteSize.Y, y)) + UDim2.fromOffset(10, -tooltip.AbsoluteSize.Y * 2.2)
+
+            self.props.OnMouseMoved()
+        end;
         [Roact.Event.MouseEnter] = function()
+            self.isHovering = true
+
             self.props.sfxController:Play(self.props.sfxController.BUTTON_HOVER, 0.4)
 
             self.motor:setGoal({
@@ -64,10 +80,27 @@ function RoundedTextButton:render()
                     dampingRatio = self.props.dampingRatio;
                 })
             })
+
+            task.delay(0.8, function()
+                if self.isHovering and self.props.Tooltip then
+                    self.motor:setGoal({
+                        tooltip = Flipper.Spring.new(1, {
+                            frequency = self.props.Frequency;
+                            dampingRatio = self.props.dampingRatio;
+                        })
+                    })
+                end
+            end)
         end;
         [Roact.Event.MouseLeave] = function()
+            self.isHovering = false
+
             self.motor:setGoal({
                 tap = Flipper.Spring.new(0, {
+                    frequency = self.props.Frequency;
+                    dampingRatio = self.props.dampingRatio;
+                }),
+                tooltip = Flipper.Spring.new(0, {
                     frequency = self.props.Frequency;
                     dampingRatio = self.props.dampingRatio;
                 })
@@ -103,6 +136,28 @@ function RoundedTextButton:render()
         Corner = Roact.createElement("UICorner", {
             CornerRadius = UDim.new(0,4);
         });
+        Tooltip = Roact.createElement("TextLabel", {
+            Text = if self.props.Tooltip then " " .. self.props.Tooltip .. " " else nil;
+            TextSize = 11;
+            TextColor3 = Color3.fromRGB(255, 255, 255);
+            BackgroundColor3 = Color3.fromRGB(43, 43, 43);
+            AnchorPoint = Vector2.new(0, 0.5);
+            Size = UDim2.fromOffset(50, 25);
+            ZIndex = self.props.ZIndex + 10;
+            Font = Enum.Font.Gotham;
+            TextTransparency = self.motorBinding:map(function(a)
+                return 1 - a.tooltip
+            end),
+            BackgroundTransparency = self.motorBinding:map(function(a)
+                return 1 - a.tooltip
+            end),
+            AutomaticSize = Enum.AutomaticSize.XY,
+            [Roact.Ref] = self.tooltip
+        }, {
+            Corner = Roact.createElement("UICorner", {
+                CornerRadius = UDim.new(0,4);
+            })
+        })
     })
 
     return Roact.createElement("TextButton", props, children)

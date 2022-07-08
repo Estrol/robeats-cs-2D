@@ -133,6 +133,7 @@ function MainMenuUI:render()
                 TextColor3 = Color3.fromRGB(255, 255, 255);
                 LayoutOrder = 1;
                 HoldSize = UDim2.fromScale(0.95, 0.125),
+                Tooltip = "Play some songs!",
                 OnClick = function()
                     self.props.history:push("/select")
                 end
@@ -153,6 +154,7 @@ function MainMenuUI:render()
                 TextColor3 = Color3.fromRGB(255, 255, 255);
                 LayoutOrder = 3;
                 HoldSize = UDim2.fromScale(0.95, 0.125),
+                Tooltip = "View your scores.",
                 OnClick = function()
                     self.props.history:push("/scores")
                 end
@@ -174,6 +176,7 @@ function MainMenuUI:render()
                 TextColor3 = Color3.fromRGB(255, 255, 255);
                 LayoutOrder = 2;
                 HoldSize = UDim2.fromScale(0.95, 0.125),
+                Tooltip = "Customize your experience.",
                 OnClick = function()
                     if not self.props.location.state.OptionsVisible then
                         self.props.history:push("/", {
@@ -198,6 +201,7 @@ function MainMenuUI:render()
                 TextColor3 = Color3.fromRGB(255, 255, 255);
                 LayoutOrder = 4;
                 HoldSize = UDim2.fromScale(0.95, 0.125),
+                Tooltip = "See who's on top!",
                 OnClick = function()
                     self.props.history:push("/rankings")
                 end
@@ -218,6 +222,7 @@ function MainMenuUI:render()
                 TextColor3 = Color3.fromRGB(255, 255, 255);
                 LayoutOrder = 5;
                 HoldSize = UDim2.fromScale(0.95, 0.125),
+                Tooltip = "Play with others in real time!",
                 OnClick = function()
                     self.props.history:push("/multiplayer")
                 end
