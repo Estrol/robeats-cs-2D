@@ -25,7 +25,7 @@ function Gradient:new()
     end
 
     function self:color_sequence()
-        return ColorSequence.new(self._keypoints._table)
+        return ColorSequece.new(self._keypoints._table)
     end
     
     function self:number_sequence()
