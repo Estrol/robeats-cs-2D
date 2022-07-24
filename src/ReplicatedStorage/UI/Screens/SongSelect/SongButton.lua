@@ -38,7 +38,7 @@ function SongButton:render()
     end
 
     local song = SongDatabase:get_data_for_key(self.props.SongKey)
-    local id = tonumber(string.match(song.AudioAssetId, "rbxassetid://(%d+)"))
+    local id = tonumber(string.match(song.AudioAssetId, "rbxassetid://(%d+)")) or MIN_ID
 
     return e(RoundedTextButton, {
         BackgroundTransparency = self.motorBinding:map(function(a)
