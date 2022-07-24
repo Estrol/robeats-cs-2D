@@ -11,6 +11,9 @@ local RoundedTextLabel = require(game.ReplicatedStorage.UI.Components.Base.Round
 local RoundedImageLabel = require(game.ReplicatedStorage.UI.Components.Base.RoundedImageLabel)
 local ButtonLayout = require(game.ReplicatedStorage.UI.Components.Base.ButtonLayout)
 
+local Tier = require(game.ReplicatedStorage.UI.Components.Tier)
+local Tiers = require(game.ReplicatedStorage.Tiers)
+
 local RankSlot = Roact.Component:extend("RankSlot")
 
 RankSlot.defaultProps = {
@@ -77,6 +80,8 @@ function RankSlot:render()
         })
     end
 
+    local tier = Tiers:GetTierFromRating(self.props.Data.Rating)
+
     return Roact.createElement(RoundedTextButton, {
         BackgroundColor3 = Color3.fromRGB(15, 15, 15),
         BorderMode = Enum.BorderMode.Inset,
@@ -118,7 +123,7 @@ function RankSlot:render()
         UserThumbnail = Roact.createElement(RoundedImageLabel, {
             AnchorPoint = Vector2.new(0, 0.5),
             BackgroundColor3 = Color3.fromRGB(255, 255, 255),
-            Position = UDim2.new(0.09, 0, 0.5, 0),
+            Position = UDim2.new(0.07, 0, 0.5, 0),
             Size = UDim2.new(0.07, 0, 0.75, 0),
             Image = string.format("https://www.roblox.com/headshot-thumbnail/image?userid=%d&width=420&height=420&format=png", self.props.Data.UserId)
         }, {
@@ -166,7 +171,7 @@ function RankSlot:render()
             BackgroundColor3 = Color3.fromRGB(54, 54, 54),
             BorderSizePixel = 0,
             Position = UDim2.fromScale(0.0075, 0.1),
-            Size = UDim2.fromScale(0.075, 0.755),
+            Size = UDim2.fromScale(0.05, 0.755),
             Font = Enum.Font.GothamBold,
             Text = string.format("#%d", self.props.Data.Place),
             TextColor3 = Color3.fromRGB(71, 71, 70),
@@ -174,17 +179,29 @@ function RankSlot:render()
             BackgroundTransparency = 1;
         }, {
             Roact.createElement("UITextSizeConstraint", {
-                MaxTextSize = 35,
+                MaxTextSize = 20,
                 MinTextSize = 7,
             }),
         }),
+        Tier = Roact.createElement(Tier, {
+            imageLabelProps = {
+                AnchorPoint = Vector2.new(1, 0.5),
+                Position = UDim2.fromScale(0.97, 0.5),
+                Size = UDim2.fromScale(0.1, 0.7),
+                BackgroundTransparency = 1,
+                ZIndex = 2
+            },
+            tier = tier.name,
+            division = tier.division
+        }),
         UIAspectRatioConstraint = Roact.createElement("UIAspectRatioConstraint", {
-            AspectRatio = 9,
+            AspectRatio = 14,
             AspectType = Enum.AspectType.ScaleWithParentSize,
         })
     })
 end
 
 return withInjection(RankSlot, {
-    moderationService = "ModerationService"
+    moderationService = "ModerationService",
+    tierService = "TierService"
 })

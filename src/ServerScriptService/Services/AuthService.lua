@@ -10,11 +10,17 @@ local DataStoreService
 AuthService.APIKey = ""
 
 function AuthService:KnitInit()
-    DataStoreService = game:GetService("DataStoreService")
+    local suc, err = pcall(function()
+        DataStoreService = game:GetService("DataStoreService")
 
-    local authStore = DataStoreService:GetDataStore("AuthStore")
+        local authStore = DataStoreService:GetDataStore("AuthStore")
 
-    self.APIKey = authStore:GetAsync("APIKey")
+        self.APIKey = authStore:GetAsync("APIKey")
+    end)
+
+    if not suc then
+        warn("Could not fetch API key due to error: " .. err)
+    end
 end
 
 return AuthService
