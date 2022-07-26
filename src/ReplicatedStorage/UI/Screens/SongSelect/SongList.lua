@@ -34,11 +34,25 @@ SongList.defaultProps = {
     SelectedSongKey = 1
 }
 
+function SongList:getSongs()
+    local found = SongDatabase:filter_keys(self.state.search)
+
+    if self.state.sortByDifficulty then
+        return Llama.List.sort(found, sortByDifficulty)
+    end
+
+    return Llama.List.sort(found, sortByAlphabeticalOrder)
+end
+
 function SongList:init()
     self:setState({
         search = "";
-        found = Llama.List.sort(SongDatabase:filter_keys(), sortByAlphabeticalOrder);
+        found = {};
         sortByDifficulty = true;
+    })
+
+    self:setState({
+        found = self:getSongs()
     })
 
     self.OnSearchChanged = function(o)
@@ -52,14 +66,7 @@ end
 function SongList:didUpdate(_, prevState)
     if (self.state.search ~= prevState.search) or (self.state.sortByDifficulty ~= prevState.sortByDifficulty) then
         Promise.new(function(resolve)
-            local found = SongDatabase:filter_keys(self.state.search)
-
-            if self.state.sortByDifficulty then
-                resolve(Llama.List.sort(found, sortByDifficulty))
-                return
-            end
-
-            resolve(Llama.List.sort(found, sortByAlphabeticalOrder))
+            resolve(self:getSongs())
         end):andThen(function(sorted)
             self:setState({
                 found = sorted

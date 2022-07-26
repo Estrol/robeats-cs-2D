@@ -57,7 +57,7 @@ function GridInfoDisplay:render()
         TextXAlignment = Enum.TextXAlignment.Left,
     }, {
         UITextSizeConstraint = e("UITextSizeConstraint", {
-            MaxTextSize = 21,
+            MaxTextSize = 17
         })
     });
 end

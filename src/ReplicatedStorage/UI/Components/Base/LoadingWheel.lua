@@ -1,5 +1,6 @@
 local Roact = require(game.ReplicatedStorage.Packages.Roact)
 local e = Roact.createElement
+local f = Roact.createFragment
 
 local SPUtil = require(game.ReplicatedStorage.Shared.SPUtil)
 

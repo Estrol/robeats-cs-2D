@@ -12,6 +12,8 @@ local RoundedFrame = require(game.ReplicatedStorage.UI.Components.Base.RoundedFr
 local RoundedTextButton = require(game.ReplicatedStorage.UI.Components.Base.RoundedTextButton)
 local RoundedAutoScrollingFrame = require(game.ReplicatedStorage.UI.Components.Base.RoundedAutoScrollingFrame)
 
+local withInjection = require(game.ReplicatedStorage.UI.Components.HOCs.withInjection)
+
 local Scores = Roact.Component:extend("Scores")
 
 function Scores:init()
@@ -19,19 +21,11 @@ function Scores:init()
         scores = {}
     })
 
-    if RunService:IsRunning() then
-        local Knit = require(game:GetService("ReplicatedStorage").Packages.Knit)
-
-        local ScoreService = Knit.GetService("ScoreService")
-
-        ScoreService:GetPlayerScores(self.props.location.state.userId):andThen(function(scores)
-            self:setState({
-                scores = scores
-            })
-        end)
-
-        self.knit = Knit
-    end
+    self.props.scoreService:GetPlayerScores(self.props.location.state.userId):andThen(function(scores)
+        self:setState({
+            scores = scores
+        })
+    end)
 end
 
 function Scores:render()
@@ -41,9 +35,7 @@ function Scores:render()
         local props = Llama.Dictionary.join(score, {
             Place = place,
             OnClick = function()
-                local ScoreService = self.knit.GetService("ScoreService")
-
-                local _, hits = ScoreService:GetGraph(score.UserId, score.SongMD5Hash)
+                local _, hits = self.props.scoreService:GetGraph(score.UserId, score.SongMD5Hash)
                     :await()
 
                 self.props.history:push("/results", Llama.Dictionary.join(score, {
@@ -87,4 +79,8 @@ function Scores:render()
     })
 end
 
-return Scores
+local Injected = withInjection(Scores, {
+    scoreService = "ScoreService"
+})
+
+return Injected
