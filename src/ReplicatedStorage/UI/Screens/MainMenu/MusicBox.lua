@@ -19,6 +19,7 @@ local MusicBox = Roact.Component:extend("MusicBox")
 
 MusicBox.defaultProps = {
     SongKey = 1,
+    Playing = false,
     OnPauseToggle = noop,
     OnBack = noop,
     OnNext = noop
@@ -65,15 +66,14 @@ function MusicBox:render()
     
             Back = e(RoundedImageButton,{
                 Name = "ProfileImage";
-                Rotation = 180,
-                AnchorPoint = Vector2.new(0.5,0);
+                AnchorPoint = Vector2.new(0.5,0.5);
                 AutomaticSize = Enum.AutomaticSize.None;
                 BackgroundColor3 = Color3.fromRGB(11,11,11);
                 BackgroundTransparency = 1;
-                Position = UDim2.fromScale(.375, .5);
-                Size = UDim2.fromScale(0.09, 0.3);
-                HoldSize = UDim2.fromScale(0.125, 0.325),
-                Image = "rbxassetid://10346597748";
+                Position = UDim2.fromScale(.375, .6);
+                Size = UDim2.fromScale(0.05, 0.3);
+                HoldSize = UDim2.fromScale(0.05, 0.3);
+                Image = "rbxassetid://10369041813";
                 ImageColor3 = Color3.fromRGB(255,255,255);
                 ScaleType = Enum.ScaleType.Fit;
                 SliceScale = 10;
@@ -89,14 +89,14 @@ function MusicBox:render()
 
             Play = e(RoundedImageButton,{
                 Name = "ProfileImage";
-                AnchorPoint = Vector2.new(0.5,0);
+                AnchorPoint = Vector2.new(0.5,0.5);
                 AutomaticSize = Enum.AutomaticSize.None;
                 BackgroundColor3 = Color3.fromRGB(11,11,11);
                 BackgroundTransparency = 1;
-                Position = UDim2.fromScale(.475, .5);
-                Size = UDim2.fromScale(0.09, 0.3);
-                HoldSize = UDim2.fromScale(0.125, 0.325),
-                Image = "rbxassetid://51811789";
+                Position = UDim2.fromScale(.475, .6);
+                Size = UDim2.fromScale(0.07, 0.3);
+                HoldSize = UDim2.fromScale(0.07, 0.3);
+                Image = if self.props.Playing then "rbxassetid://10369148321" else "rbxassetid://10369077887";
                 ImageColor3 = Color3.fromRGB(255,255,255);
                 ScaleType = Enum.ScaleType.Fit;
                 SliceScale = 10;
@@ -112,17 +112,18 @@ function MusicBox:render()
 
             Next = e(RoundedImageButton,{
                 Name = "ProfileImage";
-                AnchorPoint = Vector2.new(0.5,0);
+                AnchorPoint = Vector2.new(0.5,0.5);
                 AutomaticSize = Enum.AutomaticSize.None;
                 BackgroundColor3 = Color3.fromRGB(11,11,11);
                 BackgroundTransparency = 1;
-                Position = UDim2.fromScale(.575, .5);
-                Size = UDim2.fromScale(0.09, 0.3);
-                HoldSize = UDim2.fromScale(0.125, 0.325),
-                Image = "rbxassetid://7851262720";
+                Position = UDim2.fromScale(.575, .6);
+                Size = UDim2.fromScale(0.05, 0.3);
+                HoldSize = UDim2.fromScale(0.05, 0.3);
+                Image = "rbxassetid://10369041813";
                 ImageColor3 = Color3.fromRGB(255,255,255);
                 ScaleType = Enum.ScaleType.Fit;
                 SliceScale = 10;
+                Rotation = 180;
                 shrinkBy = 0.025;
                 Frequency = 7.5,
                 dampingRatio = 3;

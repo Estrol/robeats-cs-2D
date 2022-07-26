@@ -21,7 +21,7 @@ end
 function PreviewController:KnitStart()
     AudioVolumeMotor:onStep(function(a)
         Audio.Volume = a
-    end)    
+    end)
 end
 
 function PreviewController:GetSoundInstance()

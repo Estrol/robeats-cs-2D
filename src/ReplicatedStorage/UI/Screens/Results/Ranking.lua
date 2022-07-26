@@ -86,7 +86,7 @@ function Ranking:render()
                 TextColor3 = Color3.fromRGB(218, 218, 218),
                 TextXAlignment = Enum.TextXAlignment.Left,
                 TextYAlignment = Enum.TextYAlignment.Bottom,
-                Font = Enum.Font.SciFi
+                Font = Enum.Font.GothamBold
                 -- TextTransparency = if self.state.divisionUp then 0 else 1
             }),
             Subdivision = if self.state.subdivision then e(RoundedTextLabel, {
@@ -99,12 +99,12 @@ function Ranking:render()
                 TextColor3 = Color3.fromRGB(218, 218, 218),
                 TextXAlignment = Enum.TextXAlignment.Left,
                 TextYAlignment = Enum.TextYAlignment.Top,
-                Font = Enum.Font.SciFi
+                Font = Enum.Font.GothamMedium
             }) else nil,
             RankUp = e(RoundedTextLabel, {
                 Size = UDim2.fromScale(2, 0.2),
                 Position = self.motorBinding:map(function(a)
-                    return UDim2.fromScale(-0.4 + a.rankUp * 0.2, 0.25)
+                    return UDim2.fromScale(-0.4 + a.rankUp * 0.2, 0.31)
                 end),
                 AnchorPoint = Vector2.new(1, 1),
                 BackgroundTransparency = 1,
@@ -113,7 +113,7 @@ function Ranking:render()
                 TextColor3 = Color3.fromRGB(15, 219, 25),
                 TextXAlignment = Enum.TextXAlignment.Left,
                 TextYAlignment = Enum.TextYAlignment.Top,
-                Font = Enum.Font.SciFi,
+                Font = Enum.Font.Gotham,
                 TextTransparency = self.motorBinding:map(function(a)
                     return 1 - a.rankUp
                 end)
