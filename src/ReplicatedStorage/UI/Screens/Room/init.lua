@@ -70,14 +70,17 @@ function Room:render()
             Text = "Back",
             TextSize = 12,
             OnClick = function()
-                self.props.multiplayerService:LeaveRoom(self.props.roomId)
                 if self.props.location.state.goToMultiSelect then
                     self.props.history:push("/multiplayer", {
                         goToHome = true
-                    })
+                    }):andThen(function()
+                        self.props.multiplayerService:LeaveRoom(self.props.roomId)
+                    end)
                     return
                 end
-                self.props.history:goBack()
+                self.props.history:goBack():andThen(function()
+                    self.props.multiplayerService:LeaveRoom(self.props.roomId)
+                end)
             end
         }),
         StartButton = e(RoundedTextButton, {

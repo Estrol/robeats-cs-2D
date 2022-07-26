@@ -11,7 +11,7 @@ end
 local Rating = {}
 
 function Rating:get_rating(difficulty, accuracy)
-	return difficulty * weightingPercentage(accuracy) / 100
+	return difficulty.Overall * weightingPercentage(accuracy) / 100
 end
 
 function Rating:get_rating_from_song_key(song_key, accuracy, rate)

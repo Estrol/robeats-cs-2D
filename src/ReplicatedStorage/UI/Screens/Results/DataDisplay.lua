@@ -39,7 +39,7 @@ function DataDisplay:render()
                 BackgroundTransparency = 1,
                 BorderSizePixel = 0,
                 Position = UDim2.new(0.5, 0, 0.3, 0),
-                Size = UDim2.new(0.5, 0, 0.3, 0),
+                Size = UDim2.new(0.9, 0, 0.3, 0),
                 Font = Enum.Font.GothamSemibold,
                 Text = v.Name,
                 TextColor3 = Color3.fromRGB(255, 255, 255),

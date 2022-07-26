@@ -25,7 +25,8 @@ RoundedTextButton.defaultProps = {
     OnMouseMoved = noop;
     Frequency = 13;
     dampingRatio = 2.5;
-    ZIndex = 1
+    ZIndex = 1,
+    TooltipOffset = UDim2.fromOffset(0, 0)
 }
 
 function RoundedTextButton:init()
@@ -65,7 +66,7 @@ function RoundedTextButton:render()
         [Roact.Event.MouseMoved] = function(object, x, y)
             local tooltip = self.tooltip:getValue()
 
-            tooltip.Position = UDim2.fromScale(SPUtil:inverse_lerp(object.AbsolutePosition.X, object.AbsolutePosition.X + object.AbsoluteSize.X, x), SPUtil:inverse_lerp(object.AbsolutePosition.Y, object.AbsolutePosition.Y + object.AbsoluteSize.Y, y)) + UDim2.fromOffset(10, -tooltip.AbsoluteSize.Y * 2.2)
+            tooltip.Position = UDim2.fromScale(SPUtil:inverse_lerp(object.AbsolutePosition.X, object.AbsolutePosition.X + object.AbsoluteSize.X, x), SPUtil:inverse_lerp(object.AbsolutePosition.Y, object.AbsolutePosition.Y + object.AbsoluteSize.Y, y)) + UDim2.fromOffset(10, -40) + self.props.TooltipOffset
 
             self.props.OnMouseMoved()
         end;
@@ -137,11 +138,11 @@ function RoundedTextButton:render()
             CornerRadius = UDim.new(0,4);
         });
         Tooltip = Roact.createElement("TextLabel", {
-            Text = if self.props.Tooltip then " " .. self.props.Tooltip .. " " else nil;
-            TextSize = 11;
+            Text = if self.props.Tooltip then self.props.Tooltip else nil;
+            TextSize = 9;
             TextColor3 = Color3.fromRGB(255, 255, 255);
             BackgroundColor3 = Color3.fromRGB(43, 43, 43);
-            AnchorPoint = Vector2.new(0, 0.5);
+            AnchorPoint = Vector2.new(0, 1);
             Size = UDim2.fromOffset(50, 25);
             ZIndex = self.props.ZIndex + 10;
             Font = Enum.Font.Gotham;
@@ -156,6 +157,12 @@ function RoundedTextButton:render()
         }, {
             Corner = Roact.createElement("UICorner", {
                 CornerRadius = UDim.new(0,4);
+            }),
+            Padding = Roact.createElement("UIPadding", {
+                PaddingLeft = UDim.new(0, 5);
+                PaddingRight = UDim.new(0, 5);
+                PaddingTop = UDim.new(0, 1);
+                PaddingBottom = UDim.new(0, 1);
             })
         })
     })

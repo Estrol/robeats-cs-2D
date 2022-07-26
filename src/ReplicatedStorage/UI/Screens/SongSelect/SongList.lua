@@ -17,12 +17,12 @@ local SongList = Roact.Component:extend("SongList")
 local function noop() end
 
 local function sortByDifficulty(a, b)
-    return a.AudioDifficulty > b.AudioDifficulty
+    return SongDatabase:get_difficulty_for_key(a.SongKey).Overall > SongDatabase:get_difficulty_for_key(b.SongKey).Overall
 end
 
 local function sortByAlphabeticalOrder(a, b)
     if a.AudioFilename == b.AudioFilename then
-        return a.AudioDifficulty > b.AudioDifficulty
+        return sortByDifficulty(a, b)
     end
     
     return a.AudioFilename < b.AudioFilename
@@ -90,6 +90,7 @@ function SongList:render()
             renderItem = function(item, i)
                 return e(SongButton, {
                     SongKey = item.SongKey,
+                    SongRate = self.props.SongRate,
                     OnClick = self.props.OnSongSelected,
                     LayoutOrder = i,
                     Selected = item.SongKey == self.props.SelectedSongKey

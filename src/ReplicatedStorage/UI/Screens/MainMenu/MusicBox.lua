@@ -53,7 +53,7 @@ function MusicBox:render()
                 TextColor3 = Color3.fromRGB(255,255,255);
                 TextScaled = true;
                 Position = UDim2.fromScale(.5, .06);
-                Size = UDim2.fromScale(.5,.25);
+                Size = UDim2.fromScale(0.9,.25);
                 AnchorPoint = Vector2.new(0.5,0);
                 BackgroundTransparency = 1;
                 Font = Enum.Font.GothamSemibold;
@@ -73,7 +73,7 @@ function MusicBox:render()
                 Position = UDim2.fromScale(.375, .5);
                 Size = UDim2.fromScale(0.09, 0.3);
                 HoldSize = UDim2.fromScale(0.125, 0.325),
-                Image = "rbxassetid://7851262720";
+                Image = "rbxassetid://10346597748";
                 ImageColor3 = Color3.fromRGB(255,255,255);
                 ScaleType = Enum.ScaleType.Fit;
                 SliceScale = 10;

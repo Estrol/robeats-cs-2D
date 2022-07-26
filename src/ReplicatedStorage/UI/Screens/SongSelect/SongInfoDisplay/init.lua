@@ -181,7 +181,7 @@ function SongInfoDisplay:render()
             DifficultyDisplay = e(GridInfoDisplay, {
                 Value = SongDatabase:get_difficulty_for_key(self.props.SongKey, self.props.SongRate / 100),
                 FormatValue = function(value)
-                    return string.format("Difficulty: %d", value)
+                    return string.format("Difficulty: %0.2f", value.Overall)
                 end,
                 LayoutOrder = 1
             }),

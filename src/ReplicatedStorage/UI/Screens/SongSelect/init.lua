@@ -46,7 +46,7 @@ function SongSelect:init()
     end
 
     self.downrate = function()
-        if self.props.options.SongRate > 5 then
+        if self.props.options.SongRate > 70 then
             self.props.setSongRate(self.props.options.SongRate - 5)
         end
     end
@@ -100,7 +100,8 @@ function SongSelect:render()
                     self.props.setSongKey(key)
                 end
             end,
-            SelectedSongKey = self.props.options.SongKey
+            SelectedSongKey = self.props.options.SongKey,
+            SongRate = self.props.options.SongRate
         }),
         Leaderboard = e(Leaderboard, {
             Size = UDim2.fromScale(0.325, 0.665),

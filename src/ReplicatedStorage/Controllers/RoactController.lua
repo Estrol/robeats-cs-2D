@@ -103,16 +103,63 @@ function RoactController:GetDependencies()
         FriendsController = Knit.GetController("FriendsController"),
         ChatService = Knit.GetService("ChatService"),
         SettingsService = Knit.GetService("SettingsService"),
-        SFXController = Knit.GetController("SFXController")
+        SFXController = Knit.GetController("SFXController"),
+        FadeController = Knit.GetController("FadeController")
     }
 end
 
 function RoactController:MountRoactNodes(store)
     local routes = self:GetRoutes()
 
+    local history = RoactRouter.History.new({ "/" }, 1)
+
+    local fadeController = Knit.GetController("FadeController")
+
+    local oldPush = history.push
+    local oldGoBack = history.goBack
+
+    local lastBasePath = string.match(history.location.path, "^(/[^/]+)")
+
+    function history:push(...)
+        local args = { ... }
+
+        local newBasePath = string.match(args[1], "^(/[^/]+)")
+
+        if newBasePath == lastBasePath then
+            oldPush(self, unpack(args))
+            return
+        end
+
+        lastBasePath = newBasePath
+
+        return fadeController:To("In"):andThen(function()
+            oldPush(self, unpack(args))
+        end):andThen(function()
+            fadeController:To("Out")
+        end)
+    end
+
+    function history:goBack()
+        local lastItem = history._entries[#history._entries - 1]
+
+        local newBasePath = string.match(lastItem.path, "^(/[^/]+)")
+
+        if newBasePath == lastBasePath then
+            oldGoBack(self)
+            return
+        end
+
+        lastBasePath = newBasePath
+        
+        return fadeController:To("In"):andThen(function()
+            oldGoBack(self)
+        end):andThen(function()
+            fadeController:To("Out")
+        end)
+    end
+
     local router = Roact.createElement(RoactRouter.Router, {
-        initialEntries = { "/" },
-        initialIndex = 1
+        history = history
     }, routes)
 
     local storeProvider = Roact.createElement(RoactRodux.StoreProvider, {

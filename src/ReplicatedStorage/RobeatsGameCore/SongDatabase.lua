@@ -92,15 +92,45 @@ function SongDatabase:new()
 		rate = if rate then rate else 1
 
 		local songdata = self:get_data_for_key(key)
+
 		local difficulty = songdata.AudioDifficulty
 
-		if rate == 1 then
-			return difficulty
-		elseif rate < 1 then
-			return difficulty * (459616.4 + (-0.008317092 - 459616.4)/(1 + (rate/5051.127)^1.532436))
-		else
-			return difficulty * (946.4179 + (-6.728875 - 946.4179)/(1 + (rate/85114960)^0.2634697))
+		if typeof(difficulty) == "number" then
+			return {
+				Overall = difficulty
+			}
 		end
+
+		-- if rate == 1 then
+		-- 	return difficulty
+		-- elseif rate < 1 then
+		-- 	return difficulty * (459616.4 + (-0.008317092 - 459616.4)/(1 + (rate/5051.127)^1.532436))
+		-- else
+		-- 	return difficulty * (946.4179 + (-6.728875 - 946.4179)/(1 + (rate/85114960)^0.2634697))
+		-- end
+
+		local index = (rate * 1000 - 600) / 100
+
+		if tostring(index):find("%.") then
+			local top = difficulty[math.ceil(index)]
+			local bottom = difficulty[math.floor(index)]
+
+			local ret = {}
+
+			-- average all properties except for Rate
+
+			for itr_key, itr_value in pairs(top) do
+				if itr_key ~= "Rate" then
+					ret[itr_key] = (itr_value + bottom[itr_key]) / 2
+				else
+					ret[itr_key] = itr_value
+				end
+			end
+
+			return ret
+		end
+
+		return difficulty[index]
 	end
 
 	function self:get_description_for_key(key)
@@ -159,8 +189,7 @@ function SongDatabase:new()
 		if data ~= nil then
 			local _search_data = {
 				data.AudioArtist,
-				data.AudioFilename,
-				data.AudioDifficulty
+				data.AudioFilename
 			}
 
 			return table.concat(_search_data, " "):lower()

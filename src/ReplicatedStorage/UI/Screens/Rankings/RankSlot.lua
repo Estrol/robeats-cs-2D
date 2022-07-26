@@ -188,11 +188,26 @@ function RankSlot:render()
                 AnchorPoint = Vector2.new(1, 0.5),
                 Position = UDim2.fromScale(0.97, 0.5),
                 Size = UDim2.fromScale(0.1, 0.7),
-                BackgroundTransparency = 1,
-                ZIndex = 2
+                BackgroundTransparency = 1
             },
             tier = tier.name,
             division = tier.division
+        }, {
+            TierName = Roact.createElement(RoundedTextLabel, {
+                Position = UDim2.fromScale(-0.3, 0.5),
+                Size = UDim2.fromScale(5, 0.9),
+                AnchorPoint = Vector2.new(1, 0.5),
+                Text = tier.name,
+                TextColor3 = Color3.fromRGB(153, 153, 153),
+                TextXAlignment = Enum.TextXAlignment.Right,
+                TextScaled = true,
+                BackgroundTransparency = 1;
+            }, {
+                Roact.createElement("UITextSizeConstraint", {
+                    MaxTextSize = 20,
+                    MinTextSize = 7,
+                }),
+            }),
         }),
         UIAspectRatioConstraint = Roact.createElement("UIAspectRatioConstraint", {
             AspectRatio = 14,

@@ -312,9 +312,9 @@ function Results:render()
 
 		Ranking = if (self.props.profile and not viewing and not room) then Roact.createElement(Ranking, {
 			Rating = self.props.profile.Rating,
-			Position = UDim2.fromScale(0.415, 0.95),
+			Position = UDim2.fromScale(0.7, 0.95),
 			Size = UDim2.fromScale(0.5, 0.2),
-			AnchorPoint = Vector2.new(0, 1)
+			AnchorPoint = Vector2.new(0.5, 1)
 		}) else nil,
 
 		PlayerSelection = playerSelection
