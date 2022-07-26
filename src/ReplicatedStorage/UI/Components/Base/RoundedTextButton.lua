@@ -26,7 +26,8 @@ RoundedTextButton.defaultProps = {
     Frequency = 13;
     dampingRatio = 2.5;
     ZIndex = 1,
-    TooltipOffset = UDim2.fromOffset(0, 0)
+    TooltipOffset = UDim2.fromOffset(0, 0),
+    TooltipTextSize = 11
 }
 
 function RoundedTextButton:init()
@@ -139,7 +140,7 @@ function RoundedTextButton:render()
         });
         Tooltip = Roact.createElement("TextLabel", {
             Text = if self.props.Tooltip then self.props.Tooltip else nil;
-            TextSize = 9;
+            TextSize = self.props.TooltipTextSize;
             TextColor3 = Color3.fromRGB(255, 255, 255);
             BackgroundColor3 = Color3.fromRGB(43, 43, 43);
             AnchorPoint = Vector2.new(0, 1);

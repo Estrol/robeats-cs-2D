@@ -103,18 +103,18 @@ function SongButton:render()
             BackgroundColor3 = Color3.fromRGB(255, 255, 255),
             BackgroundTransparency = 1,
             BorderSizePixel = 0,
-            Position = UDim2.new(0.0199999847, 0, 0.78, 0),
-            Size = UDim2.new(0.462034643, 0, 0.11, 0),
+            Position = UDim2.new(0.0199999847, 0, 0.72, 0),
+            Size = UDim2.new(0.462034643, 0, 0.18, 0),
             Font = Enum.Font.GothamSemibold,
-            Text = string.format("Difficulty: %d | %s", difficulty.Overall, table.concat(topSkillsets, ", ")),
+            Text = string.format("Difficulty: %0.2f | %s", difficulty.Overall, table.concat(topSkillsets, ", ")),
             TextColor3 = Color3.fromRGB(255, 255, 255),
             TextScaled = true,
-            TextSize = 16,
+            TextSize = 22,
             TextWrapped = true,
             TextXAlignment = Enum.TextXAlignment.Left,
         }, {
             e("UITextSizeConstraint", {
-                MaxTextSize = 18,
+                MaxTextSize = 22,
                 MinTextSize = 10,
             });
         }),

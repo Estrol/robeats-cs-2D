@@ -44,6 +44,10 @@ function Score:render()
             RichText = true,
             TextScaled = true,
             Text = gradeName
+        }, {
+            UITextSizeConstraint = e("UITextSizeConstraint", {
+                MaxTextSize = 35
+            })
         }),
         SongData = e(RoundedTextLabel, {
             Size = UDim2.fromScale(0.3, 0.3),
@@ -64,7 +68,7 @@ function Score:render()
             RichText = true,
             Font = Enum.Font.Gotham,
             TextSize = 13,
-            Text = string.format("Accuracy: <font color=\"rgb(255, 249, 64)\">%0.2f%%</font> | Mean: %0.2f ms", self.props.Accuracy, self.props.Mean)
+            Text = string.format("Score: %d | Accuracy: <font color=\"rgb(255, 249, 64)\">%0.2f%%</font> | Mean: %0.2f ms | Max Combo: %d", self.props.Score, self.props.Accuracy, self.props.Mean, self.props.MaxChain)
         }),
         SongCover = e(RoundedImageLabel, {
             AnchorPoint = Vector2.new(1, 0.5),

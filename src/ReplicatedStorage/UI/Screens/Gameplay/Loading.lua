@@ -23,33 +23,34 @@ function Loading:render()
     }, {
         LoadingWheel = e(LoadingWheel, {
             AnchorPoint = Vector2.new(1, 0.5),
-            Position = UDim2.fromScale(0.156, 0.452),
+            Position = UDim2.fromScale(0.156, 0.42),
             Size = UDim2.fromScale(0.3, 0.4)
         }),
         LoadingText = e(RoundedTextLabel, {
             AnchorPoint = Vector2.new(0, 0.5),
-            Position = UDim2.fromScale(0.18, 0.452),
-            Size = UDim2.fromScale(0.6, 0.452),
+            Position = UDim2.fromScale(0.18, 0.42),
+            Size = UDim2.fromScale(0.8, 0.452),
             BackgroundTransparency = 1,
             TextColor3 = Color3.fromRGB(255, 255, 255),
             TextScaled = true,
             TextXAlignment = Enum.TextXAlignment.Left,
             Text = string.format("Please wait for the game to load... [%d]", self.props.SecondsLeft)
-        }, {
-            UITextSizeConstraint = e("UITextSizeConstraint", {
-                MaxTextSize = 20
-            })
         }),
         Back = e(RoundedTextButton, {
-            Size = UDim2.fromScale(0.195, 0.177),
+            Size = UDim2.fromScale(0.25, 0.21),
             AnchorPoint = Vector2.new(0.5, 0.5),
-            HoldSize = UDim2.fromScale(0.08, 0.05),
+            HoldSize = UDim2.fromScale(0.25, 0.21),
             TextColor3 = Color3.fromRGB(255, 255, 255),
             BackgroundColor3 = Color3.fromRGB(230, 19, 19),
-            HighlightBackgroundColor3 = Color3.fromRGB(187, 53, 53),
-            Position = UDim2.fromScale(0.5, 0.762),
+            HighlightBackgroundColor3 = Color3.fromRGB(109, 49, 49),
+            Position = UDim2.fromScale(0.5, 0.78),
             Text = "Back out",
+            TextScaled = true,
             OnClick = self.props.OnBack
+        }),
+        UIAspectRatioConstraint = e("UIAspectRatioConstraint", {
+            AspectRatio = 5,
+            DominantAxis = Enum.DominantAxis.Height
         })
     })
 end

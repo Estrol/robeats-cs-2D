@@ -59,8 +59,10 @@ function Scores:render()
             Size = UDim2.fromScale(0.75, 0.8),
             AnchorPoint = Vector2.new(0.5, 0.5),
             Position = UDim2.fromScale(0.5, 0.5),
+            ScrollBarThickness = 5,
             UIListLayoutProps = {
-                SortOrder = Enum.SortOrder.LayoutOrder
+                SortOrder = Enum.SortOrder.LayoutOrder,
+                Padding = UDim.new(0, 3)
             }
         }, scores),
         BackButton = e(RoundedTextButton, {
