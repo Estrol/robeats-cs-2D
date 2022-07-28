@@ -30,7 +30,7 @@ function Player:init()
         return
     end
 
-    local tier = Tiers:GetTierFromRating(self.props.Profile.Rating)
+    local tier = Tiers:GetTierFromRating(self.props.Profile.Rating.Overall)
 
     self:setState({
         tier = tier.name,
@@ -81,7 +81,7 @@ function Player:render()
                 Position = UDim2.fromScale(1.3, 0.5),
                 Size = UDim2.fromScale(6.75, 0.55),
                 TextXAlignment = Enum.TextXAlignment.Left,
-                Text = if self.props.Profile then string.format("#%d | %0.2f [%s]", self.props.Profile.Rank, self.props.Profile.Rating, if self.state.tier then self.state.tier .. (if self.state.division then " " .. string.rep("I", self.state.division) .. " Division " .. if self.state.division == 4 then "IV" else string.rep("I", self.state.subdivision) else "") else "...") else "???"
+                Text = if self.props.Profile then string.format("#%d | %0.2f [%s]", self.props.Profile.Rank, self.props.Profile.Rating.Overall, if self.state.tier then self.state.tier .. (if self.state.division then " " .. string.rep("I", self.state.division) .. " Division " .. if self.state.subdivision == 4 then "IV" else string.rep("I", self.state.subdivision) else "") else "...") else "???"
             }, {
                 UITextSizeConstraint = e("UITextSizeConstraint", {
                     MaxTextSize = 15

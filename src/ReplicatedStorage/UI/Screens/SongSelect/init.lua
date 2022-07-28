@@ -39,13 +39,21 @@ function SongSelect:init()
 
     self.Trove = Trove.new()
 
-    self.uprate = function()
+    self.uprate = function(_, wasGuiFocused)
+        if wasGuiFocused then
+            return
+        end
+
         if self.props.options.SongRate < 200 then
             self.props.setSongRate(self.props.options.SongRate + 5)
         end
     end
 
-    self.downrate = function()
+    self.downrate = function(_, wasGuiFocused)
+        if wasGuiFocused then
+            return
+        end
+
         if self.props.options.SongRate > 70 then
             self.props.setSongRate(self.props.options.SongRate - 5)
         end

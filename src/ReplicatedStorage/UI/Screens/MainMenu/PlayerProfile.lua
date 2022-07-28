@@ -12,9 +12,17 @@ local LoadingWheel = require(game.ReplicatedStorage.UI.Components.Base.LoadingWh
 
 local Tier = require(game.ReplicatedStorage.UI.Components.Tier)
 
+local Breakdown = require(game.ReplicatedStorage.UI.Screens.Scores.Breakdown)
+
 local Tiers = require(game.ReplicatedStorage.Tiers)
 
 local PlayerProfile = Roact.Component:extend("PlayerProfile")
+
+PlayerProfile.defaultProps = {
+    Position = UDim2.fromScale(0.98, 0.02),
+    Size = UDim2.fromScale(0.4, 0.17),
+    AnchorPoint = Vector2.new(1, 0)
+}
 
 function PlayerProfile:init()
     self.scoreService = self.props.scoreService
@@ -24,18 +32,18 @@ function PlayerProfile:init()
         rating = 0,
         accuracy = 0,
         totalMapsPlayed = 0,
-        userId = game.Players.LocalPlayer and game.Players.LocalPlayer.UserId,
-        playerName = game.Players.LocalPlayer and game.Players.LocalPlayer.Name,
+        userId = if self.props.UserId then self.props.UserId else if game.Players.LocalPlayer then game.Players.LocalPlayer.UserId else nil,
+        playerName = if self.props.PlayerName then self.props.PlayerName else if game.Players.LocalPlayer then game.Players.LocalPlayer.Name else nil,
         loaded = false
     })
 
-    self.scoreService:GetProfile():andThen(function(profile)
+    self.scoreService:GetProfile(self.state.userId):andThen(function(profile)
         if not Llama.isEmpty(profile) then
-            local tier = Tiers:GetTierFromRating(profile.Rating)
+            local tier = Tiers:GetTierFromRating(profile.Rating.Overall)
 
             self:setState({
                 rank = profile.Rank,
-                rating = profile.Rating or 0,
+                rating = if profile.Rating then profile.Rating else 0,
                 accuracy = profile.Accuracy or 0,
                 totalMapsPlayed = profile.TotalMapsPlayed or 0,
                 tier = tier.name,
@@ -55,10 +63,11 @@ end
 function PlayerProfile:render()
     if not self.state.loaded then
         return e(RoundedFrame, {
-            Size = UDim2.fromScale(0.4, 0.17),
-            AnchorPoint = Vector2.new(1, 0),
-            Position = UDim2.fromScale(0.98, 0.02),
-            BackgroundColor3 = Color3.fromRGB(22, 22, 22)
+            Size = self.props.Size,
+            AnchorPoint = self.props.AnchorPoint,
+            Position = self.props.Position,
+            BackgroundColor3 = Color3.fromRGB(22, 22, 22),
+            BackgroundTransparency = self.props.BackgroundTransparency
         }, {
             PlayerIcon = e(RoundedImageLabel, {
                 Image = string.format("https://www.roblox.com/headshot-thumbnail/image?userid=%d&width=420&height=420&format=png", self.state.userId),
@@ -73,11 +82,13 @@ function PlayerProfile:render()
                 }),
                 PlayerName = e(RoundedTextLabel, {
                     Position = UDim2.fromScale(1.2, 0),
-                    Size = UDim2.fromScale(2.35, 0.3),
+                    Size = UDim2.fromScale(3.3, 0.3),
+                    RichText = true,
                     TextXAlignment = Enum.TextXAlignment.Left,
                     TextColor3 = Color3.fromRGB(255, 255, 255),
                     Text = self.state.playerName,
                     TextScaled = true,
+                    Font = Enum.Font.GothamBold,
                     BackgroundTransparency = 1
                 }),
                 LoadingWheel = e(LoadingWheel, {
@@ -90,10 +101,11 @@ function PlayerProfile:render()
     end
 
     return e(RoundedFrame, {
-        Size = UDim2.fromScale(0.4, 0.17),
-        AnchorPoint = Vector2.new(1, 0),
-        Position = UDim2.fromScale(0.98, 0.02),
-        BackgroundColor3 = Color3.fromRGB(22, 22, 22)
+        Size = self.props.Size,
+        AnchorPoint = self.props.AnchorPoint,
+        Position = self.props.Position,
+        BackgroundColor3 = Color3.fromRGB(22, 22, 22),
+        BackgroundTransparency = self.props.BackgroundTransparency
     }, {
         PlayerIcon = e(RoundedImageLabel, {
             Image = string.format("https://www.roblox.com/headshot-thumbnail/image?userid=%d&width=420&height=420&format=png", self.state.userId),
@@ -108,12 +120,13 @@ function PlayerProfile:render()
            }),
            PlayerName = e(RoundedTextLabel, {
                Position = UDim2.fromScale(1.2, 0),
-               Size = UDim2.fromScale(3.8, 0.3),
+               Size = UDim2.fromScale(3.3, 0.3),
                RichText = true,
                TextXAlignment = Enum.TextXAlignment.Left,
                TextColor3 = Color3.fromRGB(255, 255, 255),
                Text = if self.state.tier then string.format("%s <font color=\"#b3b3b3\">[%s]</font>", self.state.playerName, self.state.tier..(if self.state.division then string.format(" %s", string.rep("I", self.state.division)) else "")) else self.state.playerName,
                TextScaled = true,
+               Font = Enum.Font.GothamBold,
                BackgroundTransparency = 1
            }),
            SkillRating = e(RoundedTextLabel, {
@@ -121,8 +134,9 @@ function PlayerProfile:render()
                Size = UDim2.fromScale(2.35, 0.18),
                TextXAlignment = Enum.TextXAlignment.Left,
                TextColor3 = Color3.fromRGB(194, 194, 194),
-               Text = string.format("Overall Rating: %0.2f", self.state.rating),
+               Text = string.format("Overall Rating: %0.2f", if typeof(self.state.rating) == "table" then self.state.rating.Overall else self.state.rating),
                TextScaled = true,
+               Font = Enum.Font.Gotham,
                BackgroundTransparency = 1
            }),
            Accuracy = e(RoundedTextLabel, {
@@ -132,6 +146,7 @@ function PlayerProfile:render()
                TextColor3 = Color3.fromRGB(194, 194, 194),
                Text = string.format("Average Accuracy: %0.2f%%", self.state.accuracy),
                TextScaled = true,
+               Font = Enum.Font.Gotham,
                BackgroundTransparency = 1
            }),
            TotalMapsPlayed = e(RoundedTextLabel, {
@@ -141,6 +156,7 @@ function PlayerProfile:render()
                TextColor3 = Color3.fromRGB(194, 194, 194),
                Text = string.format("Total Maps Played: %d", self.state.totalMapsPlayed),
                TextScaled = true,
+               Font = Enum.Font.Gotham,
                BackgroundTransparency = 1
            }),
            Tier = self.state.tier and e(Tier, {
@@ -155,7 +171,7 @@ function PlayerProfile:render()
                 division = self.state.division
             })
         }),
-        Rank = self.state.rank and e(RoundedTextLabel, {
+        Rank = if self.state.rank and self.props.ShowRank then e(RoundedTextLabel, {
             Position = UDim2.fromScale(0.97, 0.92),
             Size = UDim2.fromScale(0.5, 0.45),
             AnchorPoint = Vector2.new(1, 1),
@@ -167,7 +183,14 @@ function PlayerProfile:render()
             BackgroundTransparency = 1,
             TextTransparency = 0.4,
             ZIndex = 0
-        })
+        }) else nil,
+        Breakdown = if self.props.ShowBreakdown then e(Breakdown, {
+            Position = UDim2.fromScale(1, 0.5),
+            Size = UDim2.fromScale(0.8, 1),
+            AnchorPoint = Vector2.new(0, 0),
+            BackgroundTransparency = 1,
+            Skillsets = if typeof(self.state.rating) == "table" then self.state.rating else nil,
+        }) else nil
     })
 end
 

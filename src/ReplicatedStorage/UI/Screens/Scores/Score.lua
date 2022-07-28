@@ -35,8 +35,8 @@ function Score:render()
         OnClick = self.props.OnClick
     }, {
         Grade = e(RoundedTextLabel, {
-            Size = UDim2.fromScale(0.035, 1),
-            Position = UDim2.fromScale(0.01, 0),
+            Size = UDim2.fromScale(0.05, 1),
+            Position = UDim2.fromScale(0.005, 0),
             TextColor3 = gradeColor,
             TextXAlignment = Enum.TextXAlignment.Center,
             TextYAlignment = Enum.TextYAlignment.Center,
@@ -46,7 +46,7 @@ function Score:render()
             Text = gradeName
         }, {
             UITextSizeConstraint = e("UITextSizeConstraint", {
-                MaxTextSize = 35
+                MaxTextSize = 30
             })
         }),
         SongData = e(RoundedTextLabel, {
@@ -57,7 +57,7 @@ function Score:render()
             BackgroundTransparency = 1,
             RichText = true,
             Font = Enum.Font.GothamBlack,
-            Text = string.format("<font color=\"rgb(255, 249, 64)\">%0.2f</font> | %s - %s [%0.2fx]", self.props.Rating, SongDatabase:get_title_for_key(songKey), SongDatabase:get_artist_for_key(songKey), self.props.Rate / 100)
+            Text = string.format("<font color=\"rgb(255, 249, 64)\">%0.2f</font> | %s - %s [%0.2fx]", self.props.Rating.Overall, SongDatabase:get_title_for_key(songKey), SongDatabase:get_artist_for_key(songKey), self.props.Rate / 100)
         }),
         ScoreData = e(RoundedTextLabel, {
             Size = UDim2.fromScale(0.3, 0.3),

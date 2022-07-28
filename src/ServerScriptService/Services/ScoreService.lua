@@ -108,10 +108,10 @@ function ScoreService:CalculateAverageAccuracy(scores)
     return accuracy / #scores
 end
 
-function ScoreService:GetProfile(player)
+function ScoreService:GetProfile(player, userId)
     if RateLimitService:CanProcessRequestWithRateLimit(player, "GetProfile", 2) then
         return Raxios.get(url "/profiles", {
-            query = { userid = player.UserId, auth = AuthService.APIKey }
+            query = { userid = userId or player.UserId, auth = AuthService.APIKey }
         }):json()
     end
 
@@ -180,8 +180,8 @@ function ScoreService.Client:GetScores(player, songMD5Hash, limit, songRate)
     return {}, false
 end
 
-function ScoreService.Client:GetProfile(player)
-    return ScoreService:GetProfile(player)
+function ScoreService.Client:GetProfile(player, userId)
+    return ScoreService:GetProfile(player, userId)
 end
 
 function ScoreService.Client:GetGlobalLeaderboard(player)

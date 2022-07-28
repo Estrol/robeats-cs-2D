@@ -121,7 +121,7 @@ function MainMenuUI:render()
             })
         });
         PlayerProfile = e(PlayerProfile, {
-            Size = UDim2.fromScale(0.45, 0.2)
+            ShowRank = true
         }),
         AudioVisualizer = e(AudioVisualizer),
         SongBox = e(MusicBox, {
@@ -179,11 +179,11 @@ function MainMenuUI:render()
             }, {
                 UITextSizeConstraint = e("UITextSizeConstraint", {
                     MinTextSize = 10;
-                    MaxTextSize = 15;
+                    MaxTextSize = 18;
                 }),
                 UIStroke = e("UIStroke", {
                     Thickness = 2;
-                    Color = Color3.fromRGB(175, 175, 175);
+                    Color = Color3.fromRGB(100, 100, 100);
                     ApplyStrokeMode = Enum.ApplyStrokeMode.Border
                 })
             });
@@ -205,11 +205,11 @@ function MainMenuUI:render()
             }, {
                 UITextSizeConstraint = e("UITextSizeConstraint", {
                     MinTextSize = 10;
-                    MaxTextSize = 15;
+                    MaxTextSize = 18;
                 }),
                 UIStroke = e("UIStroke", {
                     Thickness = 2;
-                    Color = Color3.fromRGB(175, 175, 175);
+                    Color = Color3.fromRGB(100, 100, 100);
                     ApplyStrokeMode = Enum.ApplyStrokeMode.Border
                 })
             });
@@ -236,11 +236,11 @@ function MainMenuUI:render()
             }, {
                 UITextSizeConstraint = e("UITextSizeConstraint", {
                     MinTextSize = 10;
-                    MaxTextSize = 15;
+                    MaxTextSize = 18;
                 }),
                 UIStroke = e("UIStroke", {
                     Thickness = 2;
-                    Color = Color3.fromRGB(175, 175, 175);
+                    Color = Color3.fromRGB(100, 100, 100);
                     ApplyStrokeMode = Enum.ApplyStrokeMode.Border
                 })
             });
@@ -262,11 +262,11 @@ function MainMenuUI:render()
             }, {
                 UITextSizeConstraint = e("UITextSizeConstraint", {
                     MinTextSize = 10;
-                    MaxTextSize = 15;
+                    MaxTextSize = 18;
                 }),
                 UIStroke = e("UIStroke", {
                     Thickness = 2;
-                    Color = Color3.fromRGB(175, 175, 175);
+                    Color = Color3.fromRGB(100, 100, 100);
                     ApplyStrokeMode = Enum.ApplyStrokeMode.Border
                 })
             });
@@ -288,11 +288,11 @@ function MainMenuUI:render()
             }, {
                 UITextSizeConstraint = e("UITextSizeConstraint", {
                     MinTextSize = 10;
-                    MaxTextSize = 15;
+                    MaxTextSize = 18;
                 }),
                 UIStroke = e("UIStroke", {
                     Thickness = 2;
-                    Color = Color3.fromRGB(175, 175, 175);
+                    Color = Color3.fromRGB(100, 100, 100);
                     ApplyStrokeMode = Enum.ApplyStrokeMode.Border
                 })
             }),

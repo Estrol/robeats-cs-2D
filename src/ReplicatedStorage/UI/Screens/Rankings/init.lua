@@ -50,7 +50,8 @@ function Rankings:render()
             end,
             OnView = function(userId)
                 self.props.history:push("/scores", {
-                    userId = userId
+                    userId = userId,
+                    playerName = playerSlot.PlayerName
                 })
             end
         })
