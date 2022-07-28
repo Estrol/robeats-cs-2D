@@ -60,7 +60,6 @@ function Breakdown:render()
                 TextColor3 = Color3.fromRGB(255, 255, 255),
                 TextScaled = true,
                 TextSize = 14,
-                TextStrokeTransparency = 0,
                 TextWrapped = true,
                 TextXAlignment = Enum.TextXAlignment.Right,
                 AnchorPoint = Vector2.new(1, 0.5),
@@ -70,15 +69,12 @@ function Breakdown:render()
                 Size = UDim2.new(0, 49, 1, 0),
             }),
     
-            UIStroke = e("UIStroke"),
-    
             Label = e("TextLabel", {
                 Font = Enum.Font.GothamBlack,
                 Text = "Handstream",
                 TextColor3 = Color3.fromRGB(255, 255, 255),
                 TextScaled = true,
                 TextSize = 14,
-                TextStrokeTransparency = 0,
                 TextWrapped = true,
                 TextXAlignment = Enum.TextXAlignment.Left,
                 AnchorPoint = Vector2.new(1, 0.5),
@@ -116,7 +112,6 @@ function Breakdown:render()
                 TextColor3 = Color3.fromRGB(255, 255, 255),
                 TextScaled = true,
                 TextSize = 14,
-                TextStrokeTransparency = 0,
                 TextWrapped = true,
                 TextXAlignment = Enum.TextXAlignment.Right,
                 AnchorPoint = Vector2.new(1, 0.5),
@@ -126,15 +121,12 @@ function Breakdown:render()
                 Size = UDim2.new(0, 49, 1, 0),
             }),
     
-            UIStroke1 = e("UIStroke"),
-    
             Label1 = e("TextLabel", {
                 Font = Enum.Font.GothamBlack,
                 Text = "Chordjack",
                 TextColor3 = Color3.fromRGB(255, 255, 255),
                 TextScaled = true,
                 TextSize = 14,
-                TextStrokeTransparency = 0,
                 TextWrapped = true,
                 TextXAlignment = Enum.TextXAlignment.Left,
                 AnchorPoint = Vector2.new(1, 0.5),
@@ -172,7 +164,6 @@ function Breakdown:render()
                 TextColor3 = Color3.fromRGB(255, 255, 255),
                 TextScaled = true,
                 TextSize = 14,
-                TextStrokeTransparency = 0,
                 TextWrapped = true,
                 TextXAlignment = Enum.TextXAlignment.Right,
                 AnchorPoint = Vector2.new(1, 0.5),
@@ -182,15 +173,12 @@ function Breakdown:render()
                 Size = UDim2.fromScale(0.248, 1),
             }),
     
-            UIStroke2 = e("UIStroke"),
-    
             Label2 = e("TextLabel", {
                 Font = Enum.Font.GothamBlack,
                 Text = "Jack",
                 TextColor3 = Color3.fromRGB(255, 255, 255),
                 TextScaled = true,
                 TextSize = 14,
-                TextStrokeTransparency = 0,
                 TextWrapped = true,
                 TextXAlignment = Enum.TextXAlignment.Left,
                 AnchorPoint = Vector2.new(1, 0.5),
@@ -227,7 +215,6 @@ function Breakdown:render()
                 TextColor3 = Color3.fromRGB(255, 255, 255),
                 TextScaled = true,
                 TextSize = 14,
-                TextStrokeTransparency = 0,
                 TextWrapped = true,
                 TextXAlignment = Enum.TextXAlignment.Right,
                 AnchorPoint = Vector2.new(1, 0.5),
@@ -237,15 +224,12 @@ function Breakdown:render()
                 Size = UDim2.fromScale(0.248, 1),
             }),
     
-            UIStroke3 = e("UIStroke"),
-    
             Label3 = e("TextLabel", {
                 Font = Enum.Font.GothamBlack,
                 Text = "Stream",
                 TextColor3 = Color3.fromRGB(255, 255, 255),
                 TextScaled = true,
                 TextSize = 14,
-                TextStrokeTransparency = 0,
                 TextWrapped = true,
                 TextXAlignment = Enum.TextXAlignment.Left,
                 AnchorPoint = Vector2.new(1, 0.5),
@@ -283,7 +267,6 @@ function Breakdown:render()
                 TextColor3 = Color3.fromRGB(255, 255, 255),
                 TextScaled = true,
                 TextSize = 14,
-                TextStrokeTransparency = 0,
                 TextWrapped = true,
                 TextXAlignment = Enum.TextXAlignment.Right,
                 AnchorPoint = Vector2.new(1, 0.5),
@@ -293,15 +276,12 @@ function Breakdown:render()
                 Size = UDim2.new(0, 49, 1, 0),
             }),
     
-            UIStroke4 = e("UIStroke"),
-    
             Label4 = e("TextLabel", {
                 Font = Enum.Font.GothamBlack,
                 Text = "Technical",
                 TextColor3 = Color3.fromRGB(255, 255, 255),
                 TextScaled = true,
                 TextSize = 14,
-                TextStrokeTransparency = 0,
                 TextWrapped = true,
                 TextXAlignment = Enum.TextXAlignment.Left,
                 AnchorPoint = Vector2.new(1, 0.5),
@@ -339,7 +319,6 @@ function Breakdown:render()
                 TextColor3 = Color3.fromRGB(255, 255, 255),
                 TextScaled = true,
                 TextSize = 14,
-                TextStrokeTransparency = 0,
                 TextWrapped = true,
                 TextXAlignment = Enum.TextXAlignment.Right,
                 AnchorPoint = Vector2.new(1, 0.5),
@@ -349,15 +328,12 @@ function Breakdown:render()
                 Size = UDim2.fromScale(0.248, 1),
             }),
     
-            UIStroke5 = e("UIStroke"),
-    
             Label5 = e("TextLabel", {
                 Font = Enum.Font.GothamBlack,
                 Text = "Stamina",
                 TextColor3 = Color3.fromRGB(255, 255, 255),
                 TextScaled = true,
                 TextSize = 14,
-                TextStrokeTransparency = 0,
                 TextWrapped = true,
                 TextXAlignment = Enum.TextXAlignment.Left,
                 AnchorPoint = Vector2.new(1, 0.5),
@@ -400,7 +376,6 @@ function Breakdown:render()
                 TextColor3 = Color3.fromRGB(255, 255, 255),
                 TextScaled = true,
                 TextSize = 14,
-                TextStrokeTransparency = 0,
                 TextWrapped = true,
                 TextXAlignment = Enum.TextXAlignment.Right,
                 AnchorPoint = Vector2.new(1, 0.5),
@@ -410,15 +385,12 @@ function Breakdown:render()
                 Size = UDim2.new(0, 49, 1, 0),
             }),
     
-            UIStroke6 = e("UIStroke"),
-    
             Label6 = e("TextLabel", {
                 Font = Enum.Font.GothamBlack,
                 Text = "Jumpstream",
                 TextColor3 = Color3.fromRGB(255, 255, 255),
                 TextScaled = true,
                 TextSize = 14,
-                TextStrokeTransparency = 0,
                 TextWrapped = true,
                 TextXAlignment = Enum.TextXAlignment.Left,
                 AnchorPoint = Vector2.new(1, 0.5),
