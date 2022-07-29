@@ -170,7 +170,7 @@ function RankSlot:render()
         Place = Roact.createElement(RoundedTextLabel, {
             BackgroundColor3 = Color3.fromRGB(54, 54, 54),
             BorderSizePixel = 0,
-            Position = UDim2.fromScale(0.0075, 0.1),
+            Position = UDim2.fromScale(0.0087, 0.1),
             Size = UDim2.fromScale(0.05, 0.755),
             Font = Enum.Font.GothamBold,
             Text = string.format("#%d", self.props.Data.Place),
@@ -179,7 +179,7 @@ function RankSlot:render()
             BackgroundTransparency = 1;
         }, {
             Roact.createElement("UITextSizeConstraint", {
-                MaxTextSize = 20,
+                MaxTextSize = 25,
                 MinTextSize = 7,
             }),
         }),
@@ -195,9 +195,9 @@ function RankSlot:render()
         }, {
             TierName = Roact.createElement(RoundedTextLabel, {
                 Position = UDim2.fromScale(-0.3, 0.5),
-                Size = UDim2.fromScale(5, 0.9),
+                Size = UDim2.fromScale(5.2, 0.9),
                 AnchorPoint = Vector2.new(1, 0.5),
-                Text = tier.name,
+                Text = tier.name .. if tier.division then " " .. string.rep("I", tier.division) .. if tier.subdivision then "  " .. string.rep("🔲 ", tier.subdivision) .. string.rep("◼️ ", 4 - tier.subdivision) else "" else "",
                 TextColor3 = Color3.fromRGB(153, 153, 153),
                 TextXAlignment = Enum.TextXAlignment.Right,
                 TextScaled = true,

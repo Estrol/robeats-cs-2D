@@ -189,7 +189,7 @@ function PlayerProfile:render()
             Size = UDim2.fromScale(0.8, 1),
             AnchorPoint = Vector2.new(0, 0),
             BackgroundTransparency = 1,
-            Skillsets = if typeof(self.state.rating) == "table" then self.state.rating else nil,
+            Skillsets = self.state.rating,
         }) else nil
     })
 end

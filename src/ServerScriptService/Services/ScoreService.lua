@@ -78,9 +78,15 @@ end
 function ScoreService:GetPlayerScores(userId, limit)
     local documents = Raxios.get(url "/scores/player", {
         query = { userid = userId, auth = AuthService.APIKey }
-    })
+    }):json()
 
-    return documents:json()
+    for _, score in ipairs(documents) do
+        if typeof(score.Rating) == "number" then
+            score.Rating = { Overall = score.Rating }
+        end
+    end
+
+    return documents
 end
 
 function ScoreService:CalculateRating(scores)
@@ -110,9 +116,24 @@ end
 
 function ScoreService:GetProfile(player, userId)
     if RateLimitService:CanProcessRequestWithRateLimit(player, "GetProfile", 2) then
-        return Raxios.get(url "/profiles", {
+        local profile = Raxios.get(url "/profiles", {
             query = { userid = userId or player.UserId, auth = AuthService.APIKey }
         }):json()
+
+        if typeof(profile.Rating) == "number" then
+            profile.Rating = {
+                Overall = profile.Rating,
+                Stream = 0,
+                Stamina = 0,
+                Jack = 0,
+                Chordjack = 0,
+                Jumpstream = 0,
+                Handstream = 0,
+                Technical = 0
+            }
+        end
+
+        return profile
     end
 
     return {}
@@ -172,9 +193,17 @@ end
 
 function ScoreService.Client:GetScores(player, songMD5Hash, limit, songRate)
     if RateLimitService:CanProcessRequestWithRateLimit(player, "GetScores", 2) then
-        return Raxios.get(url "/scores", {
+        local scores = Raxios.get(url "/scores", {
             query = { hash = songMD5Hash, limit = limit, rate = songRate, auth = AuthService.APIKey }
         }):json()
+
+        for _, score in ipairs(scores) do
+            if typeof(score.Rating) == "number" then
+                score.Rating = { Overall = score.Rating }
+            end
+        end
+
+        return scores
     end
 
     return {}, false
@@ -186,9 +215,17 @@ end
 
 function ScoreService.Client:GetGlobalLeaderboard(player)
     if RateLimitService:CanProcessRequestWithRateLimit(player, "GetGlobalLeaderboard", 3) then
-        return Raxios.get(url "/profiles/top", {
+        local leaderboard = Raxios.get(url "/profiles/top", {
             query = { auth = AuthService.APIKey }
         }):json()
+
+        for _, slot in ipairs(leaderboard) do
+            if typeof(slot.Rating) == "number" then
+                slot.Rating = { Overall = slot.Rating }
+            end
+        end
+
+        return leaderboard
     end
 
     return {}
