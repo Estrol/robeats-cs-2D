@@ -81,8 +81,8 @@ function ScoreService:GetPlayerScores(userId, limit)
     }):json()
 
     for _, score in ipairs(documents) do
-        if typeof(score.Rating) == "number" then
-            score.Rating = { Overall = score.Rating }
+        if typeof(score.Rating) == "number" or typeof(score.Rating) == "nil" then
+            score.Rating = { Overall = score.Rating or 0 }
         end
     end
 
@@ -120,7 +120,7 @@ function ScoreService:GetProfile(player, userId)
             query = { userid = userId or player.UserId, auth = AuthService.APIKey }
         }):json()
 
-        if typeof(profile.Rating) == "number" then
+        if typeof(profile.Rating) == "number" or typeof(profile.Rating) == "nil" then
             profile.Rating = {
                 Overall = profile.Rating,
                 Stream = 0,
@@ -198,8 +198,8 @@ function ScoreService.Client:GetScores(player, songMD5Hash, limit, songRate)
         }):json()
 
         for _, score in ipairs(scores) do
-            if typeof(score.Rating) == "number" then
-                score.Rating = { Overall = score.Rating }
+            if typeof(score.Rating) == "number" or typeof(score.Rating) == "nil" then
+                score.Rating = { Overall = score.Rating or 0 }
             end
         end
 
@@ -221,7 +221,7 @@ function ScoreService.Client:GetGlobalLeaderboard(player)
 
         for _, slot in ipairs(leaderboard) do
             if typeof(slot.Rating) == "number" then
-                slot.Rating = { Overall = slot.Rating }
+                slot.Rating = { Overall = slot.Rating or 0 }
             end
         end
 
