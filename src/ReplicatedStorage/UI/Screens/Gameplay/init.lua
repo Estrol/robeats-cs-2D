@@ -191,7 +191,7 @@ function Gameplay:init()
         if self.props.room and _send_every:do_flash() then
             self.props.multiplayerService:SetMatchStats(self.props.roomId, {
                 score = self.state.score,
-                rating = Rating:get_rating_from_song_key(self.songKey, self.state.accuracy, self.songRate / 100),
+                rating = Rating:get_rating_from_song_key(self.songKey, self.state.accuracy, self.songRate / 100).Overall,
                 accuracy = self.state.accuracy,
                 marvelouses = self.state.marvelouses,
                 perfects = self.state.perfects,
@@ -440,7 +440,7 @@ function Gameplay:render()
         else
             leaderboard = e(Leaderboard, {
                 SongKey = self.songKey,
-                LocalRating = Rating:get_rating_from_song_key(self.songKey, self.state.accuracy, self.props.options.SongRate / 100),
+                LocalRating = Rating:get_rating_from_song_key(self.songKey, self.state.accuracy, self.props.options.SongRate / 100).Overall,
                 LocalAccuracy = self.state.accuracy, 
                 Position = LeaderboardPositions[self.props.options.InGameLeaderboardPosition]
             })

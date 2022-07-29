@@ -127,7 +127,7 @@ function Results:render()
 	else
 		scoreData = {
 			score = state.Score,
-			rating = state.Rating,
+			rating = state.Rating.Overall,
 			accuracy = state.Accuracy,
 			marvelouses = state.Marvelouses,
 			perfects = state.Perfects,
