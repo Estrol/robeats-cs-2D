@@ -308,7 +308,7 @@ function Results:render()
 				self.props.history:push("/play")
 			end
 		}) else nil,
-		Ranking = if (self.props.profile and not viewing and not room) then Roact.createElement(Ranking, {
+		Ranking = if (self.props.profile and self.props.profile.Rating and not viewing and not room) then Roact.createElement(Ranking, {
 			Rating = self.props.profile.Rating.Overall,
 			Position = UDim2.fromScale(0.69, 0.95),
 			Size = UDim2.fromScale(0.5, 0.2),

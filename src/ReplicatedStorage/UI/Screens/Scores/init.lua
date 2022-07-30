@@ -41,7 +41,6 @@ function Scores:render()
                     :await()
 
                 self.props.history:push("/results", Llama.Dictionary.join(score, {
-                    Rating = if typeof(score.Rating) == "table" then score.Rating.Overall else score.Rating,
                     SongKey = SongDatabase:get_key_for_hash(score.SongMD5Hash),
                     TimePlayed = if score._updated_at then DateTime.fromIsoDate(score._updated_at).UnixTimestamp else nil,
                     Hits = hits,

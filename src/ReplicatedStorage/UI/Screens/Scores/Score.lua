@@ -46,26 +46,28 @@ function Score:render()
             Text = gradeName
         }, {
             UITextSizeConstraint = e("UITextSizeConstraint", {
-                MaxTextSize = 30
+                MaxTextSize = 27
             })
         }),
         SongData = e(RoundedTextLabel, {
-            Size = UDim2.fromScale(0.3, 0.3),
+            Size = UDim2.fromScale(0.7, 0.3),
             Position = UDim2.fromScale(0.055, 0.2),
             TextColor3 = Color3.fromRGB(255, 255, 255),
             TextXAlignment = Enum.TextXAlignment.Left,
             BackgroundTransparency = 1,
             RichText = true,
+            TextScaled = true,
             Font = Enum.Font.GothamBlack,
             Text = string.format("<font color=\"rgb(255, 249, 64)\">%0.2f</font> | %s - %s [%0.2fx]", self.props.Rating.Overall, SongDatabase:get_title_for_key(songKey), SongDatabase:get_artist_for_key(songKey), self.props.Rate / 100)
         }),
         ScoreData = e(RoundedTextLabel, {
-            Size = UDim2.fromScale(0.3, 0.3),
+            Size = UDim2.fromScale(0.7, 0.3),
             Position = UDim2.fromScale(0.055, 0.5),
             TextColor3 = Color3.fromRGB(255, 255, 255),
             TextXAlignment = Enum.TextXAlignment.Left,
             BackgroundTransparency = 1,
             RichText = true,
+            TextScaled = true,
             Font = Enum.Font.Gotham,
             TextSize = 13,
             Text = string.format("Score: %d | Accuracy: <font color=\"rgb(255, 249, 64)\">%0.2f%%</font> | Mean: %0.2f ms | Max Combo: %d", self.props.Score, self.props.Accuracy, self.props.Mean, self.props.MaxChain)
@@ -90,6 +92,9 @@ function Score:render()
             Roact.createElement("UICorner", {
                 CornerRadius = UDim.new(0, 4),
             }),
+        }),
+        UIAspectRatioConstraint = e("UIAspectRatioConstraint", {
+            AspectRatio = 10
         })
     })
 end
