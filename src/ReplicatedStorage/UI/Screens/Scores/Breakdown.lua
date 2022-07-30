@@ -38,6 +38,7 @@ function Breakdown:render()
             LayoutOrder = 6,
             Position = UDim2.fromScale(0, 0.723),
             Size = UDim2.fromScale(1, 0.119),
+            ClipsDescendants = true,
         }, {
             UICorner1 = e("UICorner", {
                 CornerRadius = UDim.new(0, 30),
@@ -47,7 +48,7 @@ function Breakdown:render()
                 AnchorPoint = Vector2.new(0, 0.5),
                 BackgroundColor3 = Color3.fromRGB(126, 126, 126),
                 Position = UDim2.fromScale(0, 0.5),
-                Size = UDim2.fromScale(skillsets.Handstream / MAX_SR, 1),
+                Size = UDim2.fromScale(math.clamp(skillsets.Handstream / MAX_SR, 0, 1), 1),
             }, {
                 UICorner2 = e("UICorner", {
                     CornerRadius = UDim.new(0, 30),
@@ -90,6 +91,7 @@ function Breakdown:render()
             LayoutOrder = 4,
             Position = UDim2.fromScale(0, 0.434),
             Size = UDim2.fromScale(1, 0.119),
+            ClipsDescendants = true,
         }, {
             UICorner3 = e("UICorner", {
                 CornerRadius = UDim.new(0, 30),
@@ -99,7 +101,7 @@ function Breakdown:render()
                 AnchorPoint = Vector2.new(0, 0.5),
                 BackgroundColor3 = Color3.fromRGB(126, 126, 126),
                 Position = UDim2.fromScale(0, 0.5),
-                Size = UDim2.fromScale(skillsets.Chordjack / MAX_SR, 1),
+                Size = UDim2.fromScale(math.clamp(skillsets.Chordjack / MAX_SR, 0, 1), 1),
             }, {
                 UICorner4 = e("UICorner", {
                     CornerRadius = UDim.new(0, 30),
@@ -142,6 +144,7 @@ function Breakdown:render()
             LayoutOrder = 3,
             Position = UDim2.fromScale(0, 0.289),
             Size = UDim2.fromScale(1, 0.119),
+            ClipsDescendants = true,
         }, {
             UICorner5 = e("UICorner", {
                 CornerRadius = UDim.new(0, 30),
@@ -151,7 +154,7 @@ function Breakdown:render()
                 AnchorPoint = Vector2.new(0, 0.5),
                 BackgroundColor3 = Color3.fromRGB(126, 126, 126),
                 Position = UDim2.fromScale(0, 0.5),
-                Size = UDim2.fromScale(skillsets.Jack / MAX_SR, 1),
+                Size = UDim2.fromScale(math.clamp(skillsets.Jack / MAX_SR, 0, 1), 1),
             }, {
                 UICorner6 = e("UICorner", {
                     CornerRadius = UDim.new(0, 30),
@@ -193,6 +196,7 @@ function Breakdown:render()
             BackgroundColor3 = Color3.fromRGB(57, 57, 57),
             LayoutOrder = 1,
             Size = UDim2.fromScale(1, 0.119),
+            ClipsDescendants = true,
         }, {
             UICorner7 = e("UICorner", {
                 CornerRadius = UDim.new(0, 30),
@@ -202,7 +206,7 @@ function Breakdown:render()
                 AnchorPoint = Vector2.new(0, 0.5),
                 BackgroundColor3 = Color3.fromRGB(126, 126, 126),
                 Position = UDim2.fromScale(7.75e-08, 0.5),
-                Size = UDim2.fromScale(skillsets.Stream / MAX_SR, 1),
+                Size = UDim2.fromScale(math.clamp(skillsets.Stream / MAX_SR, 0, 1), 1),
             }, {
                 UICorner8 = e("UICorner", {
                     CornerRadius = UDim.new(0, 30),
@@ -245,6 +249,7 @@ function Breakdown:render()
             LayoutOrder = 7,
             Position = UDim2.fromScale(0, 0.868),
             Size = UDim2.fromScale(1, 0.119),
+            ClipsDescendants = true,
         }, {
             UICorner9 = e("UICorner", {
                 CornerRadius = UDim.new(0, 30),
@@ -254,7 +259,7 @@ function Breakdown:render()
                 AnchorPoint = Vector2.new(0, 0.5),
                 BackgroundColor3 = Color3.fromRGB(126, 126, 126),
                 Position = UDim2.fromScale(0, 0.5),
-                Size = UDim2.fromScale(skillsets.Technical / MAX_SR, 1),
+                Size = UDim2.fromScale(math.clamp(skillsets.Technical / MAX_SR, 0, 1), 1),
             }, {
                 UICorner10 = e("UICorner", {
                     CornerRadius = UDim.new(0, 30),
@@ -297,6 +302,7 @@ function Breakdown:render()
             LayoutOrder = 2,
             Position = UDim2.fromScale(0, 0.145),
             Size = UDim2.fromScale(1, 0.119),
+            ClipsDescendants = true,
         }, {
             UICorner11 = e("UICorner", {
                 CornerRadius = UDim.new(0, 30),
@@ -306,7 +312,7 @@ function Breakdown:render()
                 AnchorPoint = Vector2.new(0, 0.5),
                 BackgroundColor3 = Color3.fromRGB(126, 126, 126),
                 Position = UDim2.fromScale(7.75e-08, 0.5),
-                Size = UDim2.fromScale(skillsets.Stamina / MAX_SR, 1),
+                Size = UDim2.fromScale(math.clamp(skillsets.Stamina / MAX_SR, 0, 1), 1),
             }, {
                 UICorner12 = e("UICorner", {
                     CornerRadius = UDim.new(0, 30),
@@ -354,6 +360,7 @@ function Breakdown:render()
             LayoutOrder = 5,
             Position = UDim2.fromScale(0, 0.578),
             Size = UDim2.fromScale(1, 0.119),
+            ClipsDescendants = true,
         }, {
             UICorner13 = e("UICorner", {
                 CornerRadius = UDim.new(0, 30),
@@ -363,7 +370,7 @@ function Breakdown:render()
                 AnchorPoint = Vector2.new(0, 0.5),
                 BackgroundColor3 = Color3.fromRGB(126, 126, 126),
                 Position = UDim2.fromScale(7.75e-08, 0.5),
-                Size = UDim2.fromScale(skillsets.Jumpstream / MAX_SR, 1),
+                Size = UDim2.fromScale(math.clamp(skillsets.Jumpstream / MAX_SR, 0, 1), 1),
             }, {
                 UICorner14 = e("UICorner", {
                     CornerRadius = UDim.new(0, 30),
