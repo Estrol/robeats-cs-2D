@@ -50,7 +50,7 @@ function Score:render()
             })
         }),
         SongData = e(RoundedTextLabel, {
-            Size = UDim2.fromScale(0.7, 0.3),
+            Size = UDim2.fromScale(0.9, 0.3),
             Position = UDim2.fromScale(0.055, 0.2),
             TextColor3 = Color3.fromRGB(255, 255, 255),
             TextXAlignment = Enum.TextXAlignment.Left,
@@ -59,9 +59,13 @@ function Score:render()
             TextScaled = true,
             Font = Enum.Font.GothamBlack,
             Text = string.format("<font color=\"rgb(255, 249, 64)\">%0.2f</font> | %s - %s [%0.2fx]", self.props.Rating.Overall, SongDatabase:get_title_for_key(songKey), SongDatabase:get_artist_for_key(songKey), self.props.Rate / 100)
+        }, {
+            UITextSizeConstraint = e("UITextSizeConstraint", {
+                MaxTextSize = 20
+            })
         }),
         ScoreData = e(RoundedTextLabel, {
-            Size = UDim2.fromScale(0.7, 0.3),
+            Size = UDim2.fromScale(0.9, 0.3),
             Position = UDim2.fromScale(0.055, 0.5),
             TextColor3 = Color3.fromRGB(255, 255, 255),
             TextXAlignment = Enum.TextXAlignment.Left,
@@ -71,6 +75,10 @@ function Score:render()
             Font = Enum.Font.Gotham,
             TextSize = 13,
             Text = string.format("Score: %d | Accuracy: <font color=\"rgb(255, 249, 64)\">%0.2f%%</font> | Mean: %0.2f ms | Max Combo: %d", self.props.Score, self.props.Accuracy, self.props.Mean, self.props.MaxChain)
+        }, {
+            UITextSizeConstraint = e("UITextSizeConstraint", {
+                MaxTextSize = 22
+            })
         }),
         SongCover = e(RoundedImageLabel, {
             AnchorPoint = Vector2.new(1, 0.5),
@@ -94,7 +102,9 @@ function Score:render()
             }),
         }),
         UIAspectRatioConstraint = e("UIAspectRatioConstraint", {
-            AspectRatio = 10
+            AspectRatio = 12,
+            AspectType = Enum.AspectType.ScaleWithParentSize,
+            DominantAxis = Enum.DominantAxis.Width
         })
     })
 end

@@ -120,19 +120,6 @@ function ScoreService:GetProfile(player, userId)
             query = { userid = userId or player.UserId, auth = AuthService.APIKey }
         }):json()
 
-        if typeof(profile.Rating) == "number" or typeof(profile.Rating) == "nil" then
-            profile.Rating = {
-                Overall = profile.Rating,
-                Stream = 0,
-                Stamina = 0,
-                Jack = 0,
-                Chordjack = 0,
-                Jumpstream = 0,
-                Handstream = 0,
-                Technical = 0
-            }
-        end
-
         return profile
     end
 

@@ -34,12 +34,13 @@ function PlayerProfile:init()
         totalMapsPlayed = 0,
         userId = if self.props.UserId then self.props.UserId else if game.Players.LocalPlayer then game.Players.LocalPlayer.UserId else nil,
         playerName = if self.props.PlayerName then self.props.PlayerName else if game.Players.LocalPlayer then game.Players.LocalPlayer.Name else nil,
-        loaded = false
+        loaded = false,
+        error = false,
     })
 
     self.scoreService:GetProfile(self.state.userId):andThen(function(profile)
         if not Llama.isEmpty(profile) then
-            local tier = Tiers:GetTierFromRating(profile.Rating.Overall)
+            local tier = if profile.Rating then Tiers:GetTierFromRating(profile.Rating.Overall) else {}
 
             self:setState({
                 rank = profile.Rank,
@@ -49,7 +50,8 @@ function PlayerProfile:init()
                 tier = tier.name,
                 division = tier.division,
                 subdivision = tier.subdivision,
-                loaded = true
+                loaded = true,
+                error = profile.error,
             })
         else
             self:setState({
@@ -178,7 +180,7 @@ function PlayerProfile:render()
             TextYAlignment = Enum.TextYAlignment.Bottom,
             TextXAlignment = Enum.TextXAlignment.Right,
             TextColor3 = Color3.fromRGB(85, 85, 85),
-            Text = string.format("#%d", self.state.rank),
+            Text = if not self.state.error then string.format("#%d", self.state.rank) else "#???",
             TextScaled = true,
             BackgroundTransparency = 1,
             TextTransparency = 0.4,
@@ -189,7 +191,7 @@ function PlayerProfile:render()
             Size = UDim2.fromScale(0.8, 1),
             AnchorPoint = Vector2.new(0, 0),
             BackgroundTransparency = 1,
-            Skillsets = self.state.rating,
+            Skillsets = if typeof(self.state.rating) == "table" then self.state.rating else nil,
         }) else nil
     })
 end
