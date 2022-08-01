@@ -4,7 +4,7 @@ local ButtonLayout = require(game.ReplicatedStorage.UI.Components.Base.ButtonLay
 return function(target)
     local app = Roact.createElement(ButtonLayout, {
         Buttons = {
-            { Name = "Hi", OnClick = function() print("die") end},
+            { Name = "Hi", OnClick = function() print("die") end },
             { Name = "Hi", OnClick = function() print("die") end }
         }
     })
