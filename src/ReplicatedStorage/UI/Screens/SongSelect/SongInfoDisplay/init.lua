@@ -177,7 +177,7 @@ function SongInfoDisplay:render()
                 FillDirection = Enum.FillDirection.Horizontal,
                 FillDirectionMaxCells = 4,
                 CellSize = UDim2.fromScale(0.1165, 0.33),
-                CellPadding = UDim2.fromOffset(15, 5)
+                CellPadding = UDim2.new(0.007, 0, 0, 5)
             }),
             DifficultyDisplay = e(GridInfoDisplay, {
                 Value = SongDatabase:get_difficulty_for_key(self.props.SongKey, self.props.SongRate / 100),

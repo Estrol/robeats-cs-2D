@@ -197,10 +197,14 @@ function SongDatabase:new()
 		return ""
 	end
 
-	function self:filter_keys(str)
+	function self:filter_keys(str, excludeCustomMaps)
 		local ret = {}
 
 		for key, data in self:key_itr() do
+			if excludeCustomMaps and data.AudioCustom then
+				continue
+			end
+
 			if not str or str == "" then
 				table.insert(ret, data)
 			else

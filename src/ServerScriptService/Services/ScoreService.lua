@@ -38,16 +38,20 @@ function ScoreService:KnitInit()
     Raxios = require(game.ReplicatedStorage.Packages.Raxios)
 end
 
-function ScoreService:PopulateUserProfile(player)
+function ScoreService:PopulateUserProfile(player, override)
     local state = StateService.Store:getState()
 
-    if state.profiles[tostring(player.UserId)] then
+    if state.profiles[tostring(player.UserId)] and not override then
         return
     end
 
     local profile = self:GetProfile(player)
 
-    if Llama.Dictionary.count(profile) > 0 then
+    if Llama.Dictionary.count(profile) > 0 and not profile.error then
+        if typeof(profile.Rating) == "number" then
+            profile.Rating = { Overall = profile.Rating }
+        end
+
         StateService.Store:dispatch({ type = "addProfile", player = player, profile = profile })
     end
 end
@@ -120,6 +124,10 @@ function ScoreService:GetProfile(player, userId)
             query = { userid = userId or player.UserId, auth = AuthService.APIKey }
         }):json()
 
+        if typeof(profile.Rating) == "number" then
+            return { error = "No scores found" }
+        end
+
         return profile
     end
 
@@ -153,11 +161,7 @@ function ScoreService.Client:SubmitScore(player, data)
             }
         })
 
-        local profile = ScoreService:GetProfile(player)
-
-        if Llama.Dictionary.count(profile) > 0 then
-            StateService.Store:dispatch({ type = "updateProfile", player = player, profile = profile })
-        end
+        ScoreService:PopulateUserProfile(player, true)
     end
 end
 
@@ -207,7 +211,7 @@ function ScoreService.Client:GetGlobalLeaderboard(player)
         }):json()
 
         for _, slot in ipairs(leaderboard) do
-            if typeof(slot.Rating) == "number" then
+            if typeof(slot.Rating) == "number" or typeof(slot.Rating) == "nil" then
                 slot.Rating = { Overall = slot.Rating or 0 }
             end
         end

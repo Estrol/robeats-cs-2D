@@ -27,9 +27,9 @@ function ModerationService:OnPlayerAdded(player)
 
     local ban = Raxios.get(url "/bans", {
         query = { userid = player.UserId, auth = AuthService.APIKey }
-    }):json()
+    })
 
-    if ban then
+    if ban:json() and ban.status_code == 200 then
         player:Kick(ban.Reason)
     end
 end

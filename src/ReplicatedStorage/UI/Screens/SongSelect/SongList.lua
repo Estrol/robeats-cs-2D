@@ -35,7 +35,7 @@ SongList.defaultProps = {
 }
 
 function SongList:getSongs()
-    local found = SongDatabase:filter_keys(self.state.search)
+    local found = SongDatabase:filter_keys(self.state.search, self.props.ExcludeCustomMaps)
 
     if self.state.sortByDifficulty then
         return Llama.List.sort(found, sortByDifficulty)

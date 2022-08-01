@@ -26,7 +26,7 @@ Player.defaultProps = {
 }
 
 function Player:init()
-    if not self.props.Profile then
+    if not self.props.Profile or not self.props.Profile.Rating then
         return
     end
 
@@ -81,7 +81,7 @@ function Player:render()
                 Position = UDim2.fromScale(1.3, 0.5),
                 Size = UDim2.fromScale(6.75, 0.55),
                 TextXAlignment = Enum.TextXAlignment.Left,
-                Text = if self.props.Profile then string.format("#%d | %0.2f [%s]", self.props.Profile.Rank, self.props.Profile.Rating.Overall, if self.state.tier then self.state.tier .. (if self.state.division then " " .. string.rep("I", self.state.division) .. " Division " .. if self.state.subdivision == 4 then "IV" else string.rep("I", self.state.subdivision) else "") else "...") else "???"
+                Text = if self.props.Profile then string.format("#%s | %0.2f [%s]", self.props.Profile.Rank, self.props.Profile.Rating.Overall, if self.state.tier then self.state.tier .. (if self.state.division then " " .. string.rep("I", self.state.division) .. " Division " .. if self.state.subdivision == 4 then "IV" else string.rep("I", self.state.subdivision) else "") else "...") else "???"
             }, {
                 UITextSizeConstraint = e("UITextSizeConstraint", {
                     MaxTextSize = 15
@@ -112,7 +112,9 @@ function Player:render()
 end
 
 return RoactRodux.connect(function(state, props)
+    local profile = state.profiles[tostring(props.UserId)]
+
     return {
-        Profile = state.profiles[tostring(props.UserId)]
+        Profile = profile
     }
 end)(Player)

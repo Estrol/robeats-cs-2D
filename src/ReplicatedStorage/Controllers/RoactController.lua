@@ -119,14 +119,24 @@ function RoactController:MountRoactNodes(store)
     local oldGoBack = history.goBack
 
     local lastBasePath = string.match(history.location.path, "^(/[^/]+)")
+    local lastPath = history.location.path
+
+    local isTransitioning = false
 
     function history:push(...)
+        if isTransitioning then
+            return
+        end
+
         local args = { ... }
+
+        isTransitioning = true
 
         local newBasePath = string.match(args[1], "^(/[^/]+)")
 
         if newBasePath == lastBasePath then
             oldPush(self, unpack(args))
+            isTransitioning = false
             return
         end
 
@@ -134,18 +144,26 @@ function RoactController:MountRoactNodes(store)
 
         return fadeController:To("In"):andThen(function()
             oldPush(self, unpack(args))
+            isTransitioning = false
         end):andThen(function()
             fadeController:To("Out")
         end)
     end
 
     function history:goBack()
+        if isTransitioning then
+            return
+        end
+
         local lastItem = history._entries[#history._entries - 1]
+
+        isTransitioning = true
 
         local newBasePath = string.match(lastItem.path, "^(/[^/]+)")
 
         if newBasePath == lastBasePath then
             oldGoBack(self)
+            isTransitioning = false
             return
         end
 
@@ -153,6 +171,7 @@ function RoactController:MountRoactNodes(store)
         
         return fadeController:To("In"):andThen(function()
             oldGoBack(self)
+            isTransitioning = false
         end):andThen(function()
             fadeController:To("Out")
         end)

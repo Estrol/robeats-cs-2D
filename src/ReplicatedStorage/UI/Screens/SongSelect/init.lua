@@ -109,7 +109,8 @@ function SongSelect:render()
                 end
             end,
             SelectedSongKey = self.props.options.SongKey,
-            SongRate = self.props.options.SongRate
+            SongRate = self.props.options.SongRate,
+            ExcludeCustomMaps = if self.props.location.state.roomId then true else false
         }),
         Leaderboard = e(Leaderboard, {
             Size = UDim2.fromScale(0.325, 0.665),
