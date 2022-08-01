@@ -83,7 +83,6 @@ function Room:render()
                 end
 
                 if afterIn then
-                    print("do not the h")
                     afterIn:andThen(self.leaveRoom)
                 else
                     self.leaveRoom()
