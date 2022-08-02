@@ -111,7 +111,7 @@ function Results:render()
 
 		scoreData = {
 			score = player.score,
-			rating = player.rating,
+			rating = player.rating.Overall,
 			accuracy = player.accuracy,
 			marvelouses = player.marvelouses,
 			perfects = player.perfects,
