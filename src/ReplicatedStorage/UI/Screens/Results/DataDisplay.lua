@@ -69,7 +69,7 @@ function DataDisplay:render()
             }, {
                 TextSizeConstraint = Roact.createElement("UITextSizeConstraint", {
                     MinTextSize = 7;
-                    MaxTextSize = 15;
+                    MaxTextSize = 25;
                 })
             });
         })
