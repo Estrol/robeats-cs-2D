@@ -20,7 +20,9 @@ local Chat = require(game.ReplicatedStorage.UI.Components.Chat)
 local Room = Roact.Component:extend("Room")
 
 function Room:init()
-
+    function self.leaveRoom()
+        self.props.multiplayerService:LeaveRoom(self.props.roomId)
+    end
 end
 
 function Room:didMount()
@@ -70,14 +72,21 @@ function Room:render()
             Text = "Back",
             TextSize = 12,
             OnClick = function()
-                self.props.multiplayerService:LeaveRoom(self.props.roomId)
+                local afterIn
+
                 if self.props.location.state.goToMultiSelect then
-                    self.props.history:push("/multiplayer", {
+                    afterIn = self.props.history:push("/multiplayer", {
                         goToHome = true
                     })
-                    return
+                else
+                    afterIn = self.props.history:goBack()
                 end
-                self.props.history:goBack()
+
+                if afterIn then
+                    afterIn:andThen(self.leaveRoom)
+                else
+                    self.leaveRoom()
+                end
             end
         }),
         StartButton = e(RoundedTextButton, {

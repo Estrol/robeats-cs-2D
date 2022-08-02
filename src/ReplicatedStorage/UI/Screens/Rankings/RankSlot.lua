@@ -11,6 +11,9 @@ local RoundedTextLabel = require(game.ReplicatedStorage.UI.Components.Base.Round
 local RoundedImageLabel = require(game.ReplicatedStorage.UI.Components.Base.RoundedImageLabel)
 local ButtonLayout = require(game.ReplicatedStorage.UI.Components.Base.ButtonLayout)
 
+local Tier = require(game.ReplicatedStorage.UI.Components.Tier)
+local Tiers = require(game.ReplicatedStorage.Tiers)
+
 local RankSlot = Roact.Component:extend("RankSlot")
 
 RankSlot.defaultProps = {
@@ -77,6 +80,8 @@ function RankSlot:render()
         })
     end
 
+    local tier = Tiers:GetTierFromRating(self.props.Data.Rating.Overall)
+
     return Roact.createElement(RoundedTextButton, {
         BackgroundColor3 = Color3.fromRGB(15, 15, 15),
         BorderMode = Enum.BorderMode.Inset,
@@ -118,7 +123,7 @@ function RankSlot:render()
         UserThumbnail = Roact.createElement(RoundedImageLabel, {
             AnchorPoint = Vector2.new(0, 0.5),
             BackgroundColor3 = Color3.fromRGB(255, 255, 255),
-            Position = UDim2.new(0.09, 0, 0.5, 0),
+            Position = UDim2.new(0.07, 0, 0.5, 0),
             Size = UDim2.new(0.07, 0, 0.75, 0),
             Image = string.format("https://www.roblox.com/headshot-thumbnail/image?userid=%d&width=420&height=420&format=png", self.props.Data.UserId)
         }, {
@@ -133,7 +138,7 @@ function RankSlot:render()
                 Position = UDim2.new(1.25, 0, 0.6, 0),
                 Size = UDim2.new(8, 0, 0.35, 0),
                 Font = Enum.Font.GothamSemibold,
-                Text = string.format("Rating: <font color = \"rgb(211, 214, 2)\"><b>%0.2f</b></font> | Overall Accuracy: %0.2f%% | Total Maps Played: %d", self.props.Data.Rating, self.props.Data.Accuracy, self.props.Data.TotalMapsPlayed),
+                Text = string.format("Rating: <font color = \"rgb(211, 214, 2)\"><b>%0.2f</b></font> | Overall Accuracy: %0.2f%% | Total Maps Played: %d", self.props.Data.Rating.Overall, self.props.Data.Accuracy, self.props.Data.TotalMapsPlayed),
                 RichText = true,
                 TextColor3 = Color3.fromRGB(80, 80, 80),
                 TextScaled = true,
@@ -165,8 +170,8 @@ function RankSlot:render()
         Place = Roact.createElement(RoundedTextLabel, {
             BackgroundColor3 = Color3.fromRGB(54, 54, 54),
             BorderSizePixel = 0,
-            Position = UDim2.fromScale(0.0075, 0.1),
-            Size = UDim2.fromScale(0.075, 0.755),
+            Position = UDim2.fromScale(0.0087, 0.1),
+            Size = UDim2.fromScale(0.05, 0.755),
             Font = Enum.Font.GothamBold,
             Text = string.format("#%d", self.props.Data.Place),
             TextColor3 = Color3.fromRGB(71, 71, 70),
@@ -174,17 +179,44 @@ function RankSlot:render()
             BackgroundTransparency = 1;
         }, {
             Roact.createElement("UITextSizeConstraint", {
-                MaxTextSize = 35,
+                MaxTextSize = 25,
                 MinTextSize = 7,
             }),
         }),
+        Tier = Roact.createElement(Tier, {
+            imageLabelProps = {
+                AnchorPoint = Vector2.new(1, 0.5),
+                Position = UDim2.fromScale(0.97, 0.5),
+                Size = UDim2.fromScale(0.1, 0.7),
+                BackgroundTransparency = 1
+            },
+            tier = tier.name,
+            division = tier.division
+        }, {
+            TierName = Roact.createElement(RoundedTextLabel, {
+                Position = UDim2.fromScale(-0.3, 0.5),
+                Size = UDim2.fromScale(5.2, 0.9),
+                AnchorPoint = Vector2.new(1, 0.5),
+                Text = tier.name .. if tier.division then " " .. string.rep("I", tier.division) .. if tier.subdivision then "  " .. string.rep("🔲 ", tier.subdivision) .. string.rep("◼️ ", 4 - tier.subdivision) else "" else "",
+                TextColor3 = Color3.fromRGB(153, 153, 153),
+                TextXAlignment = Enum.TextXAlignment.Right,
+                TextScaled = true,
+                BackgroundTransparency = 1;
+            }, {
+                Roact.createElement("UITextSizeConstraint", {
+                    MaxTextSize = 20,
+                    MinTextSize = 7,
+                }),
+            }),
+        }),
         UIAspectRatioConstraint = Roact.createElement("UIAspectRatioConstraint", {
-            AspectRatio = 9,
+            AspectRatio = 14,
             AspectType = Enum.AspectType.ScaleWithParentSize,
         })
     })
 end
 
 return withInjection(RankSlot, {
-    moderationService = "ModerationService"
+    moderationService = "ModerationService",
+    tierService = "TierService"
 })

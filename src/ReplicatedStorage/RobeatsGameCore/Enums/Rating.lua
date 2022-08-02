@@ -11,7 +11,23 @@ end
 local Rating = {}
 
 function Rating:get_rating(difficulty, accuracy)
-	return difficulty * weightingPercentage(accuracy) / 100
+    local rating = {
+        Stream = 0,
+        Stamina = 0,
+        Jack = 0,
+        Chordjack = 0,
+        Jumpstream = 0,
+        Handstream = 0,
+        Technical = 0
+    }
+
+    for skillset, value in pairs(difficulty) do
+        rating[skillset] = value * weightingPercentage(accuracy) / 100
+    end
+
+    rating.Rate = nil
+
+	return rating
 end
 
 function Rating:get_rating_from_song_key(song_key, accuracy, rate)

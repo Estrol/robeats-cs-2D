@@ -17,12 +17,12 @@ local SongList = Roact.Component:extend("SongList")
 local function noop() end
 
 local function sortByDifficulty(a, b)
-    return a.AudioDifficulty > b.AudioDifficulty
+    return SongDatabase:get_difficulty_for_key(a.SongKey).Overall > SongDatabase:get_difficulty_for_key(b.SongKey).Overall
 end
 
 local function sortByAlphabeticalOrder(a, b)
     if a.AudioFilename == b.AudioFilename then
-        return a.AudioDifficulty > b.AudioDifficulty
+        return sortByDifficulty(a, b)
     end
     
     return a.AudioFilename < b.AudioFilename
@@ -34,11 +34,25 @@ SongList.defaultProps = {
     SelectedSongKey = 1
 }
 
+function SongList:getSongs()
+    local found = SongDatabase:filter_keys(self.state.search, self.props.ExcludeCustomMaps)
+
+    if self.state.sortByDifficulty then
+        return Llama.List.sort(found, sortByDifficulty)
+    end
+
+    return Llama.List.sort(found, sortByAlphabeticalOrder)
+end
+
 function SongList:init()
     self:setState({
         search = "";
-        found = Llama.List.sort(SongDatabase:filter_keys(), sortByDifficulty);
+        found = {};
         sortByDifficulty = true;
+    })
+
+    self:setState({
+        found = self:getSongs()
     })
 
     self.OnSearchChanged = function(o)
@@ -52,14 +66,7 @@ end
 function SongList:didUpdate(_, prevState)
     if (self.state.search ~= prevState.search) or (self.state.sortByDifficulty ~= prevState.sortByDifficulty) then
         Promise.new(function(resolve)
-            local found = SongDatabase:filter_keys(self.state.search)
-
-            if self.state.sortByDifficulty then
-                resolve(Llama.List.sort(found, sortByDifficulty))
-                return
-            end
-
-            resolve(Llama.List.sort(found, sortByAlphabeticalOrder))
+            resolve(self:getSongs())
         end):andThen(function(sorted)
             self:setState({
                 found = sorted
@@ -90,6 +97,7 @@ function SongList:render()
             renderItem = function(item, i)
                 return e(SongButton, {
                     SongKey = item.SongKey,
+                    SongRate = self.props.SongRate,
                     OnClick = self.props.OnSongSelected,
                     LayoutOrder = i,
                     Selected = item.SongKey == self.props.SelectedSongKey

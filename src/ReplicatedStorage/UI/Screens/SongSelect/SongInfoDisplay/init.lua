@@ -176,33 +176,34 @@ function SongInfoDisplay:render()
                 SortOrder = Enum.SortOrder.LayoutOrder,
                 FillDirection = Enum.FillDirection.Horizontal,
                 FillDirectionMaxCells = 4,
-                CellSize = UDim2.fromScale(0.1165, 0.33)
+                CellSize = UDim2.fromScale(0.1165, 0.33),
+                CellPadding = UDim2.new(0.007, 0, 0, 5)
             }),
             DifficultyDisplay = e(GridInfoDisplay, {
                 Value = SongDatabase:get_difficulty_for_key(self.props.SongKey, self.props.SongRate / 100),
                 FormatValue = function(value)
-                    return string.format("Difficulty: %d", value)
+                    return string.format("Difficulty: %0.2f", value.Overall)
                 end,
                 LayoutOrder = 1
             }),
             TotalNotesDisplay = e(GridInfoDisplay, {
                 Value = total_notes,
                 FormatValue = function(value)
-                    return string.format("Total Notes: %d", value)
+                    return string.format("Notes: %d", value)
                 end,
                 LayoutOrder = 2
             }),
             TotalHoldsDisplay = e(GridInfoDisplay, {
                 Value = total_holds,
                 FormatValue = function(value)
-                    return string.format("Total Holds: %d", value)
+                    return string.format("Holds: %d", value)
                 end,
                 LayoutOrder = 3
             }),
             TotalObjectsDisplay = e(GridInfoDisplay, {
                 Value = total_notes + total_holds,
                 FormatValue = function(value)
-                    return string.format("Total Objects: %d", value)
+                    return string.format("Objects: %d", value)
                 end,
                 LayoutOrder = 4
             });
@@ -230,7 +231,7 @@ function SongInfoDisplay:render()
             TotalLengthDisplay = e(GridInfoDisplay, {
                 Value = SongDatabase:get_song_length_for_key(self.props.SongKey) / (self.props.SongRate / 100),
                 FormatValue = function(value)
-                    return string.format("Total Length: %s", SPUtil:format_ms_time(value))
+                    return string.format("Length: %s", SPUtil:format_ms_time(value))
                 end,
                 LayoutOrder = 8
             })
@@ -243,6 +244,7 @@ function SongInfoDisplay:render()
             HoldSize = UDim2.fromScale(0.055, 0.2),
             Position = UDim2.fromScale(0.55, 0.935),
             AnchorPoint = Vector2.new(0, 1),
+            Tooltip = "Decrease the rate of the song by 0.05x",
             OnClick = self.props.OnDownrate
         }),
         RateUp = self.props.ShowRateButtons and e(RoundedTextButton, {
@@ -253,6 +255,7 @@ function SongInfoDisplay:render()
             HoldSize = UDim2.fromScale(0.055, 0.2),
             Position = UDim2.fromScale(0.61, 0.935),
             AnchorPoint = Vector2.new(0, 1),
+            Tooltip = "Increase the rate of the song by 0.05x",
             OnClick = self.props.OnUprate
         })
     })

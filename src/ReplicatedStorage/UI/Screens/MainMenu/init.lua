@@ -15,6 +15,8 @@ local RoundedFrame = require(game.ReplicatedStorage.UI.Components.Base.RoundedFr
 local RoundedTextButton = require(game.ReplicatedStorage.UI.Components.Base.RoundedTextButton)
 local RoundedImageLabel = require(game.ReplicatedStorage.UI.Components.Base.RoundedImageLabel)
 
+local Trove = require(game.ReplicatedStorage.Packages.Trove)
+
 local Actions = require(game.ReplicatedStorage.Actions)
 
 local MainMenuUI = Roact.Component:extend("MainMenuUI")
@@ -23,10 +25,47 @@ function MainMenuUI:init()
     self:setState({
         currSFXName = SongDatabase:get_data_for_key(self.props.songKey).AudioFilename,
         currSFXArtistName = SongDatabase:get_data_for_key(self.props.songKey).AudioArtist,
-        currSFXBackground = SongDatabase:get_data_for_key(self.props.songKey).AudioCoverImageAssetId,
+        currSFXBackground = SongDatabase:get_data_for_key(self.props.songKey).AudioCoverImageAssetId
     })
 
     self.previewController = self.props.previewController
+
+    self.trove = Trove.new()
+
+    local preview = self.previewController:GetSoundInstance()
+
+    self:setState({
+        playing = preview.IsPlaying
+    })
+
+    local played = preview.Played:Connect(function()
+        self:setState({
+            playing = true
+        })
+    end)
+
+    local resumed = preview.Resumed:Connect(function()
+        self:setState({
+            playing = true
+        })
+    end)
+
+    local paused = preview.Paused:Connect(function()
+        self:setState({
+            playing = false
+        })
+    end)
+
+    local stopped = preview.Stopped:Connect(function()
+        self:setState({
+            playing = false
+        })
+    end)
+
+    self.trove:Add(played)
+    self.trove:Add(resumed)
+    self.trove:Add(paused)
+    self.trove:Add(stopped)
 end
 
 function MainMenuUI:didMount()
@@ -82,13 +121,14 @@ function MainMenuUI:render()
             })
         });
         PlayerProfile = e(PlayerProfile, {
-            Size = UDim2.fromScale(0.45, 0.2)
+            ShowRank = true
         }),
         AudioVisualizer = e(AudioVisualizer),
         SongBox = e(MusicBox, {
             Size = UDim2.fromScale(0.35, 0.1648);
             Position = UDim2.fromScale(0.025, 0.02);
             SongKey = self.props.songKey;
+            Playing = self.state.playing;
             OnPauseToggle = function()
                 if self.soundObj.IsPlaying then
                     self.soundObj:Pause()
@@ -113,12 +153,11 @@ function MainMenuUI:render()
         }),
         ButtonContainer = e(RoundedFrame, {
             Size = UDim2.fromScale(0.25, 0.6);
-            Position = UDim2.fromScale(0.02,0.95);
-            AnchorPoint = Vector2.new(0, 1);
+            Position = UDim2.fromScale(0.02, 0.35);
             BackgroundTransparency = 1;
         },{
             UIListLayout = e("UIListLayout", {
-                Padding = UDim.new(0.015,0);
+                Padding = UDim.new(0, 10);
                 SortOrder = Enum.SortOrder.LayoutOrder;
                 VerticalAlignment = Enum.VerticalAlignment.Bottom;
             });
@@ -127,19 +166,25 @@ function MainMenuUI:render()
                 BackgroundColor3 = Color3.fromRGB(22, 22, 22);
                 BorderMode = Enum.BorderMode.Inset,
                 BorderSizePixel = 0,
-                Size = UDim2.fromScale(1, 0.125),
+                Size = UDim2.fromScale(1, 0.1),
                 Text = "  Play";
                 TextScaled = true;
                 TextColor3 = Color3.fromRGB(255, 255, 255);
                 LayoutOrder = 1;
-                HoldSize = UDim2.fromScale(0.95, 0.125),
+                HoldSize = UDim2.fromScale(1, 0.11),
+                Tooltip = "Play some songs!",
                 OnClick = function()
                     self.props.history:push("/select")
                 end
             }, {
                 UITextSizeConstraint = e("UITextSizeConstraint", {
                     MinTextSize = 10;
-                    MaxTextSize = 15;
+                    MaxTextSize = 18;
+                }),
+                UIStroke = e("UIStroke", {
+                    Thickness = 2;
+                    Color = Color3.fromRGB(100, 100, 100);
+                    ApplyStrokeMode = Enum.ApplyStrokeMode.Border
                 })
             });
             ScoresButton = e(RoundedTextButton, {
@@ -147,19 +192,25 @@ function MainMenuUI:render()
                 BackgroundColor3 = Color3.fromRGB(22, 22, 22);
                 BorderMode = Enum.BorderMode.Inset,
                 BorderSizePixel = 0,
-                Size = UDim2.fromScale(1, 0.125),
+                Size = UDim2.fromScale(1, 0.1),
                 Text = "  Your Scores";
                 TextScaled = true;
                 TextColor3 = Color3.fromRGB(255, 255, 255);
                 LayoutOrder = 3;
-                HoldSize = UDim2.fromScale(0.95, 0.125),
+                HoldSize = UDim2.fromScale(1, 0.11),
+                Tooltip = "View your scores.",
                 OnClick = function()
                     self.props.history:push("/scores")
                 end
             }, {
                 UITextSizeConstraint = e("UITextSizeConstraint", {
                     MinTextSize = 10;
-                    MaxTextSize = 15;
+                    MaxTextSize = 18;
+                }),
+                UIStroke = e("UIStroke", {
+                    Thickness = 2;
+                    Color = Color3.fromRGB(100, 100, 100);
+                    ApplyStrokeMode = Enum.ApplyStrokeMode.Border
                 })
             });
 
@@ -168,12 +219,13 @@ function MainMenuUI:render()
                 BackgroundColor3 = Color3.fromRGB(22, 22, 22);
                 BorderMode = Enum.BorderMode.Inset,
                 BorderSizePixel = 0,
-                Size = UDim2.new(1,0,0.125,0),
+                Size = UDim2.new(1,0,0.1,0),
                 Text = "  Options";
                 TextScaled = true;
                 TextColor3 = Color3.fromRGB(255, 255, 255);
                 LayoutOrder = 2;
-                HoldSize = UDim2.fromScale(0.95, 0.125),
+                HoldSize = UDim2.fromScale(1, 0.11),
+                Tooltip = "Customize your experience.",
                 OnClick = function()
                     if not self.props.location.state.OptionsVisible then
                         self.props.history:push("/", {
@@ -184,7 +236,12 @@ function MainMenuUI:render()
             }, {
                 UITextSizeConstraint = e("UITextSizeConstraint", {
                     MinTextSize = 10;
-                    MaxTextSize = 15;
+                    MaxTextSize = 18;
+                }),
+                UIStroke = e("UIStroke", {
+                    Thickness = 2;
+                    Color = Color3.fromRGB(100, 100, 100);
+                    ApplyStrokeMode = Enum.ApplyStrokeMode.Border
                 })
             });
             GlobalLeaderboardButton = e(RoundedTextButton, {
@@ -192,19 +249,25 @@ function MainMenuUI:render()
                 BackgroundColor3 = Color3.fromRGB(22, 22, 22);
                 BorderMode = Enum.BorderMode.Inset,
                 BorderSizePixel = 0,
-                Size = UDim2.new(1,0,0.125,0),
+                Size = UDim2.new(1,0,0.1,0),
                 Text = "  Global Ranks";
                 TextScaled = true;
                 TextColor3 = Color3.fromRGB(255, 255, 255);
                 LayoutOrder = 4;
-                HoldSize = UDim2.fromScale(0.95, 0.125),
+                HoldSize = UDim2.fromScale(1, 0.11),
+                Tooltip = "See who's on top!",
                 OnClick = function()
                     self.props.history:push("/rankings")
                 end
             }, {
                 UITextSizeConstraint = e("UITextSizeConstraint", {
                     MinTextSize = 10;
-                    MaxTextSize = 15;
+                    MaxTextSize = 18;
+                }),
+                UIStroke = e("UIStroke", {
+                    Thickness = 2;
+                    Color = Color3.fromRGB(100, 100, 100);
+                    ApplyStrokeMode = Enum.ApplyStrokeMode.Border
                 })
             });
             MultiButton = e(RoundedTextButton, {
@@ -212,19 +275,25 @@ function MainMenuUI:render()
                 BackgroundColor3 = Color3.fromRGB(22, 22, 22);
                 BorderMode = Enum.BorderMode.Inset,
                 BorderSizePixel = 0,
-                Size = UDim2.fromScale(1, 0.125),
+                Size = UDim2.fromScale(1, 0.1),
                 Text = "  Multiplayer";
                 TextScaled = true;
                 TextColor3 = Color3.fromRGB(255, 255, 255);
                 LayoutOrder = 5;
-                HoldSize = UDim2.fromScale(0.95, 0.125),
+                HoldSize = UDim2.fromScale(1, 0.11),
+                Tooltip = "Play with others in real time!",
                 OnClick = function()
                     self.props.history:push("/multiplayer")
                 end
             }, {
                 UITextSizeConstraint = e("UITextSizeConstraint", {
                     MinTextSize = 10;
-                    MaxTextSize = 15;
+                    MaxTextSize = 18;
+                }),
+                UIStroke = e("UIStroke", {
+                    Thickness = 2;
+                    Color = Color3.fromRGB(100, 100, 100);
+                    ApplyStrokeMode = Enum.ApplyStrokeMode.Border
                 })
             }),
         });
@@ -241,8 +310,11 @@ function MainMenuUI:render()
             Font = Enum.Font.GothamBlack;
         });
         Moderation = moderation
-    });
-    
+    }); 
+end
+
+function MainMenuUI:willUnmount()
+    self.trove:Destroy()
 end
 
 function MainMenuUI:fadePreview(songKey)

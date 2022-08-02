@@ -127,7 +127,7 @@ function Results:render()
 	else
 		scoreData = {
 			score = state.Score,
-			rating = state.Rating,
+			rating = state.Rating.Overall,
 			accuracy = state.Accuracy,
 			marvelouses = state.Marvelouses,
 			perfects = state.Perfects,
@@ -271,8 +271,6 @@ function Results:render()
 				})
 			})
 		}),
-
-
 		GoBack = Roact.createElement(RoundedTextButton, {
 			BackgroundColor3 = Color3.fromRGB(236, 33, 33);
 			AnchorPoint = Vector2.new(0, 1);
@@ -289,12 +287,13 @@ function Results:render()
 						roomId = state.RoomId,
 						goToMultiSelect = true
 					})
+				elseif self.props.location.state.GoBack then
+					self.props.history:goBack()
 				else
 					self.props.history:push("/select")
 				end
 			end
 		});
-
 		RestartMap = if (not viewing and not room) then Roact.createElement(RoundedTextButton, {
 			BackgroundColor3 = Color3.fromRGB(50, 144, 50);
 			AnchorPoint = Vector2.new(0, 1);
@@ -309,14 +308,12 @@ function Results:render()
 				self.props.history:push("/play")
 			end
 		}) else nil,
-
-		Ranking = if (self.props.profile and not viewing and not room) then Roact.createElement(Ranking, {
-			Rating = self.props.profile.Rating,
-			Position = UDim2.fromScale(0.415, 0.95),
+		Ranking = if (self.props.profile and self.props.profile.Rating and not viewing and not room) then Roact.createElement(Ranking, {
+			Rating = self.props.profile.Rating.Overall,
+			Position = UDim2.fromScale(0.69, 0.95),
 			Size = UDim2.fromScale(0.5, 0.2),
-			AnchorPoint = Vector2.new(0, 1)
+			AnchorPoint = Vector2.new(0.5, 1)
 		}) else nil,
-
 		PlayerSelection = playerSelection
 	})
 end

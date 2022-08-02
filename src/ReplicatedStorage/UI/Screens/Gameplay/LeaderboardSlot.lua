@@ -80,7 +80,7 @@ function LeaderboardSlot:render()
                 Size = UDim2.fromScale(4, 0.38),
                 TextXAlignment = Enum.TextXAlignment.Left,
                 TextYAlignment = Enum.TextYAlignment.Top,
-                Text = if self.props.Score then string.format("%d | %0.2f%%", self.props.Score, self.props.Accuracy) else string.format("%0.2f | %0.2f%%", self.props.Rating, self.props.Accuracy),
+                Text = if self.props.Score then string.format("%d | %0.2f%%", self.props.Score, self.props.Accuracy) else string.format("%0.2f | %0.2f%%", self.props.Rating.Overall, self.props.Accuracy),
                 TextColor3 = Color3.fromRGB(167, 167, 167),
                 TextScaled = true,
                 AnchorPoint = Vector2.new(0, 0.5),

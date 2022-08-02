@@ -43,13 +43,15 @@ function Leaderboard:render()
     table.insert(scores, {
         PlayerName = game.Players.LocalPlayer.Name,
         UserId = game.Players.LocalPlayer.UserId,
-        Rating = self.props.LocalRating,
+        Rating = {
+            Overall = self.props.LocalRating
+        },
         Accuracy = self.props.LocalAccuracy,
         _id = localSlot
     })
 
     table.sort(scores, function(a, b)
-        return a.Rating > b.Rating
+        return a.Rating.Overall > b.Rating.Overall
     end)
 
     for itr_score_index, itr_score in ipairs(scores) do

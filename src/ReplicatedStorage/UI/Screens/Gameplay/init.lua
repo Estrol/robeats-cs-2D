@@ -20,12 +20,12 @@ local Leaderboard = require(script.Leaderboard)
 local MultiplayerLeaderboard = require(script.MultiplayerLeaderboard)
 local StatCard = require(script.StatCard)
 local Divider = require(script.Divider)
+local Loading = require(script.Loading)
 
 local AnimatedNumberLabel = require(game.ReplicatedStorage.UI.Components.Base.AnimatedNumberLabel)
 local RoundedTextLabel = require(game.ReplicatedStorage.UI.Components.Base.RoundedTextLabel)
 local RoundedFrame = require(game.ReplicatedStorage.UI.Components.Base.RoundedFrame)
 local RoundedTextButton = require(game.ReplicatedStorage.UI.Components.Base.RoundedTextButton)
-local LoadingWheel = require(game.ReplicatedStorage.UI.Components.Base.LoadingWheel)
 
 local ComboPositions = require(game.ReplicatedStorage.ComboPositions)
 local LeaderboardPositions = require(game.ReplicatedStorage.LeaderboardPositions)
@@ -190,7 +190,7 @@ function Gameplay:init()
         if self.props.room and _send_every:do_flash() then
             self.props.multiplayerService:SetMatchStats(self.props.roomId, {
                 score = self.state.score,
-                rating = Rating:get_rating_from_song_key(self.songKey, self.state.accuracy, self.songRate / 100),
+                rating = Rating:get_rating_from_song_key(self.songKey, self.state.accuracy, self.songRate / 100).Overall,
                 accuracy = self.state.accuracy,
                 marvelouses = self.state.marvelouses,
                 perfects = self.state.perfects,
@@ -399,35 +399,12 @@ end
 
 function Gameplay:render()
     if not self.state.loaded then
-        return Roact.createFragment({
-            LoadingWheel = e(LoadingWheel, {
-                AnchorPoint = Vector2.new(0, 0.5),
-                Position = UDim2.fromScale(0.39, 0.5),
-                Size = UDim2.fromScale(0.07, 0.07)
-            }),
-            LoadingText = e(RoundedTextLabel, {
-                AnchorPoint = Vector2.new(0.5, 0.5),
-                Position = UDim2.fromScale(0.54, 0.5),
-                Size = UDim2.fromScale(0.2, 0.2),
-                BackgroundTransparency = 1,
-                TextColor3 = Color3.fromRGB(255, 255, 255),
-                TextSize = 20,
-                Text = string.format("Please wait for the game to load... [%d]", self.state.secondsLeft)
-            }),
-            Back = e(RoundedTextButton, {
-                Size = UDim2.fromScale(0.1, 0.05),
-                AnchorPoint = Vector2.new(0.5, 0.5),
-                HoldSize = UDim2.fromScale(0.08, 0.05),
-                TextColor3 = Color3.fromRGB(255, 255, 255),
-                BackgroundColor3 = Color3.fromRGB(230, 19, 19),
-                HighlightBackgroundColor3 = Color3.fromRGB(187, 53, 53),
-                Position = UDim2.fromScale(0.5, 0.68),
-                Text = "Back out",
-                OnClick = function()
-                    self.forcedQuit = true
-                    self._game:set_mode(RobeatsGame.Mode.GameEnded)
-                end
-            })
+        return e(Loading, {
+            SecondsLeft = self.state.secondsLeft,
+            OnBack = function()
+                self.forcedQuit = true
+                self._game:set_mode(RobeatsGame.Mode.GameEnded)
+            end
         })
     end
 
@@ -462,7 +439,7 @@ function Gameplay:render()
         else
             leaderboard = e(Leaderboard, {
                 SongKey = self.songKey,
-                LocalRating = Rating:get_rating_from_song_key(self.songKey, self.state.accuracy, self.props.options.SongRate / 100),
+                LocalRating = Rating:get_rating_from_song_key(self.songKey, self.state.accuracy, self.props.options.SongRate / 100).Overall,
                 LocalAccuracy = self.state.accuracy, 
                 Position = LeaderboardPositions[self.props.options.InGameLeaderboardPosition]
             })

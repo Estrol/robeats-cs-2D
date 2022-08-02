@@ -38,7 +38,24 @@ function SongButton:render()
     end
 
     local song = SongDatabase:get_data_for_key(self.props.SongKey)
-    local id = tonumber(string.match(song.AudioAssetId, "rbxassetid://(%d+)"))
+    local id = tonumber(string.match(song.AudioAssetId, "rbxassetid://(%d+)")) or MIN_ID
+
+    local difficulty = SongDatabase:get_difficulty_for_key(self.props.SongKey, self.props.SongRate / 100)
+
+    local topSkillsets = {}
+    local allSkillsets = {}
+
+    for skillset, skillsetDiff in pairs(difficulty) do
+        if skillset == "Rate" or skillset == "Overall" then
+            continue
+        end
+
+        table.insert(allSkillsets, string.format("%s: %.2f", skillset, skillsetDiff))
+
+        if math.abs(difficulty.Overall - skillsetDiff) < 3 and #topSkillsets < 4 then
+            table.insert(topSkillsets, skillset)
+        end
+    end
 
     return e(RoundedTextButton, {
         BackgroundTransparency = self.motorBinding:map(function(a)
@@ -58,6 +75,8 @@ function SongButton:render()
         HoldSize = UDim2.new(0.98, 0, 0, 72);
         ZIndex = 4;
         LayoutOrder = self.props.LayoutOrder;
+        Tooltip = table.concat(allSkillsets, ", "),
+        TooltipOffset = UDim2.fromOffset(10, 30)
     }, {
         SongCover = e("ImageLabel", {
             AnchorPoint = Vector2.new(1, 0.5),
@@ -84,18 +103,18 @@ function SongButton:render()
             BackgroundColor3 = Color3.fromRGB(255, 255, 255),
             BackgroundTransparency = 1,
             BorderSizePixel = 0,
-            Position = UDim2.new(0.0199999847, 0, 0.78, 0),
-            Size = UDim2.new(0.462034643, 0, 0.11, 0),
+            Position = UDim2.new(0.0199999847, 0, 0.72, 0),
+            Size = UDim2.new(0.462034643, 0, 0.18, 0),
             Font = Enum.Font.GothamSemibold,
-            Text = string.format("Difficulty: %d", SongDatabase:get_difficulty_for_key(self.props.SongKey)),
+            Text = string.format("Difficulty: %0.2f | %s", difficulty.Overall, table.concat(topSkillsets, ", ")),
             TextColor3 = Color3.fromRGB(255, 255, 255),
             TextScaled = true,
-            TextSize = 16,
+            TextSize = 22,
             TextWrapped = true,
             TextXAlignment = Enum.TextXAlignment.Left,
         }, {
             e("UITextSizeConstraint", {
-                MaxTextSize = 18,
+                MaxTextSize = 22,
                 MinTextSize = 10,
             });
         }),

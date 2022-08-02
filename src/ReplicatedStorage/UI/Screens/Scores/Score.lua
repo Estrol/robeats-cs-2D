@@ -27,30 +27,58 @@ function Score:render()
     local _, gradeName, gradeColor = Grade:get_grade_from_accuracy(self.props.Accuracy)
 
     return e(RoundedTextButton, {
-        HoldSize = UDim2.new(1, 0, 0, 45),
-        Size = UDim2.new(1, 0, 0, 50),
+        HoldSize = UDim2.new(1, 0, 0, 70),
+        Size = UDim2.new(1, 0, 0, 70),
         BackgroundColor3 = Color3.fromRGB(22, 22, 22),
         Text = "",
         LayoutOrder = self.props.Place,
         OnClick = self.props.OnClick
     }, {
         Grade = e(RoundedTextLabel, {
-            Size = UDim2.fromScale(0.035, 1),
-            Position = UDim2.fromScale(0.01, 0),
+            Size = UDim2.fromScale(0.05, 1),
+            Position = UDim2.fromScale(0.005, 0),
             TextColor3 = gradeColor,
             TextXAlignment = Enum.TextXAlignment.Center,
+            TextYAlignment = Enum.TextYAlignment.Center,
             BackgroundTransparency = 1,
             RichText = true,
+            TextScaled = true,
             Text = gradeName
+        }, {
+            UITextSizeConstraint = e("UITextSizeConstraint", {
+                MaxTextSize = 27
+            })
         }),
-        Data = e(RoundedTextLabel, {
-            Size = UDim2.fromScale(0.3, 1),
-            Position = UDim2.fromScale(0.055, 0),
+        SongData = e(RoundedTextLabel, {
+            Size = UDim2.fromScale(0.9, 0.35),
+            Position = UDim2.fromScale(0.055, 0.17),
             TextColor3 = Color3.fromRGB(255, 255, 255),
             TextXAlignment = Enum.TextXAlignment.Left,
             BackgroundTransparency = 1,
             RichText = true,
-            Text = string.format("<font color=\"rgb(255, 249, 64)\">%0.2f</font> / %s - %s [%0.2fx]", self.props.Rating, SongDatabase:get_title_for_key(songKey), SongDatabase:get_artist_for_key(songKey), self.props.Rate / 100)
+            TextScaled = true,
+            Font = Enum.Font.GothamBlack,
+            Text = string.format("<font color=\"rgb(255, 249, 64)\">%0.2f</font> | %s - %s [%0.2fx]", self.props.Rating.Overall, SongDatabase:get_title_for_key(songKey), SongDatabase:get_artist_for_key(songKey), self.props.Rate / 100)
+        }, {
+            UITextSizeConstraint = e("UITextSizeConstraint", {
+                MaxTextSize = 21
+            })
+        }),
+        ScoreData = e(RoundedTextLabel, {
+            Size = UDim2.fromScale(0.9, 0.25),
+            Position = UDim2.fromScale(0.055, 0.54),
+            TextColor3 = Color3.fromRGB(255, 255, 255),
+            TextXAlignment = Enum.TextXAlignment.Left,
+            BackgroundTransparency = 1,
+            RichText = true,
+            TextScaled = true,
+            Font = Enum.Font.Gotham,
+            TextSize = 13,
+            Text = string.format("Score: %d | Accuracy: <font color=\"rgb(255, 249, 64)\">%0.2f%%</font> | Mean: %0.2f ms | Max Combo: %d", self.props.Score, self.props.Accuracy, self.props.Mean, self.props.MaxChain)
+        }, {
+            UITextSizeConstraint = e("UITextSizeConstraint", {
+                MaxTextSize = 22
+            })
         }),
         SongCover = e(RoundedImageLabel, {
             AnchorPoint = Vector2.new(1, 0.5),
@@ -72,6 +100,11 @@ function Score:render()
             Roact.createElement("UICorner", {
                 CornerRadius = UDim.new(0, 4),
             }),
+        }),
+        UIAspectRatioConstraint = e("UIAspectRatioConstraint", {
+            AspectRatio = 14,
+            AspectType = Enum.AspectType.ScaleWithParentSize,
+            DominantAxis = Enum.DominantAxis.Width
         })
     })
 end

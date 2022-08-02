@@ -50,7 +50,8 @@ function Rankings:render()
             end,
             OnView = function(userId)
                 self.props.history:push("/scores", {
-                    userId = userId
+                    userId = userId,
+                    playerName = playerSlot.PlayerName
                 })
             end
         })
@@ -62,7 +63,7 @@ function Rankings:render()
 
     }, {
         RankContainer = e(RoundedAutoScrollingFrame, {
-            Size = UDim2.fromScale(0.45, 0.8),
+            Size = UDim2.fromScale(0.7, 0.8),
             AnchorPoint = Vector2.new(0.5, 0.5),
             Position = UDim2.fromScale(0.5, 0.5),
             BackgroundColor3 = Color3.fromRGB(24, 24, 24),

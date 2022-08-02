@@ -12,26 +12,22 @@ local RoundedFrame = require(game.ReplicatedStorage.UI.Components.Base.RoundedFr
 local RoundedTextButton = require(game.ReplicatedStorage.UI.Components.Base.RoundedTextButton)
 local RoundedAutoScrollingFrame = require(game.ReplicatedStorage.UI.Components.Base.RoundedAutoScrollingFrame)
 
+local withInjection = require(game.ReplicatedStorage.UI.Components.HOCs.withInjection)
+
+local PlayerProfile = require(game.ReplicatedStorage.UI.Screens.MainMenu.PlayerProfile)
+
 local Scores = Roact.Component:extend("Scores")
 
 function Scores:init()
     self:setState({
-        scores = {}
+        scores = {},
     })
 
-    if RunService:IsRunning() then
-        local Knit = require(game:GetService("ReplicatedStorage").Packages.Knit)
-
-        local ScoreService = Knit.GetService("ScoreService")
-
-        ScoreService:GetPlayerScores(self.props.location.state.userId):andThen(function(scores)
-            self:setState({
-                scores = scores
-            })
-        end)
-
-        self.knit = Knit
-    end
+    self.props.scoreService:GetPlayerScores(self.props.location.state.userId):andThen(function(scores)
+        self:setState({
+            scores = scores
+        })
+    end)
 end
 
 function Scores:render()
@@ -41,16 +37,15 @@ function Scores:render()
         local props = Llama.Dictionary.join(score, {
             Place = place,
             OnClick = function()
-                local ScoreService = self.knit.GetService("ScoreService")
-
-                local _, hits = ScoreService:GetGraph(score.UserId, score.SongMD5Hash)
+                local _, hits = self.props.scoreService:GetGraph(score.UserId, score.SongMD5Hash)
                     :await()
 
                 self.props.history:push("/results", Llama.Dictionary.join(score, {
                     SongKey = SongDatabase:get_key_for_hash(score.SongMD5Hash),
                     TimePlayed = if score._updated_at then DateTime.fromIsoDate(score._updated_at).UnixTimestamp else nil,
                     Hits = hits,
-                    Viewing = true
+                    Viewing = true,
+                    GoBack = true
                 }))
             end
         })
@@ -63,19 +58,29 @@ function Scores:render()
     return e(RoundedFrame, {
 
     }, {
+        Profile = e(PlayerProfile, {
+            UserId = self.props.location.state.userId,
+            PlayerName = self.props.location.state.playerName,
+            ShowBreakdown = true,
+            Position = UDim2.fromScale(0.125, 0.05),
+            AnchorPoint = Vector2.new(0, 0),
+            BackgroundTransparency = 1
+        }),
         ScoreContainer = e(RoundedAutoScrollingFrame, {
-            Size = UDim2.fromScale(0.75, 0.8),
-            AnchorPoint = Vector2.new(0.5, 0.5),
-            Position = UDim2.fromScale(0.5, 0.5),
+            Size = UDim2.fromScale(0.75, 0.72),
+            AnchorPoint = Vector2.new(0.5, 1),
+            Position = UDim2.fromScale(0.5, 1),
+            ScrollBarThickness = 5,
             UIListLayoutProps = {
-                SortOrder = Enum.SortOrder.LayoutOrder
+                SortOrder = Enum.SortOrder.LayoutOrder,
+                Padding = UDim.new(0, 3)
             }
         }, scores),
         BackButton = e(RoundedTextButton, {
             Size = UDim2.fromScale(0.05, 0.05),
             HoldSize = UDim2.fromScale(0.06, 0.06),
-            AnchorPoint = Vector2.new(0.5, 0.5),
-            Position = UDim2.fromScale(0.124, 0.95),
+            AnchorPoint = Vector2.new(0, 0.5),
+            Position = UDim2.fromScale(0.02, 0.95),
             BackgroundColor3 = Color3.fromRGB(212, 23, 23),
             TextColor3 = Color3.fromRGB(255, 255, 255),
             Text = "Back",
@@ -87,4 +92,8 @@ function Scores:render()
     })
 end
 
-return Scores
+local Injected = withInjection(Scores, {
+    scoreService = "ScoreService"
+})
+
+return Injected
