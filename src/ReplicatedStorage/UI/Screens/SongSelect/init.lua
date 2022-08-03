@@ -77,9 +77,16 @@ end
 
 function SongSelect:onPlay()
     if self.props.location.state.roomId then
-        self.props.multiplayerService:SetSongKey(self.props.location.state.roomId, self.props.options.SongKey)
-        self.props.multiplayerService:SetSongRate(self.props.location.state.roomId, self.props.options.SongRate)
-        self.props.history:goBack()
+        if SongDatabase:get_data_for_key(self.props.options.SongKey) == nil then
+            return
+        end
+        
+        self.props.multiplayerService:SetSongKey(self.props.location.state.roomId, self.props.options.SongKey):andThen(function(succeeded)
+            if succeeded then
+                self.props.multiplayerService:SetSongRate(self.props.location.state.roomId, self.props.options.SongRate)
+                self.props.history:goBack()
+            end
+        end)
     else
         self.props.history:push("/play")
     end

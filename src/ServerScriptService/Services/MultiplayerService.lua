@@ -1,6 +1,8 @@
 local Knit = require(game:GetService("ReplicatedStorage").Packages.Knit)
 local HttpService = game:GetService("HttpService")
 
+local SongDatabase = require(game.ReplicatedStorage.RobeatsGameCore.SongDatabase)
+
 local MultiplayerService = Knit.CreateService {
     Name = "MultiplayerService";
     Client = {};
@@ -233,11 +235,15 @@ end
 
 function MultiplayerService.Client:SetSongKey(player, id, key)
     if not RateLimitService:CanProcessRequestWithRateLimit(player, "SetSongKey", 1) then
-        return
+        return false
     end
 
     if not MultiplayerService:IsPlayerInRoom(player, id) then
-        return
+        return false
+    end
+
+    if SongDatabase:get_data_for_key(key) == nil then
+        return false
     end
 
     AssertType:is_string(id)
@@ -251,6 +257,8 @@ function MultiplayerService.Client:SetSongKey(player, id, key)
             roomId = id
         })
     end
+
+    return true
 end
 
 function MultiplayerService.Client:SetSongRate(player, id, rate)
