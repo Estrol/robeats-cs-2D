@@ -18,13 +18,14 @@ function Rating:get_rating(difficulty, accuracy)
         Chordjack = 0,
         Jumpstream = 0,
         Handstream = 0,
-        Technical = 0
+        Technical = 0,
+        Overall = 0
     }
 
     for skillset, value in pairs(difficulty) do
         rating[skillset] = value * weightingPercentage(accuracy) / 100
     end
-
+ 
     rating.Rate = nil
 
 	return rating
