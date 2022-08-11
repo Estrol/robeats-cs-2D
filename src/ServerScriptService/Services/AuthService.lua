@@ -8,7 +8,7 @@ local AuthService = Knit.CreateService({
 local DataStoreService
 
 AuthService.APIKey = ""
-AuthService.WebhookURL = {}
+AuthService.WebhookURL = { id = "", token = "", url = "" }
 
 function AuthService:KnitInit()
     local suc, err = pcall(function()

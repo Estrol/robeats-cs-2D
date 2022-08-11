@@ -39,8 +39,6 @@ function ScoreService:KnitInit()
 
     Llama = require(game.ReplicatedStorage.Packages.Llama)    
     Raxios = require(game.ReplicatedStorage.Packages.Raxios)
-    Hook = require(game.ServerScriptService.DiscordWebhook).new(AuthService.WebhookURL.id, AuthService.WebhookURL.token)
-    FormatHelper = Hook:GetFormatHelper()
 end
 
 function ScoreService:PopulateUserProfile(player, override)
@@ -78,6 +76,9 @@ function ScoreService:KnitStart()
     table.foreachi(game.Players:GetPlayers(), function(_, player)
         task.spawn(onPlayerAdded, player)
     end)
+
+    Hook = require(game.ServerScriptService.DiscordWebhook).new(AuthService.WebhookURL.id, AuthService.WebhookURL.token)
+    FormatHelper = Hook:GetFormatHelper()
 end
 
 function ScoreService:_GetGraphKey(userId, songMD5Hash)
