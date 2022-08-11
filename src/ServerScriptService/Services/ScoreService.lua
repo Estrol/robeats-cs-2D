@@ -189,7 +189,7 @@ function ScoreService.Client:SubmitScore(player, data)
         playStatsField:AppendLine("Map: " .. FormatHelper:CodeblockLine(SongDatabase:get_title_for_key(key)))
         playStatsField:AppendLine("Rating: " .. FormatHelper:CodeblockLine(data.Rating.Overall))-- yeet
         playStatsField:AppendLine("Score: " .. FormatHelper:CodeblockLine(data.Score))
-        playStatsField:AppendLine("Accuracy: " .. FormatHelper:CodeblockLine(data.Accuracy))
+        playStatsField:AppendLine("Accuracy : " .. FormatHelper:CodeblockLine(data.Accuracy))
         playStatsField:AppendLine("Rate: " .. FormatHelper:CodeblockLine(data.Rate))
         playStatsField:AppendLine("Spread: " .. FormatHelper:CodeblockLine(data.Marvelouses .. " / " .. data.Perfects .. " / " ..data.Greats .. " / " ..data.Goods .. " / " .. data.Bads .. " / " ..data.Misses))
 
