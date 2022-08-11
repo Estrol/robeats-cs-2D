@@ -571,7 +571,15 @@ function Gameplay:render()
                 Rotation = 90
             })
         }),
-        SongProgress = songProgress
+        SongProgress = songProgress,
+        TimingPreset = e(RoundedTextLabel, {
+            Size = UDim2.fromScale(0.2, 0.055),
+            Position = UDim2.new(1, -5, 1, -10),
+            AnchorPoint = Vector2.new(1, 1),
+            Text = "Timing Preset: " .. self.props.options.TimingPreset,
+            TextColor3 = Color3.new(1, 1, 1),
+            BackgroundTransparency = 1,
+        })
     })
 end
 
