@@ -35,7 +35,7 @@ SongList.defaultProps = {
 }
 
 function SongList:getSongs()
-    local found = SongDatabase:filter_keys(self.state.search, self.props.ExcludeCustomMaps)
+    local found = SongDatabase:filter_keys(self.state.search, self.props.SongRate / 100, self.props.ExcludeCustomMaps)
 
     if self.state.sortByDifficulty then
         return Llama.List.sort(found, sortByDifficulty)
@@ -63,8 +63,8 @@ function SongList:init()
 end
 
 
-function SongList:didUpdate(_, prevState)
-    if (self.state.search ~= prevState.search) or (self.state.sortByDifficulty ~= prevState.sortByDifficulty) then
+function SongList:didUpdate(prevProps, prevState)
+    if (self.state.search ~= prevState.search) or (self.state.sortByDifficulty ~= prevState.sortByDifficulty) or (self.props.SongRate ~= prevProps.SongRate) then
         Promise.new(function(resolve)
             resolve(self:getSongs())
         end):andThen(function(sorted)

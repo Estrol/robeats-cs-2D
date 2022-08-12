@@ -130,9 +130,8 @@ function SongInfoDisplay:render()
                 TextTransparency = self.motorBinding:map(function(a)
                     return 1-a.artist
                 end);
-                Font = Enum.Font.Gotham,
+                Font = Enum.Font.GothamBold,
                 Text = string.format("%s [%0.2fx Rate]", SongDatabase:get_title_for_key(self.props.SongKey), self.props.SongRate / 100),
-                
                 TextColor3 = Color3.fromRGB(255, 187, 14),
                 TextScaled = true,
                 TextXAlignment = Enum.TextXAlignment.Left,

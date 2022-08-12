@@ -1,4 +1,5 @@
 local HttpService = game:GetService("HttpService")
+local ServerScriptService = game:GetService("ServerScriptService")
 
 local SPDict = require(game.ReplicatedStorage.Shared.SPDict)
 local SongErrorParser = require(game.ReplicatedStorage.RobeatsGameCore.SongErrorParser)
@@ -184,12 +185,16 @@ function SongDatabase:new()
 		return graph
 	end
 
-	function self:get_search_string_for_key(key)
+	function self:get_search_string_for_key(key, rate)
 		local data = self:get_data_for_key(key)
+		local difficulty = self:get_difficulty_for_key(key, rate)
+
 		if data ~= nil then
 			local _search_data = {
 				data.AudioArtist,
-				data.AudioFilename
+				data.AudioFilename,
+				"diff=" .. string.format("%0.2f", difficulty.Overall),
+				data.AudioMapper or "unknown",
 			}
 
 			return table.concat(_search_data, " "):lower()
@@ -197,7 +202,7 @@ function SongDatabase:new()
 		return ""
 	end
 
-	function self:filter_keys(str, excludeCustomMaps)
+	function self:filter_keys(str, rate, excludeCustomMaps)
 		local ret = {}
 
 		for key, data in self:key_itr() do
@@ -208,8 +213,18 @@ function SongDatabase:new()
 			if not str or str == "" then
 				table.insert(ret, data)
 			else
-				local search_str = self:get_search_string_for_key(key)
-				if string.find(search_str, str:lower()) ~= nil then
+				local terms = string.split(str, " ")
+				local search_str = self:get_search_string_for_key(key, rate)
+
+				local foundCount = 0
+
+				for _, term in terms do
+					if string.find(search_str:lower(), term:lower()) ~= nil then
+						foundCount += 1
+					end
+				end
+
+				if foundCount == #terms then
 					table.insert(ret, data)
 				end
 			end

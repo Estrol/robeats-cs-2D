@@ -42,6 +42,8 @@ function SongButton:render()
 
     local difficulty = SongDatabase:get_difficulty_for_key(self.props.SongKey, self.props.SongRate / 100)
 
+    local mapper = SongDatabase:get_mapper_for_key(self.props.SongKey)
+
     local topSkillsets = {}
     local allSkillsets = {}
 
@@ -145,7 +147,7 @@ function SongButton:render()
             Selectable = true,
             Size = UDim2.new(0.45, 0, 0.2, 0),
             Font = Enum.Font.Gotham,
-            Text = SongDatabase:get_artist_for_key(self.props.SongKey),
+            Text = SongDatabase:get_artist_for_key(self.props.SongKey) .. " // " .. mapper,
             TextColor3 = Color3.fromRGB(255, 208, 87),
             TextScaled = true,
             TextSize = 26,
