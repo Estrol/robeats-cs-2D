@@ -36,6 +36,8 @@ function RobeatsGame:new(_game_environment_center_position)
 		_object_pool = ObjectPool:new();
 	}
 
+	self.keybind_pressed = Instance.new("BindableEvent")
+
 	local _skin
 	local _2d_hit_pos
 	local _get_2d_mode = false
@@ -167,6 +169,8 @@ function RobeatsGame:new(_game_environment_center_position)
 			self._audio_manager:update(dt_scale)
 			for itr_key,itr_index in GameTrack:inpututil_key_to_track_index():key_itr() do
 				if self._input:control_just_pressed(itr_key) then
+					self.keybind_pressed:Fire(itr_index)
+
 					self:get_local_tracksystem():press_track_index(itr_index)
 				end
 				if self._input:control_just_released(itr_key) then

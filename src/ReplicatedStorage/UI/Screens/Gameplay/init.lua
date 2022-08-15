@@ -70,6 +70,8 @@ function Gameplay:init()
     -- Set up time left bib
     
     self.timeLeft, self.setTimeLeft = Roact.createBinding(0)
+
+    self.kps, self.setKps = Roact.createBinding(0)
     
     -- Set up hit deviance parent reference
     
@@ -129,6 +131,12 @@ function Gameplay:init()
 
     self.onMultiplayerGameEnded = Instance.new("BindableEvent")
 
+    local hits = {}
+
+    self.onKeybindPressedConnection = _game.keybind_pressed.Event:Connect(function()
+        table.insert(hits, tick())
+    end)
+
     local _send_every = FlashEvery:new(0.5)
     local _update_text = FlashEvery:new(1)
 
@@ -184,6 +192,17 @@ function Gameplay:init()
                 _game:start_game()
             end
         end
+
+        local i = 1
+        while i <= #hits do
+            if tick() - hits[i] > 1 then
+                table.remove(hits, i)
+            else
+                i = i + 1
+            end
+        end
+
+        self.setKps(#hits)
 
         -- Every second, send match stats to the server
 
@@ -520,6 +539,18 @@ function Gameplay:render()
                 return SPUtil:format_ms_time(math.clamp(a, 0, math.huge))
             end)
         }),
+        KPS = e(RoundedTextLabel, {
+            Size = UDim2.fromScale(0.115, 0.035),
+            TextXAlignment = Enum.TextXAlignment.Right,
+            TextColor3 = Color3.fromRGB(255, 255, 255),
+            Position = UDim2.fromScale(0.98, 0.98),
+            AnchorPoint = Vector2.new(1, 1),
+            BackgroundTransparency = 1,
+            TextScaled = true,
+            Text = self.kps:map(function(a)
+                return "KPS: " .. a
+            end)
+        }),
         Combo = e(RoundedTextLabel, {
             Size = UDim2.fromScale(0.13, 0.07),
             TextColor3 = Color3.fromRGB(255, 255, 255),
@@ -578,6 +609,7 @@ end
 function Gameplay:willUnmount()
     EnvironmentSetup:set_gui_inset(false);
     self._game:teardown()
+    self.onKeybindPressedConnection:Disconnect()
     self.everyFrameConnection:Disconnect()
     self.onMultiplayerGameEnded:Destroy()
 
