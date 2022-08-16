@@ -8,6 +8,8 @@ local GraphDataStore = DataStoreService:GetDataStore("GraphDataStore")
 local DebugOut = require(game.ReplicatedStorage.Shared.DebugOut)
 local SongDatabase = require(game.ReplicatedStorage.RobeatsGameCore.SongDatabase)
 
+local Tiers = require(game.ReplicatedStorage.Tiers)
+
 local RunService
 
 local PermissionsService
@@ -56,6 +58,45 @@ function ScoreService:PopulateUserProfile(player, override)
         end
 
         StateService.Store:dispatch({ type = "addProfile", player = player, profile = profile })
+
+        local leaderstats = player:FindFirstChild("leaderstats")
+
+        local rating
+        local rank
+        local tier
+
+        if not leaderstats then
+            leaderstats = Instance.new("Folder")
+            leaderstats.Name = "leaderstats"
+
+            rating = Instance.new("NumberValue")
+            rating.Name = "Rating"
+
+            rank = Instance.new("StringValue")
+            rank.Name = "Rank"
+
+            tier = Instance.new("StringValue")
+            tier.Name = "Tier"
+
+            rating.Parent = leaderstats
+            rank.Parent = leaderstats
+            tier.Parent = leaderstats
+
+            leaderstats.Parent = player
+        end
+
+        rating.Value = profile.Rating.Overall
+        rank.Value = "#" .. profile.Rank
+
+        local tierInfo = Tiers:GetTierFromRating(profile.Rating.Overall)
+
+        if tierInfo then
+            tier.Value = string.sub(tierInfo.name, 1, 1)
+
+            if tierInfo.division then
+                tier.Value = tier.Value .. tierInfo.division
+            end
+        end
     end
 end
 
