@@ -65,7 +65,11 @@ function ScoreService:PopulateUserProfile(player, override)
         local rank
         local tier
 
-        if not leaderstats then
+        if leaderstats then
+            rating = leaderstats:FindFirstChild("Rating")
+            rank = leaderstats:FindFirstChild("Rank")
+            tier = leaderstats:FindFirstChild("Tier")
+        else
             leaderstats = Instance.new("Folder")
             leaderstats.Name = "leaderstats"
 
@@ -216,7 +220,6 @@ function ScoreService.Client:SubmitScore(player, data)
         local spreadField = embed:NewField()
 
         local key = SongDatabase:get_key_for_hash(data.SongMD5Hash)
-        local songTitle = SongDatabase:get_title_for_key(key)
 
         --MESSAGE
         message:SetUsername('SCOREMASTER')
@@ -224,7 +227,7 @@ function ScoreService.Client:SubmitScore(player, data)
         
         --EMBED
         embed:SetURL("https://www.roblox.com/users/" .. player.UserId .."/profile")
-        embed:SetTitle(string.format("%s achieved rank #%d on %s", player.Name, "#VAMOOOOO", songTitle))
+        embed:SetTitle(string.format("%s achieved rank #%d on %s - %s", player.Name, "#VAMOOOOO", SongDatabase:get_title_for_key(key), SongDatabase:get_artist_for_key(key)))
         embed:SetColor3(Color3.fromRGB(math.random(0, 255), math.random(0, 255),math.random(0, 255))) -- this is bad
         embed:AppendFooter("this is a certified hood classic") -- we must protect this at all costs
 
