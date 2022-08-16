@@ -181,6 +181,14 @@ function Results:render()
 			};
 			points = scoreData.hits;
 			formatPoint = function(hit)
+				if hit.judgement == NoteResult.Miss then
+					return {
+						x = hit.hit_object_time / (SongDatabase:get_song_length_for_key(state.SongKey, state.Rate / 100) + 3300),
+						color = NoteResult:result_to_color(hit.judgement),
+						line = true
+					}
+				end
+
 				return {
 					x = (hit.hit_object_time + hit.time_left) / (SongDatabase:get_song_length_for_key(state.SongKey, state.Rate / 100) + 3300),
 					y = SPUtil:inverse_lerp(-300, 300, hit.time_left),

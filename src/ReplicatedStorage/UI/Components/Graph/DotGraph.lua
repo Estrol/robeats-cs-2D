@@ -26,19 +26,38 @@ function DotGraph:render()
     for _, data_point in ipairs(data_points) do
         local point = self.props.formatPoint(data_point)
         max_x = math.abs(math.max(math.abs(point.x), max_x))
-        max_y = math.abs(math.max(math.abs(point.y), max_y))
+
+        if point.y then
+            max_y = math.abs(math.max(math.abs(point.y), max_y))
+        end
     end
 
     for _, data_point in ipairs(data_points) do
         local point = self.props.formatPoint(data_point)
 
-        local _element = e("Frame", {
-            Size = UDim2.new(0,3,0,3);
-            Position = UDim2.new(point.x, 0, point.y, 0);
-            BorderSizePixel = 0;
-            BackgroundColor3 = point.color;
-        })
-        dots:push_back(_element)
+        if point.line then
+            local _element = e("Frame", {
+                Position = UDim2.fromScale(point.x, 0);
+                Size = UDim2.new(0, 1, 1, 0);
+                AnchorPoint = Vector2.new(0.5, 0);
+                BackgroundTransparency = 0.8;
+                ZIndex = -1;
+                BorderSizePixel = 0;
+                BackgroundColor3 = point.color;
+            })
+            
+            dots:push_back(_element)
+        else
+            local _element = e("Frame", {
+                Position = UDim2.new(point.x, 0, point.y, 0);
+                Size = UDim2.new(0,3,0,3);
+                BorderSizePixel = 0;
+                ZIndex = 2;
+                BackgroundColor3 = point.color;
+            })
+
+            dots:push_back(_element)
+        end
     end
 
     local bounds = self.props.bounds

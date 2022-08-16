@@ -73,12 +73,18 @@ function ScoreManager:new(_game)
 	function self:get_mean()
 		local mean = 0
 
+		local miss_count = 0
+		
 		for _, hit in ipairs(_hits) do
-			mean += hit.time_left
+			if hit.judgement ~= NoteResult.Miss then
+				mean += hit.time_left
+			else
+				miss_count = miss_count + 1
+			end
 		end
 
 		if #_hits ~= 0 then
-			mean /= #_hits
+			mean /= #_hits - miss_count
 		end
 
 		return mean
@@ -180,7 +186,17 @@ function ScoreManager:new(_game)
 		_score += result_to_point_increase[note_result]
 
 		_max_chain = math.max(_chain,_max_chain)
-		table.insert(_hits, renderable_hit)
+
+		if not renderable_hit and not params.GhostTap and note_result == NoteResult.Miss then
+			renderable_hit = {
+				hit_object_time = _game._audio_manager:get_current_time_ms(),
+				judgement = NoteResult.Miss,
+			}
+		end
+
+		if renderable_hit then
+			table.insert(_hits, renderable_hit)
+		end
 
 		_on_change:Fire(_marvelous_count,_perfect_count,_great_count,_good_count,_bad_count,_miss_count,_max_chain,_chain,_score,renderable_hit)
 	end

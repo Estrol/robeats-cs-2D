@@ -237,7 +237,7 @@ function Gameplay:init()
 
         local hit = args[10]
 
-        if hit then
+        if hit and hit.judgement ~= NoteResult.Miss then
             local bar = Instance.new("Frame")
             bar.AnchorPoint = Vector2.new(0.5, 0)
             bar.Position = UDim2.fromScale(SPUtil:inverse_lerp(150, -150, hit.time_left), 0)
