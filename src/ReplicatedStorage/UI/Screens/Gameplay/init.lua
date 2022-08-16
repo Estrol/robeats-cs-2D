@@ -608,10 +608,11 @@ function Gameplay:render()
         SongProgress = songProgress,
         TimingPreset = e(RoundedTextLabel, {
             Size = UDim2.fromScale(0.2, 0.055),
-            Position = UDim2.new(1, -5, 1, -10),
+            Position = UDim2.new(0.98, 0, 1, -10),
             AnchorPoint = Vector2.new(1, 1),
             Text = "Timing Preset: " .. self.props.options.TimingPreset,
             TextColor3 = Color3.new(1, 1, 1),
+            TextXAlignment = Enum.TextXAlignment.Right,
             BackgroundTransparency = 1,
         })
     })
