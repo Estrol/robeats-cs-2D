@@ -41,7 +41,6 @@ function formatHelper:Strikethrough(txt)
 end
 
 function formatHelper:CodeblockLine(txt)
-	assert(typeof(txt) == 'string', 'Argument 1 expected string but got ' .. typeof(txt))
 	return '`' .. txt .. '`'
 end
 

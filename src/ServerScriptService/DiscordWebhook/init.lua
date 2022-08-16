@@ -95,7 +95,7 @@ function discordWebhook:GetPostHandler()
 	return self.postHandler
 end
 
-function discordWebhook:GetFromatHelper()
+function discordWebhook:GetFormatHelper()
 	return formatHelper
 end
 

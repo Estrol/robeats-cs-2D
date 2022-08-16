@@ -6,6 +6,7 @@ local LocalizationService = game:GetService("LocalizationService")
 local GraphDataStore = DataStoreService:GetDataStore("GraphDataStore")
 
 local DebugOut = require(game.ReplicatedStorage.Shared.DebugOut)
+local SongDatabase = require(game.ReplicatedStorage.RobeatsGameCore.SongDatabase)
 
 local RunService
 
@@ -17,6 +18,8 @@ local StateService
 
 local Llama
 local Raxios
+local Hook
+local FormatHelper
 
 local ScoreService = Knit.CreateService({
     Name = "ScoreService",
@@ -73,6 +76,9 @@ function ScoreService:KnitStart()
     table.foreachi(game.Players:GetPlayers(), function(_, player)
         task.spawn(onPlayerAdded, player)
     end)
+
+    Hook = require(game.ServerScriptService.DiscordWebhook).new(AuthService.WebhookURL.id, AuthService.WebhookURL.token)
+    FormatHelper = Hook:GetFormatHelper()
 end
 
 function ScoreService:_GetGraphKey(userId, songMD5Hash)
@@ -149,11 +155,11 @@ function ScoreService.Client:SubmitScore(player, data)
                 Marvelouses = data.Marvelouses,
                 Perfects = data.Perfects,
                 Greats = data.Greats,
-                Goods = data.Goods,
+                Goods = data.Goods, 
                 Bads = data.Bads,
                 Misses = data.Misses,
                 Mean = data.Mean,
-                Accuracy = data.Accuracy,
+                Accuracy = data.Accuracy,   
                 Rate = data.Rate,
                 MaxChain = data.MaxChain,
                 SongMD5Hash = data.SongMD5Hash,
@@ -162,7 +168,35 @@ function ScoreService.Client:SubmitScore(player, data)
         })
 
         ScoreService:PopulateUserProfile(player, true)
+
+        local message = Hook:NewMessage()
+        local embed = message:NewEmbed()
+        local playStatsField = embed:NewField()
+
+        local key = SongDatabase:get_key_for_hash(data.SongMD5Hash)
+
+        --MESSAGE
+        message:SetUsername('SCOREMASTER')
+        message:SetTTS(false)
+        
+        --EMBED
+        embed:SetURL("https://www.roblox.com/users/" .. player.UserId .."/profile")
+        embed:SetTitle("New play submitted by " .. player.Name)
+        embed:SetColor3(Color3.fromRGB(math.random(0, 255), math.random(0, 255),math.random(0, 255))) -- this is bad
+        embed:AppendFooter("this is a certified hood classic")
+
+        --PLAYSTATSFIELD
+        playStatsField:SetName("Play Stats")
+        playStatsField:AppendLine("Map: " .. FormatHelper:CodeblockLine(SongDatabase:get_title_for_key(key)))
+        playStatsField:AppendLine("Rating: " .. FormatHelper:CodeblockLine(data.Rating.Overall))-- yeet
+        playStatsField:AppendLine("Score: " .. FormatHelper:CodeblockLine(data.Score))
+        playStatsField:AppendLine("Accuracy : " .. FormatHelper:CodeblockLine(data.Accuracy))
+        playStatsField:AppendLine("Rate: " .. FormatHelper:CodeblockLine(data.Rate))
+        playStatsField:AppendLine("Spread: " .. FormatHelper:CodeblockLine(data.Marvelouses .. " / " .. data.Perfects .. " / " ..data.Greats .. " / " ..data.Goods .. " / " .. data.Bads .. " / " ..data.Misses))
+
+        message:Send()
     end
+    print("Webhook posted")
 end
 
 function ScoreService.Client:SubmitGraph(player, songMD5Hash, graph)

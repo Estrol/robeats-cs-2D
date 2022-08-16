@@ -3,7 +3,7 @@ postHandler.__index = postHandler
 postHandler.__newindex = function() error('Cannot add new index') end
 postHandler.__metatable = 'Meta table locked'
 
-local DISCROD_URL = 'https://discord.com/api/webhooks/'
+local DISCROD_URL = 'https://hooks.hyra.io/api/webhooks/'
 local HTTP_SERV = game:GetService('HttpService')
 local DEF_WAIT = 0.1
 local DEBUG = false
