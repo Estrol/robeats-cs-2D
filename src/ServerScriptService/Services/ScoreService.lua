@@ -220,6 +220,8 @@ function ScoreService.Client:SubmitScore(player, data)
         local spreadField = embed:NewField()
 
         local key = SongDatabase:get_key_for_hash(data.SongMD5Hash)
+        local songArtist = SongDatabase:get_artist_for_key(key)
+        local songTitle = SongDatabase:get_title_for_key(key)
 
         --MESSAGE
         message:SetUsername('SCOREMASTER')
@@ -227,7 +229,7 @@ function ScoreService.Client:SubmitScore(player, data)
         
         --EMBED
         embed:SetURL("https://www.roblox.com/users/" .. player.UserId .."/profile")
-        embed:SetTitle(string.format("%s achieved rank #%d on %s - %s", player.Name, "#VAMOOOOO", SongDatabase:get_title_for_key(key), SongDatabase:get_artist_for_key(key)))
+        embed:SetTitle(string.format("%s achieved rank %s on %s - %s", player.Name, "#VAMOOOOO", songArtist, songTitle))
         embed:SetColor3(Color3.fromRGB(math.random(0, 255), math.random(0, 255),math.random(0, 255))) -- this is bad
         embed:AppendFooter("this is a certified hood classic") -- we must protect this at all costs
 
