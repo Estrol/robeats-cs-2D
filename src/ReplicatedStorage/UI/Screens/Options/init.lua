@@ -180,7 +180,7 @@ function Options:getSettingElements()
                 return string.format("%0d%%", value)
             end,
             Name = "Lane Cover",
-            incrementValue = 5,
+            incrementValue = 2,
             MinValue = 0,
             MaxValue = 100,
             LayoutOrder = 3
