@@ -20,7 +20,7 @@ local Leaderboard = require(script.Leaderboard)
 local MultiplayerLeaderboard = require(script.MultiplayerLeaderboard)
 local StatCard = require(script.StatCard)
 local Divider = require(script.Divider)
-local Loading = require(script.Loading)
+local Loading = require(script.OtherLoading)
 
 local AnimatedNumberLabel = require(game.ReplicatedStorage.UI.Components.Base.AnimatedNumberLabel)
 local RoundedTextLabel = require(game.ReplicatedStorage.UI.Components.Base.RoundedTextLabel)
@@ -423,6 +423,9 @@ function Gameplay:render()
             OnBack = function()
                 self.forcedQuit = true
                 self._game:set_mode(RobeatsGame.Mode.GameEnded)
+            end,
+            OnSkipClicked = function()
+                self.state.secondsLeft = -1 -- the condition inside the init method checks for the seconds left, not loaded
             end
         })
     end
@@ -543,7 +546,7 @@ function Gameplay:render()
             Size = UDim2.fromScale(0.115, 0.035),
             TextXAlignment = Enum.TextXAlignment.Right,
             TextColor3 = Color3.fromRGB(255, 255, 255),
-            Position = UDim2.fromScale(0.98, 0.98),
+            Position = UDim2.fromScale(0.98, 0.94),
             AnchorPoint = Vector2.new(1, 1),
             BackgroundTransparency = 1,
             TextScaled = true,
@@ -602,7 +605,15 @@ function Gameplay:render()
                 Rotation = 90
             })
         }),
-        SongProgress = songProgress
+        SongProgress = songProgress,
+        TimingPreset = e(RoundedTextLabel, {
+            Size = UDim2.fromScale(0.2, 0.055),
+            Position = UDim2.new(1, -5, 1, -10),
+            AnchorPoint = Vector2.new(1, 1),
+            Text = "Timing Preset: " .. self.props.options.TimingPreset,
+            TextColor3 = Color3.new(1, 1, 1),
+            BackgroundTransparency = 1,
+        })
     })
 end
 

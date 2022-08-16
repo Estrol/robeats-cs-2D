@@ -8,6 +8,7 @@ local AuthService = Knit.CreateService({
 local DataStoreService
 
 AuthService.APIKey = ""
+AuthService.WebhookURL = { id = "", token = "", url = "" }
 
 function AuthService:KnitInit()
     local suc, err = pcall(function()
@@ -16,10 +17,11 @@ function AuthService:KnitInit()
         local authStore = DataStoreService:GetDataStore("AuthStore")
 
         self.APIKey = authStore:GetAsync("APIKey")
+        self.WebhookURL = authStore:GetAsync("WebhookURL")
     end)
 
     if not suc then
-        warn("Could not fetch API key due to error: " .. err)
+        warn("Could not fetch data key due to error: " .. err)
     end
 end
 

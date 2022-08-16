@@ -2,6 +2,7 @@ local Roact = require(game.ReplicatedStorage.Packages.Roact)
 local RoactRodux = require(game.ReplicatedStorage.Packages.RoactRodux)
 
 local SongDatabase = require(game.ReplicatedStorage.RobeatsGameCore.SongDatabase)
+local EnvironmentSetup = require(game.ReplicatedStorage.RobeatsGameCore.EnvironmentSetup)
 
 local e = Roact.createElement
 
@@ -66,6 +67,8 @@ function MainMenuUI:init()
     self.trove:Add(resumed)
     self.trove:Add(paused)
     self.trove:Add(stopped)
+
+    EnvironmentSetup:set_gui_inset(true)
 end
 
 function MainMenuUI:didMount()
