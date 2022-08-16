@@ -6,6 +6,7 @@ local e = Roact.createElement
 local RunService = game:GetService("RunService")
 
 local SongDatabase = require(game.ReplicatedStorage.RobeatsGameCore.SongDatabase)
+local EnvironmentSetup = require(game.ReplicatedStorage.RobeatsGameCore.EnvironmentSetup)
 local Mods = require(game.ReplicatedStorage.RobeatsGameCore.Enums.Mods)
 
 local SPUtil = require(game.ReplicatedStorage.Shared.SPUtil)
@@ -69,6 +70,8 @@ function SongSelect:init()
             })
         end
     end)
+
+    EnvironmentSetup:set_gui_inset(false)
 
     self.Trove:Add(onUprateKeyPressed)
     self.Trove:Add(onDownrateKeyPressed)
