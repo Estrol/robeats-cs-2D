@@ -172,8 +172,10 @@ function ScoreService.Client:SubmitScore(player, data)
         local message = Hook:NewMessage()
         local embed = message:NewEmbed()
         local playStatsField = embed:NewField()
+        local spreadField = embed:NewField()
 
         local key = SongDatabase:get_key_for_hash(data.SongMD5Hash)
+        local songTitle = SongDatabase:get_title_for_key(key)
 
         --MESSAGE
         message:SetUsername('SCOREMASTER')
@@ -181,18 +183,24 @@ function ScoreService.Client:SubmitScore(player, data)
         
         --EMBED
         embed:SetURL("https://www.roblox.com/users/" .. player.UserId .."/profile")
-        embed:SetTitle("New play submitted by " .. player.Name)
+        embed:SetTitle(string.format("%s achieved rank #%d on %s", player.Name, "#VAMOOOOO", songTitle))
         embed:SetColor3(Color3.fromRGB(math.random(0, 255), math.random(0, 255),math.random(0, 255))) -- this is bad
-        embed:AppendFooter("this is a certified hood classic")
+        embed:AppendFooter("this is a certified hood classic") -- we must protect this at all costs
 
         --PLAYSTATSFIELD
         playStatsField:SetName("Play Stats")
-        playStatsField:AppendLine("Map: " .. FormatHelper:CodeblockLine(SongDatabase:get_title_for_key(key)))
         playStatsField:AppendLine("Rating: " .. FormatHelper:CodeblockLine(data.Rating.Overall))-- yeet
         playStatsField:AppendLine("Score: " .. FormatHelper:CodeblockLine(data.Score))
         playStatsField:AppendLine("Accuracy : " .. FormatHelper:CodeblockLine(data.Accuracy))
-        playStatsField:AppendLine("Rate: " .. FormatHelper:CodeblockLine(data.Rate))
-        playStatsField:AppendLine("Spread: " .. FormatHelper:CodeblockLine(data.Marvelouses .. " / " .. data.Perfects .. " / " ..data.Greats .. " / " ..data.Goods .. " / " .. data.Bads .. " / " ..data.Misses))
+        playStatsField:AppendLine("Rate: " .. FormatHelper:CodeblockLine(data.Rate / 100))
+
+        spreadField:SetName("Spread Data")
+        spreadField:AppendLine("Marvelouses: " .. FormatHelper:CodeblockLine(data.Marvelouses))-- yeet
+        spreadField:AppendLine("Perfects: " .. FormatHelper:CodeblockLine(data.Perfects))
+        spreadField:AppendLine("Greats: " .. FormatHelper:CodeblockLine(data.Greats))
+        spreadField:AppendLine("Goods: " .. FormatHelper:CodeblockLine(data.Goods))
+        spreadField:AppendLine("Bads: " .. FormatHelper:CodeblockLine(data.Bads))
+        spreadField:AppendLine("Misses: " .. FormatHelper:CodeblockLine(data.Misses))
 
         message:Send()
     end
@@ -210,9 +218,8 @@ end
 function ScoreService.Client:GetGraph(player, userId, songMD5Hash)
     if RateLimitService:CanProcessRequestWithRateLimit(player, "GetGraph", 2) then
         local key = ScoreService:_GetGraphKey(userId, songMD5Hash)
-        return GraphDataStore:GetAsync(key)
+        return GraphDataStore:GetAsync(key) 
     end
-    
     return {}
 end
 
