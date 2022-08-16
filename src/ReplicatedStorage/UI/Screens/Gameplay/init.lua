@@ -546,7 +546,7 @@ function Gameplay:render()
             Size = UDim2.fromScale(0.115, 0.035),
             TextXAlignment = Enum.TextXAlignment.Right,
             TextColor3 = Color3.fromRGB(255, 255, 255),
-            Position = UDim2.fromScale(0.98, 0.98),
+            Position = UDim2.fromScale(0.98, 0.94),
             AnchorPoint = Vector2.new(1, 1),
             BackgroundTransparency = 1,
             TextScaled = true,
