@@ -82,6 +82,9 @@ function Gameplay:init()
         stagePlat.Transparency = self.props.options.BaseTransparency
     end
 
+    EnvironmentSetup:get_element_protos_folder().TriggerButtonProto.Interior.Transparency = self.props.options.ReceptorTransparency
+    EnvironmentSetup:get_element_protos_folder().TriggerButtonProto.Outer.Transparency = self.props.options.ReceptorOuterTransparency
+
     --Is the player on mobile
     self.numLanes = 4
 

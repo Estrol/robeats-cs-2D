@@ -230,6 +230,37 @@ function Options:getSettingElements()
             LayoutOrder = 2
         });
 
+        elements.ReceptorTransparency = e(IntValue, {
+            Name = "Receptor Transparency",
+            incrementValue = 0.1,
+            Value = self.props.options.ReceptorTransparency,
+            OnChanged = function(value)
+                self.props.setOption("ReceptorTransparency", value)
+            end,
+            FormatValue = function(value)
+                return string.format("%0.1f", value)
+            end,
+            MaxValue = 1,
+            MinValue = 0,
+            LayoutOrder = 2 -- will reorganize this stuff at a later date before it gets too bad
+        });
+
+        elements.ReceptorOuterTransparency = e(IntValue, {
+            Name = "3D Receptor Outer Transparency",
+            incrementValue = 0.1,
+            Value = self.props.options.ReceptorOuterTransparency,
+            OnChanged = function(value)
+                self.props.setOption("ReceptorOuterTransparency", value)
+            end,
+            FormatValue = function(value)
+                return string.format("%0.1f", value)
+            end,
+            MaxValue = 1,
+            MinValue = 0,
+            LayoutOrder = 3
+        });
+
+
 
         elements.TimeOfDay = e(IntValue, {
             Value = self.props.options.TimeOfDay,
@@ -252,7 +283,7 @@ function Options:getSettingElements()
             end,
             Name = "Held Note Transparent",
             LayoutOrder = 3
-        })
+        });
 
         elements.HitLighting = e(BoolValue, {
             Value = self.props.options.HitLighting,
@@ -288,7 +319,7 @@ function Options:getSettingElements()
             end,
             Name = "Hide LN Tails",
             LayoutOrder = 7
-        })
+        });
 
         elements.HideLeaderboard = e(BoolValue, {
             Value = self.props.options.HideLeaderboard,

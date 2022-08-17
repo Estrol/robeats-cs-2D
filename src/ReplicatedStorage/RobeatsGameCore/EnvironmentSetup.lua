@@ -62,6 +62,12 @@ function EnvironmentSetup:setup_2d_environment(skin, config)
 	_trigger_buttons.Size = UDim2.new(1, 0, hit_pos/100, 0)
 	tracks.Size = UDim2.new(1, 0, 1-hit_pos/100, 0)
 
+	for _, trigger_button in _gameplay_frame.TriggerButtons:GetChildren() do
+		if trigger_button:FindFirstChild("ReceptorImage") then
+			trigger_button.ReceptorImage.ImageTransparency = config.ReceptorTransparency
+		end
+	end
+
 	if upscroll then
 		_gameplay_frame.Rotation = 180
 		_gameplay_frame.Position = _gameplay_frame.Position + UDim2.new(0, 0, 0.05, 0)

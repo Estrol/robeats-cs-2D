@@ -35,6 +35,8 @@ local defaultState = {
         --Extra settings.
         TimeOfDay = 24;
         BaseTransparency = 0;
+        ReceptorTransparency = 0;
+        ReceptorOuterTransparency = 0.8;
         TransparentHeldNote = false;
         HitLighting = false;
         HideLNTails = false;
