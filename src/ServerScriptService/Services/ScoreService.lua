@@ -229,16 +229,17 @@ function ScoreService.Client:SubmitScore(player, data)
         
         --EMBED
         embed:SetURL("https://www.roblox.com/users/" .. player.UserId .."/profile")
-        embed:SetTitle(string.format("%s achieved rank %s on %s - %s", player.Name, "#VAMOOOOO", songArtist, songTitle))
-        embed:SetColor3(Color3.fromRGB(math.random(0, 255), math.random(0, 255),math.random(0, 255))) -- this is bad
+        embed:SetTitle(string.format("%s played %s - %s [%0.2fx rate]", player.Name, songArtist, songTitle, data.Rate / 100))
+        embed:SetThumbnailIconURL(string.format("https://www.roblox.com/headshot-thumbnail/image?userId=%d&width=420&height=420&format=png", player.UserId))
+        embed:SetColor3(Color3.fromRGB(math.random(0, 255), math.random(0, 255),math.random(0, 255))) -- this is bad\
         embed:AppendFooter("this is a certified hood classic") -- we must protect this at all costs
 
         --PLAYSTATSFIELD
         playStatsField:SetName("Play Stats")
-        playStatsField:AppendLine("Rating: " .. FormatHelper:CodeblockLine(data.Rating.Overall))-- yeet
+        playStatsField:AppendLine("Rating: " .. FormatHelper:CodeblockLine(string.format("%0.2f", data.Rating.Overall)))-- yeet
         playStatsField:AppendLine("Score: " .. FormatHelper:CodeblockLine(data.Score))
-        playStatsField:AppendLine("Accuracy : " .. FormatHelper:CodeblockLine(data.Accuracy))
-        playStatsField:AppendLine("Rate: " .. FormatHelper:CodeblockLine(data.Rate / 100))
+        playStatsField:AppendLine("Accuracy : " .. FormatHelper:CodeblockLine(string.format("%0.2f%%", data.Accuracy)))
+        playStatsField:AppendLine("Mean: " .. FormatHelper:CodeblockLine(string.format("%0.2f", data.Mean)))
 
         spreadField:SetName("Spread Data")
         spreadField:AppendLine("Marvelouses: " .. FormatHelper:CodeblockLine(data.Marvelouses))-- yeet
