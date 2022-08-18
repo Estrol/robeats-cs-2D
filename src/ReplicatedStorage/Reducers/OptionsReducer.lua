@@ -62,7 +62,9 @@ local defaultState = {
         --This is used to determine the speed of the song
         SongRate = 100,
         SongKey = 1,
-        Mods = {}
+        Mods = {},
+        Search = "",
+        SortByDifficulty = true,
     }
 }
 

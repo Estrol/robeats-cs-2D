@@ -1,4 +1,5 @@
 local Roact = require(game.ReplicatedStorage.Packages.Roact)
+local RoactRodux = require(game.ReplicatedStorage.Packages.RoactRodux)
 local e = Roact.createElement
 local Llama = require(game.ReplicatedStorage.Packages.Llama)
 
@@ -35,9 +36,9 @@ SongList.defaultProps = {
 }
 
 function SongList:getSongs()
-    local found = SongDatabase:filter_keys(self.state.search, self.props.SongRate / 100, self.props.ExcludeCustomMaps)
+    local found = SongDatabase:filter_keys(self.props.Search, self.props.SongRate / 100, self.props.ExcludeCustomMaps)
 
-    if self.state.sortByDifficulty then
+    if self.props.SortByDifficulty then
         return Llama.List.sort(found, sortByDifficulty)
     end
 
@@ -46,9 +47,7 @@ end
 
 function SongList:init()
     self:setState({
-        search = "";
         found = {};
-        sortByDifficulty = true;
     })
 
     self:setState({
@@ -56,15 +55,13 @@ function SongList:init()
     })
 
     self.OnSearchChanged = function(o)
-        self:setState({
-            search = o.Text;
-        })
+        self.props.setSearch(o.Text)
     end
 end
 
 
 function SongList:didUpdate(prevProps, prevState)
-    if (self.state.search ~= prevState.search) or (self.state.sortByDifficulty ~= prevState.sortByDifficulty) or (self.props.SongRate ~= prevProps.SongRate) then
+    if (self.props.Search ~= prevProps.Search) or (self.props.SortByDifficulty ~= prevProps.SortByDifficulty) or (self.props.SongRate ~= prevProps.SongRate) then
         Promise.new(function(resolve)
             resolve(self:getSongs())
         end):andThen(function(sorted)
@@ -128,7 +125,7 @@ function SongList:render()
                 Font = Enum.Font.GothamBold,
                 PlaceholderColor3 = Color3.fromRGB(181, 181, 181),
                 PlaceholderText = "Search here...",
-                Text = self.state.search,
+                Text = self.props.Search,
                 TextColor3 = Color3.fromRGB(255, 255, 255),
                 TextScaled = true,
                 TextSize = 14,
@@ -143,7 +140,7 @@ function SongList:render()
             })
         }),
         SortByDifficulty = e(RoundedTextButton, {
-            BackgroundColor3 = self.state.sortByDifficulty and Color3.fromRGB(41, 176, 194) or Color3.fromRGB(41, 41, 41),
+            BackgroundColor3 = self.props.SortByDifficulty and Color3.fromRGB(41, 176, 194) or Color3.fromRGB(41, 41, 41),
             Position = UDim2.fromScale(0, 0.045),
             Size = UDim2.fromScale(0.14, 0.045),
             HoldSize = UDim2.fromScale(0.14, 0.045),
@@ -152,9 +149,7 @@ function SongList:render()
             TextColor3 = Color3.fromRGB(255, 255, 255),
             Text = "Sort By Difficulty",
             OnClick = function()
-                self:setState({
-                    sortByDifficulty = not self.state.sortByDifficulty
-                })
+                self.props.setSortByDifficulty(not self.props.SortByDifficulty)
             end
         }, {
             UITextSizeConstraint = e("UITextSizeConstraint", {
@@ -164,4 +159,18 @@ function SongList:render()
     })
 end
 
-return SongList
+return RoactRodux.connect(function(state)
+    return {
+        Search = state.options.transient.Search,
+        SortByDifficulty = state.options.transient.SortByDifficulty,
+    }
+end, function(dispatch)
+    return {
+        setSearch = function(search)
+            dispatch({ type = "setTransientOption", option = "Search", value = search })
+        end,
+        setSortByDifficulty = function(sortByDifficulty)
+            dispatch({ type = "setTransientOption", option = "SortByDifficulty", value = sortByDifficulty })
+        end
+    }
+end)(SongList)
