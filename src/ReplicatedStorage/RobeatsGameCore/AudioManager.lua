@@ -360,8 +360,8 @@ function AudioManager:new(_game)
 		end
 	end
 
-	function self:get_current_time_ms()
-		return _bgm_time_position * 1000 + _audio_time_offset + _pre_start_time_ms
+	function self:get_current_time_ms(no_offset)
+		return _bgm_time_position * 1000 + (if no_offset then 0 else _pre_start_time_ms) + _audio_time_offset
 	end
 
 	function self:get_song_length_ms()

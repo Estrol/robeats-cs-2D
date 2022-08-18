@@ -15,6 +15,8 @@ local Signal = require(game.ReplicatedStorage.Packages.Signal)
 local NoteResult = require(game.ReplicatedStorage.RobeatsGameCore.Enums.NoteResult)
 local Skins = require(game.ReplicatedStorage.Skins)
 local DebugOut = require(game.ReplicatedStorage.Shared.DebugOut)
+local SongDatabase = require(game.ReplicatedStorage.RobeatsGameCore.SongDatabase)
+local Replay = require(game.ReplicatedStorage.RobeatsGameCore.Replay)
 
 --local Settings = require(game.ReplicatedStorage.)
 
@@ -56,6 +58,8 @@ function RobeatsGame:new(_game_environment_center_position)
 	local _note_color = Color3.fromRGB(255, 175, 0)
 	local _mods = {}
 	local _note_color_affects_2d
+
+	local replay
 
 	self._audio_manager = AudioManager:new(self)
 	self._score_manager = ScoreManager:new(self)
@@ -167,14 +171,26 @@ function RobeatsGame:new(_game_environment_center_position)
 	function self:update(dt_scale)
 		if _current_mode == RobeatsGame.Mode.Game then
 			self._audio_manager:update(dt_scale)
-			for itr_key,itr_index in GameTrack:inpututil_key_to_track_index():key_itr() do
-				if self._input:control_just_pressed(itr_key) then
-					self.keybind_pressed:Fire(itr_index)
+			if replay then
+				local actions = replay:get_actions_this_frame(self._audio_manager:get_current_time_ms(true))
 
-					self:get_local_tracksystem():press_track_index(itr_index)
+				for _, action in actions do
+					if action.action == Replay.HitType.Press then
+						self:get_local_tracksystem():press_track_index(action.track)
+					elseif action.action == Replay.HitType.Release then
+						self:get_local_tracksystem():release_track_index(action.track)
+					end
 				end
-				if self._input:control_just_released(itr_key) then
-					self:get_local_tracksystem():release_track_index(itr_index)
+			else
+				for itr_key,itr_index in GameTrack:inpututil_key_to_track_index():key_itr() do
+					if self._input:control_just_pressed(itr_key) then
+						self.keybind_pressed:Fire(itr_index)
+						
+						self:get_local_tracksystem():press_track_index(itr_index)
+					end
+					if self._input:control_just_released(itr_key) then
+						self:get_local_tracksystem():release_track_index(itr_index)
+					end
 				end
 			end
 			
@@ -189,7 +205,9 @@ function RobeatsGame:new(_game_environment_center_position)
 		end
 	end
 
-	function self:load(_song_key, _local_player_slot, _config)
+	function self:load(_song_key, _local_player_slot, _config, _replay)
+		replay = Replay.perfect(SongDatabase:get_hash_for_key(_song_key), _config.SongRate)
+
 		self:set_mods(_config.Mods)
 
 		EnvironmentSetup:set_mode(EnvironmentSetup.Mode.Game)
