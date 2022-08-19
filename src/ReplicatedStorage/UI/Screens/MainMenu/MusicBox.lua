@@ -26,13 +26,11 @@ MusicBox.defaultProps = {
 }
 
 function MusicBox:getGradient()
-    local gradient = Gradient:new()
-
-    for i = 0, 1, 0.1 do
-        gradient:add_number_keypoint(i, i)
-    end
-
-    return gradient:number_sequence()
+    local keypoints = {
+        NumberSequenceKeypoint.new(0, 0),
+        NumberSequenceKeypoint.new(1, 1)
+    }
+    return NumberSequence.new(keypoints)
 end
 
 function MusicBox:render()
