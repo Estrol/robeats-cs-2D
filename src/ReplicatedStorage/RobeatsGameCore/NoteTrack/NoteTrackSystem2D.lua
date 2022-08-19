@@ -67,7 +67,7 @@ function NoteTrackSystem2D:new(_game, _game_slot)
 		return _tracks:get(index)
 	end
 
-	function self:press_track_index(track_index)
+	function self:press_track_index(track_index, judgement)
 		self:get_track(track_index):press()
 		local hit_found = false
 
@@ -75,6 +75,9 @@ function NoteTrackSystem2D:new(_game, _game_slot)
 			local itr_note = _notes:get(i)
 			if itr_note:get_track_index() == track_index then
 				local did_hit, note_result, renderable_hit = itr_note:test_hit()
+
+				note_result = if judgement then judgement else note_result
+
 				if did_hit then
 					itr_note:on_hit(note_result,i,renderable_hit)
 					hit_found = true
@@ -93,13 +96,16 @@ function NoteTrackSystem2D:new(_game, _game_slot)
 		end
 	end
 
-	function self:release_track_index(track_index)
+	function self:release_track_index(track_index, judgement)
 		self:get_track(track_index):release()
 
 		for i=1,_notes:count() do
 			local itr_note = _notes:get(i)
 			if itr_note:get_track_index() == track_index then
 				local did_release, note_result, renderable_hit = itr_note:test_release()
+
+				note_result = if judgement then judgement else note_result
+
 				if did_release then
 					itr_note:on_release(note_result,i,renderable_hit)
 					break

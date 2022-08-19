@@ -1,4 +1,6 @@
 local SongDatabase = require(game:GetService("ReplicatedStorage").RobeatsGameCore.SongDatabase)
+local NoteResult = require(game:GetService("ReplicatedStorage").RobeatsGameCore.Enums.NoteResult)
+local SocialService = game:GetService("SocialService")
 
 local Replay = {}
 
@@ -7,24 +9,33 @@ Replay.HitType = {
     Release = 2,
 }
 
-function Replay:new()
+function Replay:new(viewing)
     local self = {}
+    self.viewing = not not viewing
     self.hits = {}
 
-    local index = 1
+    local minIndex = 1
 
     function self:add_replay_hit(hit)
         table.insert(self.hits, hit)
     end
 
+    function self:get_hits()
+        return self.hits
+    end
+
     function self:get_actions_this_frame(time)
         local actions = {}
 
-        while index <= #self.hits and self.hits[index].time <= time do
-            -- print(time, self.hits[index].time)
+        for i = minIndex, #self.hits do
+            local hit = self.hits[i]
 
-            table.insert(actions, self.hits[index])
-            index = index + 1
+            if time >= hit.time then
+                table.insert(actions, hit)
+                minIndex += 1
+            else
+                break
+            end
         end
 
         return actions
@@ -38,12 +49,13 @@ function Replay.perfect(hash, rate)
 
     local replay = Replay:new()
 
-    for _, hitObject in pairs(hitObjects) do
+    for _, hitObject in ipairs(hitObjects) do
         if hitObject.Type == 1 then
             replay:add_replay_hit({
                 time = hitObject.Time,
                 track = hitObject.Track,
-                action = Replay.HitType.Press
+                action = Replay.HitType.Press,
+                judgement = NoteResult.Marvelous,
             })
 
             replay:add_replay_hit({
@@ -55,16 +67,28 @@ function Replay.perfect(hash, rate)
             replay:add_replay_hit({
                 time = hitObject.Time,
                 track = hitObject.Track,
-                action = Replay.HitType.Press
+                action = Replay.HitType.Press,
+                judgement = NoteResult.Marvelous,
             })
 
             replay:add_replay_hit({
                 time = hitObject.Time + hitObject.Duration,
                 track = hitObject.Track,
-                action = Replay.HitType.Release
+                action = Replay.HitType.Release,
+                judgement = NoteResult.Marvelous,
             })
         end
     end
+
+    local hits = replay:get_hits()
+
+    table.sort(hits, function(a, b)
+        if a.time == b.time then
+            return a.action < b.action
+        end
+
+        return a.time < b.time
+    end)
 
     return replay
 end

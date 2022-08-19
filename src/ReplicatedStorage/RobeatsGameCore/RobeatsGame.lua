@@ -176,9 +176,9 @@ function RobeatsGame:new(_game_environment_center_position)
 
 				for _, action in actions do
 					if action.action == Replay.HitType.Press then
-						self:get_local_tracksystem():press_track_index(action.track)
+						self:get_local_tracksystem():press_track_index(action.track, action.judgement)
 					elseif action.action == Replay.HitType.Release then
-						self:get_local_tracksystem():release_track_index(action.track)
+						self:get_local_tracksystem():release_track_index(action.track, action.judgement)
 					end
 				end
 			else
