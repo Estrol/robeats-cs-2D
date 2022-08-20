@@ -149,14 +149,16 @@ function RobeatsGame:new(_game_environment_center_position)
 		workspace.CurrentCamera.CameraSubject = nil
 	end
 
-	function self:start_game()
+	function self:start_game(_start_time_ms)
 		if self:get_2d_mode() then
 			self._tracksystems:add(self:get_local_game_slot(), NoteTrackSystem2D:new(self,self:get_local_game_slot()))
 		else
 			self._tracksystems:add(self:get_local_game_slot(), NoteTrackSystem:new(self,self:get_local_game_slot()))
 		end
 
-		self._audio_manager:start_play()
+		print(_start_time_ms)
+
+		self._audio_manager:start_play(_start_time_ms)
 		_current_mode = RobeatsGame.Mode.Game
 	end
 

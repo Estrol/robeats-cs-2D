@@ -233,9 +233,24 @@ function AudioManager:new(_game)
 		end
 	end
 
-	function self:start_play()
+	function self:start_play(_start_time_ms)
 		_current_mode = AudioManager.Mode.PreStart
 		_pre_start_time_ms = 0
+
+		if _start_time_ms then
+			_bgm_time_position = _start_time_ms
+
+			print("AudioManager:start_play(): Starting at time " .. _bgm_time_position)
+
+			_bgm.TimePosition = _bgm_time_position / 1000
+
+			for _, hitObject in _hit_objects do
+				if _bgm_time_position * 1000 > hitObject.Time + _note_bad_max then
+					_audio_data_index = _audio_data_index + 1
+					continue
+				end
+			end
+		end
 	end
 
 	local _raise_pre_start_trigger = false
@@ -289,7 +304,7 @@ function AudioManager:new(_game)
 				_bgm.TimePosition = 0
 				_bgm.Volume = _audio_volume
 				_bgm.PlaybackSpeed = _rate
-				_bgm_time_position = 0
+				-- _bgm_time_position = 0
 				_ended_connection = _bgm.Ended:Connect(function()
 					_raise_ended_trigger = true
 					_ended_connection:Disconnect()
@@ -335,6 +350,7 @@ function AudioManager:new(_game)
 
 		for i=_audio_data_index,#_hit_objects do
 			local itr_hitobj = _hit_objects[i]
+
 			if test_time >= itr_hitobj.Time then
 				if itr_hitobj.Type == 1 then
 					push_back_single_note(

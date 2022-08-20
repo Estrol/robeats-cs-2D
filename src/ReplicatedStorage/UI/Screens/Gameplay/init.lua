@@ -128,14 +128,19 @@ function Gameplay:init()
     self.songRate = if self.props.room then self.props.room.songRate else self.props.options.SongRate
 
     local spectateData = self.props.location.state.Spectate
-    
+
     local spectateReplay
+    local earliestTime
 
     if spectateData then
         spectateReplay = Replay:new({ userId = spectateData.UserId, viewing = true })
 
         self.replayConnection = self.props.spectatingService.HitsSent:Connect(function(hits)
             for _, hit in ipairs(hits) do
+                if not earliestTime or hit.time < earliestTime then
+                    earliestTime = hit.time / 1000
+                end
+
                 spectateReplay:add_replay_hit(hit.time, hit.track, hit.action, hit.judgement)
             end
         end)
@@ -170,20 +175,24 @@ function Gameplay:init()
         
         -- Handle starting the game if the audio and its data has loaded!
 
-        if not self.state.loaded and _game._audio_manager:is_ready_to_play() and self:allPlayersLoaded() then
-            if self.props.room then
-                self.props.multiplayerService:SetLoaded(self.props.roomId, true)
-            end
-            
-            self:setState({
-                loaded = true
-            })
+        local dt_scale = CurveUtil:DeltaTimeToTimescale(dt)
+        _game:update(dt_scale)
 
-            if not self.props.location.state.Spectate then
-                self.props.spectatingService.GameStarted:Fire(self.songKey, self.songRate)
+        _update_text:update(dt_scale)
+        _send_every:update(dt_scale)
+
+        if not self.state.loaded then
+            if _update_text:do_flash() then
+                self:setState(function(state)
+                    return {
+                        secondsLeft = state.secondsLeft - 1
+                    }
+                end)
             end
-            
-            _game:start_game()
+
+            if _game._audio_manager:is_ready_to_play() and self:allPlayersLoaded() or (if spectateData then earliestTime ~= nil and self.state.secondsLeft <= 0 else self.state.secondsLeft <= 0) then
+                self:startGame(earliestTime)
+            end
         end
 
         -- If we have reached the end of the game, trigger cleanup
@@ -192,36 +201,6 @@ function Gameplay:init()
             self.everyFrameConnection:Disconnect()
             self:onGameplayEnd()
             return
-        end
-        
-        local dt_scale = CurveUtil:DeltaTimeToTimescale(dt)
-        _game:update(dt_scale)
-        
-        _update_text:update(dt_scale)
-        _send_every:update(dt_scale)
-
-        if not self.state.loaded and _update_text:do_flash() then
-            self:setState(function(state)
-                return {
-                    secondsLeft = state.secondsLeft - 1
-                }
-            end)
-
-            if self.state.secondsLeft <= 0 then
-                if self.props.room then
-                    self.props.multiplayerService:SetLoaded(self.props.roomId, true)
-                end
-
-                self:setState({
-                    loaded = true
-                })
-
-                if not self.props.location.state.Spectate then
-                    self.props.spectatingService.GameStarted:Fire(self.songKey, self.songRate)
-                end
-                
-                _game:start_game()
-            end
         end
 
         local i = 1
@@ -312,6 +291,22 @@ function Gameplay:init()
     -- Expose the game instance to the rest of the component
 
     self._game = _game
+end
+
+function Gameplay:startGame(earliestTime)
+    if self.props.room then
+        self.props.multiplayerService:SetLoaded(self.props.roomId, true)
+    end
+
+    self:setState({
+        loaded = true
+    })
+
+    if not self.props.location.state.Spectate then
+        self.props.spectatingService.GameStarted:Fire(self.songKey, self.songRate)
+    end
+    
+    self._game:start_game(earliestTime)
 end
 
 function Gameplay:didMount()
