@@ -21,7 +21,8 @@ end
 function StateService:KnitInit()
     local combinedReducers = Rodux.combineReducers({
         multiplayer = MultiplayerReducer,
-        profiles = ProfileReducer
+        profiles = ProfileReducer,
+        spectating = SpectatingReducer,
     })
 
     self.Store = Rodux.Store.new(combinedReducers, nil, { replicationMiddleware })

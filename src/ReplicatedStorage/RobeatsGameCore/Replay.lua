@@ -11,9 +11,9 @@ Replay.HitType = {
     Release = 2,
 }
 
-function Replay:new(viewing)
+function Replay:new(config)
     local self = {}
-    self.viewing = not not viewing
+    self.viewing = not not config.viewing
     self.hits = {}
 
     local SpectatingService = Knit.GetService("SpectatingService")

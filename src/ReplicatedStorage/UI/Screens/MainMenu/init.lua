@@ -299,6 +299,32 @@ function MainMenuUI:render()
                     ApplyStrokeMode = Enum.ApplyStrokeMode.Border
                 })
             }),
+            SpectatingButton = e(RoundedTextButton, {
+                TextXAlignment = Enum.TextXAlignment.Left;
+                BackgroundColor3 = Color3.fromRGB(22, 22, 22);
+                BorderMode = Enum.BorderMode.Inset,
+                BorderSizePixel = 0,
+                Size = UDim2.fromScale(1, 0.1),
+                Text = "  Spectate";
+                TextScaled = true;
+                TextColor3 = Color3.fromRGB(255, 255, 255);
+                LayoutOrder = 6;
+                HoldSize = UDim2.fromScale(1, 0.11),
+                Tooltip = "Watch others play!",
+                OnClick = function()
+                    self.props.history:push("/spectate")
+                end
+            }, {
+                UITextSizeConstraint = e("UITextSizeConstraint", {
+                    MinTextSize = 10;
+                    MaxTextSize = 18;
+                }),
+                UIStroke = e("UIStroke", {
+                    Thickness = 2;
+                    Color = Color3.fromRGB(100, 100, 100);
+                    ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+                })
+            }),
         });
         Title = e("TextLabel", {
             BackgroundTransparency = 1;

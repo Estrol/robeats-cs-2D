@@ -61,7 +61,7 @@ function RobeatsGame:new(_game_environment_center_position)
 	local _note_color_affects_2d
 
 	local replay
-	local send_replay_data = FlashEvery:new(3)
+	local send_replay_data = FlashEvery:new(1)
 
 	self._audio_manager = AudioManager:new(self)
 	self._score_manager = ScoreManager:new(self)
@@ -224,7 +224,7 @@ function RobeatsGame:new(_game_environment_center_position)
 
 	function self:load(_song_key, _local_player_slot, _config, _replay)
 		-- replay = Replay.perfect(SongDatabase:get_hash_for_key(_song_key), _config.SongRate)
-		replay = Replay:new()
+		replay = _replay or Replay:new({ viewing = false })
 
 		self:set_mods(_config.Mods)
 

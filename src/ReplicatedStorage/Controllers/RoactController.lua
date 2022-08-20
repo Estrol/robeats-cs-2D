@@ -23,6 +23,7 @@ local Scores  = require(Screens.Scores)
 local Moderation = require(Screens.Moderation)
 local Multiplayer = require(Screens.Multiplayer)
 local Room = require(Screens.Room)
+local Spectating = require(Screens.Spectating)
 
 local TopBar = require(game.ReplicatedStorage.UI.Components.TopBar)
 
@@ -90,7 +91,12 @@ function RoactController:GetRoutes()
             path = "/room",
             exact = true,
             component = Room
-        })
+        }),
+        Spectating = Roact.createElement(RoactRouter.Route, {
+            path = "/spectate",
+            exact = true,
+            component = Spectating
+        }),
     }
 end
 

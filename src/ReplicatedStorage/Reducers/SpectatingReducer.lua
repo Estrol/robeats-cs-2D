@@ -18,12 +18,20 @@ local defaultState = {
 }
 
 return createReducer(defaultState, {
-    addPlayer = function(state, action)
+    addPlayerToSpectate = function(state, action)
         return join(state, {
-            players = set(state.players, tostring(action.player.UserId), action.player)
+            players = push(state.players, {
+                player = action.player,
+                songKey = action.songKey,
+                songRate = action.songRate,
+            })
         })
     end,
-    removePlayer = function(state, action)
-        return removeKey(state.players, tostring(action.player.UserId))
+    removePlayerFromSpectate = function(state, action)
+        return join(state, {
+            players = removeIndex(state.players, findWhere(state.players, function(player)
+                return player.player == action.player
+            end))
+        })
     end,
 })

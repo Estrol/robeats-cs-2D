@@ -15,6 +15,7 @@ local DebugOut = require(game.ReplicatedStorage.Shared.DebugOut)
 local NoteResult= require(game.ReplicatedStorage.RobeatsGameCore.Enums.NoteResult)
 local FlashEvery = require(game.ReplicatedStorage.Shared.FlashEvery)
 local InputUtil = require(game.ReplicatedStorage.Shared.InputUtil)
+local Replay = require(game.ReplicatedStorage.RobeatsGameCore.Replay)
 
 local Leaderboard = require(script.Leaderboard)
 local MultiplayerLeaderboard = require(script.MultiplayerLeaderboard)
@@ -126,9 +127,28 @@ function Gameplay:init()
     self.songKey = if self.props.room then self.props.room.selectedSongKey else self.props.options.SongKey
     self.songRate = if self.props.room then self.props.room.songRate else self.props.options.SongRate
 
+    local spectateData = self.props.location.state.Spectate
+    
+    local spectateReplay
+
+    if spectateData then
+        spectateReplay = Replay:new({ userId = spectateData.UserId, viewing = true })
+
+        self.replayConnection = self.props.spectatingService.HitsSent:Connect(function(hits)
+            for _, hit in ipairs(hits) do
+                spectateReplay:add_replay_hit(hit.time, hit.track, hit.action, hit.judgement)
+            end
+        end)
+
+        self.props.spectatingService.Spectate:Fire(spectateData.UserId)
+
+        self.songKey = spectateData.SongKey
+        self.songRate = spectateData.SongRate
+    end
+
     _game:load(self.songKey, GameSlot.SLOT_1, Llama.Dictionary.join(self.props.options, {
         SongRate = self.songRate
-    }))
+    }), spectateReplay)
 
     -- Bind the game loop to every frame
 
@@ -158,6 +178,10 @@ function Gameplay:init()
             self:setState({
                 loaded = true
             })
+
+            if not self.props.location.state.spectate then
+                self.props.spectatingService.GameStarted:Fire(self.songKey, self.songRate)
+            end
             
             _game:start_game()
         end
@@ -191,6 +215,10 @@ function Gameplay:init()
                 self:setState({
                     loaded = true
                 })
+
+                if not self.props.location.state.spectate then
+                    self.props.spectatingService.GameStarted:Fire(self.songKey, self.songRate)
+                end
                 
                 _game:start_game()
             end
@@ -627,6 +655,14 @@ function Gameplay:willUnmount()
     self.onKeybindPressedConnection:Disconnect()
     self.everyFrameConnection:Disconnect()
     self.onMultiplayerGameEnded:Destroy()
+
+    if self.replayConnection then
+        self.replayConnection:Disconnect()
+    end
+
+    if not self.props.location.state.spectate then
+        self.props.spectatingService.GameEnded:Fire()
+    end
 
     self.trove:Destroy()
 end

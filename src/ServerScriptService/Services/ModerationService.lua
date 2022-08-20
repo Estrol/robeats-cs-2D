@@ -38,6 +38,7 @@ end
 function ModerationService:KnitStart()
     PermissionsService = Knit.GetService("PermissionsService")
     AuthService = Knit.GetService("AuthService")
+    RunService = game:GetService("RunService")
 
     Raxios = require(game.ReplicatedStorage.Packages.Raxios)
     
