@@ -179,7 +179,7 @@ function Gameplay:init()
                 loaded = true
             })
 
-            if not self.props.location.state.spectate then
+            if not self.props.location.state.Spectate then
                 self.props.spectatingService.GameStarted:Fire(self.songKey, self.songRate)
             end
             
@@ -216,7 +216,7 @@ function Gameplay:init()
                     loaded = true
                 })
 
-                if not self.props.location.state.spectate then
+                if not self.props.location.state.Spectate then
                     self.props.spectatingService.GameStarted:Fire(self.songKey, self.songRate)
                 end
                 
@@ -387,7 +387,7 @@ function Gameplay:onGameplayEnd()
         Rate = self.songRate
     })
 
-    if (not self.forcedQuit) and (self.props.options.TimingPreset == "Standard") then
+    if (not self.forcedQuit) and (self.props.options.TimingPreset == "Standard") and not self.props.location.state.Spectate then
         self:submitScore(finalRecords, hits)
     end
     
@@ -660,7 +660,7 @@ function Gameplay:willUnmount()
         self.replayConnection:Disconnect()
     end
 
-    if not self.props.location.state.spectate then
+    if not self.props.location.state.Spectate then
         self.props.spectatingService.GameEnded:Fire()
     end
 

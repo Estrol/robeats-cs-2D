@@ -61,7 +61,7 @@ function RobeatsGame:new(_game_environment_center_position)
 	local _note_color_affects_2d
 
 	local replay
-	local send_replay_data = FlashEvery:new(1)
+	local send_replay_data = FlashEvery:new(0.5)
 
 	self._audio_manager = AudioManager:new(self)
 	self._score_manager = ScoreManager:new(self)
