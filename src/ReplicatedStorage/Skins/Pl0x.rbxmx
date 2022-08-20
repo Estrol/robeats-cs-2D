@@ -5,7 +5,8 @@
       <BinaryString name="AttributesSerialize">
       </BinaryString>
       <int64 name="SourceAssetId">-1</int64>
-      <BinaryString name="Tags"></BinaryString>
+      <BinaryString name="Tags">
+      </BinaryString>
     </Properties>
     <Item class="Color3Value" referent="1">
       <Properties>
@@ -13,7 +14,8 @@
         <BinaryString name="AttributesSerialize">
         </BinaryString>
         <int64 name="SourceAssetId">-1</int64>
-        <BinaryString name="Tags"></BinaryString>
+        <BinaryString name="Tags">
+        </BinaryString>
         <Color3 name="Value">
           <R>0.5882353</R>
           <G>0.5882353</G>
@@ -81,7 +83,13 @@
         <float name="Rotation">0</float>
         <token name="ScaleType">3</token>
         <bool name="Selectable">false</bool>
+        <token name="SelectionBehaviorDown">0</token>
+        <token name="SelectionBehaviorLeft">0</token>
+        <token name="SelectionBehaviorRight">0</token>
+        <token name="SelectionBehaviorUp">0</token>
+        <bool name="SelectionGroup">false</bool>
         <Ref name="SelectionImageObject">null</Ref>
+        <int name="SelectionOrder">0</int>
         <UDim2 name="Size">
           <XS>1.2</XS>
           <XO>0</XO>
@@ -101,7 +109,8 @@
         </Rect2D>
         <float name="SliceScale">1</float>
         <int64 name="SourceAssetId">-1</int64>
-        <BinaryString name="Tags"></BinaryString>
+        <BinaryString name="Tags">
+        </BinaryString>
         <UDim2 name="TileSize">
           <XS>1</XS>
           <XO>0</XO>
@@ -153,7 +162,13 @@
         <Ref name="RootLocalizationTable">null</Ref>
         <float name="Rotation">0</float>
         <bool name="Selectable">false</bool>
+        <token name="SelectionBehaviorDown">0</token>
+        <token name="SelectionBehaviorLeft">0</token>
+        <token name="SelectionBehaviorRight">0</token>
+        <token name="SelectionBehaviorUp">0</token>
+        <bool name="SelectionGroup">false</bool>
         <Ref name="SelectionImageObject">null</Ref>
+        <int name="SelectionOrder">0</int>
         <UDim2 name="Size">
           <XS>0.95</XS>
           <XO>0</XO>
@@ -163,7 +178,8 @@
         <token name="SizeConstraint">0</token>
         <int64 name="SourceAssetId">-1</int64>
         <token name="Style">0</token>
-        <BinaryString name="Tags"></BinaryString>
+        <BinaryString name="Tags">
+        </BinaryString>
         <bool name="Visible">true</bool>
         <int name="ZIndex">8</int>
       </Properties>
@@ -176,7 +192,8 @@
           </BinaryString>
           <token name="DominantAxis">0</token>
           <int64 name="SourceAssetId">-1</int64>
-          <BinaryString name="Tags"></BinaryString>
+          <BinaryString name="Tags">
+          </BinaryString>
         </Properties>
       </Item>
       <Item class="ImageLabel" referent="5">
@@ -239,7 +256,13 @@
           <float name="Rotation">0</float>
           <token name="ScaleType">0</token>
           <bool name="Selectable">false</bool>
+          <token name="SelectionBehaviorDown">0</token>
+          <token name="SelectionBehaviorLeft">0</token>
+          <token name="SelectionBehaviorRight">0</token>
+          <token name="SelectionBehaviorUp">0</token>
+          <bool name="SelectionGroup">false</bool>
           <Ref name="SelectionImageObject">null</Ref>
+          <int name="SelectionOrder">0</int>
           <UDim2 name="Size">
             <XS>1</XS>
             <XO>0</XO>
@@ -259,7 +282,8 @@
           </Rect2D>
           <float name="SliceScale">1</float>
           <int64 name="SourceAssetId">-1</int64>
-          <BinaryString name="Tags"></BinaryString>
+          <BinaryString name="Tags">
+          </BinaryString>
           <UDim2 name="TileSize">
             <XS>1</XS>
             <XO>0</XO>
@@ -280,7 +304,8 @@
             <null>
             </null>
           </Content>
-          <string name="ScriptGuid">{2A0E3B1F-0782-41E8-BC8E-6A7C3D485A13}</string>
+          <token name="RunContext">0</token>
+          <string name="ScriptGuid">{3E48A0B6-B1E1-4358-86AA-995D604723DA}</string>
           <string name="Source">local track = tonumber(string.match(script.Parent.Parent.Name, "Track(%d)"))
 
 local ttr = {
@@ -292,7 +317,8 @@ local ttr = {
 
 script.Parent.Rotation = ttr[track]</string>
           <int64 name="SourceAssetId">-1</int64>
-          <BinaryString name="Tags"></BinaryString>
+          <BinaryString name="Tags">
+          </BinaryString>
         </Properties>
       </Item>
     </Item>
@@ -302,7 +328,8 @@ script.Parent.Rotation = ttr[track]</string>
         <BinaryString name="AttributesSerialize">
         </BinaryString>
         <int64 name="SourceAssetId">-1</int64>
-        <BinaryString name="Tags"></BinaryString>
+        <BinaryString name="Tags">
+        </BinaryString>
       </Properties>
       <Item class="Frame" referent="8">
         <Properties>
@@ -345,7 +372,13 @@ script.Parent.Rotation = ttr[track]</string>
           <Ref name="RootLocalizationTable">null</Ref>
           <float name="Rotation">0</float>
           <bool name="Selectable">false</bool>
+          <token name="SelectionBehaviorDown">0</token>
+          <token name="SelectionBehaviorLeft">0</token>
+          <token name="SelectionBehaviorRight">0</token>
+          <token name="SelectionBehaviorUp">0</token>
+          <bool name="SelectionGroup">false</bool>
           <Ref name="SelectionImageObject">null</Ref>
+          <int name="SelectionOrder">0</int>
           <UDim2 name="Size">
             <XS>0.915</XS>
             <XO>0</XO>
@@ -355,7 +388,8 @@ script.Parent.Rotation = ttr[track]</string>
           <token name="SizeConstraint">0</token>
           <int64 name="SourceAssetId">-1</int64>
           <token name="Style">0</token>
-          <BinaryString name="Tags"></BinaryString>
+          <BinaryString name="Tags">
+          </BinaryString>
           <bool name="Visible">true</bool>
           <int name="ZIndex">6</int>
         </Properties>
@@ -401,7 +435,13 @@ script.Parent.Rotation = ttr[track]</string>
           <Ref name="RootLocalizationTable">null</Ref>
           <float name="Rotation">0</float>
           <bool name="Selectable">false</bool>
+          <token name="SelectionBehaviorDown">0</token>
+          <token name="SelectionBehaviorLeft">0</token>
+          <token name="SelectionBehaviorRight">0</token>
+          <token name="SelectionBehaviorUp">0</token>
+          <bool name="SelectionGroup">false</bool>
           <Ref name="SelectionImageObject">null</Ref>
+          <int name="SelectionOrder">0</int>
           <UDim2 name="Size">
             <XS>0.95</XS>
             <XO>0</XO>
@@ -411,7 +451,8 @@ script.Parent.Rotation = ttr[track]</string>
           <token name="SizeConstraint">0</token>
           <int64 name="SourceAssetId">-1</int64>
           <token name="Style">0</token>
-          <BinaryString name="Tags"></BinaryString>
+          <BinaryString name="Tags">
+          </BinaryString>
           <bool name="Visible">true</bool>
           <int name="ZIndex">7</int>
         </Properties>
@@ -475,7 +516,13 @@ script.Parent.Rotation = ttr[track]</string>
             <float name="Rotation">0</float>
             <token name="ScaleType">0</token>
             <bool name="Selectable">false</bool>
+            <token name="SelectionBehaviorDown">0</token>
+            <token name="SelectionBehaviorLeft">0</token>
+            <token name="SelectionBehaviorRight">0</token>
+            <token name="SelectionBehaviorUp">0</token>
+            <bool name="SelectionGroup">false</bool>
             <Ref name="SelectionImageObject">null</Ref>
+            <int name="SelectionOrder">0</int>
             <UDim2 name="Size">
               <XS>1</XS>
               <XO>0</XO>
@@ -495,7 +542,8 @@ script.Parent.Rotation = ttr[track]</string>
             </Rect2D>
             <float name="SliceScale">1</float>
             <int64 name="SourceAssetId">-1</int64>
-            <BinaryString name="Tags"></BinaryString>
+            <BinaryString name="Tags">
+            </BinaryString>
             <UDim2 name="TileSize">
               <XS>1</XS>
               <XO>0</XO>
@@ -515,7 +563,8 @@ script.Parent.Rotation = ttr[track]</string>
             </BinaryString>
             <token name="DominantAxis">0</token>
             <int64 name="SourceAssetId">-1</int64>
-            <BinaryString name="Tags"></BinaryString>
+            <BinaryString name="Tags">
+            </BinaryString>
           </Properties>
         </Item>
         <Item class="LocalScript" referent="12">
@@ -528,7 +577,8 @@ script.Parent.Rotation = ttr[track]</string>
               <null>
               </null>
             </Content>
-            <string name="ScriptGuid">{83425A99-651D-40D9-8E7F-0F260CEAAA54}</string>
+            <token name="RunContext">0</token>
+            <string name="ScriptGuid">{65654CF8-658D-4662-A636-A663946F7EF3}</string>
             <string name="Source">local track = tonumber(string.match(script.Parent.Parent.Parent.Name, "Track(%d)"))
 
 local ttr = {
@@ -540,7 +590,8 @@ local ttr = {
 
 script.Parent.Rotation = ttr[track]</string>
             <int64 name="SourceAssetId">-1</int64>
-            <BinaryString name="Tags"></BinaryString>
+            <BinaryString name="Tags">
+            </BinaryString>
           </Properties>
         </Item>
       </Item>
@@ -585,7 +636,13 @@ script.Parent.Rotation = ttr[track]</string>
           <Ref name="RootLocalizationTable">null</Ref>
           <float name="Rotation">0</float>
           <bool name="Selectable">false</bool>
+          <token name="SelectionBehaviorDown">0</token>
+          <token name="SelectionBehaviorLeft">0</token>
+          <token name="SelectionBehaviorRight">0</token>
+          <token name="SelectionBehaviorUp">0</token>
+          <bool name="SelectionGroup">false</bool>
           <Ref name="SelectionImageObject">null</Ref>
+          <int name="SelectionOrder">0</int>
           <UDim2 name="Size">
             <XS>0.95</XS>
             <XO>0</XO>
@@ -595,7 +652,8 @@ script.Parent.Rotation = ttr[track]</string>
           <token name="SizeConstraint">0</token>
           <int64 name="SourceAssetId">-1</int64>
           <token name="Style">0</token>
-          <BinaryString name="Tags"></BinaryString>
+          <BinaryString name="Tags">
+          </BinaryString>
           <bool name="Visible">true</bool>
           <int name="ZIndex">7</int>
         </Properties>
@@ -659,7 +717,13 @@ script.Parent.Rotation = ttr[track]</string>
             <float name="Rotation">180</float>
             <token name="ScaleType">0</token>
             <bool name="Selectable">false</bool>
+            <token name="SelectionBehaviorDown">0</token>
+            <token name="SelectionBehaviorLeft">0</token>
+            <token name="SelectionBehaviorRight">0</token>
+            <token name="SelectionBehaviorUp">0</token>
+            <bool name="SelectionGroup">false</bool>
             <Ref name="SelectionImageObject">null</Ref>
+            <int name="SelectionOrder">0</int>
             <UDim2 name="Size">
               <XS>1</XS>
               <XO>0</XO>
@@ -679,7 +743,8 @@ script.Parent.Rotation = ttr[track]</string>
             </Rect2D>
             <float name="SliceScale">1</float>
             <int64 name="SourceAssetId">-1</int64>
-            <BinaryString name="Tags"></BinaryString>
+            <BinaryString name="Tags">
+            </BinaryString>
             <UDim2 name="TileSize">
               <XS>1</XS>
               <XO>0</XO>
@@ -699,7 +764,8 @@ script.Parent.Rotation = ttr[track]</string>
             </BinaryString>
             <token name="DominantAxis">0</token>
             <int64 name="SourceAssetId">-1</int64>
-            <BinaryString name="Tags"></BinaryString>
+            <BinaryString name="Tags">
+            </BinaryString>
           </Properties>
         </Item>
       </Item>
@@ -713,7 +779,7 @@ script.Parent.Rotation = ttr[track]</string>
           <null>
           </null>
         </Content>
-        <string name="ScriptGuid">{3CCC0DA7-FFBA-47FA-B2AA-E6ECB1E43CA7}</string>
+        <string name="ScriptGuid">{2D1A8D91-F4DB-4150-ABCD-2DE8A604DC8C}</string>
         <string name="Source">return {
 	Name = "Elvis' Spoingus",
 	Author = "Karnajj",
@@ -723,7 +789,8 @@ script.Parent.Rotation = ttr[track]</string>
 	Data = nil -- Keep this empty for skin data
 }</string>
         <int64 name="SourceAssetId">-1</int64>
-        <BinaryString name="Tags"></BinaryString>
+        <BinaryString name="Tags">
+        </BinaryString>
       </Properties>
     </Item>
     <Item class="Frame" referent="17">
@@ -767,7 +834,13 @@ script.Parent.Rotation = ttr[track]</string>
         <Ref name="RootLocalizationTable">null</Ref>
         <float name="Rotation">0</float>
         <bool name="Selectable">false</bool>
+        <token name="SelectionBehaviorDown">0</token>
+        <token name="SelectionBehaviorLeft">0</token>
+        <token name="SelectionBehaviorRight">0</token>
+        <token name="SelectionBehaviorUp">0</token>
+        <bool name="SelectionGroup">false</bool>
         <Ref name="SelectionImageObject">null</Ref>
+        <int name="SelectionOrder">0</int>
         <UDim2 name="Size">
           <XS>0.26</XS>
           <XO>0</XO>
@@ -777,7 +850,8 @@ script.Parent.Rotation = ttr[track]</string>
         <token name="SizeConstraint">0</token>
         <int64 name="SourceAssetId">-1</int64>
         <token name="Style">0</token>
-        <BinaryString name="Tags"></BinaryString>
+        <BinaryString name="Tags">
+        </BinaryString>
         <bool name="Visible">true</bool>
         <int name="ZIndex">2</int>
       </Properties>
@@ -787,7 +861,8 @@ script.Parent.Rotation = ttr[track]</string>
           <BinaryString name="AttributesSerialize">
           </BinaryString>
           <int64 name="SourceAssetId">-1</int64>
-          <BinaryString name="Tags"></BinaryString>
+          <BinaryString name="Tags">
+          </BinaryString>
         </Properties>
       </Item>
       <Item class="Frame" referent="19">
@@ -831,7 +906,13 @@ script.Parent.Rotation = ttr[track]</string>
           <Ref name="RootLocalizationTable">null</Ref>
           <float name="Rotation">0</float>
           <bool name="Selectable">false</bool>
+          <token name="SelectionBehaviorDown">0</token>
+          <token name="SelectionBehaviorLeft">0</token>
+          <token name="SelectionBehaviorRight">0</token>
+          <token name="SelectionBehaviorUp">0</token>
+          <bool name="SelectionGroup">false</bool>
           <Ref name="SelectionImageObject">null</Ref>
+          <int name="SelectionOrder">0</int>
           <UDim2 name="Size">
             <XS>1</XS>
             <XO>0</XO>
@@ -841,7 +922,8 @@ script.Parent.Rotation = ttr[track]</string>
           <token name="SizeConstraint">0</token>
           <int64 name="SourceAssetId">-1</int64>
           <token name="Style">0</token>
-          <BinaryString name="Tags"></BinaryString>
+          <BinaryString name="Tags">
+          </BinaryString>
           <bool name="Visible">true</bool>
           <int name="ZIndex">0</int>
         </Properties>
@@ -886,7 +968,13 @@ script.Parent.Rotation = ttr[track]</string>
             <Ref name="RootLocalizationTable">null</Ref>
             <float name="Rotation">0</float>
             <bool name="Selectable">false</bool>
+            <token name="SelectionBehaviorDown">0</token>
+            <token name="SelectionBehaviorLeft">0</token>
+            <token name="SelectionBehaviorRight">0</token>
+            <token name="SelectionBehaviorUp">0</token>
+            <bool name="SelectionGroup">false</bool>
             <Ref name="SelectionImageObject">null</Ref>
+            <int name="SelectionOrder">0</int>
             <UDim2 name="Size">
               <XS>0.25</XS>
               <XO>0</XO>
@@ -896,7 +984,8 @@ script.Parent.Rotation = ttr[track]</string>
             <token name="SizeConstraint">0</token>
             <int64 name="SourceAssetId">-1</int64>
             <token name="Style">0</token>
-            <BinaryString name="Tags"></BinaryString>
+            <BinaryString name="Tags">
+            </BinaryString>
             <bool name="Visible">true</bool>
             <int name="ZIndex">2</int>
           </Properties>
@@ -960,7 +1049,13 @@ script.Parent.Rotation = ttr[track]</string>
               <float name="Rotation">0</float>
               <token name="ScaleType">0</token>
               <bool name="Selectable">false</bool>
+              <token name="SelectionBehaviorDown">0</token>
+              <token name="SelectionBehaviorLeft">0</token>
+              <token name="SelectionBehaviorRight">0</token>
+              <token name="SelectionBehaviorUp">0</token>
+              <bool name="SelectionGroup">false</bool>
               <Ref name="SelectionImageObject">null</Ref>
+              <int name="SelectionOrder">0</int>
               <UDim2 name="Size">
                 <XS>1</XS>
                 <XO>0</XO>
@@ -980,7 +1075,8 @@ script.Parent.Rotation = ttr[track]</string>
               </Rect2D>
               <float name="SliceScale">1</float>
               <int64 name="SourceAssetId">-1</int64>
-              <BinaryString name="Tags"></BinaryString>
+              <BinaryString name="Tags">
+              </BinaryString>
               <UDim2 name="TileSize">
                 <XS>1</XS>
                 <XO>0</XO>
@@ -1033,7 +1129,13 @@ script.Parent.Rotation = ttr[track]</string>
             <Ref name="RootLocalizationTable">null</Ref>
             <float name="Rotation">0</float>
             <bool name="Selectable">false</bool>
+            <token name="SelectionBehaviorDown">0</token>
+            <token name="SelectionBehaviorLeft">0</token>
+            <token name="SelectionBehaviorRight">0</token>
+            <token name="SelectionBehaviorUp">0</token>
+            <bool name="SelectionGroup">false</bool>
             <Ref name="SelectionImageObject">null</Ref>
+            <int name="SelectionOrder">0</int>
             <UDim2 name="Size">
               <XS>0.25</XS>
               <XO>0</XO>
@@ -1043,7 +1145,8 @@ script.Parent.Rotation = ttr[track]</string>
             <token name="SizeConstraint">0</token>
             <int64 name="SourceAssetId">-1</int64>
             <token name="Style">0</token>
-            <BinaryString name="Tags"></BinaryString>
+            <BinaryString name="Tags">
+            </BinaryString>
             <bool name="Visible">true</bool>
             <int name="ZIndex">2</int>
           </Properties>
@@ -1107,7 +1210,13 @@ script.Parent.Rotation = ttr[track]</string>
               <float name="Rotation">0</float>
               <token name="ScaleType">0</token>
               <bool name="Selectable">false</bool>
+              <token name="SelectionBehaviorDown">0</token>
+              <token name="SelectionBehaviorLeft">0</token>
+              <token name="SelectionBehaviorRight">0</token>
+              <token name="SelectionBehaviorUp">0</token>
+              <bool name="SelectionGroup">false</bool>
               <Ref name="SelectionImageObject">null</Ref>
+              <int name="SelectionOrder">0</int>
               <UDim2 name="Size">
                 <XS>1</XS>
                 <XO>0</XO>
@@ -1127,7 +1236,8 @@ script.Parent.Rotation = ttr[track]</string>
               </Rect2D>
               <float name="SliceScale">1</float>
               <int64 name="SourceAssetId">-1</int64>
-              <BinaryString name="Tags"></BinaryString>
+              <BinaryString name="Tags">
+              </BinaryString>
               <UDim2 name="TileSize">
                 <XS>1</XS>
                 <XO>0</XO>
@@ -1180,7 +1290,13 @@ script.Parent.Rotation = ttr[track]</string>
             <Ref name="RootLocalizationTable">null</Ref>
             <float name="Rotation">0</float>
             <bool name="Selectable">false</bool>
+            <token name="SelectionBehaviorDown">0</token>
+            <token name="SelectionBehaviorLeft">0</token>
+            <token name="SelectionBehaviorRight">0</token>
+            <token name="SelectionBehaviorUp">0</token>
+            <bool name="SelectionGroup">false</bool>
             <Ref name="SelectionImageObject">null</Ref>
+            <int name="SelectionOrder">0</int>
             <UDim2 name="Size">
               <XS>0.25</XS>
               <XO>0</XO>
@@ -1190,7 +1306,8 @@ script.Parent.Rotation = ttr[track]</string>
             <token name="SizeConstraint">0</token>
             <int64 name="SourceAssetId">-1</int64>
             <token name="Style">0</token>
-            <BinaryString name="Tags"></BinaryString>
+            <BinaryString name="Tags">
+            </BinaryString>
             <bool name="Visible">true</bool>
             <int name="ZIndex">2</int>
           </Properties>
@@ -1254,7 +1371,13 @@ script.Parent.Rotation = ttr[track]</string>
               <float name="Rotation">0</float>
               <token name="ScaleType">0</token>
               <bool name="Selectable">false</bool>
+              <token name="SelectionBehaviorDown">0</token>
+              <token name="SelectionBehaviorLeft">0</token>
+              <token name="SelectionBehaviorRight">0</token>
+              <token name="SelectionBehaviorUp">0</token>
+              <bool name="SelectionGroup">false</bool>
               <Ref name="SelectionImageObject">null</Ref>
+              <int name="SelectionOrder">0</int>
               <UDim2 name="Size">
                 <XS>1</XS>
                 <XO>0</XO>
@@ -1274,7 +1397,8 @@ script.Parent.Rotation = ttr[track]</string>
               </Rect2D>
               <float name="SliceScale">1</float>
               <int64 name="SourceAssetId">-1</int64>
-              <BinaryString name="Tags"></BinaryString>
+              <BinaryString name="Tags">
+              </BinaryString>
               <UDim2 name="TileSize">
                 <XS>1</XS>
                 <XO>0</XO>
@@ -1327,7 +1451,13 @@ script.Parent.Rotation = ttr[track]</string>
             <Ref name="RootLocalizationTable">null</Ref>
             <float name="Rotation">0</float>
             <bool name="Selectable">false</bool>
+            <token name="SelectionBehaviorDown">0</token>
+            <token name="SelectionBehaviorLeft">0</token>
+            <token name="SelectionBehaviorRight">0</token>
+            <token name="SelectionBehaviorUp">0</token>
+            <bool name="SelectionGroup">false</bool>
             <Ref name="SelectionImageObject">null</Ref>
+            <int name="SelectionOrder">0</int>
             <UDim2 name="Size">
               <XS>0.25</XS>
               <XO>0</XO>
@@ -1337,7 +1467,8 @@ script.Parent.Rotation = ttr[track]</string>
             <token name="SizeConstraint">0</token>
             <int64 name="SourceAssetId">-1</int64>
             <token name="Style">0</token>
-            <BinaryString name="Tags"></BinaryString>
+            <BinaryString name="Tags">
+            </BinaryString>
             <bool name="Visible">true</bool>
             <int name="ZIndex">2</int>
           </Properties>
@@ -1401,7 +1532,13 @@ script.Parent.Rotation = ttr[track]</string>
               <float name="Rotation">0</float>
               <token name="ScaleType">0</token>
               <bool name="Selectable">false</bool>
+              <token name="SelectionBehaviorDown">0</token>
+              <token name="SelectionBehaviorLeft">0</token>
+              <token name="SelectionBehaviorRight">0</token>
+              <token name="SelectionBehaviorUp">0</token>
+              <bool name="SelectionGroup">false</bool>
               <Ref name="SelectionImageObject">null</Ref>
+              <int name="SelectionOrder">0</int>
               <UDim2 name="Size">
                 <XS>1</XS>
                 <XO>0</XO>
@@ -1421,7 +1558,8 @@ script.Parent.Rotation = ttr[track]</string>
               </Rect2D>
               <float name="SliceScale">1</float>
               <int64 name="SourceAssetId">-1</int64>
-              <BinaryString name="Tags"></BinaryString>
+              <BinaryString name="Tags">
+              </BinaryString>
               <UDim2 name="TileSize">
                 <XS>1</XS>
                 <XO>0</XO>
@@ -1475,7 +1613,13 @@ script.Parent.Rotation = ttr[track]</string>
           <Ref name="RootLocalizationTable">null</Ref>
           <float name="Rotation">0</float>
           <bool name="Selectable">false</bool>
+          <token name="SelectionBehaviorDown">0</token>
+          <token name="SelectionBehaviorLeft">0</token>
+          <token name="SelectionBehaviorRight">0</token>
+          <token name="SelectionBehaviorUp">0</token>
+          <bool name="SelectionGroup">false</bool>
           <Ref name="SelectionImageObject">null</Ref>
+          <int name="SelectionOrder">0</int>
           <UDim2 name="Size">
             <XS>1</XS>
             <XO>0</XO>
@@ -1485,7 +1629,8 @@ script.Parent.Rotation = ttr[track]</string>
           <token name="SizeConstraint">0</token>
           <int64 name="SourceAssetId">-1</int64>
           <token name="Style">0</token>
-          <BinaryString name="Tags"></BinaryString>
+          <BinaryString name="Tags">
+          </BinaryString>
           <bool name="Visible">true</bool>
           <int name="ZIndex">1</int>
         </Properties>
@@ -1530,7 +1675,13 @@ script.Parent.Rotation = ttr[track]</string>
             <Ref name="RootLocalizationTable">null</Ref>
             <float name="Rotation">0</float>
             <bool name="Selectable">false</bool>
+            <token name="SelectionBehaviorDown">0</token>
+            <token name="SelectionBehaviorLeft">0</token>
+            <token name="SelectionBehaviorRight">0</token>
+            <token name="SelectionBehaviorUp">0</token>
+            <bool name="SelectionGroup">false</bool>
             <Ref name="SelectionImageObject">null</Ref>
+            <int name="SelectionOrder">0</int>
             <UDim2 name="Size">
               <XS>0.25</XS>
               <XO>0</XO>
@@ -1540,7 +1691,8 @@ script.Parent.Rotation = ttr[track]</string>
             <token name="SizeConstraint">0</token>
             <int64 name="SourceAssetId">-1</int64>
             <token name="Style">0</token>
-            <BinaryString name="Tags"></BinaryString>
+            <BinaryString name="Tags">
+            </BinaryString>
             <bool name="Visible">true</bool>
             <int name="ZIndex">1</int>
           </Properties>
@@ -1604,7 +1756,13 @@ script.Parent.Rotation = ttr[track]</string>
               <float name="Rotation">90</float>
               <token name="ScaleType">3</token>
               <bool name="Selectable">false</bool>
+              <token name="SelectionBehaviorDown">0</token>
+              <token name="SelectionBehaviorLeft">0</token>
+              <token name="SelectionBehaviorRight">0</token>
+              <token name="SelectionBehaviorUp">0</token>
+              <bool name="SelectionGroup">false</bool>
               <Ref name="SelectionImageObject">null</Ref>
+              <int name="SelectionOrder">0</int>
               <UDim2 name="Size">
                 <XS>1</XS>
                 <XO>0</XO>
@@ -1624,7 +1782,8 @@ script.Parent.Rotation = ttr[track]</string>
               </Rect2D>
               <float name="SliceScale">1</float>
               <int64 name="SourceAssetId">-1</int64>
-              <BinaryString name="Tags"></BinaryString>
+              <BinaryString name="Tags">
+              </BinaryString>
               <UDim2 name="TileSize">
                 <XS>1</XS>
                 <XO>0</XO>
@@ -1677,7 +1836,13 @@ script.Parent.Rotation = ttr[track]</string>
             <Ref name="RootLocalizationTable">null</Ref>
             <float name="Rotation">0</float>
             <bool name="Selectable">false</bool>
+            <token name="SelectionBehaviorDown">0</token>
+            <token name="SelectionBehaviorLeft">0</token>
+            <token name="SelectionBehaviorRight">0</token>
+            <token name="SelectionBehaviorUp">0</token>
+            <bool name="SelectionGroup">false</bool>
             <Ref name="SelectionImageObject">null</Ref>
+            <int name="SelectionOrder">0</int>
             <UDim2 name="Size">
               <XS>0.25</XS>
               <XO>0</XO>
@@ -1687,7 +1852,8 @@ script.Parent.Rotation = ttr[track]</string>
             <token name="SizeConstraint">0</token>
             <int64 name="SourceAssetId">-1</int64>
             <token name="Style">0</token>
-            <BinaryString name="Tags"></BinaryString>
+            <BinaryString name="Tags">
+            </BinaryString>
             <bool name="Visible">true</bool>
             <int name="ZIndex">1</int>
           </Properties>
@@ -1751,7 +1917,13 @@ script.Parent.Rotation = ttr[track]</string>
               <float name="Rotation">0</float>
               <token name="ScaleType">3</token>
               <bool name="Selectable">false</bool>
+              <token name="SelectionBehaviorDown">0</token>
+              <token name="SelectionBehaviorLeft">0</token>
+              <token name="SelectionBehaviorRight">0</token>
+              <token name="SelectionBehaviorUp">0</token>
+              <bool name="SelectionGroup">false</bool>
               <Ref name="SelectionImageObject">null</Ref>
+              <int name="SelectionOrder">0</int>
               <UDim2 name="Size">
                 <XS>1</XS>
                 <XO>0</XO>
@@ -1771,7 +1943,8 @@ script.Parent.Rotation = ttr[track]</string>
               </Rect2D>
               <float name="SliceScale">1</float>
               <int64 name="SourceAssetId">-1</int64>
-              <BinaryString name="Tags"></BinaryString>
+              <BinaryString name="Tags">
+              </BinaryString>
               <UDim2 name="TileSize">
                 <XS>1</XS>
                 <XO>0</XO>
@@ -1824,7 +1997,13 @@ script.Parent.Rotation = ttr[track]</string>
             <Ref name="RootLocalizationTable">null</Ref>
             <float name="Rotation">0</float>
             <bool name="Selectable">false</bool>
+            <token name="SelectionBehaviorDown">0</token>
+            <token name="SelectionBehaviorLeft">0</token>
+            <token name="SelectionBehaviorRight">0</token>
+            <token name="SelectionBehaviorUp">0</token>
+            <bool name="SelectionGroup">false</bool>
             <Ref name="SelectionImageObject">null</Ref>
+            <int name="SelectionOrder">0</int>
             <UDim2 name="Size">
               <XS>0.25</XS>
               <XO>0</XO>
@@ -1834,7 +2013,8 @@ script.Parent.Rotation = ttr[track]</string>
             <token name="SizeConstraint">0</token>
             <int64 name="SourceAssetId">-1</int64>
             <token name="Style">0</token>
-            <BinaryString name="Tags"></BinaryString>
+            <BinaryString name="Tags">
+            </BinaryString>
             <bool name="Visible">true</bool>
             <int name="ZIndex">1</int>
           </Properties>
@@ -1898,7 +2078,13 @@ script.Parent.Rotation = ttr[track]</string>
               <float name="Rotation">180</float>
               <token name="ScaleType">3</token>
               <bool name="Selectable">false</bool>
+              <token name="SelectionBehaviorDown">0</token>
+              <token name="SelectionBehaviorLeft">0</token>
+              <token name="SelectionBehaviorRight">0</token>
+              <token name="SelectionBehaviorUp">0</token>
+              <bool name="SelectionGroup">false</bool>
               <Ref name="SelectionImageObject">null</Ref>
+              <int name="SelectionOrder">0</int>
               <UDim2 name="Size">
                 <XS>1</XS>
                 <XO>0</XO>
@@ -1918,7 +2104,8 @@ script.Parent.Rotation = ttr[track]</string>
               </Rect2D>
               <float name="SliceScale">1</float>
               <int64 name="SourceAssetId">-1</int64>
-              <BinaryString name="Tags"></BinaryString>
+              <BinaryString name="Tags">
+              </BinaryString>
               <UDim2 name="TileSize">
                 <XS>1</XS>
                 <XO>0</XO>
@@ -1971,7 +2158,13 @@ script.Parent.Rotation = ttr[track]</string>
             <Ref name="RootLocalizationTable">null</Ref>
             <float name="Rotation">0</float>
             <bool name="Selectable">false</bool>
+            <token name="SelectionBehaviorDown">0</token>
+            <token name="SelectionBehaviorLeft">0</token>
+            <token name="SelectionBehaviorRight">0</token>
+            <token name="SelectionBehaviorUp">0</token>
+            <bool name="SelectionGroup">false</bool>
             <Ref name="SelectionImageObject">null</Ref>
+            <int name="SelectionOrder">0</int>
             <UDim2 name="Size">
               <XS>0.25</XS>
               <XO>0</XO>
@@ -1981,7 +2174,8 @@ script.Parent.Rotation = ttr[track]</string>
             <token name="SizeConstraint">0</token>
             <int64 name="SourceAssetId">-1</int64>
             <token name="Style">0</token>
-            <BinaryString name="Tags"></BinaryString>
+            <BinaryString name="Tags">
+            </BinaryString>
             <bool name="Visible">true</bool>
             <int name="ZIndex">1</int>
           </Properties>
@@ -2045,7 +2239,13 @@ script.Parent.Rotation = ttr[track]</string>
               <float name="Rotation">270</float>
               <token name="ScaleType">3</token>
               <bool name="Selectable">false</bool>
+              <token name="SelectionBehaviorDown">0</token>
+              <token name="SelectionBehaviorLeft">0</token>
+              <token name="SelectionBehaviorRight">0</token>
+              <token name="SelectionBehaviorUp">0</token>
+              <bool name="SelectionGroup">false</bool>
               <Ref name="SelectionImageObject">null</Ref>
+              <int name="SelectionOrder">0</int>
               <UDim2 name="Size">
                 <XS>1</XS>
                 <XO>0</XO>
@@ -2065,7 +2265,8 @@ script.Parent.Rotation = ttr[track]</string>
               </Rect2D>
               <float name="SliceScale">1</float>
               <int64 name="SourceAssetId">-1</int64>
-              <BinaryString name="Tags"></BinaryString>
+              <BinaryString name="Tags">
+              </BinaryString>
               <UDim2 name="TileSize">
                 <XS>1</XS>
                 <XO>0</XO>
@@ -2137,7 +2338,13 @@ script.Parent.Rotation = ttr[track]</string>
             <float name="Rotation">0</float>
             <token name="ScaleType">0</token>
             <bool name="Selectable">false</bool>
+            <token name="SelectionBehaviorDown">0</token>
+            <token name="SelectionBehaviorLeft">0</token>
+            <token name="SelectionBehaviorRight">0</token>
+            <token name="SelectionBehaviorUp">0</token>
+            <bool name="SelectionGroup">false</bool>
             <Ref name="SelectionImageObject">null</Ref>
+            <int name="SelectionOrder">0</int>
             <UDim2 name="Size">
               <XS>1</XS>
               <XO>0</XO>
@@ -2157,7 +2364,8 @@ script.Parent.Rotation = ttr[track]</string>
             </Rect2D>
             <float name="SliceScale">1</float>
             <int64 name="SourceAssetId">-1</int64>
-            <BinaryString name="Tags"></BinaryString>
+            <BinaryString name="Tags">
+            </BinaryString>
             <UDim2 name="TileSize">
               <XS>1</XS>
               <XO>0</XO>

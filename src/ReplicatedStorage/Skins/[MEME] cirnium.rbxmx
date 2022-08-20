@@ -1,235 +1,37 @@
 <roblox version="4">
   <Item class="Folder" referent="0">
     <Properties>
-      <string name="Name">RSkinBarV.1.2</string>
+      <string name="Name">[MEME] cirnium</string>
       <BinaryString name="AttributesSerialize">
       </BinaryString>
       <int64 name="SourceAssetId">-1</int64>
       <BinaryString name="Tags">
       </BinaryString>
     </Properties>
-    <Item class="Color3Value" referent="1">
+    <Item class="ModuleScript" referent="1">
       <Properties>
-        <string name="Name">ButtonColor</string>
+        <string name="Name">SkinInfo</string>
         <BinaryString name="AttributesSerialize">
         </BinaryString>
+        <Content name="LinkedSource">
+          <null>
+          </null>
+        </Content>
+        <string name="ScriptGuid">{63A1A80E-5B93-4A15-A1EF-409D420672E0}</string>
+        <string name="Source">return {
+	Name = "susJAM [ANIMATED]",
+	Author = "YasiCree",
+	Type = "SUS",
+	NoteAsHeldArrowHit = true,
+	Number = 0, -- Keep this empty for skin number
+	Data = nil -- Keep this empty for skin data
+}</string>
         <int64 name="SourceAssetId">-1</int64>
         <BinaryString name="Tags">
         </BinaryString>
-        <Color3 name="Value">
-          <R>0.22352943</R>
-          <G>0.4039216</G>
-          <B>1</B>
-        </Color3>
       </Properties>
     </Item>
-    <Item class="Frame" referent="2">
-      <Properties>
-        <string name="Name">NoteProto</string>
-        <bool name="Active">false</bool>
-        <Vector2 name="AnchorPoint">
-          <X>0.5</X>
-          <Y>0.5</Y>
-        </Vector2>
-        <BinaryString name="AttributesSerialize">
-        </BinaryString>
-        <bool name="AutoLocalize">true</bool>
-        <token name="AutomaticSize">0</token>
-        <Color3 name="BackgroundColor3">
-          <R>0</R>
-          <G>0</G>
-          <B>0</B>
-        </Color3>
-        <float name="BackgroundTransparency">1</float>
-        <Color3 name="BorderColor3">
-          <R>1</R>
-          <G>1</G>
-          <B>1</B>
-        </Color3>
-        <token name="BorderMode">0</token>
-        <int name="BorderSizePixel">0</int>
-        <bool name="ClipsDescendants">false</bool>
-        <bool name="Draggable">false</bool>
-        <int name="LayoutOrder">0</int>
-        <Ref name="NextSelectionDown">null</Ref>
-        <Ref name="NextSelectionLeft">null</Ref>
-        <Ref name="NextSelectionRight">null</Ref>
-        <Ref name="NextSelectionUp">null</Ref>
-        <UDim2 name="Position">
-          <XS>0.5</XS>
-          <XO>0</XO>
-          <YS>0.75</YS>
-          <YO>0</YO>
-        </UDim2>
-        <Ref name="RootLocalizationTable">null</Ref>
-        <float name="Rotation">0</float>
-        <bool name="Selectable">false</bool>
-        <token name="SelectionBehaviorDown">0</token>
-        <token name="SelectionBehaviorLeft">0</token>
-        <token name="SelectionBehaviorRight">0</token>
-        <token name="SelectionBehaviorUp">0</token>
-        <bool name="SelectionGroup">false</bool>
-        <Ref name="SelectionImageObject">null</Ref>
-        <int name="SelectionOrder">0</int>
-        <UDim2 name="Size">
-          <XS>1</XS>
-          <XO>0</XO>
-          <YS>1</YS>
-          <YO>0</YO>
-        </UDim2>
-        <token name="SizeConstraint">0</token>
-        <int64 name="SourceAssetId">-1</int64>
-        <token name="Style">0</token>
-        <BinaryString name="Tags">
-        </BinaryString>
-        <bool name="Visible">true</bool>
-        <int name="ZIndex">8</int>
-      </Properties>
-      <Item class="UIAspectRatioConstraint" referent="3">
-        <Properties>
-          <string name="Name">UIAspectRatioConstraint</string>
-          <float name="AspectRatio">1</float>
-          <token name="AspectType">1</token>
-          <BinaryString name="AttributesSerialize">
-          </BinaryString>
-          <token name="DominantAxis">0</token>
-          <int64 name="SourceAssetId">-1</int64>
-          <BinaryString name="Tags">
-          </BinaryString>
-        </Properties>
-      </Item>
-      <Item class="LocalScript" referent="4">
-        <Properties>
-          <string name="Name">DirectionChanger</string>
-          <BinaryString name="AttributesSerialize">
-          </BinaryString>
-          <bool name="Disabled">false</bool>
-          <Content name="LinkedSource">
-            <null>
-            </null>
-          </Content>
-          <token name="RunContext">0</token>
-          <string name="ScriptGuid">{2941B08B-845C-4803-868B-8E1ABCE21EFE}</string>
-          <string name="Source"><![CDATA[local imgkeys =
-{
-		"rbxassetid://8397289393",
-		"rbxassetid://8397285040",
-		"rbxassetid://8397285040",
-		"rbxassetid://8397289393"
-}
-
-local note = script.Parent
-local img = note.ImageLabel
-local track = note.Parent
-local index = tonumber(string.sub(track.Name,string.len(track.Name)))
-img.Image = imgkeys[index]
-]]></string>
-          <int64 name="SourceAssetId">-1</int64>
-          <BinaryString name="Tags">
-          </BinaryString>
-        </Properties>
-      </Item>
-      <Item class="ImageLabel" referent="5">
-        <Properties>
-          <string name="Name">ImageLabel</string>
-          <bool name="Active">false</bool>
-          <Vector2 name="AnchorPoint">
-            <X>0.5</X>
-            <Y>0.5</Y>
-          </Vector2>
-          <BinaryString name="AttributesSerialize">
-          </BinaryString>
-          <bool name="AutoLocalize">true</bool>
-          <token name="AutomaticSize">0</token>
-          <Color3 name="BackgroundColor3">
-            <R>1</R>
-            <G>1</G>
-            <B>1</B>
-          </Color3>
-          <float name="BackgroundTransparency">1</float>
-          <Color3 name="BorderColor3">
-            <R>0.10588236</R>
-            <G>0.16470589</G>
-            <B>0.20784315</B>
-          </Color3>
-          <token name="BorderMode">0</token>
-          <int name="BorderSizePixel">1</int>
-          <bool name="ClipsDescendants">false</bool>
-          <bool name="Draggable">false</bool>
-          <Content name="Image">
-            <null>
-            </null>
-          </Content>
-          <Color3 name="ImageColor3">
-            <R>1</R>
-            <G>1</G>
-            <B>1</B>
-          </Color3>
-          <Vector2 name="ImageRectOffset">
-            <X>0</X>
-            <Y>0</Y>
-          </Vector2>
-          <Vector2 name="ImageRectSize">
-            <X>0</X>
-            <Y>0</Y>
-          </Vector2>
-          <float name="ImageTransparency">0</float>
-          <int name="LayoutOrder">0</int>
-          <Ref name="NextSelectionDown">null</Ref>
-          <Ref name="NextSelectionLeft">null</Ref>
-          <Ref name="NextSelectionRight">null</Ref>
-          <Ref name="NextSelectionUp">null</Ref>
-          <UDim2 name="Position">
-            <XS>0.5</XS>
-            <XO>0</XO>
-            <YS>0.5</YS>
-            <YO>0</YO>
-          </UDim2>
-          <token name="ResampleMode">0</token>
-          <Ref name="RootLocalizationTable">null</Ref>
-          <float name="Rotation">0</float>
-          <token name="ScaleType">0</token>
-          <bool name="Selectable">false</bool>
-          <token name="SelectionBehaviorDown">0</token>
-          <token name="SelectionBehaviorLeft">0</token>
-          <token name="SelectionBehaviorRight">0</token>
-          <token name="SelectionBehaviorUp">0</token>
-          <bool name="SelectionGroup">false</bool>
-          <Ref name="SelectionImageObject">null</Ref>
-          <int name="SelectionOrder">0</int>
-          <UDim2 name="Size">
-            <XS>1</XS>
-            <XO>0</XO>
-            <YS>1</YS>
-            <YO>0</YO>
-          </UDim2>
-          <token name="SizeConstraint">0</token>
-          <Rect2D name="SliceCenter">
-            <min>
-              <X>0</X>
-              <Y>0</Y>
-            </min>
-            <max>
-              <X>0</X>
-              <Y>0</Y>
-            </max>
-          </Rect2D>
-          <float name="SliceScale">1</float>
-          <int64 name="SourceAssetId">-1</int64>
-          <BinaryString name="Tags">
-          </BinaryString>
-          <UDim2 name="TileSize">
-            <XS>1</XS>
-            <XO>0</XO>
-            <YS>1</YS>
-            <YO>0</YO>
-          </UDim2>
-          <bool name="Visible">true</bool>
-          <int name="ZIndex">6</int>
-        </Properties>
-      </Item>
-    </Item>
-    <Item class="Folder" referent="6">
+    <Item class="Folder" referent="2">
       <Properties>
         <string name="Name">HeldNoteProto</string>
         <BinaryString name="AttributesSerialize">
@@ -238,7 +40,7 @@ img.Image = imgkeys[index]
         <BinaryString name="Tags">
         </BinaryString>
       </Properties>
-      <Item class="Frame" referent="7">
+      <Item class="Frame" referent="3">
         <Properties>
           <string name="Name">Head</string>
           <bool name="Active">false</bool>
@@ -300,7 +102,7 @@ img.Image = imgkeys[index]
           <bool name="Visible">true</bool>
           <int name="ZIndex">7</int>
         </Properties>
-        <Item class="UIAspectRatioConstraint" referent="8">
+        <Item class="UIAspectRatioConstraint" referent="4">
           <Properties>
             <string name="Name">UIAspectRatioConstraint</string>
             <float name="AspectRatio">1</float>
@@ -313,41 +115,7 @@ img.Image = imgkeys[index]
             </BinaryString>
           </Properties>
         </Item>
-        <Item class="LocalScript" referent="9">
-          <Properties>
-            <string name="Name">DirectionChangerLN</string>
-            <BinaryString name="AttributesSerialize">
-            </BinaryString>
-            <bool name="Disabled">false</bool>
-            <Content name="LinkedSource">
-              <null>
-              </null>
-            </Content>
-            <token name="RunContext">0</token>
-            <string name="ScriptGuid">{A9EA4316-3D73-47B2-A867-184BDEF87887}</string>
-            <string name="Source"><![CDATA[--LONG NOTE PROTO VERSION!
-
-local imgkeys =
-{
-		"rbxassetid://8397289393",
-		"rbxassetid://8397285040",
-		"rbxassetid://8397285040",
-		"rbxassetid://8397289393"
-}
-
-local note = script.Parent
-local fullbody = note.Parent
-local img = note.ImageLabel
-local track = fullbody.Parent
-local index = tonumber(string.sub(track.Name,string.len(track.Name)))
-img.Image = imgkeys[index]
-]]></string>
-            <int64 name="SourceAssetId">-1</int64>
-            <BinaryString name="Tags">
-            </BinaryString>
-          </Properties>
-        </Item>
-        <Item class="ImageLabel" referent="10">
+        <Item class="ImageLabel" referent="5">
           <Properties>
             <string name="Name">ImageLabel</string>
             <bool name="Active">false</bool>
@@ -375,8 +143,7 @@ img.Image = imgkeys[index]
             <bool name="ClipsDescendants">false</bool>
             <bool name="Draggable">false</bool>
             <Content name="Image">
-              <null>
-              </null>
+              <url>rbxassetid://9103526315</url>
             </Content>
             <Color3 name="ImageColor3">
               <R>1</R>
@@ -445,9 +212,173 @@ img.Image = imgkeys[index]
             <bool name="Visible">true</bool>
             <int name="ZIndex">6</int>
           </Properties>
+          <Item class="LocalScript" referent="6">
+            <Properties>
+              <string name="Name">LocalScript</string>
+              <BinaryString name="AttributesSerialize">
+              </BinaryString>
+              <bool name="Disabled">false</bool>
+              <Content name="LinkedSource">
+                <null>
+                </null>
+              </Content>
+              <token name="RunContext">0</token>
+              <string name="ScriptGuid">{FE1CE426-625F-461C-B4AA-31EA8A89D341}</string>
+              <string name="Source"><![CDATA[local RobloxMaxImageSize = 1024
+local function AnimateGif(ImageLabel:ImageLabel,ImageWidth,ImageHeight,Rows,Columns,NumberOfFrames,ImageId,FPS)
+
+	if ImageId then ImageLabel.Image = "http://www.roblox.com/asset/?id=" .. ImageId end
+
+	local RealWidth, RealHeight
+
+	if math.max(ImageWidth,ImageHeight) > RobloxMaxImageSize then -- Compensate roblox size
+
+		local Longest = ImageWidth > ImageHeight and "Width" or "Height"
+
+		if Longest == "Width" then
+
+			RealWidth = RobloxMaxImageSize
+			RealHeight = (RealWidth / ImageWidth) * ImageHeight
+
+		elseif Longest == "Height" then
+
+			RealHeight = RobloxMaxImageSize
+			RealWidth = (RealHeight / ImageHeight) * ImageWidth
+
+		end
+
+	else
+		RealWidth,RealHeight = ImageWidth,ImageHeight
+	end
+
+	local FrameSize = Vector2.new(RealWidth/Columns,RealHeight/Rows)
+	ImageLabel.ImageRectSize = FrameSize
+
+	local CurrentRow, CurrentColumn = 0,0
+	local Offsets = {}
+
+	for i = 1,NumberOfFrames do
+
+		local CurrentX = CurrentColumn * FrameSize.X
+		local CurrentY = CurrentRow * FrameSize.Y
+
+		table.insert(Offsets,Vector2.new(CurrentX,CurrentY))
+
+		CurrentColumn += 1
+
+		if CurrentColumn >= Columns then
+			CurrentColumn = 0
+			CurrentRow += 1
+		end
+
+	end
+
+	local TimeInterval = FPS and 1/FPS or 0.1
+
+	local Index = 0
+	task.spawn(function()
+
+		while task.wait(TimeInterval) and ImageLabel:IsDescendantOf(game) do
+			Index += 1
+
+			ImageLabel.ImageRectOffset = Offsets[Index]
+
+			if Index >= NumberOfFrames then
+				Index = 0
+			end
+
+		end
+
+	end)
+
+end
+
+AnimateGif(script.Parent,2490,2670,6,5,29,9103526315,30)
+]]></string>
+              <int64 name="SourceAssetId">-1</int64>
+              <BinaryString name="Tags">
+              </BinaryString>
+            </Properties>
+          </Item>
         </Item>
       </Item>
-      <Item class="Frame" referent="11">
+      <Item class="Frame" referent="7">
+        <Properties>
+          <string name="Name">Tail</string>
+          <bool name="Active">false</bool>
+          <Vector2 name="AnchorPoint">
+            <X>0.5</X>
+            <Y>0.5</Y>
+          </Vector2>
+          <BinaryString name="AttributesSerialize">
+          </BinaryString>
+          <bool name="AutoLocalize">true</bool>
+          <token name="AutomaticSize">0</token>
+          <Color3 name="BackgroundColor3">
+            <R>0.19607845</R>
+            <G>0.7176471</G>
+            <B>0.8745099</B>
+          </Color3>
+          <float name="BackgroundTransparency">0</float>
+          <Color3 name="BorderColor3">
+            <R>0.10588236</R>
+            <G>0.16470589</G>
+            <B>0.20784315</B>
+          </Color3>
+          <token name="BorderMode">0</token>
+          <int name="BorderSizePixel">0</int>
+          <bool name="ClipsDescendants">true</bool>
+          <bool name="Draggable">false</bool>
+          <int name="LayoutOrder">0</int>
+          <Ref name="NextSelectionDown">null</Ref>
+          <Ref name="NextSelectionLeft">null</Ref>
+          <Ref name="NextSelectionRight">null</Ref>
+          <Ref name="NextSelectionUp">null</Ref>
+          <UDim2 name="Position">
+            <XS>0.5</XS>
+            <XO>0</XO>
+            <YS>0.4</YS>
+            <YO>0</YO>
+          </UDim2>
+          <Ref name="RootLocalizationTable">null</Ref>
+          <float name="Rotation">45</float>
+          <bool name="Selectable">false</bool>
+          <token name="SelectionBehaviorDown">0</token>
+          <token name="SelectionBehaviorLeft">0</token>
+          <token name="SelectionBehaviorRight">0</token>
+          <token name="SelectionBehaviorUp">0</token>
+          <bool name="SelectionGroup">false</bool>
+          <Ref name="SelectionImageObject">null</Ref>
+          <int name="SelectionOrder">0</int>
+          <UDim2 name="Size">
+            <XS>0.31</XS>
+            <XO>0</XO>
+            <YS>0.31</YS>
+            <YO>0</YO>
+          </UDim2>
+          <token name="SizeConstraint">0</token>
+          <int64 name="SourceAssetId">-1</int64>
+          <token name="Style">0</token>
+          <BinaryString name="Tags">
+          </BinaryString>
+          <bool name="Visible">true</bool>
+          <int name="ZIndex">6</int>
+        </Properties>
+        <Item class="UIAspectRatioConstraint" referent="8">
+          <Properties>
+            <string name="Name">UIAspectRatioConstraint</string>
+            <float name="AspectRatio">1</float>
+            <token name="AspectType">1</token>
+            <BinaryString name="AttributesSerialize">
+            </BinaryString>
+            <token name="DominantAxis">0</token>
+            <int64 name="SourceAssetId">-1</int64>
+            <BinaryString name="Tags">
+            </BinaryString>
+          </Properties>
+        </Item>
+      </Item>
+      <Item class="Frame" referent="9">
         <Properties>
           <string name="Name">Body</string>
           <bool name="Active">false</bool>
@@ -460,9 +391,9 @@ img.Image = imgkeys[index]
           <bool name="AutoLocalize">true</bool>
           <token name="AutomaticSize">0</token>
           <Color3 name="BackgroundColor3">
-            <R>0.6509804</R>
-            <G>0.6509804</G>
-            <B>0.6509804</B>
+            <R>0.19607845</R>
+            <G>0.7176471</G>
+            <B>0.8745099</B>
           </Color3>
           <float name="BackgroundTransparency">0</float>
           <Color3 name="BorderColor3">
@@ -496,7 +427,7 @@ img.Image = imgkeys[index]
           <Ref name="SelectionImageObject">null</Ref>
           <int name="SelectionOrder">0</int>
           <UDim2 name="Size">
-            <XS>0.872</XS>
+            <XS>0.43</XS>
             <XO>0</XO>
             <YS>0.2</YS>
             <YO>0</YO>
@@ -510,9 +441,85 @@ img.Image = imgkeys[index]
           <int name="ZIndex">6</int>
         </Properties>
       </Item>
-      <Item class="Frame" referent="12">
+    </Item>
+    <Item class="Frame" referent="10">
+      <Properties>
+        <string name="Name">NoteProto</string>
+        <bool name="Active">false</bool>
+        <Vector2 name="AnchorPoint">
+          <X>0.5</X>
+          <Y>0.5</Y>
+        </Vector2>
+        <BinaryString name="AttributesSerialize">
+        </BinaryString>
+        <bool name="AutoLocalize">true</bool>
+        <token name="AutomaticSize">0</token>
+        <Color3 name="BackgroundColor3">
+          <R>0</R>
+          <G>0</G>
+          <B>0</B>
+        </Color3>
+        <float name="BackgroundTransparency">1</float>
+        <Color3 name="BorderColor3">
+          <R>1</R>
+          <G>1</G>
+          <B>1</B>
+        </Color3>
+        <token name="BorderMode">0</token>
+        <int name="BorderSizePixel">0</int>
+        <bool name="ClipsDescendants">false</bool>
+        <bool name="Draggable">false</bool>
+        <int name="LayoutOrder">0</int>
+        <Ref name="NextSelectionDown">null</Ref>
+        <Ref name="NextSelectionLeft">null</Ref>
+        <Ref name="NextSelectionRight">null</Ref>
+        <Ref name="NextSelectionUp">null</Ref>
+        <UDim2 name="Position">
+          <XS>0.5</XS>
+          <XO>0</XO>
+          <YS>0.75</YS>
+          <YO>0</YO>
+        </UDim2>
+        <Ref name="RootLocalizationTable">null</Ref>
+        <float name="Rotation">0</float>
+        <bool name="Selectable">false</bool>
+        <token name="SelectionBehaviorDown">0</token>
+        <token name="SelectionBehaviorLeft">0</token>
+        <token name="SelectionBehaviorRight">0</token>
+        <token name="SelectionBehaviorUp">0</token>
+        <bool name="SelectionGroup">false</bool>
+        <Ref name="SelectionImageObject">null</Ref>
+        <int name="SelectionOrder">0</int>
+        <UDim2 name="Size">
+          <XS>1</XS>
+          <XO>0</XO>
+          <YS>1</YS>
+          <YO>0</YO>
+        </UDim2>
+        <token name="SizeConstraint">0</token>
+        <int64 name="SourceAssetId">-1</int64>
+        <token name="Style">0</token>
+        <BinaryString name="Tags">
+        </BinaryString>
+        <bool name="Visible">true</bool>
+        <int name="ZIndex">8</int>
+      </Properties>
+      <Item class="UIAspectRatioConstraint" referent="11">
         <Properties>
-          <string name="Name">Tail</string>
+          <string name="Name">UIAspectRatioConstraint</string>
+          <float name="AspectRatio">1</float>
+          <token name="AspectType">1</token>
+          <BinaryString name="AttributesSerialize">
+          </BinaryString>
+          <token name="DominantAxis">0</token>
+          <int64 name="SourceAssetId">-1</int64>
+          <BinaryString name="Tags">
+          </BinaryString>
+        </Properties>
+      </Item>
+      <Item class="ImageLabel" referent="12">
+        <Properties>
+          <string name="Name">ImageLabel</string>
           <bool name="Active">false</bool>
           <Vector2 name="AnchorPoint">
             <X>0.5</X>
@@ -534,9 +541,26 @@ img.Image = imgkeys[index]
             <B>0.20784315</B>
           </Color3>
           <token name="BorderMode">0</token>
-          <int name="BorderSizePixel">0</int>
-          <bool name="ClipsDescendants">true</bool>
+          <int name="BorderSizePixel">1</int>
+          <bool name="ClipsDescendants">false</bool>
           <bool name="Draggable">false</bool>
+          <Content name="Image">
+            <url>rbxassetid://9103526315</url>
+          </Content>
+          <Color3 name="ImageColor3">
+            <R>1</R>
+            <G>1</G>
+            <B>1</B>
+          </Color3>
+          <Vector2 name="ImageRectOffset">
+            <X>0</X>
+            <Y>0</Y>
+          </Vector2>
+          <Vector2 name="ImageRectSize">
+            <X>0</X>
+            <Y>0</Y>
+          </Vector2>
+          <float name="ImageTransparency">0</float>
           <int name="LayoutOrder">0</int>
           <Ref name="NextSelectionDown">null</Ref>
           <Ref name="NextSelectionLeft">null</Ref>
@@ -545,11 +569,13 @@ img.Image = imgkeys[index]
           <UDim2 name="Position">
             <XS>0.5</XS>
             <XO>0</XO>
-            <YS>0.4</YS>
+            <YS>0.5</YS>
             <YO>0</YO>
           </UDim2>
+          <token name="ResampleMode">0</token>
           <Ref name="RootLocalizationTable">null</Ref>
           <float name="Rotation">0</float>
+          <token name="ScaleType">0</token>
           <bool name="Selectable">false</bool>
           <token name="SelectionBehaviorDown">0</token>
           <token name="SelectionBehaviorLeft">0</token>
@@ -559,125 +585,118 @@ img.Image = imgkeys[index]
           <Ref name="SelectionImageObject">null</Ref>
           <int name="SelectionOrder">0</int>
           <UDim2 name="Size">
-            <XS>0.9</XS>
+            <XS>1</XS>
             <XO>0</XO>
-            <YS>0.9</YS>
+            <YS>1</YS>
             <YO>0</YO>
           </UDim2>
           <token name="SizeConstraint">0</token>
+          <Rect2D name="SliceCenter">
+            <min>
+              <X>0</X>
+              <Y>0</Y>
+            </min>
+            <max>
+              <X>0</X>
+              <Y>0</Y>
+            </max>
+          </Rect2D>
+          <float name="SliceScale">1</float>
           <int64 name="SourceAssetId">-1</int64>
-          <token name="Style">0</token>
           <BinaryString name="Tags">
           </BinaryString>
+          <UDim2 name="TileSize">
+            <XS>1</XS>
+            <XO>0</XO>
+            <YS>1</YS>
+            <YO>0</YO>
+          </UDim2>
           <bool name="Visible">true</bool>
-          <int name="ZIndex">7</int>
+          <int name="ZIndex">6</int>
         </Properties>
-        <Item class="ImageLabel" referent="13">
+        <Item class="LocalScript" referent="13">
           <Properties>
-            <string name="Name">ImageLabel</string>
-            <bool name="Active">false</bool>
-            <Vector2 name="AnchorPoint">
-              <X>0.5</X>
-              <Y>0.5</Y>
-            </Vector2>
+            <string name="Name">LocalScript</string>
             <BinaryString name="AttributesSerialize">
             </BinaryString>
-            <bool name="AutoLocalize">true</bool>
-            <token name="AutomaticSize">0</token>
-            <Color3 name="BackgroundColor3">
-              <R>1</R>
-              <G>1</G>
-              <B>1</B>
-            </Color3>
-            <float name="BackgroundTransparency">1</float>
-            <Color3 name="BorderColor3">
-              <R>0.10588236</R>
-              <G>0.16470589</G>
-              <B>0.20784315</B>
-            </Color3>
-            <token name="BorderMode">0</token>
-            <int name="BorderSizePixel">1</int>
-            <bool name="ClipsDescendants">false</bool>
-            <bool name="Draggable">false</bool>
-            <Content name="Image">
-              <url>rbxassetid://3163665463</url>
+            <bool name="Disabled">false</bool>
+            <Content name="LinkedSource">
+              <null>
+              </null>
             </Content>
-            <Color3 name="ImageColor3">
-              <R>0.6509804</R>
-              <G>0.6509804</G>
-              <B>0.6509804</B>
-            </Color3>
-            <Vector2 name="ImageRectOffset">
-              <X>0</X>
-              <Y>0</Y>
-            </Vector2>
-            <Vector2 name="ImageRectSize">
-              <X>0</X>
-              <Y>0</Y>
-            </Vector2>
-            <float name="ImageTransparency">0</float>
-            <int name="LayoutOrder">0</int>
-            <Ref name="NextSelectionDown">null</Ref>
-            <Ref name="NextSelectionLeft">null</Ref>
-            <Ref name="NextSelectionRight">null</Ref>
-            <Ref name="NextSelectionUp">null</Ref>
-            <UDim2 name="Position">
-              <XS>0.5</XS>
-              <XO>0</XO>
-              <YS>0.5</YS>
-              <YO>0</YO>
-            </UDim2>
-            <token name="ResampleMode">0</token>
-            <Ref name="RootLocalizationTable">null</Ref>
-            <float name="Rotation">0</float>
-            <token name="ScaleType">0</token>
-            <bool name="Selectable">false</bool>
-            <token name="SelectionBehaviorDown">0</token>
-            <token name="SelectionBehaviorLeft">0</token>
-            <token name="SelectionBehaviorRight">0</token>
-            <token name="SelectionBehaviorUp">0</token>
-            <bool name="SelectionGroup">false</bool>
-            <Ref name="SelectionImageObject">null</Ref>
-            <int name="SelectionOrder">0</int>
-            <UDim2 name="Size">
-              <XS>1</XS>
-              <XO>0</XO>
-              <YS>1</YS>
-              <YO>0</YO>
-            </UDim2>
-            <token name="SizeConstraint">0</token>
-            <Rect2D name="SliceCenter">
-              <min>
-                <X>0</X>
-                <Y>0</Y>
-              </min>
-              <max>
-                <X>0</X>
-                <Y>0</Y>
-              </max>
-            </Rect2D>
-            <float name="SliceScale">1</float>
-            <int64 name="SourceAssetId">-1</int64>
-            <BinaryString name="Tags">
-            </BinaryString>
-            <UDim2 name="TileSize">
-              <XS>1</XS>
-              <XO>0</XO>
-              <YS>1</YS>
-              <YO>0</YO>
-            </UDim2>
-            <bool name="Visible">true</bool>
-            <int name="ZIndex">7</int>
-          </Properties>
-        </Item>
-        <Item class="UIAspectRatioConstraint" referent="14">
-          <Properties>
-            <string name="Name">UIAspectRatioConstraint</string>
-            <float name="AspectRatio">1</float>
-            <token name="AspectType">1</token>
-            <BinaryString name="AttributesSerialize">
-            </BinaryString>
-            <token name="DominantAxis">0</token>
+            <token name="RunContext">0</token>
+            <string name="ScriptGuid">{9EAD17FF-0967-4B31-BDAB-3DF3E68D1165}</string>
+            <string name="Source"><![CDATA[local RobloxMaxImageSize = 1024
+local function AnimateGif(ImageLabel:ImageLabel,ImageWidth,ImageHeight,Rows,Columns,NumberOfFrames,ImageId,FPS)
+
+	if ImageId then ImageLabel.Image = "http://www.roblox.com/asset/?id=" .. ImageId end
+
+	local RealWidth, RealHeight
+
+	if math.max(ImageWidth,ImageHeight) > RobloxMaxImageSize then -- Compensate roblox size
+
+		local Longest = ImageWidth > ImageHeight and "Width" or "Height"
+
+		if Longest == "Width" then
+
+			RealWidth = RobloxMaxImageSize
+			RealHeight = (RealWidth / ImageWidth) * ImageHeight
+
+		elseif Longest == "Height" then
+
+			RealHeight = RobloxMaxImageSize
+			RealWidth = (RealHeight / ImageHeight) * ImageWidth
+
+		end
+
+	else
+		RealWidth,RealHeight = ImageWidth,ImageHeight
+	end
+
+	local FrameSize = Vector2.new(RealWidth/Columns,RealHeight/Rows)
+	ImageLabel.ImageRectSize = FrameSize
+
+	local CurrentRow, CurrentColumn = 0,0
+	local Offsets = {}
+
+	for i = 1,NumberOfFrames do
+
+		local CurrentX = CurrentColumn * FrameSize.X
+		local CurrentY = CurrentRow * FrameSize.Y
+
+		table.insert(Offsets,Vector2.new(CurrentX,CurrentY))
+
+		CurrentColumn += 1
+
+		if CurrentColumn >= Columns then
+			CurrentColumn = 0
+			CurrentRow += 1
+		end
+
+	end
+
+	local TimeInterval = FPS and 1/FPS or 0.1
+
+	local Index = 0
+	task.spawn(function()
+
+		while task.wait(TimeInterval) and ImageLabel:IsDescendantOf(game) do
+			Index += 1
+
+			ImageLabel.ImageRectOffset = Offsets[Index]
+
+			if Index >= NumberOfFrames then
+				Index = 0
+			end
+
+		end
+
+	end)
+
+end
+
+AnimateGif(script.Parent,2490,2670,6,5,29,9103526315,30)
+]]></string>
             <int64 name="SourceAssetId">-1</int64>
             <BinaryString name="Tags">
             </BinaryString>
@@ -685,7 +704,7 @@ img.Image = imgkeys[index]
         </Item>
       </Item>
     </Item>
-    <Item class="ImageLabel" referent="15">
+    <Item class="ImageLabel" referent="14">
       <Properties>
         <string name="Name">EffectProto</string>
         <bool name="Active">false</bool>
@@ -713,8 +732,7 @@ img.Image = imgkeys[index]
         <bool name="ClipsDescendants">false</bool>
         <bool name="Draggable">false</bool>
         <Content name="Image">
-          <null>
-          </null>
+          <url>rbxassetid://9103563455</url>
         </Content>
         <Color3 name="ImageColor3">
           <R>1</R>
@@ -729,7 +747,7 @@ img.Image = imgkeys[index]
           <X>0</X>
           <Y>0</Y>
         </Vector2>
-        <float name="ImageTransparency">0</float>
+        <float name="ImageTransparency">1</float>
         <int name="LayoutOrder">0</int>
         <Ref name="NextSelectionDown">null</Ref>
         <Ref name="NextSelectionLeft">null</Ref>
@@ -783,22 +801,9 @@ img.Image = imgkeys[index]
         <bool name="Visible">true</bool>
         <int name="ZIndex">12</int>
       </Properties>
-      <Item class="UIAspectRatioConstraint" referent="16">
+      <Item class="LocalScript" referent="15">
         <Properties>
-          <string name="Name">UIAspectRatioConstraint</string>
-          <float name="AspectRatio">1</float>
-          <token name="AspectType">1</token>
-          <BinaryString name="AttributesSerialize">
-          </BinaryString>
-          <token name="DominantAxis">0</token>
-          <int64 name="SourceAssetId">-1</int64>
-          <BinaryString name="Tags">
-          </BinaryString>
-        </Properties>
-      </Item>
-      <Item class="LocalScript" referent="17">
-        <Properties>
-          <string name="Name">DirectionChanger</string>
+          <string name="Name">LocalScript</string>
           <BinaryString name="AttributesSerialize">
           </BinaryString>
           <bool name="Disabled">false</bool>
@@ -807,21 +812,77 @@ img.Image = imgkeys[index]
             </null>
           </Content>
           <token name="RunContext">0</token>
-          <string name="ScriptGuid">{0CD3BD7D-6D47-40AF-A224-DF7A48CB056F}</string>
-          <string name="Source"><![CDATA[--EFFECT PROTO VERSION!
+          <string name="ScriptGuid">{F9C8D1BC-673D-43F2-BE97-9DF90F8CAB79}</string>
+          <string name="Source"><![CDATA[local RobloxMaxImageSize = 1024
+local function AnimateGif(ImageLabel:ImageLabel,ImageWidth,ImageHeight,Rows,Columns,NumberOfFrames,ImageId,FPS)
 
-local imgkeys =
-{
-		"rbxassetid://3075538622",
-		"rbxassetid://3075538622",
-		"rbxassetid://3075538622",
-		"rbxassetid://3075538622"
-}
+	if ImageId then ImageLabel.Image = "http://www.roblox.com/asset/?id=" .. ImageId end
 
-local effect = script.Parent
-local track = effect.Parent
-local index = tonumber(string.sub(track.Name,string.len(track.Name)))
-effect.Image = imgkeys[index]
+	local RealWidth, RealHeight
+
+	if math.max(ImageWidth,ImageHeight) > RobloxMaxImageSize then -- Compensate roblox size
+
+		local Longest = ImageWidth > ImageHeight and "Width" or "Height"
+
+		if Longest == "Width" then
+
+			RealWidth = RobloxMaxImageSize
+			RealHeight = (RealWidth / ImageWidth) * ImageHeight
+
+		elseif Longest == "Height" then
+
+			RealHeight = RobloxMaxImageSize
+			RealWidth = (RealHeight / ImageHeight) * ImageWidth
+
+		end
+
+	else
+		RealWidth,RealHeight = ImageWidth,ImageHeight
+	end
+
+	local FrameSize = Vector2.new(RealWidth/Columns,RealHeight/Rows)
+	ImageLabel.ImageRectSize = FrameSize
+
+	local CurrentRow, CurrentColumn = 0,0
+	local Offsets = {}
+
+	for i = 1,NumberOfFrames do
+
+		local CurrentX = CurrentColumn * FrameSize.X
+		local CurrentY = CurrentRow * FrameSize.Y
+
+		table.insert(Offsets,Vector2.new(CurrentX,CurrentY))
+
+		CurrentColumn += 1
+
+		if CurrentColumn >= Columns then
+			CurrentColumn = 0
+			CurrentRow += 1
+		end
+
+	end
+
+	local TimeInterval = FPS and 1/FPS or 0.1
+
+	local Index = 0
+	task.spawn(function()
+
+		while task.wait(TimeInterval) and ImageLabel:IsDescendantOf(game) do
+			Index += 1
+
+			ImageLabel.ImageRectOffset = Offsets[Index]
+
+			if Index >= NumberOfFrames then
+				Index = 0
+			end
+
+		end
+
+	end)
+
+end
+
+AnimateGif(script.Parent,2490,2670,6,5,29,9103563455,30)
 ]]></string>
           <int64 name="SourceAssetId">-1</int64>
           <BinaryString name="Tags">
@@ -829,7 +890,7 @@ effect.Image = imgkeys[index]
         </Properties>
       </Item>
     </Item>
-    <Item class="Frame" referent="18">
+    <Item class="Frame" referent="16">
       <Properties>
         <string name="Name">GameplayFrame</string>
         <bool name="Active">false</bool>
@@ -891,7 +952,7 @@ effect.Image = imgkeys[index]
         <bool name="Visible">true</bool>
         <int name="ZIndex">2</int>
       </Properties>
-      <Item class="Folder" referent="19">
+      <Item class="Folder" referent="17">
         <Properties>
           <string name="Name">ResultPopups</string>
           <BinaryString name="AttributesSerialize">
@@ -901,7 +962,7 @@ effect.Image = imgkeys[index]
           </BinaryString>
         </Properties>
       </Item>
-      <Item class="Frame" referent="20">
+      <Item class="Frame" referent="18">
         <Properties>
           <string name="Name">TriggerButtons</string>
           <bool name="Active">false</bool>
@@ -963,173 +1024,12 @@ effect.Image = imgkeys[index]
           <bool name="Visible">true</bool>
           <int name="ZIndex">0</int>
         </Properties>
-        <Item class="Frame" referent="21">
-          <Properties>
-            <string name="Name">Button2</string>
-            <bool name="Active">false</bool>
-            <Vector2 name="AnchorPoint">
-              <X>0</X>
-              <Y>1</Y>
-            </Vector2>
-            <BinaryString name="AttributesSerialize">
-            </BinaryString>
-            <bool name="AutoLocalize">true</bool>
-            <token name="AutomaticSize">0</token>
-            <Color3 name="BackgroundColor3">
-              <R>0.007843138</R>
-              <G>0.007843138</G>
-              <B>0.007843138</B>
-            </Color3>
-            <float name="BackgroundTransparency">1</float>
-            <Color3 name="BorderColor3">
-              <R>1</R>
-              <G>1</G>
-              <B>1</B>
-            </Color3>
-            <token name="BorderMode">0</token>
-            <int name="BorderSizePixel">0</int>
-            <bool name="ClipsDescendants">false</bool>
-            <bool name="Draggable">false</bool>
-            <int name="LayoutOrder">0</int>
-            <Ref name="NextSelectionDown">null</Ref>
-            <Ref name="NextSelectionLeft">null</Ref>
-            <Ref name="NextSelectionRight">null</Ref>
-            <Ref name="NextSelectionUp">null</Ref>
-            <UDim2 name="Position">
-              <XS>0.25</XS>
-              <XO>0</XO>
-              <YS>1</YS>
-              <YO>0</YO>
-            </UDim2>
-            <Ref name="RootLocalizationTable">null</Ref>
-            <float name="Rotation">0</float>
-            <bool name="Selectable">false</bool>
-            <token name="SelectionBehaviorDown">0</token>
-            <token name="SelectionBehaviorLeft">0</token>
-            <token name="SelectionBehaviorRight">0</token>
-            <token name="SelectionBehaviorUp">0</token>
-            <bool name="SelectionGroup">false</bool>
-            <Ref name="SelectionImageObject">null</Ref>
-            <int name="SelectionOrder">0</int>
-            <UDim2 name="Size">
-              <XS>0.25</XS>
-              <XO>0</XO>
-              <YS>1</YS>
-              <YO>0</YO>
-            </UDim2>
-            <token name="SizeConstraint">0</token>
-            <int64 name="SourceAssetId">-1</int64>
-            <token name="Style">0</token>
-            <BinaryString name="Tags">
-            </BinaryString>
-            <bool name="Visible">true</bool>
-            <int name="ZIndex">2</int>
-          </Properties>
-          <Item class="ImageLabel" referent="22">
-            <Properties>
-              <string name="Name">Fader</string>
-              <bool name="Active">false</bool>
-              <Vector2 name="AnchorPoint">
-                <X>0.5</X>
-                <Y>1</Y>
-              </Vector2>
-              <BinaryString name="AttributesSerialize">
-              </BinaryString>
-              <bool name="AutoLocalize">true</bool>
-              <token name="AutomaticSize">0</token>
-              <Color3 name="BackgroundColor3">
-                <R>1</R>
-                <G>1</G>
-                <B>1</B>
-              </Color3>
-              <float name="BackgroundTransparency">1</float>
-              <Color3 name="BorderColor3">
-                <R>0.10588236</R>
-                <G>0.16470589</G>
-                <B>0.20784315</B>
-              </Color3>
-              <token name="BorderMode">0</token>
-              <int name="BorderSizePixel">0</int>
-              <bool name="ClipsDescendants">false</bool>
-              <bool name="Draggable">false</bool>
-              <Content name="Image">
-                <url>rbxassetid://3075538622</url>
-              </Content>
-              <Color3 name="ImageColor3">
-                <R>0</R>
-                <G>0</G>
-                <B>0</B>
-              </Color3>
-              <Vector2 name="ImageRectOffset">
-                <X>0</X>
-                <Y>0</Y>
-              </Vector2>
-              <Vector2 name="ImageRectSize">
-                <X>0</X>
-                <Y>0</Y>
-              </Vector2>
-              <float name="ImageTransparency">0</float>
-              <int name="LayoutOrder">0</int>
-              <Ref name="NextSelectionDown">null</Ref>
-              <Ref name="NextSelectionLeft">null</Ref>
-              <Ref name="NextSelectionRight">null</Ref>
-              <Ref name="NextSelectionUp">null</Ref>
-              <UDim2 name="Position">
-                <XS>0.5</XS>
-                <XO>0</XO>
-                <YS>0</YS>
-                <YO>0</YO>
-              </UDim2>
-              <token name="ResampleMode">0</token>
-              <Ref name="RootLocalizationTable">null</Ref>
-              <float name="Rotation">0</float>
-              <token name="ScaleType">0</token>
-              <bool name="Selectable">false</bool>
-              <token name="SelectionBehaviorDown">0</token>
-              <token name="SelectionBehaviorLeft">0</token>
-              <token name="SelectionBehaviorRight">0</token>
-              <token name="SelectionBehaviorUp">0</token>
-              <bool name="SelectionGroup">false</bool>
-              <Ref name="SelectionImageObject">null</Ref>
-              <int name="SelectionOrder">0</int>
-              <UDim2 name="Size">
-                <XS>1</XS>
-                <XO>0</XO>
-                <YS>4</YS>
-                <YO>0</YO>
-              </UDim2>
-              <token name="SizeConstraint">0</token>
-              <Rect2D name="SliceCenter">
-                <min>
-                  <X>0</X>
-                  <Y>0</Y>
-                </min>
-                <max>
-                  <X>0</X>
-                  <Y>0</Y>
-                </max>
-              </Rect2D>
-              <float name="SliceScale">1</float>
-              <int64 name="SourceAssetId">-1</int64>
-              <BinaryString name="Tags">
-              </BinaryString>
-              <UDim2 name="TileSize">
-                <XS>1</XS>
-                <XO>0</XO>
-                <YS>1</YS>
-                <YO>0</YO>
-              </UDim2>
-              <bool name="Visible">false</bool>
-              <int name="ZIndex">4</int>
-            </Properties>
-          </Item>
-        </Item>
-        <Item class="Frame" referent="23">
+        <Item class="Frame" referent="19">
           <Properties>
             <string name="Name">Button3</string>
             <bool name="Active">false</bool>
             <Vector2 name="AnchorPoint">
-              <X>0</X>
+              <X>0.5</X>
               <Y>1</Y>
             </Vector2>
             <BinaryString name="AttributesSerialize">
@@ -1157,7 +1057,7 @@ effect.Image = imgkeys[index]
             <Ref name="NextSelectionRight">null</Ref>
             <Ref name="NextSelectionUp">null</Ref>
             <UDim2 name="Position">
-              <XS>0.5</XS>
+              <XS>0.625</XS>
               <XO>0</XO>
               <YS>1</YS>
               <YO>0</YO>
@@ -1173,7 +1073,7 @@ effect.Image = imgkeys[index]
             <Ref name="SelectionImageObject">null</Ref>
             <int name="SelectionOrder">0</int>
             <UDim2 name="Size">
-              <XS>0.25</XS>
+              <XS>0.23</XS>
               <XO>0</XO>
               <YS>1</YS>
               <YO>0</YO>
@@ -1186,7 +1086,7 @@ effect.Image = imgkeys[index]
             <bool name="Visible">true</bool>
             <int name="ZIndex">2</int>
           </Properties>
-          <Item class="ImageLabel" referent="24">
+          <Item class="ImageLabel" referent="20">
             <Properties>
               <string name="Name">Fader</string>
               <bool name="Active">false</bool>
@@ -1284,13 +1184,572 @@ effect.Image = imgkeys[index]
               <int name="ZIndex">4</int>
             </Properties>
           </Item>
+          <Item class="ImageLabel" referent="21">
+            <Properties>
+              <string name="Name">ReceptorImage</string>
+              <bool name="Active">false</bool>
+              <Vector2 name="AnchorPoint">
+                <X>0.5</X>
+                <Y>0.5</Y>
+              </Vector2>
+              <BinaryString name="AttributesSerialize">
+              </BinaryString>
+              <bool name="AutoLocalize">true</bool>
+              <token name="AutomaticSize">0</token>
+              <Color3 name="BackgroundColor3">
+                <R>0.19607845</R>
+                <G>0.19607845</G>
+                <B>0.19607845</B>
+              </Color3>
+              <float name="BackgroundTransparency">1</float>
+              <Color3 name="BorderColor3">
+                <R>1</R>
+                <G>1</G>
+                <B>1</B>
+              </Color3>
+              <token name="BorderMode">0</token>
+              <int name="BorderSizePixel">1</int>
+              <bool name="ClipsDescendants">false</bool>
+              <bool name="Draggable">false</bool>
+              <Content name="Image">
+                <url>rbxassetid://9103566198</url>
+              </Content>
+              <Color3 name="ImageColor3">
+                <R>1</R>
+                <G>1</G>
+                <B>1</B>
+              </Color3>
+              <Vector2 name="ImageRectOffset">
+                <X>0</X>
+                <Y>0</Y>
+              </Vector2>
+              <Vector2 name="ImageRectSize">
+                <X>0</X>
+                <Y>0</Y>
+              </Vector2>
+              <float name="ImageTransparency">0</float>
+              <int name="LayoutOrder">0</int>
+              <Ref name="NextSelectionDown">null</Ref>
+              <Ref name="NextSelectionLeft">null</Ref>
+              <Ref name="NextSelectionRight">null</Ref>
+              <Ref name="NextSelectionUp">null</Ref>
+              <UDim2 name="Position">
+                <XS>0.5</XS>
+                <XO>0</XO>
+                <YS>0</YS>
+                <YO>0</YO>
+              </UDim2>
+              <token name="ResampleMode">0</token>
+              <Ref name="RootLocalizationTable">null</Ref>
+              <float name="Rotation">0</float>
+              <token name="ScaleType">3</token>
+              <bool name="Selectable">false</bool>
+              <token name="SelectionBehaviorDown">0</token>
+              <token name="SelectionBehaviorLeft">0</token>
+              <token name="SelectionBehaviorRight">0</token>
+              <token name="SelectionBehaviorUp">0</token>
+              <bool name="SelectionGroup">false</bool>
+              <Ref name="SelectionImageObject">null</Ref>
+              <int name="SelectionOrder">0</int>
+              <UDim2 name="Size">
+                <XS>1.2</XS>
+                <XO>0</XO>
+                <YS>1.2</YS>
+                <YO>0</YO>
+              </UDim2>
+              <token name="SizeConstraint">1</token>
+              <Rect2D name="SliceCenter">
+                <min>
+                  <X>0</X>
+                  <Y>0</Y>
+                </min>
+                <max>
+                  <X>0</X>
+                  <Y>0</Y>
+                </max>
+              </Rect2D>
+              <float name="SliceScale">1</float>
+              <int64 name="SourceAssetId">-1</int64>
+              <BinaryString name="Tags">
+              </BinaryString>
+              <UDim2 name="TileSize">
+                <XS>1</XS>
+                <XO>0</XO>
+                <YS>1</YS>
+                <YO>0</YO>
+              </UDim2>
+              <bool name="Visible">true</bool>
+              <int name="ZIndex">1</int>
+            </Properties>
+            <Item class="UIAspectRatioConstraint" referent="22">
+              <Properties>
+                <string name="Name">UIAspectRatioConstraint</string>
+                <float name="AspectRatio">1</float>
+                <token name="AspectType">0</token>
+                <BinaryString name="AttributesSerialize">
+                </BinaryString>
+                <token name="DominantAxis">0</token>
+                <int64 name="SourceAssetId">-1</int64>
+                <BinaryString name="Tags">
+                </BinaryString>
+              </Properties>
+            </Item>
+            <Item class="LocalScript" referent="23">
+              <Properties>
+                <string name="Name">LocalScript</string>
+                <BinaryString name="AttributesSerialize">
+                </BinaryString>
+                <bool name="Disabled">false</bool>
+                <Content name="LinkedSource">
+                  <null>
+                  </null>
+                </Content>
+                <token name="RunContext">0</token>
+                <string name="ScriptGuid">{F71F2DA0-5EFF-4199-A437-9F8A0BE7DFDC}</string>
+                <string name="Source"><![CDATA[local RobloxMaxImageSize = 1024
+local function AnimateGif(ImageLabel:ImageLabel,ImageWidth,ImageHeight,Rows,Columns,NumberOfFrames,ImageId,FPS)
+
+	if ImageId then ImageLabel.Image = "http://www.roblox.com/asset/?id=" .. ImageId end
+
+	local RealWidth, RealHeight
+
+	if math.max(ImageWidth,ImageHeight) > RobloxMaxImageSize then -- Compensate roblox size
+
+		local Longest = ImageWidth > ImageHeight and "Width" or "Height"
+
+		if Longest == "Width" then
+
+			RealWidth = RobloxMaxImageSize
+			RealHeight = (RealWidth / ImageWidth) * ImageHeight
+
+		elseif Longest == "Height" then
+
+			RealHeight = RobloxMaxImageSize
+			RealWidth = (RealHeight / ImageHeight) * ImageWidth
+
+		end
+
+	else
+		RealWidth,RealHeight = ImageWidth,ImageHeight
+	end
+
+	local FrameSize = Vector2.new(RealWidth/Columns,RealHeight/Rows)
+	ImageLabel.ImageRectSize = FrameSize
+
+	local CurrentRow, CurrentColumn = 0,0
+	local Offsets = {}
+
+	for i = 1,NumberOfFrames do
+
+		local CurrentX = CurrentColumn * FrameSize.X
+		local CurrentY = CurrentRow * FrameSize.Y
+
+		table.insert(Offsets,Vector2.new(CurrentX,CurrentY))
+
+		CurrentColumn += 1
+
+		if CurrentColumn >= Columns then
+			CurrentColumn = 0
+			CurrentRow += 1
+		end
+
+	end
+
+	local TimeInterval = FPS and 1/FPS or 0.1
+
+	local Index = 0
+	task.spawn(function()
+
+		while task.wait(TimeInterval) and ImageLabel:IsDescendantOf(game) do
+			Index += 1
+
+			ImageLabel.ImageRectOffset = Offsets[Index]
+
+			if Index >= NumberOfFrames then
+				Index = 0
+			end
+
+		end
+
+	end)
+
+end
+
+AnimateGif(script.Parent,2490,2670,6,5,29,9103566198,30)
+]]></string>
+                <int64 name="SourceAssetId">-1</int64>
+                <BinaryString name="Tags">
+                </BinaryString>
+              </Properties>
+            </Item>
+          </Item>
         </Item>
-        <Item class="Frame" referent="25">
+        <Item class="Frame" referent="24">
+          <Properties>
+            <string name="Name">Button2</string>
+            <bool name="Active">false</bool>
+            <Vector2 name="AnchorPoint">
+              <X>0.5</X>
+              <Y>1</Y>
+            </Vector2>
+            <BinaryString name="AttributesSerialize">
+            </BinaryString>
+            <bool name="AutoLocalize">true</bool>
+            <token name="AutomaticSize">0</token>
+            <Color3 name="BackgroundColor3">
+              <R>0.007843138</R>
+              <G>0.007843138</G>
+              <B>0.007843138</B>
+            </Color3>
+            <float name="BackgroundTransparency">1</float>
+            <Color3 name="BorderColor3">
+              <R>1</R>
+              <G>1</G>
+              <B>1</B>
+            </Color3>
+            <token name="BorderMode">0</token>
+            <int name="BorderSizePixel">0</int>
+            <bool name="ClipsDescendants">false</bool>
+            <bool name="Draggable">false</bool>
+            <int name="LayoutOrder">0</int>
+            <Ref name="NextSelectionDown">null</Ref>
+            <Ref name="NextSelectionLeft">null</Ref>
+            <Ref name="NextSelectionRight">null</Ref>
+            <Ref name="NextSelectionUp">null</Ref>
+            <UDim2 name="Position">
+              <XS>0.375</XS>
+              <XO>0</XO>
+              <YS>1</YS>
+              <YO>0</YO>
+            </UDim2>
+            <Ref name="RootLocalizationTable">null</Ref>
+            <float name="Rotation">0</float>
+            <bool name="Selectable">false</bool>
+            <token name="SelectionBehaviorDown">0</token>
+            <token name="SelectionBehaviorLeft">0</token>
+            <token name="SelectionBehaviorRight">0</token>
+            <token name="SelectionBehaviorUp">0</token>
+            <bool name="SelectionGroup">false</bool>
+            <Ref name="SelectionImageObject">null</Ref>
+            <int name="SelectionOrder">0</int>
+            <UDim2 name="Size">
+              <XS>0.23</XS>
+              <XO>0</XO>
+              <YS>1</YS>
+              <YO>0</YO>
+            </UDim2>
+            <token name="SizeConstraint">0</token>
+            <int64 name="SourceAssetId">-1</int64>
+            <token name="Style">0</token>
+            <BinaryString name="Tags">
+            </BinaryString>
+            <bool name="Visible">true</bool>
+            <int name="ZIndex">2</int>
+          </Properties>
+          <Item class="ImageLabel" referent="25">
+            <Properties>
+              <string name="Name">Fader</string>
+              <bool name="Active">false</bool>
+              <Vector2 name="AnchorPoint">
+                <X>0.5</X>
+                <Y>1</Y>
+              </Vector2>
+              <BinaryString name="AttributesSerialize">
+              </BinaryString>
+              <bool name="AutoLocalize">true</bool>
+              <token name="AutomaticSize">0</token>
+              <Color3 name="BackgroundColor3">
+                <R>1</R>
+                <G>1</G>
+                <B>1</B>
+              </Color3>
+              <float name="BackgroundTransparency">1</float>
+              <Color3 name="BorderColor3">
+                <R>0.10588236</R>
+                <G>0.16470589</G>
+                <B>0.20784315</B>
+              </Color3>
+              <token name="BorderMode">0</token>
+              <int name="BorderSizePixel">0</int>
+              <bool name="ClipsDescendants">false</bool>
+              <bool name="Draggable">false</bool>
+              <Content name="Image">
+                <url>rbxassetid://3075538622</url>
+              </Content>
+              <Color3 name="ImageColor3">
+                <R>0</R>
+                <G>0</G>
+                <B>0</B>
+              </Color3>
+              <Vector2 name="ImageRectOffset">
+                <X>0</X>
+                <Y>0</Y>
+              </Vector2>
+              <Vector2 name="ImageRectSize">
+                <X>0</X>
+                <Y>0</Y>
+              </Vector2>
+              <float name="ImageTransparency">0</float>
+              <int name="LayoutOrder">0</int>
+              <Ref name="NextSelectionDown">null</Ref>
+              <Ref name="NextSelectionLeft">null</Ref>
+              <Ref name="NextSelectionRight">null</Ref>
+              <Ref name="NextSelectionUp">null</Ref>
+              <UDim2 name="Position">
+                <XS>0.5</XS>
+                <XO>0</XO>
+                <YS>0</YS>
+                <YO>0</YO>
+              </UDim2>
+              <token name="ResampleMode">0</token>
+              <Ref name="RootLocalizationTable">null</Ref>
+              <float name="Rotation">0</float>
+              <token name="ScaleType">0</token>
+              <bool name="Selectable">false</bool>
+              <token name="SelectionBehaviorDown">0</token>
+              <token name="SelectionBehaviorLeft">0</token>
+              <token name="SelectionBehaviorRight">0</token>
+              <token name="SelectionBehaviorUp">0</token>
+              <bool name="SelectionGroup">false</bool>
+              <Ref name="SelectionImageObject">null</Ref>
+              <int name="SelectionOrder">0</int>
+              <UDim2 name="Size">
+                <XS>1</XS>
+                <XO>0</XO>
+                <YS>4</YS>
+                <YO>0</YO>
+              </UDim2>
+              <token name="SizeConstraint">0</token>
+              <Rect2D name="SliceCenter">
+                <min>
+                  <X>0</X>
+                  <Y>0</Y>
+                </min>
+                <max>
+                  <X>0</X>
+                  <Y>0</Y>
+                </max>
+              </Rect2D>
+              <float name="SliceScale">1</float>
+              <int64 name="SourceAssetId">-1</int64>
+              <BinaryString name="Tags">
+              </BinaryString>
+              <UDim2 name="TileSize">
+                <XS>1</XS>
+                <XO>0</XO>
+                <YS>1</YS>
+                <YO>0</YO>
+              </UDim2>
+              <bool name="Visible">false</bool>
+              <int name="ZIndex">4</int>
+            </Properties>
+          </Item>
+          <Item class="ImageLabel" referent="26">
+            <Properties>
+              <string name="Name">ReceptorImage</string>
+              <bool name="Active">false</bool>
+              <Vector2 name="AnchorPoint">
+                <X>0.5</X>
+                <Y>0.5</Y>
+              </Vector2>
+              <BinaryString name="AttributesSerialize">
+              </BinaryString>
+              <bool name="AutoLocalize">true</bool>
+              <token name="AutomaticSize">0</token>
+              <Color3 name="BackgroundColor3">
+                <R>0.19607845</R>
+                <G>0.19607845</G>
+                <B>0.19607845</B>
+              </Color3>
+              <float name="BackgroundTransparency">1</float>
+              <Color3 name="BorderColor3">
+                <R>1</R>
+                <G>1</G>
+                <B>1</B>
+              </Color3>
+              <token name="BorderMode">0</token>
+              <int name="BorderSizePixel">1</int>
+              <bool name="ClipsDescendants">false</bool>
+              <bool name="Draggable">false</bool>
+              <Content name="Image">
+                <url>rbxassetid://9103566198</url>
+              </Content>
+              <Color3 name="ImageColor3">
+                <R>1</R>
+                <G>1</G>
+                <B>1</B>
+              </Color3>
+              <Vector2 name="ImageRectOffset">
+                <X>0</X>
+                <Y>0</Y>
+              </Vector2>
+              <Vector2 name="ImageRectSize">
+                <X>0</X>
+                <Y>0</Y>
+              </Vector2>
+              <float name="ImageTransparency">0</float>
+              <int name="LayoutOrder">0</int>
+              <Ref name="NextSelectionDown">null</Ref>
+              <Ref name="NextSelectionLeft">null</Ref>
+              <Ref name="NextSelectionRight">null</Ref>
+              <Ref name="NextSelectionUp">null</Ref>
+              <UDim2 name="Position">
+                <XS>0.5</XS>
+                <XO>0</XO>
+                <YS>0</YS>
+                <YO>0</YO>
+              </UDim2>
+              <token name="ResampleMode">0</token>
+              <Ref name="RootLocalizationTable">null</Ref>
+              <float name="Rotation">0</float>
+              <token name="ScaleType">3</token>
+              <bool name="Selectable">false</bool>
+              <token name="SelectionBehaviorDown">0</token>
+              <token name="SelectionBehaviorLeft">0</token>
+              <token name="SelectionBehaviorRight">0</token>
+              <token name="SelectionBehaviorUp">0</token>
+              <bool name="SelectionGroup">false</bool>
+              <Ref name="SelectionImageObject">null</Ref>
+              <int name="SelectionOrder">0</int>
+              <UDim2 name="Size">
+                <XS>1.2</XS>
+                <XO>0</XO>
+                <YS>1.2</YS>
+                <YO>0</YO>
+              </UDim2>
+              <token name="SizeConstraint">1</token>
+              <Rect2D name="SliceCenter">
+                <min>
+                  <X>0</X>
+                  <Y>0</Y>
+                </min>
+                <max>
+                  <X>0</X>
+                  <Y>0</Y>
+                </max>
+              </Rect2D>
+              <float name="SliceScale">1</float>
+              <int64 name="SourceAssetId">-1</int64>
+              <BinaryString name="Tags">
+              </BinaryString>
+              <UDim2 name="TileSize">
+                <XS>1</XS>
+                <XO>0</XO>
+                <YS>1</YS>
+                <YO>0</YO>
+              </UDim2>
+              <bool name="Visible">true</bool>
+              <int name="ZIndex">1</int>
+            </Properties>
+            <Item class="UIAspectRatioConstraint" referent="27">
+              <Properties>
+                <string name="Name">UIAspectRatioConstraint</string>
+                <float name="AspectRatio">1</float>
+                <token name="AspectType">0</token>
+                <BinaryString name="AttributesSerialize">
+                </BinaryString>
+                <token name="DominantAxis">0</token>
+                <int64 name="SourceAssetId">-1</int64>
+                <BinaryString name="Tags">
+                </BinaryString>
+              </Properties>
+            </Item>
+            <Item class="LocalScript" referent="28">
+              <Properties>
+                <string name="Name">LocalScript</string>
+                <BinaryString name="AttributesSerialize">
+                </BinaryString>
+                <bool name="Disabled">false</bool>
+                <Content name="LinkedSource">
+                  <null>
+                  </null>
+                </Content>
+                <token name="RunContext">0</token>
+                <string name="ScriptGuid">{C486FA63-D7B9-42AD-965C-B83BB081DFC0}</string>
+                <string name="Source"><![CDATA[local RobloxMaxImageSize = 1024
+local function AnimateGif(ImageLabel:ImageLabel,ImageWidth,ImageHeight,Rows,Columns,NumberOfFrames,ImageId,FPS)
+
+	if ImageId then ImageLabel.Image = "http://www.roblox.com/asset/?id=" .. ImageId end
+
+	local RealWidth, RealHeight
+
+	if math.max(ImageWidth,ImageHeight) > RobloxMaxImageSize then -- Compensate roblox size
+
+		local Longest = ImageWidth > ImageHeight and "Width" or "Height"
+
+		if Longest == "Width" then
+
+			RealWidth = RobloxMaxImageSize
+			RealHeight = (RealWidth / ImageWidth) * ImageHeight
+
+		elseif Longest == "Height" then
+
+			RealHeight = RobloxMaxImageSize
+			RealWidth = (RealHeight / ImageHeight) * ImageWidth
+
+		end
+
+	else
+		RealWidth,RealHeight = ImageWidth,ImageHeight
+	end
+
+	local FrameSize = Vector2.new(RealWidth/Columns,RealHeight/Rows)
+	ImageLabel.ImageRectSize = FrameSize
+
+	local CurrentRow, CurrentColumn = 0,0
+	local Offsets = {}
+
+	for i = 1,NumberOfFrames do
+
+		local CurrentX = CurrentColumn * FrameSize.X
+		local CurrentY = CurrentRow * FrameSize.Y
+
+		table.insert(Offsets,Vector2.new(CurrentX,CurrentY))
+
+		CurrentColumn += 1
+
+		if CurrentColumn >= Columns then
+			CurrentColumn = 0
+			CurrentRow += 1
+		end
+
+	end
+
+	local TimeInterval = FPS and 1/FPS or 0.1
+
+	local Index = 0
+	task.spawn(function()
+
+		while task.wait(TimeInterval) and ImageLabel:IsDescendantOf(game) do
+			Index += 1
+
+			ImageLabel.ImageRectOffset = Offsets[Index]
+
+			if Index >= NumberOfFrames then
+				Index = 0
+			end
+
+		end
+
+	end)
+
+end
+
+AnimateGif(script.Parent,2490,2670,6,5,29,9103566198,30)
+]]></string>
+                <int64 name="SourceAssetId">-1</int64>
+                <BinaryString name="Tags">
+                </BinaryString>
+              </Properties>
+            </Item>
+          </Item>
+        </Item>
+        <Item class="Frame" referent="29">
           <Properties>
             <string name="Name">Button4</string>
             <bool name="Active">false</bool>
             <Vector2 name="AnchorPoint">
-              <X>0</X>
+              <X>0.5</X>
               <Y>1</Y>
             </Vector2>
             <BinaryString name="AttributesSerialize">
@@ -1318,7 +1777,7 @@ effect.Image = imgkeys[index]
             <Ref name="NextSelectionRight">null</Ref>
             <Ref name="NextSelectionUp">null</Ref>
             <UDim2 name="Position">
-              <XS>0.75</XS>
+              <XS>0.875</XS>
               <XO>0</XO>
               <YS>1</YS>
               <YO>0</YO>
@@ -1334,7 +1793,7 @@ effect.Image = imgkeys[index]
             <Ref name="SelectionImageObject">null</Ref>
             <int name="SelectionOrder">0</int>
             <UDim2 name="Size">
-              <XS>0.25</XS>
+              <XS>0.23</XS>
               <XO>0</XO>
               <YS>1</YS>
               <YO>0</YO>
@@ -1347,7 +1806,7 @@ effect.Image = imgkeys[index]
             <bool name="Visible">true</bool>
             <int name="ZIndex">2</int>
           </Properties>
-          <Item class="ImageLabel" referent="26">
+          <Item class="ImageLabel" referent="30">
             <Properties>
               <string name="Name">Fader</string>
               <bool name="Active">false</bool>
@@ -1445,13 +1904,212 @@ effect.Image = imgkeys[index]
               <int name="ZIndex">4</int>
             </Properties>
           </Item>
+          <Item class="ImageLabel" referent="31">
+            <Properties>
+              <string name="Name">ReceptorImage</string>
+              <bool name="Active">false</bool>
+              <Vector2 name="AnchorPoint">
+                <X>0.5</X>
+                <Y>0.5</Y>
+              </Vector2>
+              <BinaryString name="AttributesSerialize">
+              </BinaryString>
+              <bool name="AutoLocalize">true</bool>
+              <token name="AutomaticSize">0</token>
+              <Color3 name="BackgroundColor3">
+                <R>0.19607845</R>
+                <G>0.19607845</G>
+                <B>0.19607845</B>
+              </Color3>
+              <float name="BackgroundTransparency">1</float>
+              <Color3 name="BorderColor3">
+                <R>1</R>
+                <G>1</G>
+                <B>1</B>
+              </Color3>
+              <token name="BorderMode">0</token>
+              <int name="BorderSizePixel">1</int>
+              <bool name="ClipsDescendants">false</bool>
+              <bool name="Draggable">false</bool>
+              <Content name="Image">
+                <url>rbxassetid://9103566198</url>
+              </Content>
+              <Color3 name="ImageColor3">
+                <R>1</R>
+                <G>1</G>
+                <B>1</B>
+              </Color3>
+              <Vector2 name="ImageRectOffset">
+                <X>0</X>
+                <Y>0</Y>
+              </Vector2>
+              <Vector2 name="ImageRectSize">
+                <X>0</X>
+                <Y>0</Y>
+              </Vector2>
+              <float name="ImageTransparency">0</float>
+              <int name="LayoutOrder">0</int>
+              <Ref name="NextSelectionDown">null</Ref>
+              <Ref name="NextSelectionLeft">null</Ref>
+              <Ref name="NextSelectionRight">null</Ref>
+              <Ref name="NextSelectionUp">null</Ref>
+              <UDim2 name="Position">
+                <XS>0.5</XS>
+                <XO>0</XO>
+                <YS>0</YS>
+                <YO>0</YO>
+              </UDim2>
+              <token name="ResampleMode">0</token>
+              <Ref name="RootLocalizationTable">null</Ref>
+              <float name="Rotation">0</float>
+              <token name="ScaleType">3</token>
+              <bool name="Selectable">false</bool>
+              <token name="SelectionBehaviorDown">0</token>
+              <token name="SelectionBehaviorLeft">0</token>
+              <token name="SelectionBehaviorRight">0</token>
+              <token name="SelectionBehaviorUp">0</token>
+              <bool name="SelectionGroup">false</bool>
+              <Ref name="SelectionImageObject">null</Ref>
+              <int name="SelectionOrder">0</int>
+              <UDim2 name="Size">
+                <XS>1.2</XS>
+                <XO>0</XO>
+                <YS>1.2</YS>
+                <YO>0</YO>
+              </UDim2>
+              <token name="SizeConstraint">1</token>
+              <Rect2D name="SliceCenter">
+                <min>
+                  <X>0</X>
+                  <Y>0</Y>
+                </min>
+                <max>
+                  <X>0</X>
+                  <Y>0</Y>
+                </max>
+              </Rect2D>
+              <float name="SliceScale">1</float>
+              <int64 name="SourceAssetId">-1</int64>
+              <BinaryString name="Tags">
+              </BinaryString>
+              <UDim2 name="TileSize">
+                <XS>1</XS>
+                <XO>0</XO>
+                <YS>1</YS>
+                <YO>0</YO>
+              </UDim2>
+              <bool name="Visible">true</bool>
+              <int name="ZIndex">1</int>
+            </Properties>
+            <Item class="UIAspectRatioConstraint" referent="32">
+              <Properties>
+                <string name="Name">UIAspectRatioConstraint</string>
+                <float name="AspectRatio">1</float>
+                <token name="AspectType">0</token>
+                <BinaryString name="AttributesSerialize">
+                </BinaryString>
+                <token name="DominantAxis">0</token>
+                <int64 name="SourceAssetId">-1</int64>
+                <BinaryString name="Tags">
+                </BinaryString>
+              </Properties>
+            </Item>
+            <Item class="LocalScript" referent="33">
+              <Properties>
+                <string name="Name">LocalScript</string>
+                <BinaryString name="AttributesSerialize">
+                </BinaryString>
+                <bool name="Disabled">false</bool>
+                <Content name="LinkedSource">
+                  <null>
+                  </null>
+                </Content>
+                <token name="RunContext">0</token>
+                <string name="ScriptGuid">{635DB134-A7B3-4C3E-B11F-FD3243E1302C}</string>
+                <string name="Source"><![CDATA[local RobloxMaxImageSize = 1024
+local function AnimateGif(ImageLabel:ImageLabel,ImageWidth,ImageHeight,Rows,Columns,NumberOfFrames,ImageId,FPS)
+
+	if ImageId then ImageLabel.Image = "http://www.roblox.com/asset/?id=" .. ImageId end
+
+	local RealWidth, RealHeight
+
+	if math.max(ImageWidth,ImageHeight) > RobloxMaxImageSize then -- Compensate roblox size
+
+		local Longest = ImageWidth > ImageHeight and "Width" or "Height"
+
+		if Longest == "Width" then
+
+			RealWidth = RobloxMaxImageSize
+			RealHeight = (RealWidth / ImageWidth) * ImageHeight
+
+		elseif Longest == "Height" then
+
+			RealHeight = RobloxMaxImageSize
+			RealWidth = (RealHeight / ImageHeight) * ImageWidth
+
+		end
+
+	else
+		RealWidth,RealHeight = ImageWidth,ImageHeight
+	end
+
+	local FrameSize = Vector2.new(RealWidth/Columns,RealHeight/Rows)
+	ImageLabel.ImageRectSize = FrameSize
+
+	local CurrentRow, CurrentColumn = 0,0
+	local Offsets = {}
+
+	for i = 1,NumberOfFrames do
+
+		local CurrentX = CurrentColumn * FrameSize.X
+		local CurrentY = CurrentRow * FrameSize.Y
+
+		table.insert(Offsets,Vector2.new(CurrentX,CurrentY))
+
+		CurrentColumn += 1
+
+		if CurrentColumn >= Columns then
+			CurrentColumn = 0
+			CurrentRow += 1
+		end
+
+	end
+
+	local TimeInterval = FPS and 1/FPS or 0.1
+
+	local Index = 0
+	task.spawn(function()
+
+		while task.wait(TimeInterval) and ImageLabel:IsDescendantOf(game) do
+			Index += 1
+
+			ImageLabel.ImageRectOffset = Offsets[Index]
+
+			if Index >= NumberOfFrames then
+				Index = 0
+			end
+
+		end
+
+	end)
+
+end
+
+AnimateGif(script.Parent,2490,2670,6,5,29,9103566198,30)
+]]></string>
+                <int64 name="SourceAssetId">-1</int64>
+                <BinaryString name="Tags">
+                </BinaryString>
+              </Properties>
+            </Item>
+          </Item>
         </Item>
-        <Item class="Frame" referent="27">
+        <Item class="Frame" referent="34">
           <Properties>
             <string name="Name">Button1</string>
             <bool name="Active">false</bool>
             <Vector2 name="AnchorPoint">
-              <X>0</X>
+              <X>0.5</X>
               <Y>1</Y>
             </Vector2>
             <BinaryString name="AttributesSerialize">
@@ -1479,7 +2137,7 @@ effect.Image = imgkeys[index]
             <Ref name="NextSelectionRight">null</Ref>
             <Ref name="NextSelectionUp">null</Ref>
             <UDim2 name="Position">
-              <XS>0</XS>
+              <XS>0.125</XS>
               <XO>0</XO>
               <YS>1</YS>
               <YO>0</YO>
@@ -1495,7 +2153,7 @@ effect.Image = imgkeys[index]
             <Ref name="SelectionImageObject">null</Ref>
             <int name="SelectionOrder">0</int>
             <UDim2 name="Size">
-              <XS>0.25</XS>
+              <XS>0.23</XS>
               <XO>0</XO>
               <YS>1</YS>
               <YO>0</YO>
@@ -1508,7 +2166,7 @@ effect.Image = imgkeys[index]
             <bool name="Visible">true</bool>
             <int name="ZIndex">2</int>
           </Properties>
-          <Item class="ImageLabel" referent="28">
+          <Item class="ImageLabel" referent="35">
             <Properties>
               <string name="Name">Fader</string>
               <bool name="Active">false</bool>
@@ -1606,9 +2264,208 @@ effect.Image = imgkeys[index]
               <int name="ZIndex">4</int>
             </Properties>
           </Item>
+          <Item class="ImageLabel" referent="36">
+            <Properties>
+              <string name="Name">ReceptorImage</string>
+              <bool name="Active">false</bool>
+              <Vector2 name="AnchorPoint">
+                <X>0.5</X>
+                <Y>0.5</Y>
+              </Vector2>
+              <BinaryString name="AttributesSerialize">
+              </BinaryString>
+              <bool name="AutoLocalize">true</bool>
+              <token name="AutomaticSize">0</token>
+              <Color3 name="BackgroundColor3">
+                <R>0.19607845</R>
+                <G>0.19607845</G>
+                <B>0.19607845</B>
+              </Color3>
+              <float name="BackgroundTransparency">1</float>
+              <Color3 name="BorderColor3">
+                <R>1</R>
+                <G>1</G>
+                <B>1</B>
+              </Color3>
+              <token name="BorderMode">0</token>
+              <int name="BorderSizePixel">1</int>
+              <bool name="ClipsDescendants">false</bool>
+              <bool name="Draggable">false</bool>
+              <Content name="Image">
+                <url>rbxassetid://9103566198</url>
+              </Content>
+              <Color3 name="ImageColor3">
+                <R>1</R>
+                <G>1</G>
+                <B>1</B>
+              </Color3>
+              <Vector2 name="ImageRectOffset">
+                <X>0</X>
+                <Y>0</Y>
+              </Vector2>
+              <Vector2 name="ImageRectSize">
+                <X>0</X>
+                <Y>0</Y>
+              </Vector2>
+              <float name="ImageTransparency">0</float>
+              <int name="LayoutOrder">0</int>
+              <Ref name="NextSelectionDown">null</Ref>
+              <Ref name="NextSelectionLeft">null</Ref>
+              <Ref name="NextSelectionRight">null</Ref>
+              <Ref name="NextSelectionUp">null</Ref>
+              <UDim2 name="Position">
+                <XS>0.5</XS>
+                <XO>0</XO>
+                <YS>0</YS>
+                <YO>0</YO>
+              </UDim2>
+              <token name="ResampleMode">0</token>
+              <Ref name="RootLocalizationTable">null</Ref>
+              <float name="Rotation">0</float>
+              <token name="ScaleType">3</token>
+              <bool name="Selectable">false</bool>
+              <token name="SelectionBehaviorDown">0</token>
+              <token name="SelectionBehaviorLeft">0</token>
+              <token name="SelectionBehaviorRight">0</token>
+              <token name="SelectionBehaviorUp">0</token>
+              <bool name="SelectionGroup">false</bool>
+              <Ref name="SelectionImageObject">null</Ref>
+              <int name="SelectionOrder">0</int>
+              <UDim2 name="Size">
+                <XS>1.2</XS>
+                <XO>0</XO>
+                <YS>1.2</YS>
+                <YO>0</YO>
+              </UDim2>
+              <token name="SizeConstraint">1</token>
+              <Rect2D name="SliceCenter">
+                <min>
+                  <X>0</X>
+                  <Y>0</Y>
+                </min>
+                <max>
+                  <X>0</X>
+                  <Y>0</Y>
+                </max>
+              </Rect2D>
+              <float name="SliceScale">1</float>
+              <int64 name="SourceAssetId">-1</int64>
+              <BinaryString name="Tags">
+              </BinaryString>
+              <UDim2 name="TileSize">
+                <XS>1</XS>
+                <XO>0</XO>
+                <YS>1</YS>
+                <YO>0</YO>
+              </UDim2>
+              <bool name="Visible">true</bool>
+              <int name="ZIndex">1</int>
+            </Properties>
+            <Item class="UIAspectRatioConstraint" referent="37">
+              <Properties>
+                <string name="Name">UIAspectRatioConstraint</string>
+                <float name="AspectRatio">1</float>
+                <token name="AspectType">0</token>
+                <BinaryString name="AttributesSerialize">
+                </BinaryString>
+                <token name="DominantAxis">0</token>
+                <int64 name="SourceAssetId">-1</int64>
+                <BinaryString name="Tags">
+                </BinaryString>
+              </Properties>
+            </Item>
+            <Item class="LocalScript" referent="38">
+              <Properties>
+                <string name="Name">LocalScript</string>
+                <BinaryString name="AttributesSerialize">
+                </BinaryString>
+                <bool name="Disabled">false</bool>
+                <Content name="LinkedSource">
+                  <null>
+                  </null>
+                </Content>
+                <token name="RunContext">0</token>
+                <string name="ScriptGuid">{180A79F1-99B6-44E4-8F0D-DECC2743CF09}</string>
+                <string name="Source"><![CDATA[local RobloxMaxImageSize = 1024
+local function AnimateGif(ImageLabel:ImageLabel,ImageWidth,ImageHeight,Rows,Columns,NumberOfFrames,ImageId,FPS)
+
+	if ImageId then ImageLabel.Image = "http://www.roblox.com/asset/?id=" .. ImageId end
+
+	local RealWidth, RealHeight
+
+	if math.max(ImageWidth,ImageHeight) > RobloxMaxImageSize then -- Compensate roblox size
+
+		local Longest = ImageWidth > ImageHeight and "Width" or "Height"
+
+		if Longest == "Width" then
+
+			RealWidth = RobloxMaxImageSize
+			RealHeight = (RealWidth / ImageWidth) * ImageHeight
+
+		elseif Longest == "Height" then
+
+			RealHeight = RobloxMaxImageSize
+			RealWidth = (RealHeight / ImageHeight) * ImageWidth
+
+		end
+
+	else
+		RealWidth,RealHeight = ImageWidth,ImageHeight
+	end
+
+	local FrameSize = Vector2.new(RealWidth/Columns,RealHeight/Rows)
+	ImageLabel.ImageRectSize = FrameSize
+
+	local CurrentRow, CurrentColumn = 0,0
+	local Offsets = {}
+
+	for i = 1,NumberOfFrames do
+
+		local CurrentX = CurrentColumn * FrameSize.X
+		local CurrentY = CurrentRow * FrameSize.Y
+
+		table.insert(Offsets,Vector2.new(CurrentX,CurrentY))
+
+		CurrentColumn += 1
+
+		if CurrentColumn >= Columns then
+			CurrentColumn = 0
+			CurrentRow += 1
+		end
+
+	end
+
+	local TimeInterval = FPS and 1/FPS or 0.1
+
+	local Index = 0
+	task.spawn(function()
+
+		while task.wait(TimeInterval) and ImageLabel:IsDescendantOf(game) do
+			Index += 1
+
+			ImageLabel.ImageRectOffset = Offsets[Index]
+
+			if Index >= NumberOfFrames then
+				Index = 0
+			end
+
+		end
+
+	end)
+
+end
+
+AnimateGif(script.Parent,2490,2670,6,5,29,9103566198,30)
+]]></string>
+                <int64 name="SourceAssetId">-1</int64>
+                <BinaryString name="Tags">
+                </BinaryString>
+              </Properties>
+            </Item>
+          </Item>
         </Item>
       </Item>
-      <Item class="Frame" referent="29">
+      <Item class="Frame" referent="39">
         <Properties>
           <string name="Name">Tracks</string>
           <bool name="Active">false</bool>
@@ -1670,7 +2527,7 @@ effect.Image = imgkeys[index]
           <bool name="Visible">true</bool>
           <int name="ZIndex">1</int>
         </Properties>
-        <Item class="Frame" referent="30">
+        <Item class="Frame" referent="40">
           <Properties>
             <string name="Name">Track1</string>
             <bool name="Active">false</bool>
@@ -1733,133 +2590,7 @@ effect.Image = imgkeys[index]
             <int name="ZIndex">1</int>
           </Properties>
         </Item>
-        <Item class="Frame" referent="31">
-          <Properties>
-            <string name="Name">Track2</string>
-            <bool name="Active">false</bool>
-            <Vector2 name="AnchorPoint">
-              <X>0</X>
-              <Y>1</Y>
-            </Vector2>
-            <BinaryString name="AttributesSerialize">
-            </BinaryString>
-            <bool name="AutoLocalize">true</bool>
-            <token name="AutomaticSize">0</token>
-            <Color3 name="BackgroundColor3">
-              <R>0</R>
-              <G>0</G>
-              <B>0</B>
-            </Color3>
-            <float name="BackgroundTransparency">1</float>
-            <Color3 name="BorderColor3">
-              <R>0.039215688</R>
-              <G>0.039215688</G>
-              <B>0.039215688</B>
-            </Color3>
-            <token name="BorderMode">0</token>
-            <int name="BorderSizePixel">1</int>
-            <bool name="ClipsDescendants">false</bool>
-            <bool name="Draggable">false</bool>
-            <int name="LayoutOrder">0</int>
-            <Ref name="NextSelectionDown">null</Ref>
-            <Ref name="NextSelectionLeft">null</Ref>
-            <Ref name="NextSelectionRight">null</Ref>
-            <Ref name="NextSelectionUp">null</Ref>
-            <UDim2 name="Position">
-              <XS>0.25</XS>
-              <XO>0</XO>
-              <YS>1</YS>
-              <YO>0</YO>
-            </UDim2>
-            <Ref name="RootLocalizationTable">null</Ref>
-            <float name="Rotation">0</float>
-            <bool name="Selectable">false</bool>
-            <token name="SelectionBehaviorDown">0</token>
-            <token name="SelectionBehaviorLeft">0</token>
-            <token name="SelectionBehaviorRight">0</token>
-            <token name="SelectionBehaviorUp">0</token>
-            <bool name="SelectionGroup">false</bool>
-            <Ref name="SelectionImageObject">null</Ref>
-            <int name="SelectionOrder">0</int>
-            <UDim2 name="Size">
-              <XS>0.25</XS>
-              <XO>0</XO>
-              <YS>1</YS>
-              <YO>0</YO>
-            </UDim2>
-            <token name="SizeConstraint">0</token>
-            <int64 name="SourceAssetId">-1</int64>
-            <token name="Style">0</token>
-            <BinaryString name="Tags">
-            </BinaryString>
-            <bool name="Visible">true</bool>
-            <int name="ZIndex">1</int>
-          </Properties>
-        </Item>
-        <Item class="Frame" referent="32">
-          <Properties>
-            <string name="Name">Track3</string>
-            <bool name="Active">false</bool>
-            <Vector2 name="AnchorPoint">
-              <X>0</X>
-              <Y>1</Y>
-            </Vector2>
-            <BinaryString name="AttributesSerialize">
-            </BinaryString>
-            <bool name="AutoLocalize">true</bool>
-            <token name="AutomaticSize">0</token>
-            <Color3 name="BackgroundColor3">
-              <R>0</R>
-              <G>0</G>
-              <B>0</B>
-            </Color3>
-            <float name="BackgroundTransparency">1</float>
-            <Color3 name="BorderColor3">
-              <R>0.039215688</R>
-              <G>0.039215688</G>
-              <B>0.039215688</B>
-            </Color3>
-            <token name="BorderMode">0</token>
-            <int name="BorderSizePixel">1</int>
-            <bool name="ClipsDescendants">false</bool>
-            <bool name="Draggable">false</bool>
-            <int name="LayoutOrder">0</int>
-            <Ref name="NextSelectionDown">null</Ref>
-            <Ref name="NextSelectionLeft">null</Ref>
-            <Ref name="NextSelectionRight">null</Ref>
-            <Ref name="NextSelectionUp">null</Ref>
-            <UDim2 name="Position">
-              <XS>0.5</XS>
-              <XO>0</XO>
-              <YS>1</YS>
-              <YO>0</YO>
-            </UDim2>
-            <Ref name="RootLocalizationTable">null</Ref>
-            <float name="Rotation">0</float>
-            <bool name="Selectable">false</bool>
-            <token name="SelectionBehaviorDown">0</token>
-            <token name="SelectionBehaviorLeft">0</token>
-            <token name="SelectionBehaviorRight">0</token>
-            <token name="SelectionBehaviorUp">0</token>
-            <bool name="SelectionGroup">false</bool>
-            <Ref name="SelectionImageObject">null</Ref>
-            <int name="SelectionOrder">0</int>
-            <UDim2 name="Size">
-              <XS>0.25</XS>
-              <XO>0</XO>
-              <YS>1</YS>
-              <YO>0</YO>
-            </UDim2>
-            <token name="SizeConstraint">0</token>
-            <int64 name="SourceAssetId">-1</int64>
-            <token name="Style">0</token>
-            <BinaryString name="Tags">
-            </BinaryString>
-            <bool name="Visible">true</bool>
-            <int name="ZIndex">1</int>
-          </Properties>
-        </Item>
-        <Item class="Frame" referent="33">
+        <Item class="Frame" referent="41">
           <Properties>
             <string name="Name">Track4</string>
             <bool name="Active">false</bool>
@@ -1922,7 +2653,133 @@ effect.Image = imgkeys[index]
             <int name="ZIndex">1</int>
           </Properties>
         </Item>
-        <Item class="ImageLabel" referent="34">
+        <Item class="Frame" referent="42">
+          <Properties>
+            <string name="Name">Track2</string>
+            <bool name="Active">false</bool>
+            <Vector2 name="AnchorPoint">
+              <X>0</X>
+              <Y>1</Y>
+            </Vector2>
+            <BinaryString name="AttributesSerialize">
+            </BinaryString>
+            <bool name="AutoLocalize">true</bool>
+            <token name="AutomaticSize">0</token>
+            <Color3 name="BackgroundColor3">
+              <R>0</R>
+              <G>0</G>
+              <B>0</B>
+            </Color3>
+            <float name="BackgroundTransparency">1</float>
+            <Color3 name="BorderColor3">
+              <R>0.039215688</R>
+              <G>0.039215688</G>
+              <B>0.039215688</B>
+            </Color3>
+            <token name="BorderMode">0</token>
+            <int name="BorderSizePixel">1</int>
+            <bool name="ClipsDescendants">false</bool>
+            <bool name="Draggable">false</bool>
+            <int name="LayoutOrder">0</int>
+            <Ref name="NextSelectionDown">null</Ref>
+            <Ref name="NextSelectionLeft">null</Ref>
+            <Ref name="NextSelectionRight">null</Ref>
+            <Ref name="NextSelectionUp">null</Ref>
+            <UDim2 name="Position">
+              <XS>0.25</XS>
+              <XO>0</XO>
+              <YS>1</YS>
+              <YO>0</YO>
+            </UDim2>
+            <Ref name="RootLocalizationTable">null</Ref>
+            <float name="Rotation">0</float>
+            <bool name="Selectable">false</bool>
+            <token name="SelectionBehaviorDown">0</token>
+            <token name="SelectionBehaviorLeft">0</token>
+            <token name="SelectionBehaviorRight">0</token>
+            <token name="SelectionBehaviorUp">0</token>
+            <bool name="SelectionGroup">false</bool>
+            <Ref name="SelectionImageObject">null</Ref>
+            <int name="SelectionOrder">0</int>
+            <UDim2 name="Size">
+              <XS>0.25</XS>
+              <XO>0</XO>
+              <YS>1</YS>
+              <YO>0</YO>
+            </UDim2>
+            <token name="SizeConstraint">0</token>
+            <int64 name="SourceAssetId">-1</int64>
+            <token name="Style">0</token>
+            <BinaryString name="Tags">
+            </BinaryString>
+            <bool name="Visible">true</bool>
+            <int name="ZIndex">1</int>
+          </Properties>
+        </Item>
+        <Item class="Frame" referent="43">
+          <Properties>
+            <string name="Name">Track3</string>
+            <bool name="Active">false</bool>
+            <Vector2 name="AnchorPoint">
+              <X>0</X>
+              <Y>1</Y>
+            </Vector2>
+            <BinaryString name="AttributesSerialize">
+            </BinaryString>
+            <bool name="AutoLocalize">true</bool>
+            <token name="AutomaticSize">0</token>
+            <Color3 name="BackgroundColor3">
+              <R>0</R>
+              <G>0</G>
+              <B>0</B>
+            </Color3>
+            <float name="BackgroundTransparency">1</float>
+            <Color3 name="BorderColor3">
+              <R>0.039215688</R>
+              <G>0.039215688</G>
+              <B>0.039215688</B>
+            </Color3>
+            <token name="BorderMode">0</token>
+            <int name="BorderSizePixel">1</int>
+            <bool name="ClipsDescendants">false</bool>
+            <bool name="Draggable">false</bool>
+            <int name="LayoutOrder">0</int>
+            <Ref name="NextSelectionDown">null</Ref>
+            <Ref name="NextSelectionLeft">null</Ref>
+            <Ref name="NextSelectionRight">null</Ref>
+            <Ref name="NextSelectionUp">null</Ref>
+            <UDim2 name="Position">
+              <XS>0.5</XS>
+              <XO>0</XO>
+              <YS>1</YS>
+              <YO>0</YO>
+            </UDim2>
+            <Ref name="RootLocalizationTable">null</Ref>
+            <float name="Rotation">0</float>
+            <bool name="Selectable">false</bool>
+            <token name="SelectionBehaviorDown">0</token>
+            <token name="SelectionBehaviorLeft">0</token>
+            <token name="SelectionBehaviorRight">0</token>
+            <token name="SelectionBehaviorUp">0</token>
+            <bool name="SelectionGroup">false</bool>
+            <Ref name="SelectionImageObject">null</Ref>
+            <int name="SelectionOrder">0</int>
+            <UDim2 name="Size">
+              <XS>0.25</XS>
+              <XO>0</XO>
+              <YS>1</YS>
+              <YO>0</YO>
+            </UDim2>
+            <token name="SizeConstraint">0</token>
+            <int64 name="SourceAssetId">-1</int64>
+            <token name="Style">0</token>
+            <BinaryString name="Tags">
+            </BinaryString>
+            <bool name="Visible">true</bool>
+            <int name="ZIndex">1</int>
+          </Properties>
+        </Item>
+        <Item class="ImageLabel" referent="44">
           <Properties>
             <string name="Name">TriggerLine</string>
             <bool name="Active">false</bool>
@@ -1935,11 +2792,11 @@ effect.Image = imgkeys[index]
             <bool name="AutoLocalize">true</bool>
             <token name="AutomaticSize">0</token>
             <Color3 name="BackgroundColor3">
-              <R>0</R>
+              <R>1</R>
               <G>1</G>
               <B>1</B>
             </Color3>
-            <float name="BackgroundTransparency">0</float>
+            <float name="BackgroundTransparency">1</float>
             <Color3 name="BorderColor3">
               <R>0.10588236</R>
               <G>0.16470589</G>
@@ -1950,13 +2807,12 @@ effect.Image = imgkeys[index]
             <bool name="ClipsDescendants">false</bool>
             <bool name="Draggable">false</bool>
             <Content name="Image">
-              <null>
-              </null>
+              <url>rbxassetid://9067034984</url>
             </Content>
             <Color3 name="ImageColor3">
-              <R>0</R>
+              <R>0.6666667</R>
               <G>1</G>
-              <B>1</B>
+              <B>0.49803925</B>
             </Color3>
             <Vector2 name="ImageRectOffset">
               <X>0</X>
@@ -1966,22 +2822,22 @@ effect.Image = imgkeys[index]
               <X>0</X>
               <Y>0</Y>
             </Vector2>
-            <float name="ImageTransparency">1</float>
+            <float name="ImageTransparency">0</float>
             <int name="LayoutOrder">0</int>
             <Ref name="NextSelectionDown">null</Ref>
             <Ref name="NextSelectionLeft">null</Ref>
             <Ref name="NextSelectionRight">null</Ref>
             <Ref name="NextSelectionUp">null</Ref>
             <UDim2 name="Position">
-              <XS>0.5</XS>
-              <XO>0</XO>
-              <YS>1</YS>
-              <YO>0</YO>
+              <XS>0.535</XS>
+              <XO>-1</XO>
+              <YS>1.1</YS>
+              <YO>14</YO>
             </UDim2>
             <token name="ResampleMode">0</token>
             <Ref name="RootLocalizationTable">null</Ref>
             <float name="Rotation">0</float>
-            <token name="ScaleType">0</token>
+            <token name="ScaleType">3</token>
             <bool name="Selectable">false</bool>
             <token name="SelectionBehaviorDown">0</token>
             <token name="SelectionBehaviorLeft">0</token>
@@ -1991,9 +2847,9 @@ effect.Image = imgkeys[index]
             <Ref name="SelectionImageObject">null</Ref>
             <int name="SelectionOrder">0</int>
             <UDim2 name="Size">
-              <XS>0.99</XS>
+              <XS>1</XS>
               <XO>0</XO>
-              <YS>0.005</YS>
+              <YS>0.07</YS>
               <YO>0</YO>
             </UDim2>
             <token name="SizeConstraint">0</token>
@@ -2023,27 +2879,19 @@ effect.Image = imgkeys[index]
         </Item>
       </Item>
     </Item>
-    <Item class="ModuleScript" referent="35">
+    <Item class="Color3Value" referent="45">
       <Properties>
-        <string name="Name">SkinInfo</string>
+        <string name="Name">ButtonColor</string>
         <BinaryString name="AttributesSerialize">
         </BinaryString>
-        <Content name="LinkedSource">
-          <null>
-          </null>
-        </Content>
-        <string name="ScriptGuid">{0BA1A929-07E3-48EC-A84F-C1D186559E8F}</string>
-        <string name="Source">return {
-	Name = "R.SkinV1.2 [Bar]",
-	Author = "Retsukiya // YasiCree",
-	Type = "Bar",
-	NoteAsHeldArrowHit = true,
-	Number = 0, -- Keep this empty for skin number
-	Data = nil -- Keep this empty for skin data
-}</string>
         <int64 name="SourceAssetId">-1</int64>
         <BinaryString name="Tags">
         </BinaryString>
+        <Color3 name="Value">
+          <R>0.22352943</R>
+          <G>0.4039216</G>
+          <B>1</B>
+        </Color3>
       </Properties>
     </Item>
   </Item>

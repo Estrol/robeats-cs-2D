@@ -5,7 +5,8 @@
       <BinaryString name="AttributesSerialize">
       </BinaryString>
       <int64 name="SourceAssetId">-1</int64>
-      <BinaryString name="Tags"></BinaryString>
+      <BinaryString name="Tags">
+      </BinaryString>
     </Properties>
     <Item class="Color3Value" referent="1">
       <Properties>
@@ -13,7 +14,8 @@
         <BinaryString name="AttributesSerialize">
         </BinaryString>
         <int64 name="SourceAssetId">-1</int64>
-        <BinaryString name="Tags"></BinaryString>
+        <BinaryString name="Tags">
+        </BinaryString>
         <Color3 name="Value">
           <R>0.5882353</R>
           <G>0.5882353</G>
@@ -81,7 +83,13 @@
         <float name="Rotation">0</float>
         <token name="ScaleType">3</token>
         <bool name="Selectable">false</bool>
+        <token name="SelectionBehaviorDown">0</token>
+        <token name="SelectionBehaviorLeft">0</token>
+        <token name="SelectionBehaviorRight">0</token>
+        <token name="SelectionBehaviorUp">0</token>
+        <bool name="SelectionGroup">false</bool>
         <Ref name="SelectionImageObject">null</Ref>
+        <int name="SelectionOrder">0</int>
         <UDim2 name="Size">
           <XS>1</XS>
           <XO>0</XO>
@@ -101,7 +109,8 @@
         </Rect2D>
         <float name="SliceScale">1</float>
         <int64 name="SourceAssetId">-1</int64>
-        <BinaryString name="Tags"></BinaryString>
+        <BinaryString name="Tags">
+        </BinaryString>
         <UDim2 name="TileSize">
           <XS>1</XS>
           <XO>0</XO>
@@ -153,7 +162,13 @@
         <Ref name="RootLocalizationTable">null</Ref>
         <float name="Rotation">0</float>
         <bool name="Selectable">false</bool>
+        <token name="SelectionBehaviorDown">0</token>
+        <token name="SelectionBehaviorLeft">0</token>
+        <token name="SelectionBehaviorRight">0</token>
+        <token name="SelectionBehaviorUp">0</token>
+        <bool name="SelectionGroup">false</bool>
         <Ref name="SelectionImageObject">null</Ref>
+        <int name="SelectionOrder">0</int>
         <UDim2 name="Size">
           <XS>0.95</XS>
           <XO>0</XO>
@@ -163,7 +178,8 @@
         <token name="SizeConstraint">0</token>
         <int64 name="SourceAssetId">-1</int64>
         <token name="Style">0</token>
-        <BinaryString name="Tags"></BinaryString>
+        <BinaryString name="Tags">
+        </BinaryString>
         <bool name="Visible">true</bool>
         <int name="ZIndex">8</int>
       </Properties>
@@ -176,7 +192,8 @@
           </BinaryString>
           <token name="DominantAxis">0</token>
           <int64 name="SourceAssetId">-1</int64>
-          <BinaryString name="Tags"></BinaryString>
+          <BinaryString name="Tags">
+          </BinaryString>
         </Properties>
       </Item>
       <Item class="ImageLabel" referent="5">
@@ -239,7 +256,13 @@
           <float name="Rotation">0</float>
           <token name="ScaleType">0</token>
           <bool name="Selectable">false</bool>
+          <token name="SelectionBehaviorDown">0</token>
+          <token name="SelectionBehaviorLeft">0</token>
+          <token name="SelectionBehaviorRight">0</token>
+          <token name="SelectionBehaviorUp">0</token>
+          <bool name="SelectionGroup">false</bool>
           <Ref name="SelectionImageObject">null</Ref>
+          <int name="SelectionOrder">0</int>
           <UDim2 name="Size">
             <XS>1</XS>
             <XO>0</XO>
@@ -259,7 +282,8 @@
           </Rect2D>
           <float name="SliceScale">1</float>
           <int64 name="SourceAssetId">-1</int64>
-          <BinaryString name="Tags"></BinaryString>
+          <BinaryString name="Tags">
+          </BinaryString>
           <UDim2 name="TileSize">
             <XS>1</XS>
             <XO>0</XO>
@@ -277,7 +301,8 @@
         <BinaryString name="AttributesSerialize">
         </BinaryString>
         <int64 name="SourceAssetId">-1</int64>
-        <BinaryString name="Tags"></BinaryString>
+        <BinaryString name="Tags">
+        </BinaryString>
       </Properties>
       <Item class="Frame" referent="7">
         <Properties>
@@ -320,7 +345,13 @@
           <Ref name="RootLocalizationTable">null</Ref>
           <float name="Rotation">0</float>
           <bool name="Selectable">false</bool>
+          <token name="SelectionBehaviorDown">0</token>
+          <token name="SelectionBehaviorLeft">0</token>
+          <token name="SelectionBehaviorRight">0</token>
+          <token name="SelectionBehaviorUp">0</token>
+          <bool name="SelectionGroup">false</bool>
           <Ref name="SelectionImageObject">null</Ref>
+          <int name="SelectionOrder">0</int>
           <UDim2 name="Size">
             <XS>0.915</XS>
             <XO>0</XO>
@@ -330,7 +361,8 @@
           <token name="SizeConstraint">0</token>
           <int64 name="SourceAssetId">-1</int64>
           <token name="Style">0</token>
-          <BinaryString name="Tags"></BinaryString>
+          <BinaryString name="Tags">
+          </BinaryString>
           <bool name="Visible">true</bool>
           <int name="ZIndex">6</int>
         </Properties>
@@ -376,7 +408,13 @@
           <Ref name="RootLocalizationTable">null</Ref>
           <float name="Rotation">0</float>
           <bool name="Selectable">false</bool>
+          <token name="SelectionBehaviorDown">0</token>
+          <token name="SelectionBehaviorLeft">0</token>
+          <token name="SelectionBehaviorRight">0</token>
+          <token name="SelectionBehaviorUp">0</token>
+          <bool name="SelectionGroup">false</bool>
           <Ref name="SelectionImageObject">null</Ref>
+          <int name="SelectionOrder">0</int>
           <UDim2 name="Size">
             <XS>0.95</XS>
             <XO>0</XO>
@@ -386,7 +424,8 @@
           <token name="SizeConstraint">0</token>
           <int64 name="SourceAssetId">-1</int64>
           <token name="Style">0</token>
-          <BinaryString name="Tags"></BinaryString>
+          <BinaryString name="Tags">
+          </BinaryString>
           <bool name="Visible">true</bool>
           <int name="ZIndex">7</int>
         </Properties>
@@ -450,7 +489,13 @@
             <float name="Rotation">0</float>
             <token name="ScaleType">0</token>
             <bool name="Selectable">false</bool>
+            <token name="SelectionBehaviorDown">0</token>
+            <token name="SelectionBehaviorLeft">0</token>
+            <token name="SelectionBehaviorRight">0</token>
+            <token name="SelectionBehaviorUp">0</token>
+            <bool name="SelectionGroup">false</bool>
             <Ref name="SelectionImageObject">null</Ref>
+            <int name="SelectionOrder">0</int>
             <UDim2 name="Size">
               <XS>1</XS>
               <XO>0</XO>
@@ -470,7 +515,8 @@
             </Rect2D>
             <float name="SliceScale">1</float>
             <int64 name="SourceAssetId">-1</int64>
-            <BinaryString name="Tags"></BinaryString>
+            <BinaryString name="Tags">
+            </BinaryString>
             <UDim2 name="TileSize">
               <XS>1</XS>
               <XO>0</XO>
@@ -490,7 +536,8 @@
             </BinaryString>
             <token name="DominantAxis">0</token>
             <int64 name="SourceAssetId">-1</int64>
-            <BinaryString name="Tags"></BinaryString>
+            <BinaryString name="Tags">
+            </BinaryString>
           </Properties>
         </Item>
       </Item>
@@ -535,7 +582,13 @@
           <Ref name="RootLocalizationTable">null</Ref>
           <float name="Rotation">0</float>
           <bool name="Selectable">false</bool>
+          <token name="SelectionBehaviorDown">0</token>
+          <token name="SelectionBehaviorLeft">0</token>
+          <token name="SelectionBehaviorRight">0</token>
+          <token name="SelectionBehaviorUp">0</token>
+          <bool name="SelectionGroup">false</bool>
           <Ref name="SelectionImageObject">null</Ref>
+          <int name="SelectionOrder">0</int>
           <UDim2 name="Size">
             <XS>0.95</XS>
             <XO>0</XO>
@@ -545,7 +598,8 @@
           <token name="SizeConstraint">0</token>
           <int64 name="SourceAssetId">-1</int64>
           <token name="Style">0</token>
-          <BinaryString name="Tags"></BinaryString>
+          <BinaryString name="Tags">
+          </BinaryString>
           <bool name="Visible">true</bool>
           <int name="ZIndex">7</int>
         </Properties>
@@ -609,7 +663,13 @@
             <float name="Rotation">0</float>
             <token name="ScaleType">0</token>
             <bool name="Selectable">false</bool>
+            <token name="SelectionBehaviorDown">0</token>
+            <token name="SelectionBehaviorLeft">0</token>
+            <token name="SelectionBehaviorRight">0</token>
+            <token name="SelectionBehaviorUp">0</token>
+            <bool name="SelectionGroup">false</bool>
             <Ref name="SelectionImageObject">null</Ref>
+            <int name="SelectionOrder">0</int>
             <UDim2 name="Size">
               <XS>1</XS>
               <XO>0</XO>
@@ -629,7 +689,8 @@
             </Rect2D>
             <float name="SliceScale">1</float>
             <int64 name="SourceAssetId">-1</int64>
-            <BinaryString name="Tags"></BinaryString>
+            <BinaryString name="Tags">
+            </BinaryString>
             <UDim2 name="TileSize">
               <XS>1</XS>
               <XO>0</XO>
@@ -649,7 +710,8 @@
             </BinaryString>
             <token name="DominantAxis">0</token>
             <int64 name="SourceAssetId">-1</int64>
-            <BinaryString name="Tags"></BinaryString>
+            <BinaryString name="Tags">
+            </BinaryString>
           </Properties>
         </Item>
       </Item>
@@ -695,7 +757,13 @@
         <Ref name="RootLocalizationTable">null</Ref>
         <float name="Rotation">0</float>
         <bool name="Selectable">false</bool>
+        <token name="SelectionBehaviorDown">0</token>
+        <token name="SelectionBehaviorLeft">0</token>
+        <token name="SelectionBehaviorRight">0</token>
+        <token name="SelectionBehaviorUp">0</token>
+        <bool name="SelectionGroup">false</bool>
         <Ref name="SelectionImageObject">null</Ref>
+        <int name="SelectionOrder">0</int>
         <UDim2 name="Size">
           <XS>0.22</XS>
           <XO>0</XO>
@@ -705,7 +773,8 @@
         <token name="SizeConstraint">0</token>
         <int64 name="SourceAssetId">-1</int64>
         <token name="Style">0</token>
-        <BinaryString name="Tags"></BinaryString>
+        <BinaryString name="Tags">
+        </BinaryString>
         <bool name="Visible">true</bool>
         <int name="ZIndex">2</int>
       </Properties>
@@ -715,7 +784,8 @@
           <BinaryString name="AttributesSerialize">
           </BinaryString>
           <int64 name="SourceAssetId">-1</int64>
-          <BinaryString name="Tags"></BinaryString>
+          <BinaryString name="Tags">
+          </BinaryString>
         </Properties>
       </Item>
       <Item class="Frame" referent="16">
@@ -759,7 +829,13 @@
           <Ref name="RootLocalizationTable">null</Ref>
           <float name="Rotation">0</float>
           <bool name="Selectable">false</bool>
+          <token name="SelectionBehaviorDown">0</token>
+          <token name="SelectionBehaviorLeft">0</token>
+          <token name="SelectionBehaviorRight">0</token>
+          <token name="SelectionBehaviorUp">0</token>
+          <bool name="SelectionGroup">false</bool>
           <Ref name="SelectionImageObject">null</Ref>
+          <int name="SelectionOrder">0</int>
           <UDim2 name="Size">
             <XS>1</XS>
             <XO>0</XO>
@@ -769,7 +845,8 @@
           <token name="SizeConstraint">0</token>
           <int64 name="SourceAssetId">-1</int64>
           <token name="Style">0</token>
-          <BinaryString name="Tags"></BinaryString>
+          <BinaryString name="Tags">
+          </BinaryString>
           <bool name="Visible">true</bool>
           <int name="ZIndex">0</int>
         </Properties>
@@ -814,7 +891,13 @@
             <Ref name="RootLocalizationTable">null</Ref>
             <float name="Rotation">0</float>
             <bool name="Selectable">false</bool>
+            <token name="SelectionBehaviorDown">0</token>
+            <token name="SelectionBehaviorLeft">0</token>
+            <token name="SelectionBehaviorRight">0</token>
+            <token name="SelectionBehaviorUp">0</token>
+            <bool name="SelectionGroup">false</bool>
             <Ref name="SelectionImageObject">null</Ref>
+            <int name="SelectionOrder">0</int>
             <UDim2 name="Size">
               <XS>0.25</XS>
               <XO>0</XO>
@@ -824,7 +907,8 @@
             <token name="SizeConstraint">0</token>
             <int64 name="SourceAssetId">-1</int64>
             <token name="Style">0</token>
-            <BinaryString name="Tags"></BinaryString>
+            <BinaryString name="Tags">
+            </BinaryString>
             <bool name="Visible">true</bool>
             <int name="ZIndex">2</int>
           </Properties>
@@ -888,7 +972,13 @@
               <float name="Rotation">0</float>
               <token name="ScaleType">0</token>
               <bool name="Selectable">false</bool>
+              <token name="SelectionBehaviorDown">0</token>
+              <token name="SelectionBehaviorLeft">0</token>
+              <token name="SelectionBehaviorRight">0</token>
+              <token name="SelectionBehaviorUp">0</token>
+              <bool name="SelectionGroup">false</bool>
               <Ref name="SelectionImageObject">null</Ref>
+              <int name="SelectionOrder">0</int>
               <UDim2 name="Size">
                 <XS>1</XS>
                 <XO>0</XO>
@@ -908,7 +998,8 @@
               </Rect2D>
               <float name="SliceScale">1</float>
               <int64 name="SourceAssetId">-1</int64>
-              <BinaryString name="Tags"></BinaryString>
+              <BinaryString name="Tags">
+              </BinaryString>
               <UDim2 name="TileSize">
                 <XS>1</XS>
                 <XO>0</XO>
@@ -961,7 +1052,13 @@
             <Ref name="RootLocalizationTable">null</Ref>
             <float name="Rotation">0</float>
             <bool name="Selectable">false</bool>
+            <token name="SelectionBehaviorDown">0</token>
+            <token name="SelectionBehaviorLeft">0</token>
+            <token name="SelectionBehaviorRight">0</token>
+            <token name="SelectionBehaviorUp">0</token>
+            <bool name="SelectionGroup">false</bool>
             <Ref name="SelectionImageObject">null</Ref>
+            <int name="SelectionOrder">0</int>
             <UDim2 name="Size">
               <XS>0.25</XS>
               <XO>0</XO>
@@ -971,7 +1068,8 @@
             <token name="SizeConstraint">0</token>
             <int64 name="SourceAssetId">-1</int64>
             <token name="Style">0</token>
-            <BinaryString name="Tags"></BinaryString>
+            <BinaryString name="Tags">
+            </BinaryString>
             <bool name="Visible">true</bool>
             <int name="ZIndex">2</int>
           </Properties>
@@ -1035,7 +1133,13 @@
               <float name="Rotation">0</float>
               <token name="ScaleType">0</token>
               <bool name="Selectable">false</bool>
+              <token name="SelectionBehaviorDown">0</token>
+              <token name="SelectionBehaviorLeft">0</token>
+              <token name="SelectionBehaviorRight">0</token>
+              <token name="SelectionBehaviorUp">0</token>
+              <bool name="SelectionGroup">false</bool>
               <Ref name="SelectionImageObject">null</Ref>
+              <int name="SelectionOrder">0</int>
               <UDim2 name="Size">
                 <XS>1</XS>
                 <XO>0</XO>
@@ -1055,7 +1159,8 @@
               </Rect2D>
               <float name="SliceScale">1</float>
               <int64 name="SourceAssetId">-1</int64>
-              <BinaryString name="Tags"></BinaryString>
+              <BinaryString name="Tags">
+              </BinaryString>
               <UDim2 name="TileSize">
                 <XS>1</XS>
                 <XO>0</XO>
@@ -1108,7 +1213,13 @@
             <Ref name="RootLocalizationTable">null</Ref>
             <float name="Rotation">0</float>
             <bool name="Selectable">false</bool>
+            <token name="SelectionBehaviorDown">0</token>
+            <token name="SelectionBehaviorLeft">0</token>
+            <token name="SelectionBehaviorRight">0</token>
+            <token name="SelectionBehaviorUp">0</token>
+            <bool name="SelectionGroup">false</bool>
             <Ref name="SelectionImageObject">null</Ref>
+            <int name="SelectionOrder">0</int>
             <UDim2 name="Size">
               <XS>0.25</XS>
               <XO>0</XO>
@@ -1118,7 +1229,8 @@
             <token name="SizeConstraint">0</token>
             <int64 name="SourceAssetId">-1</int64>
             <token name="Style">0</token>
-            <BinaryString name="Tags"></BinaryString>
+            <BinaryString name="Tags">
+            </BinaryString>
             <bool name="Visible">true</bool>
             <int name="ZIndex">2</int>
           </Properties>
@@ -1182,7 +1294,13 @@
               <float name="Rotation">0</float>
               <token name="ScaleType">0</token>
               <bool name="Selectable">false</bool>
+              <token name="SelectionBehaviorDown">0</token>
+              <token name="SelectionBehaviorLeft">0</token>
+              <token name="SelectionBehaviorRight">0</token>
+              <token name="SelectionBehaviorUp">0</token>
+              <bool name="SelectionGroup">false</bool>
               <Ref name="SelectionImageObject">null</Ref>
+              <int name="SelectionOrder">0</int>
               <UDim2 name="Size">
                 <XS>1</XS>
                 <XO>0</XO>
@@ -1202,7 +1320,8 @@
               </Rect2D>
               <float name="SliceScale">1</float>
               <int64 name="SourceAssetId">-1</int64>
-              <BinaryString name="Tags"></BinaryString>
+              <BinaryString name="Tags">
+              </BinaryString>
               <UDim2 name="TileSize">
                 <XS>1</XS>
                 <XO>0</XO>
@@ -1255,7 +1374,13 @@
             <Ref name="RootLocalizationTable">null</Ref>
             <float name="Rotation">0</float>
             <bool name="Selectable">false</bool>
+            <token name="SelectionBehaviorDown">0</token>
+            <token name="SelectionBehaviorLeft">0</token>
+            <token name="SelectionBehaviorRight">0</token>
+            <token name="SelectionBehaviorUp">0</token>
+            <bool name="SelectionGroup">false</bool>
             <Ref name="SelectionImageObject">null</Ref>
+            <int name="SelectionOrder">0</int>
             <UDim2 name="Size">
               <XS>0.25</XS>
               <XO>0</XO>
@@ -1265,7 +1390,8 @@
             <token name="SizeConstraint">0</token>
             <int64 name="SourceAssetId">-1</int64>
             <token name="Style">0</token>
-            <BinaryString name="Tags"></BinaryString>
+            <BinaryString name="Tags">
+            </BinaryString>
             <bool name="Visible">true</bool>
             <int name="ZIndex">2</int>
           </Properties>
@@ -1329,7 +1455,13 @@
               <float name="Rotation">0</float>
               <token name="ScaleType">0</token>
               <bool name="Selectable">false</bool>
+              <token name="SelectionBehaviorDown">0</token>
+              <token name="SelectionBehaviorLeft">0</token>
+              <token name="SelectionBehaviorRight">0</token>
+              <token name="SelectionBehaviorUp">0</token>
+              <bool name="SelectionGroup">false</bool>
               <Ref name="SelectionImageObject">null</Ref>
+              <int name="SelectionOrder">0</int>
               <UDim2 name="Size">
                 <XS>1</XS>
                 <XO>0</XO>
@@ -1349,7 +1481,8 @@
               </Rect2D>
               <float name="SliceScale">1</float>
               <int64 name="SourceAssetId">-1</int64>
-              <BinaryString name="Tags"></BinaryString>
+              <BinaryString name="Tags">
+              </BinaryString>
               <UDim2 name="TileSize">
                 <XS>1</XS>
                 <XO>0</XO>
@@ -1403,7 +1536,13 @@
           <Ref name="RootLocalizationTable">null</Ref>
           <float name="Rotation">0</float>
           <bool name="Selectable">false</bool>
+          <token name="SelectionBehaviorDown">0</token>
+          <token name="SelectionBehaviorLeft">0</token>
+          <token name="SelectionBehaviorRight">0</token>
+          <token name="SelectionBehaviorUp">0</token>
+          <bool name="SelectionGroup">false</bool>
           <Ref name="SelectionImageObject">null</Ref>
+          <int name="SelectionOrder">0</int>
           <UDim2 name="Size">
             <XS>1</XS>
             <XO>0</XO>
@@ -1413,7 +1552,8 @@
           <token name="SizeConstraint">0</token>
           <int64 name="SourceAssetId">-1</int64>
           <token name="Style">0</token>
-          <BinaryString name="Tags"></BinaryString>
+          <BinaryString name="Tags">
+          </BinaryString>
           <bool name="Visible">true</bool>
           <int name="ZIndex">1</int>
         </Properties>
@@ -1458,7 +1598,13 @@
             <Ref name="RootLocalizationTable">null</Ref>
             <float name="Rotation">0</float>
             <bool name="Selectable">false</bool>
+            <token name="SelectionBehaviorDown">0</token>
+            <token name="SelectionBehaviorLeft">0</token>
+            <token name="SelectionBehaviorRight">0</token>
+            <token name="SelectionBehaviorUp">0</token>
+            <bool name="SelectionGroup">false</bool>
             <Ref name="SelectionImageObject">null</Ref>
+            <int name="SelectionOrder">0</int>
             <UDim2 name="Size">
               <XS>0.22</XS>
               <XO>0</XO>
@@ -1468,7 +1614,8 @@
             <token name="SizeConstraint">0</token>
             <int64 name="SourceAssetId">-1</int64>
             <token name="Style">0</token>
-            <BinaryString name="Tags"></BinaryString>
+            <BinaryString name="Tags">
+            </BinaryString>
             <bool name="Visible">true</bool>
             <int name="ZIndex">1</int>
           </Properties>
@@ -1532,7 +1679,13 @@
               <float name="Rotation">0</float>
               <token name="ScaleType">3</token>
               <bool name="Selectable">false</bool>
+              <token name="SelectionBehaviorDown">0</token>
+              <token name="SelectionBehaviorLeft">0</token>
+              <token name="SelectionBehaviorRight">0</token>
+              <token name="SelectionBehaviorUp">0</token>
+              <bool name="SelectionGroup">false</bool>
               <Ref name="SelectionImageObject">null</Ref>
+              <int name="SelectionOrder">0</int>
               <UDim2 name="Size">
                 <XS>1</XS>
                 <XO>0</XO>
@@ -1552,7 +1705,8 @@
               </Rect2D>
               <float name="SliceScale">1</float>
               <int64 name="SourceAssetId">-1</int64>
-              <BinaryString name="Tags"></BinaryString>
+              <BinaryString name="Tags">
+              </BinaryString>
               <UDim2 name="TileSize">
                 <XS>1</XS>
                 <XO>0</XO>
@@ -1605,7 +1759,13 @@
             <Ref name="RootLocalizationTable">null</Ref>
             <float name="Rotation">0</float>
             <bool name="Selectable">false</bool>
+            <token name="SelectionBehaviorDown">0</token>
+            <token name="SelectionBehaviorLeft">0</token>
+            <token name="SelectionBehaviorRight">0</token>
+            <token name="SelectionBehaviorUp">0</token>
+            <bool name="SelectionGroup">false</bool>
             <Ref name="SelectionImageObject">null</Ref>
+            <int name="SelectionOrder">0</int>
             <UDim2 name="Size">
               <XS>0.22</XS>
               <XO>0</XO>
@@ -1615,7 +1775,8 @@
             <token name="SizeConstraint">0</token>
             <int64 name="SourceAssetId">-1</int64>
             <token name="Style">0</token>
-            <BinaryString name="Tags"></BinaryString>
+            <BinaryString name="Tags">
+            </BinaryString>
             <bool name="Visible">true</bool>
             <int name="ZIndex">1</int>
           </Properties>
@@ -1679,7 +1840,13 @@
               <float name="Rotation">0</float>
               <token name="ScaleType">3</token>
               <bool name="Selectable">false</bool>
+              <token name="SelectionBehaviorDown">0</token>
+              <token name="SelectionBehaviorLeft">0</token>
+              <token name="SelectionBehaviorRight">0</token>
+              <token name="SelectionBehaviorUp">0</token>
+              <bool name="SelectionGroup">false</bool>
               <Ref name="SelectionImageObject">null</Ref>
+              <int name="SelectionOrder">0</int>
               <UDim2 name="Size">
                 <XS>1</XS>
                 <XO>0</XO>
@@ -1699,7 +1866,8 @@
               </Rect2D>
               <float name="SliceScale">1</float>
               <int64 name="SourceAssetId">-1</int64>
-              <BinaryString name="Tags"></BinaryString>
+              <BinaryString name="Tags">
+              </BinaryString>
               <UDim2 name="TileSize">
                 <XS>1</XS>
                 <XO>0</XO>
@@ -1752,7 +1920,13 @@
             <Ref name="RootLocalizationTable">null</Ref>
             <float name="Rotation">0</float>
             <bool name="Selectable">false</bool>
+            <token name="SelectionBehaviorDown">0</token>
+            <token name="SelectionBehaviorLeft">0</token>
+            <token name="SelectionBehaviorRight">0</token>
+            <token name="SelectionBehaviorUp">0</token>
+            <bool name="SelectionGroup">false</bool>
             <Ref name="SelectionImageObject">null</Ref>
+            <int name="SelectionOrder">0</int>
             <UDim2 name="Size">
               <XS>0.22</XS>
               <XO>0</XO>
@@ -1762,7 +1936,8 @@
             <token name="SizeConstraint">0</token>
             <int64 name="SourceAssetId">-1</int64>
             <token name="Style">0</token>
-            <BinaryString name="Tags"></BinaryString>
+            <BinaryString name="Tags">
+            </BinaryString>
             <bool name="Visible">true</bool>
             <int name="ZIndex">1</int>
           </Properties>
@@ -1826,7 +2001,13 @@
               <float name="Rotation">0</float>
               <token name="ScaleType">3</token>
               <bool name="Selectable">false</bool>
+              <token name="SelectionBehaviorDown">0</token>
+              <token name="SelectionBehaviorLeft">0</token>
+              <token name="SelectionBehaviorRight">0</token>
+              <token name="SelectionBehaviorUp">0</token>
+              <bool name="SelectionGroup">false</bool>
               <Ref name="SelectionImageObject">null</Ref>
+              <int name="SelectionOrder">0</int>
               <UDim2 name="Size">
                 <XS>1</XS>
                 <XO>0</XO>
@@ -1846,7 +2027,8 @@
               </Rect2D>
               <float name="SliceScale">1</float>
               <int64 name="SourceAssetId">-1</int64>
-              <BinaryString name="Tags"></BinaryString>
+              <BinaryString name="Tags">
+              </BinaryString>
               <UDim2 name="TileSize">
                 <XS>1</XS>
                 <XO>0</XO>
@@ -1899,7 +2081,13 @@
             <Ref name="RootLocalizationTable">null</Ref>
             <float name="Rotation">0</float>
             <bool name="Selectable">false</bool>
+            <token name="SelectionBehaviorDown">0</token>
+            <token name="SelectionBehaviorLeft">0</token>
+            <token name="SelectionBehaviorRight">0</token>
+            <token name="SelectionBehaviorUp">0</token>
+            <bool name="SelectionGroup">false</bool>
             <Ref name="SelectionImageObject">null</Ref>
+            <int name="SelectionOrder">0</int>
             <UDim2 name="Size">
               <XS>0.22</XS>
               <XO>0</XO>
@@ -1909,7 +2097,8 @@
             <token name="SizeConstraint">0</token>
             <int64 name="SourceAssetId">-1</int64>
             <token name="Style">0</token>
-            <BinaryString name="Tags"></BinaryString>
+            <BinaryString name="Tags">
+            </BinaryString>
             <bool name="Visible">true</bool>
             <int name="ZIndex">1</int>
           </Properties>
@@ -1973,7 +2162,13 @@
               <float name="Rotation">0</float>
               <token name="ScaleType">3</token>
               <bool name="Selectable">false</bool>
+              <token name="SelectionBehaviorDown">0</token>
+              <token name="SelectionBehaviorLeft">0</token>
+              <token name="SelectionBehaviorRight">0</token>
+              <token name="SelectionBehaviorUp">0</token>
+              <bool name="SelectionGroup">false</bool>
               <Ref name="SelectionImageObject">null</Ref>
+              <int name="SelectionOrder">0</int>
               <UDim2 name="Size">
                 <XS>1</XS>
                 <XO>0</XO>
@@ -1993,7 +2188,8 @@
               </Rect2D>
               <float name="SliceScale">1</float>
               <int64 name="SourceAssetId">-1</int64>
-              <BinaryString name="Tags"></BinaryString>
+              <BinaryString name="Tags">
+              </BinaryString>
               <UDim2 name="TileSize">
                 <XS>1</XS>
                 <XO>0</XO>
@@ -2065,7 +2261,13 @@
             <float name="Rotation">0</float>
             <token name="ScaleType">0</token>
             <bool name="Selectable">false</bool>
+            <token name="SelectionBehaviorDown">0</token>
+            <token name="SelectionBehaviorLeft">0</token>
+            <token name="SelectionBehaviorRight">0</token>
+            <token name="SelectionBehaviorUp">0</token>
+            <bool name="SelectionGroup">false</bool>
             <Ref name="SelectionImageObject">null</Ref>
+            <int name="SelectionOrder">0</int>
             <UDim2 name="Size">
               <XS>1</XS>
               <XO>0</XO>
@@ -2085,7 +2287,8 @@
             </Rect2D>
             <float name="SliceScale">1</float>
             <int64 name="SourceAssetId">-1</int64>
-            <BinaryString name="Tags"></BinaryString>
+            <BinaryString name="Tags">
+            </BinaryString>
             <UDim2 name="TileSize">
               <XS>1</XS>
               <XO>0</XO>
@@ -2107,7 +2310,7 @@
           <null>
           </null>
         </Content>
-        <string name="ScriptGuid">{CB7DCC13-4A21-4B03-BFB8-342D57D5BA47}</string>
+        <string name="ScriptGuid">{8929AC7E-75A6-43C7-84A3-E8B2E548024B}</string>
         <string name="Source">return {
 	Name = "RomDino's Cirglow W",
 	Author = "RomDino",
@@ -2117,7 +2320,8 @@
 	Data = nil -- Keep this empty for skin data
 }</string>
         <int64 name="SourceAssetId">-1</int64>
-        <BinaryString name="Tags"></BinaryString>
+        <BinaryString name="Tags">
+        </BinaryString>
       </Properties>
     </Item>
   </Item>
