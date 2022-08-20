@@ -633,7 +633,8 @@ end
 
 local Injected = withInjection(Gameplay, {
     scoreService = "ScoreService",
-    multiplayerService = "MultiplayerService"
+    multiplayerService = "MultiplayerService",
+    spectatingService = "SpectatingService",
 })
 
 return RoactRodux.connect(function(state, props)

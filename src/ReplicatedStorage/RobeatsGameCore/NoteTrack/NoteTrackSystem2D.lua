@@ -81,7 +81,8 @@ function NoteTrackSystem2D:new(_game, _game_slot)
 				if did_hit then
 					itr_note:on_hit(note_result,i,renderable_hit)
 					hit_found = true
-					break
+					
+					return note_result
 				end
 			end
 		end
@@ -108,7 +109,8 @@ function NoteTrackSystem2D:new(_game, _game_slot)
 
 				if did_release then
 					itr_note:on_release(note_result,i,renderable_hit)
-					break
+					
+					return note_result
 				end
 			end
 		end

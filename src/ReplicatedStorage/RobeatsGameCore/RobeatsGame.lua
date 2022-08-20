@@ -17,6 +17,7 @@ local Skins = require(game.ReplicatedStorage.Skins)
 local DebugOut = require(game.ReplicatedStorage.Shared.DebugOut)
 local SongDatabase = require(game.ReplicatedStorage.RobeatsGameCore.SongDatabase)
 local Replay = require(game.ReplicatedStorage.RobeatsGameCore.Replay)
+local FlashEvery = require(game.ReplicatedStorage.Shared.FlashEvery)
 
 --local Settings = require(game.ReplicatedStorage.)
 
@@ -60,6 +61,7 @@ function RobeatsGame:new(_game_environment_center_position)
 	local _note_color_affects_2d
 
 	local replay
+	local send_replay_data = FlashEvery:new(3)
 
 	self._audio_manager = AudioManager:new(self)
 	self._score_manager = ScoreManager:new(self)
@@ -169,9 +171,11 @@ function RobeatsGame:new(_game_environment_center_position)
 	end
 	
 	function self:update(dt_scale)
+		send_replay_data:update(dt_scale)
+
 		if _current_mode == RobeatsGame.Mode.Game then
 			self._audio_manager:update(dt_scale)
-			if replay then
+			if replay.viewing then
 				local actions = replay:get_actions_this_frame(self._audio_manager:get_current_time_ms(true))
 
 				for _, action in actions do
@@ -186,10 +190,23 @@ function RobeatsGame:new(_game_environment_center_position)
 					if self._input:control_just_pressed(itr_key) then
 						self.keybind_pressed:Fire(itr_index)
 						
-						self:get_local_tracksystem():press_track_index(itr_index)
+						local note_result = self:get_local_tracksystem():press_track_index(itr_index)
+
+						replay:add_replay_hit(self._audio_manager:get_current_time_ms(true), itr_index, Replay.HitType.Press, note_result)
+						
+						if send_replay_data:do_flash() then
+							replay:send_last_hits()
+						end
 					end
+
 					if self._input:control_just_released(itr_key) then
-						self:get_local_tracksystem():release_track_index(itr_index)
+						local note_result = self:get_local_tracksystem():release_track_index(itr_index)
+
+						replay:add_replay_hit(self._audio_manager:get_current_time_ms(true), itr_index, Replay.HitType.Release, note_result)
+
+						if send_replay_data:do_flash() then
+							replay:send_last_hits()
+						end
 					end
 				end
 			end
@@ -206,7 +223,8 @@ function RobeatsGame:new(_game_environment_center_position)
 	end
 
 	function self:load(_song_key, _local_player_slot, _config, _replay)
-		replay = Replay.perfect(SongDatabase:get_hash_for_key(_song_key), _config.SongRate)
+		-- replay = Replay.perfect(SongDatabase:get_hash_for_key(_song_key), _config.SongRate)
+		replay = Replay:new()
 
 		self:set_mods(_config.Mods)
 

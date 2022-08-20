@@ -9,6 +9,7 @@ local PermissionsReducer = require(game.ReplicatedStorage.Reducers.PermissionsRe
 local MultiplayerReducer = require(game.ReplicatedStorage.Reducers.MultiplayerReducer)
 local ProfileReducer = require(game.ReplicatedStorage.Reducers.ProfileReducer)
 local ChatReducer = require(game.ReplicatedStorage.Reducers.ChatReducer)
+local SpectatingReducer = require(game.ReplicatedStorage.Reducers.SpectatingReducer)
 
 local SongDatabase = require(game.ReplicatedStorage.RobeatsGameCore.SongDatabase)
 
@@ -26,7 +27,8 @@ function StateController:KnitInit()
         permissions = PermissionsReducer,
         multiplayer = MultiplayerReducer,
         profiles = ProfileReducer,
-        chat = ChatReducer
+        chat = ChatReducer,
+        spectating = SpectatingReducer
     })
 
     local _, initialState = StateService:GetState():await()

@@ -2,6 +2,8 @@ local SongDatabase = require(game:GetService("ReplicatedStorage").RobeatsGameCor
 local NoteResult = require(game:GetService("ReplicatedStorage").RobeatsGameCore.Enums.NoteResult)
 local SocialService = game:GetService("SocialService")
 
+local Knit = require(game:GetService("ReplicatedStorage").Packages.Knit)
+
 local Replay = {}
 
 Replay.HitType = {
@@ -14,10 +16,22 @@ function Replay:new(viewing)
     self.viewing = not not viewing
     self.hits = {}
 
+    local SpectatingService = Knit.GetService("SpectatingService")
+
+    local hitsSinceLastSend = {}
+
     local minIndex = 1
 
-    function self:add_replay_hit(hit)
+    function self:add_replay_hit(time, track, action, judgement)
+        local hit = {
+            time = time,
+            track = track,
+            action = action,
+            judgement = judgement,
+        }
+
         table.insert(self.hits, hit)
+        table.insert(hitsSinceLastSend, hit)
     end
 
     function self:get_hits()
@@ -41,6 +55,11 @@ function Replay:new(viewing)
         return actions
     end
 
+    function self:send_last_hits()
+        SpectatingService:DisemminateHits(hitsSinceLastSend)
+        table.clear(hitsSinceLastSend)
+    end
+
     return self
 end
 
@@ -51,32 +70,11 @@ function Replay.perfect(hash, rate)
 
     for _, hitObject in ipairs(hitObjects) do
         if hitObject.Type == 1 then
-            replay:add_replay_hit({
-                time = hitObject.Time,
-                track = hitObject.Track,
-                action = Replay.HitType.Press,
-                judgement = NoteResult.Marvelous,
-            })
-
-            replay:add_replay_hit({
-                time = hitObject.Time,
-                track = hitObject.Track,
-                action = Replay.HitType.Release
-            })
+            replay:add_replay_hit(hitObject.Time, hitObject.Track, Replay.HitType.Press, NoteResult.Marvelous)
+            replay:add_replay_hit(hitObject.Time, hitObject.Track, Replay.HitType.Release)
         else
-            replay:add_replay_hit({
-                time = hitObject.Time,
-                track = hitObject.Track,
-                action = Replay.HitType.Press,
-                judgement = NoteResult.Marvelous,
-            })
-
-            replay:add_replay_hit({
-                time = hitObject.Time + hitObject.Duration,
-                track = hitObject.Track,
-                action = Replay.HitType.Release,
-                judgement = NoteResult.Marvelous,
-            })
+            replay:add_replay_hit(hitObject.Time, hitObject.Track, Replay.HitType.Press, NoteResult.Marvelous)
+            replay:add_replay_hit(hitObject.Time + hitObject.Duration, hitObject.Track, Replay.HitType.Release, NoteResult.Marvelous)
         end
     end
 

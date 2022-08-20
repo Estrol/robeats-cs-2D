@@ -104,7 +104,8 @@ function RoactController:GetDependencies()
         ChatService = Knit.GetService("ChatService"),
         SettingsService = Knit.GetService("SettingsService"),
         SFXController = Knit.GetController("SFXController"),
-        FadeController = Knit.GetController("FadeController")
+        FadeController = Knit.GetController("FadeController"),
+        SpectatingService = Knit.GetService("SpectatingService"),
     }
 end
 

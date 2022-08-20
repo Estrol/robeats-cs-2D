@@ -4,6 +4,7 @@ local Rodux = require(game.ReplicatedStorage.Packages.Rodux)
 
 local MultiplayerReducer = require(game.ReplicatedStorage.Reducers.MultiplayerReducer)
 local ProfileReducer = require(game.ReplicatedStorage.Reducers.ProfileReducer)
+local SpectatingReducer = require(game.ReplicatedStorage.Reducers.SpectatingReducer)
 
 local StateService = Knit.CreateService {
     Name = "StateService";
