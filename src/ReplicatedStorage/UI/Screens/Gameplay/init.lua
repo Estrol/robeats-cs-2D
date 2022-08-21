@@ -141,8 +141,23 @@ function Gameplay:init()
                     earliestTime = hit.time / 1000
                 end
 
-                spectateReplay:add_replay_hit(hit.time, hit.track, hit.action, hit.judgement)
+                spectateReplay:add_replay_hit(hit.time, hit.track, hit.action, hit.judgement, hit.scoreData)
             end
+        end)
+
+        self.replayScoreChangedConnection = spectateReplay.scoreChanged.Event:Connect(function(scoreData)
+            self:setState({
+                score = scoreData.Score,
+                accuracy = scoreData.Accuracy,
+                chain = scoreData.Chain,
+                maxChain = scoreData.MaxChain,
+                marvelouses = scoreData.Marvelouses,
+                perfects = scoreData.Perfects,
+                greats = scoreData.Greats,
+                goods = scoreData.Goods,
+                bads = scoreData.Bads,
+                misses = scoreData.Misses,
+            })
         end)
 
         self.props.spectatingService.Spectate:Fire(spectateData.UserId)
@@ -262,6 +277,10 @@ function Gameplay:init()
             withHitDeviancePoint(bar)
         end
 
+        if spectateReplay then
+            return
+        end
+        
         self:setState({
             score = _game._score_manager:get_score(),
             accuracy = _game._score_manager:get_accuracy() * 100,
@@ -653,6 +672,7 @@ function Gameplay:willUnmount()
 
     if self.replayConnection then
         self.replayConnection:Disconnect()
+        self.replayScoreChangedConnection:Disconnect()
     end
 
     if not self.props.location.state.Spectate then

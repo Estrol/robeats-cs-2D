@@ -52,6 +52,7 @@ function ScoreManager:new(_game)
 			Bads = _bad_count,
 			Misses = _miss_count,
 			MaxChain = _max_chain,
+			Chain = _chain,
 			Accuracy = self:get_accuracy() * 100
 		}
 	end
@@ -178,8 +179,16 @@ function ScoreManager:new(_game)
 				_chain = 0
 				_miss_count = _miss_count + 1
 
+				if not _game:is_viewing_replay() then
+					_game:add_replay_hit(track_index, nil, note_result, self:get_end_records())
+				end
+
 			elseif params.TimeMiss == true then
 				_miss_count = _miss_count + 1
+
+				if not _game:is_viewing_replay() then
+					_game:add_replay_hit(track_index, nil, note_result, self:get_end_records())
+				end
 			end
 		end
 

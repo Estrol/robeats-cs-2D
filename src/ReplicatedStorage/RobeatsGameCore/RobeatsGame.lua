@@ -156,8 +156,6 @@ function RobeatsGame:new(_game_environment_center_position)
 			self._tracksystems:add(self:get_local_game_slot(), NoteTrackSystem:new(self,self:get_local_game_slot()))
 		end
 
-		print(_start_time_ms)
-
 		self._audio_manager:start_play(_start_time_ms)
 		_current_mode = RobeatsGame.Mode.Game
 	end
@@ -172,6 +170,10 @@ function RobeatsGame:new(_game_environment_center_position)
 		return self._tracksystems:key_itr()
 	end
 	
+	function self:add_replay_hit(track, action, judgement, scoreData)
+		replay:add_replay_hit(self._audio_manager:get_current_time_ms(true), track, action, judgement, scoreData)
+	end
+
 	function self:update(dt_scale)
 		send_replay_data:update(dt_scale)
 
@@ -194,23 +196,19 @@ function RobeatsGame:new(_game_environment_center_position)
 						
 						local note_result = self:get_local_tracksystem():press_track_index(itr_index)
 
-						replay:add_replay_hit(self._audio_manager:get_current_time_ms(true), itr_index, Replay.HitType.Press, note_result)
-						
-						if send_replay_data:do_flash() then
-							replay:send_last_hits()
-						end
+						self:add_replay_hit(itr_index, Replay.HitType.Press, note_result, self._score_manager:get_end_records())
 					end
 
 					if self._input:control_just_released(itr_key) then
 						local note_result = self:get_local_tracksystem():release_track_index(itr_index)
 
-						replay:add_replay_hit(self._audio_manager:get_current_time_ms(true), itr_index, Replay.HitType.Release, note_result)
-
-						if send_replay_data:do_flash() then
-							replay:send_last_hits()
-						end
+						self:add_replay_hit(itr_index, Replay.HitType.Release, note_result, self._score_manager:get_end_records())
 					end
 				end
+			end
+
+			if send_replay_data:do_flash() then
+				replay:send_last_hits()
 			end
 			
 			for _, itr in self._tracksystems:key_itr() do
@@ -253,6 +251,10 @@ function RobeatsGame:new(_game_environment_center_position)
 		self:setup_world(_local_player_slot)
 	end
 	
+	function self:is_viewing_replay()
+		return replay.viewing
+	end
+
 	function self:teardown()
 		for _, val in self:tracksystems_itr() do
 			val:teardown()

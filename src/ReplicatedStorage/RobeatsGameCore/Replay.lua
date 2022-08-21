@@ -15,6 +15,7 @@ function Replay:new(config)
     local self = {}
     self.viewing = not not config.viewing
     self.hits = {}
+    self.scoreChanged = Instance.new("BindableEvent")
 
     local SpectatingService = Knit.GetService("SpectatingService")
 
@@ -22,12 +23,13 @@ function Replay:new(config)
 
     local minIndex = 1
 
-    function self:add_replay_hit(time, track, action, judgement)
+    function self:add_replay_hit(time, track, action, judgement, scoreData)
         local hit = {
             time = time,
             track = track,
             action = action,
             judgement = judgement,
+            scoreData = scoreData,
         }
 
         table.insert(self.hits, hit)
@@ -40,16 +42,26 @@ function Replay:new(config)
 
     function self:get_actions_this_frame(time)
         local actions = {}
+        local lastScoreData
 
         for i = minIndex, #self.hits do
             local hit = self.hits[i]
 
             if time >= hit.time then
-                table.insert(actions, hit)
+                if hit.action then
+                    table.insert(actions, hit)
+                end
+
+                lastScoreData = hit.scoreData
+
                 minIndex += 1
             else
                 break
             end
+        end
+
+        if lastScoreData then
+            self.scoreChanged:Fire(lastScoreData)
         end
 
         return actions
