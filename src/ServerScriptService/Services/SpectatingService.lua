@@ -18,9 +18,15 @@ local StateService
 
 local currentlySpectating = {}
 
+local function findPlayer(player)
+    return function(p)
+        return p.player.UserId == player.UserId
+    end
+end
+
 function SpectatingService:KnitInit()
     game.Players.PlayerRemoving:Connect(function(player)
-        currentlySpectating[tostring(player.UserId)] = nil
+        self:RemovePlayer(player)
     end)
 
     self.Client.Spectate:Connect(function(player, targetUserId)
@@ -28,7 +34,7 @@ function SpectatingService:KnitInit()
     end)
 
     self.Client.Unspectate:Connect(function(player)
-        currentlySpectating[tostring(player.UserId)] = nil
+        self:RemovePlayer(player)
     end)
 end
 
@@ -36,12 +42,6 @@ function SpectatingService:KnitStart()
     StateService = Knit.GetService("StateService")
 
     local store = StateService.Store
-
-    local function findPlayer(player)
-        return function(p)
-            return p.player.UserId == player.UserId
-        end
-    end
 
     self.Client.GameStarted:Connect(function(player, songHash, songRate)
         if not findWhere(store:getState().spectating.players, findPlayer(player)) then
@@ -55,13 +55,21 @@ function SpectatingService:KnitStart()
     end)
 
     self.Client.GameEnded:Connect(function(player)
-        if findWhere(store:getState().spectating.players, findPlayer(player)) then
-            store:dispatch({
-                type = "removePlayerFromSpectate",
-                player = player,
-            })
-        end
+        self:RemovePlayer(player)
     end)
+end
+
+function SpectatingService:RemovePlayer(player)
+    currentlySpectating[tostring(player.UserId)] = nil
+
+    local store = StateService.Store
+
+    if findWhere(store:getState().spectating.players, findPlayer(player)) then
+        store:dispatch({
+            type = "removePlayerFromSpectate",
+            player = player,
+        })
+    end
 end
 
 function SpectatingService.Client:DisemminateHits(player, hits)
