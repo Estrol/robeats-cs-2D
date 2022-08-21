@@ -22,7 +22,7 @@ return createReducer(defaultState, {
         return join(state, {
             players = push(state.players, {
                 player = action.player,
-                songKey = action.songKey,
+                songHash = action.songHash,
                 songRate = action.songRate,
             })
         })

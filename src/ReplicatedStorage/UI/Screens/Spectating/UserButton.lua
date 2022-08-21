@@ -14,7 +14,7 @@ UserButton.defaultProps = {
     OnSpectate = function() end,
     PlayerName = "Player1",
     UserId = 0,
-    SongKey = 1,
+    SongHash = "",
     SongRate = 100,
 }
 
@@ -23,7 +23,8 @@ function UserButton:init()
 end
 
 function UserButton:render()
-    local data = SongDatabase:get_data_for_key(self.props.SongKey)
+    local songKey = SongDatabase:get_key_for_hash(self.props.SongHash)
+    local data = if songKey ~= SongDatabase:invalid_songkey() then SongDatabase:get_data_for_key(songKey) else nil
 
     return e(RoundedFrame, {
         Size = UDim2.new(1, 0, 0, 80),
@@ -69,7 +70,7 @@ function UserButton:render()
                 AspectRatio = 1
             })
         }),
-        Spectate = e(RoundedTextButton, {
+        Spectate = if songKey ~= SongDatabase:invalid_songkey() then e(RoundedTextButton, {
             Position = UDim2.fromScale(0.89, 0.5),
             Size = UDim2.fromScale(0.15, 0.5),
             HoldSize = UDim2.fromScale(0.15, 0.7),
@@ -79,13 +80,13 @@ function UserButton:render()
             TextColor3 = Color3.fromRGB(184, 184, 184),
             Text = "Spectate",
             OnClick = function()
-                self.props.OnSpectate(self.props.UserId, self.props.PlayerName, self.props.SongKey, self.props.SongRate)
+                self.props.OnSpectate(self.props.UserId, self.props.PlayerName, songKey, self.props.SongRate)
             end
         }, {
             UITextSizeConstraint = e("UITextSizeConstraint", {
                 MaxTextSize = 22
             })
-        }),
+        }) else nil,
         UIAspectRatioConstraint = e("UIAspectRatioConstraint", {
             AspectRatio = 10,
             AspectType = Enum.AspectType.ScaleWithParentSize,

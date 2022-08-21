@@ -43,12 +43,12 @@ function SpectatingService:KnitStart()
         end
     end
 
-    self.Client.GameStarted:Connect(function(player, songKey, songRate)
+    self.Client.GameStarted:Connect(function(player, songHash, songRate)
         if not findWhere(store:getState().spectating.players, findPlayer(player)) then
             store:dispatch({
                 type = "addPlayerToSpectate",
                 player = player,
-                songKey = songKey,
+                songHash = songHash,
                 songRate = songRate,
             })
         end

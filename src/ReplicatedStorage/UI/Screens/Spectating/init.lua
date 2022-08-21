@@ -23,7 +23,7 @@ function Users:render()
         buttons[player.player.UserId] = e(UserButton, {
             UserId = player.player.UserId,
             PlayerName = player.player.Name,
-            SongKey = player.songKey,
+            SongHash = player.songHash,
             SongRate = player.songRate,
             OnSpectate = function(userId, playerName, songKey, rate)
                 self.props.history:push("/play", {

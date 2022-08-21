@@ -337,7 +337,7 @@ function Gameplay:startGame(earliestTime)
     })
 
     if not self.props.location.state.Spectate then
-        self.props.spectatingService.GameStarted:Fire(self.songKey, self.songRate)
+        self.props.spectatingService.GameStarted:Fire(SongDatabase:get_md5_hash_for_key(self.songKey), self.songRate)
     end
     
     self._game:start_game(earliestTime)
