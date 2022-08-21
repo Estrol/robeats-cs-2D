@@ -1,4 +1,7 @@
 local Knit = require(game:GetService("ReplicatedStorage").Packages.Knit)
+local Llama = require(game:GetService("ReplicatedStorage").Packages.Llama)
+
+local findWhere = Llama.List.findWhere
 
 local SpectatingService = Knit.CreateService {
     Name = "SpectatingService",
@@ -34,8 +37,14 @@ function SpectatingService:KnitStart()
 
     local store = StateService.Store
 
+    local function findPlayer(player)
+        return function(p)
+            return p.player.UserId == player.UserId
+        end
+    end
+
     self.Client.GameStarted:Connect(function(player, songKey, songRate)
-        if not table.find(store:getState().spectating.players, player) then
+        if not findWhere(store:getState().spectating.players, findPlayer(player)) then
             store:dispatch({
                 type = "addPlayerToSpectate",
                 player = player,
@@ -46,7 +55,7 @@ function SpectatingService:KnitStart()
     end)
 
     self.Client.GameEnded:Connect(function(player)
-        if table.find(store:getState().spectating.players, player) then
+        if findWhere(store:getState().spectating.players, findPlayer(player)) then
             store:dispatch({
                 type = "removePlayerFromSpectate",
                 player = player,
@@ -67,12 +76,12 @@ function SpectatingService.Client:DisemminateHits(player, hits)
     self.HitsSent:FireFor(toDissemminate, hits)
 end
 
-function SpectatingService.Client:GetSpectating(player)
+function SpectatingService.Client:GetSpectators(player)
     local spectating = {}
 
     for spectator, ongoingPlayer in pairs(currentlySpectating) do
         if ongoingPlayer.UserId == player.UserId then
-            spectating[spectator] = game.Players:FindFirstChild(tonumber(spectator))
+            table.insert(spectating, game.Players:GetPlayerByUserId(tonumber(spectator)))
         end
     end
 

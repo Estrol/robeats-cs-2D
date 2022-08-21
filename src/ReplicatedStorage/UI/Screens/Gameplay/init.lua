@@ -4,6 +4,8 @@ local Llama = require(game.ReplicatedStorage.Packages.Llama)
 local e = Roact.createElement
 local f = Roact.createFragment
 
+local Timer = require(game.ReplicatedStorage.Packages.Timer)
+
 local SPUtil = require(game.ReplicatedStorage.Shared.SPUtil)
 local CurveUtil = require(game.ReplicatedStorage.Shared.CurveUtil)
 local RobeatsGame = require(game.ReplicatedStorage.RobeatsGameCore.RobeatsGame)
@@ -65,7 +67,8 @@ function Gameplay:init()
         loaded = false,
         dividerPresses = { false, false, false, false },
         isMobile = UserInputService.TouchEnabled,
-        secondsLeft = 10
+        secondsLeft = 10,
+        spectators = {},
     })
     
     -- Set up time left bib
@@ -164,6 +167,20 @@ function Gameplay:init()
 
         self.songKey = spectateData.SongKey
         self.songRate = spectateData.SongRate
+    else
+        local checkSpectators = Timer.new(2)
+
+        self.checkSpectatorsConnection = checkSpectators.Tick:Connect(function()
+            local suc, spectators = self.props.spectatingService:GetSpectators():await()
+
+            if suc then
+                self:setState({
+                    spectators = spectators,
+                })
+            end
+        end)
+
+        checkSpectators:Start()
     end
 
     _game:load(self.songKey, GameSlot.SLOT_1, Llama.Dictionary.join(self.props.options, {
@@ -547,6 +564,12 @@ function Gameplay:render()
         })
     end
 
+    local spectators = {}
+
+    for _, player in self.state.spectators do
+        table.insert(spectators, player.Name)
+    end
+
     return Roact.createFragment({
         Score = e(AnimatedNumberLabel, {
             Size = UDim2.fromScale(0.2, 0.12),
@@ -565,6 +588,21 @@ function Gameplay:render()
                 MaxTextSize = 40
             })
         }),
+        Spectators = if #spectators > 0 then e(RoundedTextLabel, {
+            Position = UDim2.fromScale(0.98, 0.12),
+            Size = UDim2.fromScale(0.2, 0.2),
+            AnchorPoint = Vector2.new(1, 0),
+            TextColor3 = Color3.fromRGB(240, 240, 240),
+            TextXAlignment = Enum.TextXAlignment.Right,
+            BackgroundTransparency = 1,
+            Text = "<b>Spectating:</b>\n" .. table.concat(spectators, "\n"),
+            RichText = true,
+            TextSize = 14,
+        }, {
+            UITextSizeConstraint = Roact.createElement("UITextSizeConstraint", {
+                MaxTextSize = 40
+            })
+        }) else nil,
         StatCard = e(StatCard, {
             Position = statCardPosition,
             Marvelouses = self.state.marvelouses,
@@ -673,10 +711,14 @@ function Gameplay:willUnmount()
     if self.replayConnection then
         self.replayConnection:Disconnect()
         self.replayScoreChangedConnection:Disconnect()
+    else
+        self.checkSpectatorsConnection:Disconnect()
     end
 
     if not self.props.location.state.Spectate then
         self.props.spectatingService.GameEnded:Fire()
+    else
+        self.props.spectatingService.Unspectate:Fire()
     end
 
     self.trove:Destroy()

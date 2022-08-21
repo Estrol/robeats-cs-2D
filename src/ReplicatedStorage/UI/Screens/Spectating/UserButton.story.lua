@@ -1,5 +1,5 @@
 local Roact = require(game.ReplicatedStorage.Packages.Roact)
-local UserButton = require(game.ReplicatedStorage.UI.Screens.Moderation.Users.UserButton)
+local UserButton = require(script.Parent.UserButton)
 
 return function(target)
     local app = Roact.createElement(UserButton, {
