@@ -19,6 +19,8 @@ local SongDatabase = require(game.ReplicatedStorage.RobeatsGameCore.SongDatabase
 local Replay = require(game.ReplicatedStorage.RobeatsGameCore.Replay)
 local FlashEvery = require(game.ReplicatedStorage.Shared.FlashEvery)
 
+local ContentProvider = game:GetService("ContentProvider")
+
 --local Settings = require(game.ReplicatedStorage.)
 
 local RobeatsGame = {}
@@ -62,6 +64,12 @@ function RobeatsGame:new(_game_environment_center_position)
 
 	local replay
 	local send_replay_data = FlashEvery:new(0.5)
+
+	local skin_loaded = true
+
+	function self:get_skin_loaded()
+		return skin_loaded
+	end
 
 	self._audio_manager = AudioManager:new(self)
 	self._score_manager = ScoreManager:new(self)
@@ -231,6 +239,8 @@ function RobeatsGame:new(_game_environment_center_position)
 		EnvironmentSetup:set_mode(EnvironmentSetup.Mode.Game)
 
 		if _config.Use2DLane then
+			skin_loaded = false
+
 			local skin_name = _config.Skin2D
 			local skin = Skins:get_skin(_config.Skin2D)
 
@@ -243,6 +253,11 @@ function RobeatsGame:new(_game_environment_center_position)
 
 			self:set_skin(skin)
 			self:set_note_color_affects_2d(_config.NoteColorAffects2D)
+
+			task.spawn(function()
+				ContentProvider:PreloadAsync({ skin })
+				skin_loaded = true
+			end)
 
 			EnvironmentSetup:setup_2d_environment(_skin, _config)
 		end
