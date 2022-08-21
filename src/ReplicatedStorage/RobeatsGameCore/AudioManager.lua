@@ -166,7 +166,7 @@ function AudioManager:new(_game)
 	end
 	
 	function self:is_ready_to_play()
-		return _current_audio_data ~= nil and _bgm.IsLoaded == true
+		return _current_audio_data ~= nil and _bgm.IsLoaded == true and _game:get_skin_loaded()
 	end
 
 	function self:is_prestart() return _current_mode == AudioManager.Mode.PreStart end

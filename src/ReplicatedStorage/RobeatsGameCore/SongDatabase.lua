@@ -159,6 +159,27 @@ function SongDatabase:new()
 		
 		return last_hit_ob.Time + (last_hit_ob.Duration or 0)
 	end
+
+	function self:get_skillsets_for_key(key, rate)
+		local difficulty = self:get_difficulty_for_key(key, rate)
+
+		local topSkillsets = {}
+		local allSkillsets = {}
+
+		for skillset, skillsetDiff in pairs(difficulty) do
+			if skillset == "Rate" or skillset == "Overall" then
+				continue
+			end
+
+			table.insert(allSkillsets, string.format("%s: %.2f", skillset, skillsetDiff))
+
+			if math.abs(difficulty.Overall - skillsetDiff) < 3 and #topSkillsets < 4 then
+				table.insert(topSkillsets, skillset)
+			end
+		end
+
+		return topSkillsets, allSkillsets
+	end
 	
 	function self:get_nps_graph_for_key(key, resolution)
 		resolution = resolution or 1
@@ -190,6 +211,8 @@ function SongDatabase:new()
 		local difficulty = self:get_difficulty_for_key(key, rate)
 
 		if data ~= nil then
+			local topSkillsets = self:get_skillsets_for_key(key, rate)
+
 			local _search_data = {
 				data.AudioArtist,
 				data.AudioFilename,
@@ -197,8 +220,13 @@ function SongDatabase:new()
 				data.AudioMapper or "unknown",
 			}
 
+			for _, skillset in topSkillsets do
+				table.insert(_search_data, skillset)
+			end
+
 			return table.concat(_search_data, " "):lower()
 		end
+
 		return ""
 	end
 

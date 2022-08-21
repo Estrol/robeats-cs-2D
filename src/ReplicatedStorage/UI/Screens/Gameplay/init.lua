@@ -41,8 +41,6 @@ local withInjection = require(game.ReplicatedStorage.UI.Components.HOCs.withInje
 
 local Lighting = game:GetService("Lighting")
 local UserInputService = game:GetService("UserInputService")
-local GuiService = game:GetService("GuiService")
-local TweenService = game:GetService("TweenService")
 
 local Gameplay = Roact.Component:extend("Gameplay")
 
