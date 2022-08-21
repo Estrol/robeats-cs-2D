@@ -400,6 +400,8 @@ function Gameplay:didUpdate()
 end
 
 function Gameplay:onGameplayEnd()
+    local spectate = self.props.location.state.Spectate
+
     if self.props.options.Use2DLane then
         EnvironmentSetup:teardown_2d_environment()
     end
@@ -425,7 +427,7 @@ function Gameplay:onGameplayEnd()
     local resultsRecords = Llama.Dictionary.join(finalRecords, {
         Hits = hits,
         SongKey = self.songKey,
-        PlayerName = game.Players.LocalPlayer.Name,
+        PlayerName = if spectate then spectate.PlayerName else game.Players.LocalPlayer.Name,
         TimePlayed = DateTime.now().UnixTimestamp,
         Match = self.props.room,
         RoomId = self.props.roomId
@@ -457,6 +459,19 @@ function Gameplay:onGameplayEnd()
                 end)
             end)
     else
+        if spectate then
+            resultsRecords.Accuracy = self.state.accuracy
+            resultsRecords.Marvelouses = self.state.marvelouses
+            resultsRecords.Perfects = self.state.perfects
+            resultsRecords.Greats = self.state.greats
+            resultsRecords.Goods = self.state.goods
+            resultsRecords.Bads = self.state.bads
+            resultsRecords.Misses = self.state.misses
+            resultsRecords.Score = self.state.score
+            resultsRecords.MaxChain = self.state.maxChain
+            resultsRecords.Viewing = true
+        end
+
         self.props.history:push("/results", resultsRecords)
     end
 end
