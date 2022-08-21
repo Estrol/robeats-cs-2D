@@ -44,20 +44,7 @@ function SongButton:render()
 
     local mapper = SongDatabase:get_mapper_for_key(self.props.SongKey)
 
-    local topSkillsets = {}
-    local allSkillsets = {}
-
-    for skillset, skillsetDiff in pairs(difficulty) do
-        if skillset == "Rate" or skillset == "Overall" then
-            continue
-        end
-
-        table.insert(allSkillsets, string.format("%s: %.2f", skillset, skillsetDiff))
-
-        if math.abs(difficulty.Overall - skillsetDiff) < 3 and #topSkillsets < 4 then
-            table.insert(topSkillsets, skillset)
-        end
-    end
+    local topSkillsets, allSkillsets = SongDatabase:get_skillsets_for_key(self.props.SongKey, self.props.SongRate / 100)
 
     return e(RoundedTextButton, {
         BackgroundTransparency = self.motorBinding:map(function(a)
