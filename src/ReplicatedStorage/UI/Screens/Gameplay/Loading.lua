@@ -36,7 +36,7 @@ function Loading:render()
             TextColor3 = Color3.fromRGB(255, 255, 255),
             TextScaled = true,
             TextXAlignment = Enum.TextXAlignment.Left,
-            Text = string.format("Please wait for the game to load... [%d]", self.props.SecondsLeft)
+            Text = string.format("Loading chart... [%d]", self.props.SecondsLeft)
         }),
         Back = e(RoundedTextButton, {  
             Size = UDim2.fromOffset(35, 35),
