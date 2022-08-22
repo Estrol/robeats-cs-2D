@@ -220,7 +220,11 @@ function Gameplay:init()
                 end)
             end
 
-            if _game._audio_manager:is_ready_to_play() and self:allPlayersLoaded() or (if spectateData then earliestTime ~= nil and self.state.secondsLeft <= 0 else self.state.secondsLeft <= 0) then
+            if _game._audio_manager:is_ready_to_play() and self:allPlayersLoaded() or self.state.secondsLeft <= 0 then
+                if spectateData and not earliestTime then
+                    return
+                end
+
                 self:startGame(earliestTime)
             end
         end
