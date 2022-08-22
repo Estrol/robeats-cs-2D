@@ -242,7 +242,7 @@ function AudioManager:new(_game)
 
 			print("AudioManager:start_play(): Starting at time " .. _bgm_time_position)
 
-			_bgm.TimePosition = _bgm_time_position / 1000
+			_bgm.TimePosition = _bgm_time_position - (_audio_time_offset / 1000)
 
 			for _, hitObject in _hit_objects do
 				if _bgm_time_position * 1000 > hitObject.Time + _note_bad_max then
@@ -301,7 +301,7 @@ function AudioManager:new(_game)
 			end
 
 			if _pre_start_time_ms >= _pre_countdown_time_ms then
-				_bgm.TimePosition = 0
+				-- _bgm.TimePosition = 0
 				_bgm.Volume = _audio_volume
 				_bgm.PlaybackSpeed = _rate
 				-- _bgm_time_position = 0
