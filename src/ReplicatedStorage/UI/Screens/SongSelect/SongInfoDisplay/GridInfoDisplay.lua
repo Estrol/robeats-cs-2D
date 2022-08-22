@@ -50,7 +50,7 @@ function GridInfoDisplay:render()
         TextTransparency = self.motorBinding:map(function(a)
             return 1-a
         end);
-        Size = UDim2.new(0.18, 0, 0.25, 0),
+        Size = UDim2.new(0.18, 0, 0.23, 0),
         Font = Enum.Font.GothamSemibold,
         Text = self.props.FormatValue(self.props.Value),
         TextScaled = true,
@@ -58,7 +58,7 @@ function GridInfoDisplay:render()
         AutomaticSize = Enum.AutomaticSize.X
     }, {
         UITextSizeConstraint = e("UITextSizeConstraint", {
-            MaxTextSize = 17
+            MaxTextSize = 19
         })
     });
 end

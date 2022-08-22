@@ -231,7 +231,7 @@ function Results:render()
 				};
 			};
 			Position = UDim2.fromScale(0.696, 0.34 - (if shouldShiftUp then 0.05 else 0));
-			Size = UDim2.fromScale(0.551, 0.09);
+			Size = UDim2.fromScale(0.56, 0.09);
 			AnchorPoint = Vector2.new(0.5,0);
 		});
 		Grade = Roact.createElement("ImageLabel", {
@@ -248,18 +248,18 @@ function Results:render()
 			})
 		}),
 		PlayedAt = if moment then Roact.createElement(RoundedTextLabel, {
-			Position = UDim2.fromScale(0.787, 0.306 - (if shouldShiftUp then 0.05 else 0)),
-			AnchorPoint = Vector2.new(0.5, 0.5),
-			Size = UDim2.fromScale(0.728, 0.046),
+			Position = UDim2.fromScale(0.42, 0.325 - (if shouldShiftUp then 0.05 else 0)),
+			AnchorPoint = Vector2.new(0, 1),
+			Size = UDim2.fromScale(0.5, 0.03),
 			RichText = true,
-			Text = string.format("Played by %s at %d:%02d:%02d %d/%d/%02d", scoreData.playerName, moment.Hour, moment.Minute, moment.Second, moment.Month, moment.Day, moment.Year),
+			Text = string.format("Played by %s at %d:%02d:%02d on %d/%d/%02d", scoreData.playerName, moment.Hour, moment.Minute, moment.Second, moment.Month, moment.Day, moment.Year),
 			TextXAlignment = Enum.TextXAlignment.Left,
-			TextColor3 = Color3.fromRGB(218, 218, 218),
+			TextColor3 = Color3.fromRGB(236, 236, 236),
 			BackgroundTransparency = 1,
 			TextScaled = true
 		}, {
 			UITextSizeConstraint = Roact.createElement("UITextSizeConstraint", {
-				MaxTextSize = 25
+				MaxTextSize = 20
 			})
 		}) else nil,
 		Background = Roact.createElement(RoundedImageLabel, {
@@ -283,12 +283,12 @@ function Results:render()
 			BackgroundColor3 = Color3.fromRGB(236, 33, 33);
 			AnchorPoint = Vector2.new(0, 1);
 			Position = UDim2.fromScale(0.0135, 0.98);
-			Size = UDim2.fromScale(0.15,0.065);
-			HoldSize = UDim2.fromScale(0.14, 0.065);
+			Size = UDim2.fromScale(0.1, 0.04);
+			HoldSize = UDim2.fromScale(0.1, 0.04);
 			Text = "Return to Menu";
 			TextColor3 = Color3.fromRGB(255, 255, 255);
-			TextSize = 16,
 			ZIndex = 5,
+			TextScaled = true,
 			OnClick = function()
 				if room then
 					self.props.history:push("/room", {
@@ -301,20 +301,37 @@ function Results:render()
 					self.props.history:push("/select")
 				end
 			end
+		}, {
+			UITextSizeConstraint = Roact.createElement("UITextSizeConstraint", {
+				MaxTextSize = 25
+			}),
+			UIPadding = Roact.createElement("UIPadding", {
+				PaddingTop = UDim.new(0, 5),
+				PaddingBottom = UDim.new(0, 5),
+			})
 		});
 		RestartMap = if (not viewing and not room) then Roact.createElement(RoundedTextButton, {
 			BackgroundColor3 = Color3.fromRGB(50, 144, 50);
 			AnchorPoint = Vector2.new(0, 1);
-			Position = UDim2.fromScale(0.175, 0.98);
-			Size = UDim2.fromScale(0.15,0.065);
-			HoldSize = UDim2.fromScale(0.14, 0.065);
+			Position = UDim2.fromScale(0.12, 0.98);
+			Size = UDim2.fromScale(0.1, 0.04);
+			HoldSize = UDim2.fromScale(0.1, 0.04);
 			Text = "Restart Map";
 			TextColor3 = Color3.fromRGB(255, 255, 255);
 			TextSize = 16,
 			ZIndex = 5,
+			TextScaled = true,
 			OnClick = function()
 				self.props.history:push("/play")
 			end
+		}, {
+			UITextSizeConstraint = Roact.createElement("UITextSizeConstraint", {
+				MaxTextSize = 25
+			}),
+			UIPadding = Roact.createElement("UIPadding", {
+				PaddingTop = UDim.new(0, 5),
+				PaddingBottom = UDim.new(0, 5),
+			})
 		}) else nil,
 		Ranking = if (self.props.profile and self.props.profile.Rating and not viewing and not room) then Roact.createElement(Ranking, {
 			Rating = self.props.profile.Rating.Overall,

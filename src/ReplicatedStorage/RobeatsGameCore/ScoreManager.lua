@@ -151,7 +151,7 @@ function ScoreManager:new(_game)
 				end
 			end
 		end
-		
+
 		--Increment stats
 		if note_result == NoteResult.Marvelous then
 			_marvelous_count += 1

@@ -114,8 +114,8 @@ function MainMenuUI:render()
         Logo = e(RoundedImageLabel, {
             Image = "rbxassetid://6224561143";
             Size = UDim2.fromScale(0.4, 0.9);
-            Position = UDim2.fromScale(0.02, 0.45);
-            AnchorPoint = Vector2.new(0.05, 0.5);
+            Position = UDim2.fromScale(0.02, 0.55);
+            AnchorPoint = Vector2.new(0.05, 0.7);
             BackgroundTransparency = 1;
         }, {
             UIAspectRatioConstraint = e("UIAspectRatioConstraint", {
