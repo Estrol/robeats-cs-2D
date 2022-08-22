@@ -16,7 +16,9 @@ local Leaderboard = Roact.Component:extend("Leaderboard")
 Leaderboard.defaultProps = {
     SongKey = 1,
     LocalRating = 0,
-    LocalAccuracy = 0
+    LocalAccuracy = 0,
+    UserId = game.Players.LocalPlayer.UserId,
+    PlayerName = game.Players.LocalPlayer.Name,
 }
 
 function Leaderboard:init()
@@ -41,8 +43,8 @@ function Leaderboard:render()
     local localSlot = string.format("LocalPlayer(%d)", game.Players.LocalPlayer.UserId)
 
     table.insert(scores, {
-        PlayerName = game.Players.LocalPlayer.Name,
-        UserId = game.Players.LocalPlayer.UserId,
+        PlayerName = self.props.PlayerName,
+        UserId = self.props.UserId,
         Rating = {
             Overall = self.props.LocalRating
         },

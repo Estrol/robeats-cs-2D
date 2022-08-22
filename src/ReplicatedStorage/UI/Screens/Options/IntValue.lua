@@ -57,6 +57,8 @@ function IntValue:render()
             OnClick = function()
                 if (self.props.Value - self.props.incrementValue) >= self.props.MinValue then
                     self.props.OnChanged(self.props.Value - self.props.incrementValue)
+                else
+                    self.props.OnChanged(self.props.MinValue)
                 end
             end,
             BackgroundTransparency = 1,
@@ -80,6 +82,8 @@ function IntValue:render()
             OnClick = function()
                 if (self.props.Value + self.props.incrementValue) <= self.props.MaxValue then
                     self.props.OnChanged(self.props.Value + self.props.incrementValue)
+                else
+                    self.props.OnChanged(self.props.MaxValue)
                 end
             end,
             BackgroundTransparency = 1,

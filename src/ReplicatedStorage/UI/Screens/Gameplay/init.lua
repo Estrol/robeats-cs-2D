@@ -221,7 +221,7 @@ function Gameplay:init()
             end
 
             if _game._audio_manager:is_ready_to_play() and self:allPlayersLoaded() or self.state.secondsLeft <= 0 then
-                if spectateData and not earliestTime then
+                if spectateData and (not earliestTime or self.state.secondsLeft > 6) then
                     return
                 end
 
@@ -532,6 +532,8 @@ function Gameplay:render()
     local leaderboard
 
     if not self.props.options.HideLeaderboard then
+        local spectate = self.props.location.state.Spectate
+
         if self.props.room then
             leaderboard = e(MultiplayerLeaderboard, {
                 Scores = self.props.room.players,
@@ -542,7 +544,9 @@ function Gameplay:render()
                 SongKey = self.songKey,
                 LocalRating = Rating:get_rating_from_song_key(self.songKey, self.state.accuracy, self.props.options.SongRate / 100).Overall,
                 LocalAccuracy = self.state.accuracy, 
-                Position = LeaderboardPositions[self.props.options.InGameLeaderboardPosition]
+                Position = LeaderboardPositions[self.props.options.InGameLeaderboardPosition],
+                UserId = if spectate then spectate.UserId else game.Players.LocalPlayer.UserId,
+                PlayerName = if spectate then spectate.PlayerName else game.Players.LocalPlayer.Name,
             })
         end
     end
