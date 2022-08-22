@@ -343,6 +343,7 @@ function MainMenuUI:render()
 end
 
 function MainMenuUI:willUnmount()
+    self.props.previewController:Silence()
     self.trove:Destroy()
 end
 
