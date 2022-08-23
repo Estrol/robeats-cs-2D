@@ -64,7 +64,7 @@ function RobeatsGame:new(_game_environment_center_position, _config)
 	local _note_color_affects_2d
 
 	local replay
-	local send_replay_data = FlashEvery:new(0.5)
+	local send_replay_data = FlashEvery:new(1.8)
 
 	local skin_loaded = true
 
@@ -216,7 +216,7 @@ function RobeatsGame:new(_game_environment_center_position, _config)
 				end
 			end
 
-			if send_replay_data:do_flash() then
+			if send_replay_data:do_flash() and not self:is_viewing_replay() then
 				replay:send_last_hits()
 			end
 			

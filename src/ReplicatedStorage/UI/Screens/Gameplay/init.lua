@@ -69,6 +69,8 @@ function Gameplay:init()
         spectators = {},
     })
     
+    self.skipped = false
+
     -- Set up time left bib
     
     self.timeLeft, self.setTimeLeft = Roact.createBinding(0)
@@ -220,8 +222,8 @@ function Gameplay:init()
                 end)
             end
 
-            if _game._audio_manager:is_ready_to_play() and self:allPlayersLoaded() or self.state.secondsLeft <= 0 then
-                if spectateData and (not earliestTime or self.state.secondsLeft > 6) then
+            if _game._audio_manager:is_ready_to_play() and self:allPlayersLoaded() or self.state.secondsLeft <= 0 or self.skipped then
+                if spectateData and (not earliestTime or self.state.secondsLeft > 5) then
                     return
                 end
 
@@ -504,7 +506,7 @@ function Gameplay:render()
                 self._game:set_mode(RobeatsGame.Mode.GameEnded)
             end,
             OnSkipClicked = function()
-                self.state.secondsLeft = -1 -- the condition inside the init method checks for the seconds left, not loaded
+                self.skipped = true
             end
         })
     end

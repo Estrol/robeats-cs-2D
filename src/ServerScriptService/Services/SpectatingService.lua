@@ -76,12 +76,14 @@ function SpectatingService.Client:DisemminateHits(player, hits)
     local toDissemminate = {}
 
     for _, otherPlayer in pairs(game.Players:GetPlayers()) do
-        if otherPlayer ~= player and currentlySpectating[tostring(otherPlayer.UserId)] then
+        if otherPlayer ~= player and currentlySpectating[tostring(otherPlayer.UserId)] == player then
             table.insert(toDissemminate, otherPlayer)
         end
     end
 
-    self.HitsSent:FireFor(toDissemminate, hits)
+    if #toDissemminate > 0 then
+        self.HitsSent:FireFor(toDissemminate, hits)
+    end
 end
 
 function SpectatingService.Client:GetSpectators(player)
