@@ -259,8 +259,14 @@ function Options:getSettingElements()
             MinValue = 0,
             LayoutOrder = 3
         });
-
-
+        elements.HideReceptorGlow = e(BoolValue, {
+            Name = "Hide Receptor Glow",
+            Value = self.props.options.HideReceptorGlow,
+            OnChanged = function(value)
+                self.props.setOption("HideReceptorGlow", value)
+            end,
+            LayoutOrder = 4
+        });
 
         elements.TimeOfDay = e(IntValue, {
             Value = self.props.options.TimeOfDay,

@@ -30,7 +30,7 @@ RobeatsGame.Mode = {
 	GameEnded = 3;
 }
 
-function RobeatsGame:new(_game_environment_center_position)
+function RobeatsGame:new(_game_environment_center_position, _config)
 	local self = {
 		_tracksystems = SPDict:new();
 		_audio_manager = nil;
@@ -42,6 +42,7 @@ function RobeatsGame:new(_game_environment_center_position)
 	}
 
 	self.keybind_pressed = Instance.new("BindableEvent")
+	self._config = _config
 
 	local _skin
 	local _2d_hit_pos

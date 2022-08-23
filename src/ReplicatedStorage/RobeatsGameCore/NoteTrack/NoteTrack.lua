@@ -9,7 +9,7 @@ local DebugOut = require(game.ReplicatedStorage.Shared.DebugOut)
 
 local NoteTrack = {}
 
-function NoteTrack:new(_game, _parent_track_system, _track_obj, _game_track)
+function NoteTrack:new(_game, _parent_track_system, _track_obj, _game_track, _config)
 	AssertType:is_enum_member(_game_track, GameTrack)
 	local self = {}
 	
@@ -49,7 +49,9 @@ function NoteTrack:new(_game, _parent_track_system, _track_obj, _game_track)
 	end
 	
 	function self:update(dt_scale)
-		_trigger_button:update(dt_scale)
+		if not _game._config.HideReceptorGlow then
+			_trigger_button:update(dt_scale)
+		end
 	end
 	
 	function self:teardown()

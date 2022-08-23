@@ -106,7 +106,7 @@ function Gameplay:init()
     
     -- Create the game instance
     
-    local _game = RobeatsGame:new(EnvironmentSetup:get_game_environment_center_position())
+    local _game = RobeatsGame:new(EnvironmentSetup:get_game_environment_center_position(), self.props.options)
     _game._input:set_keybinds({
         self.props.options.Keybind1,
         self.props.options.Keybind2,

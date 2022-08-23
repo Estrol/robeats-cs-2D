@@ -37,6 +37,7 @@ local defaultState = {
         BaseTransparency = 0;
         ReceptorTransparency = 0;
         ReceptorOuterTransparency = 0.8;
+        HideReceptorGlow = false;
         TransparentHeldNote = false;
         HitLighting = false;
         HideLNTails = false;

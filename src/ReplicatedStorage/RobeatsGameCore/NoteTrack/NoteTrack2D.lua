@@ -37,7 +37,9 @@ function NoteTrack:new(_game, _parent_track_system, _game_track)
 	end
 	
 	function self:update(dt_scale)
-		_trigger_button:update(dt_scale)
+		if not _game._config.HideReceptorGlow then
+			_trigger_button:update(dt_scale)
+		end
 	end
 	
 	function self:teardown()
