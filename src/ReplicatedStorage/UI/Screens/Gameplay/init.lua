@@ -98,8 +98,10 @@ function Gameplay:init()
     Lighting.TimeOfDay = self.props.options.TimeOfDay
     
     -- Turn PlayerList & Chat off
-    game.StarterGui:SetCoreGuiEnabled("PlayerList", not self.props.options.HidePlayerList)
-    game.StarterGui:SetCoreGuiEnabled("Chat", not self.props.options.HideChat)
+    if not self.props.location.state.Spectate then
+        game.StarterGui:SetCoreGuiEnabled("PlayerList", not self.props.options.HidePlayerList)
+        game.StarterGui:SetCoreGuiEnabled("Chat", not self.props.options.HideChat)
+    end
 
     EnvironmentSetup:set_gui_inset(true);
     
