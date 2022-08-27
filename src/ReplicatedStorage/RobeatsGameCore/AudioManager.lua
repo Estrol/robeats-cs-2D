@@ -262,6 +262,7 @@ function AudioManager:new(_game)
 		return rtv, _raise_pre_start_trigger_val, _raise_pre_start_trigger_duration
 	end
 
+	local _sync_timer = 0
 	local _raise_ended_trigger = false
 	local _raise_just_finished = false
 	local _ended_connection = nil
@@ -322,6 +323,14 @@ function AudioManager:new(_game)
 				_bgm_time_position + CurveUtil:TimescaleToDeltaTime(dt_scale),
 				self:get_song_length_ms() / _rate
 			)
+
+			_sync_timer += CurveUtil:TimescaleToDeltaTime(dt_scale)
+			if _bgm.IsLoaded == true and math.abs(_bgm_time_position - _bgm.TimePosition) > 0.15 and _sync_timer > 5 then
+				_sync_timer = 0
+				_bgm.TimePosition = _bgm_time_position
+
+				warn("[Audio] Force sync")
+			end
 
 			if _raise_ended_trigger == true or if _bgm.IsLoaded then false else self:get_current_time_ms() > self:get_song_length_ms() - _audio_time_offset then
 				_current_mode = AudioManager.Mode.PostPlaying
