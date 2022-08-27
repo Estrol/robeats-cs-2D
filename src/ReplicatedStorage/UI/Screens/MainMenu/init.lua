@@ -312,6 +312,7 @@ function MainMenuUI:render()
                 HoldSize = UDim2.fromScale(1, 0.11),
                 Tooltip = "Watch others play!",
                 OnClick = function()
+                    self.props.previewController:Silence()
                     self.props.history:push("/spectate")
                 end
             }, {
@@ -343,7 +344,6 @@ function MainMenuUI:render()
 end
 
 function MainMenuUI:willUnmount()
-    self.props.previewController:Silence()
     self.trove:Destroy()
 end
 
