@@ -324,13 +324,16 @@ function AudioManager:new(_game)
 				self:get_song_length_ms() / _rate
 			)
 
+			--[[
+				Estrol's TODO: fix with rate first
+
 			_sync_timer += CurveUtil:TimescaleToDeltaTime(dt_scale)
 			if _bgm.IsLoaded == true and math.abs(_bgm_time_position - _bgm.TimePosition) > 0.15 and _sync_timer > 5 then
 				_sync_timer = 0
 				_bgm.TimePosition = _bgm_time_position
 
 				warn("[Audio] Force sync")
-			end
+			end]]
 
 			if _raise_ended_trigger == true or if _bgm.IsLoaded then false else self:get_current_time_ms() > self:get_song_length_ms() - _audio_time_offset then
 				_current_mode = AudioManager.Mode.PostPlaying
