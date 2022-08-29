@@ -19,13 +19,12 @@ function TagService:AddTag(player, title, color)
 
     while not speaker do
         speaker = ChatService:GetSpeaker(player.Name)
-        wait(1)
+        task.wait(1)
     end
 
     speaker:SetExtraData("Tags", {{ TagText = title, TagColor = color }})
     speaker:SetExtraData("ChatColor", color)
     speaker:SetExtraData("NameColor", color)
-    print(speaker)
 end
 
 return TagService

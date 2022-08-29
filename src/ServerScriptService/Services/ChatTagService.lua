@@ -8,10 +8,6 @@ local ChatTagService = Knit.CreateService {
     Client = {}
 }
 
-ChatTagService.TagData = {
-    Staff = {TagText = "STAFF", TagColor = Color3.fromRGB(248, 113, 113)},
-}
-
 function ChatTagService:KnitStart()
     PermissionsService = Knit.GetService("PermissionsService")
     ChatService = require(game.ServerScriptService:WaitForChild("ChatServiceRunner"):WaitForChild("ChatService"))
@@ -29,8 +25,10 @@ function ChatTagService:HandleSpeakerAdded(speakerName)
     local speaker = ChatService:GetSpeaker(speakerName)
     local player = speaker:GetPlayer()
 
-    if player and PermissionsService:HasModPermissions(player) then
-        speaker:SetExtraData("Tags", { ChatTagService.TagData.Staff })
+    if player then
+        local data = PermissionsService:GetGroupRole(player)
+        speaker:SetExtraData("Tags", { data.TagData })
+        speaker:SetExtraData("ChatColor", data.ChatColor)
     end
 end
 
