@@ -82,7 +82,7 @@ function Gameplay:init()
     self.hitDevianceRef = Roact.createRef()
     
     if not self.props.options.Use2DLane then
-        local stagePlat = EnvironmentSetup:get_element_protos_folder().NoteTrackSystemProto.TrackBG.Union
+        local stagePlat = EnvironmentSetup:get_robeats_game_stage()
         stagePlat.Transparency = self.props.options.BaseTransparency
     end
 
