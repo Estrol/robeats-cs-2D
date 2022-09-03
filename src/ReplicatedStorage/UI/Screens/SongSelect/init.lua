@@ -113,6 +113,7 @@ function SongSelect:render()
             Position = UDim2.fromScale(0.995, 0.985),
             OnSongSelected = function(key)
                 if self.props.options.SongKey == key then
+                    self.previewController:Silence()
                     self:onPlay()
                 else
                     self.props.setSongKey(key)
@@ -167,6 +168,7 @@ function SongSelect:render()
                     Text = self.props.location.state.roomId and "Select" or "Play",
                     Color = self.props.location.state.roomId and Color3.fromRGB(50, 77, 94) or Color3.fromRGB(8, 153, 32),
                     OnClick = function()
+                        self.previewController:Silence()
                         self:onPlay()
                     end
                 },
@@ -252,7 +254,6 @@ function SongSelect:didUpdate(oldProps)
 end
 
 function SongSelect:willUnmount()
-    self.previewController:Silence()
     self.Trove:Destroy()
 end
 
