@@ -27,8 +27,11 @@ function ChatTagService:HandleSpeakerAdded(speakerName)
 
     if player then
         local data = PermissionsService:GetGroupRole(player)
-        speaker:SetExtraData("Tags", { data.TagData })
-        speaker:SetExtraData("ChatColor", data.ChatColor)
+
+        if data then
+            speaker:SetExtraData("Tags", { data.TagData })
+            speaker:SetExtraData("ChatColor", data.ChatColor)
+        end
     end
 end
 
