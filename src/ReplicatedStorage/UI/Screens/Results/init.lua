@@ -306,8 +306,8 @@ function Results:render()
 				MaxTextSize = 25
 			}),
 			UIPadding = Roact.createElement("UIPadding", {
-				PaddingTop = UDim.new(0, 5),
-				PaddingBottom = UDim.new(0, 5),
+				PaddingTop = UDim.new(0, 3),
+				PaddingBottom = UDim.new(0, 3),
 			})
 		});
 		RestartMap = if (not viewing and not room) then Roact.createElement(RoundedTextButton, {
@@ -329,8 +329,8 @@ function Results:render()
 				MaxTextSize = 25
 			}),
 			UIPadding = Roact.createElement("UIPadding", {
-				PaddingTop = UDim.new(0, 5),
-				PaddingBottom = UDim.new(0, 5),
+				PaddingTop = UDim.new(0, 3),
+				PaddingBottom = UDim.new(0, 3),
 			})
 		}) else nil,
 		Ranking = if (self.props.profile and self.props.profile.Rating and not viewing and not room) then Roact.createElement(Ranking, {
