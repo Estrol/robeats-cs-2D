@@ -38,7 +38,7 @@ function SongButton:render()
     end
 
     local song = SongDatabase:get_data_for_key(self.props.SongKey)
-    local id = tonumber(string.match(song.AudioAssetId, "rbxassetid://(%d+)")) or MIN_ID
+    local id = if song.AudioAssetId then tonumber(string.match(song.AudioAssetId, "rbxassetid://(%d+)")) or MIN_ID else 0
 
     local difficulty = SongDatabase:get_difficulty_for_key(self.props.SongKey, self.props.SongRate / 100)
 
