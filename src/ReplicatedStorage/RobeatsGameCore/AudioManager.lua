@@ -373,13 +373,22 @@ function AudioManager:new(_game)
 					)
 
 				elseif itr_hitobj.Type == 2 then
-					push_back_heldnote(
-						i,
-						itr_hitobj,
-						current_time_ms,
-						itr_hitobj.Time + _pre_countdown_time_ms,
-						itr_hitobj.Duration
-					)
+					if itr_hitobj.Duration > 0 then
+						push_back_heldnote(
+							i,
+							itr_hitobj,
+							current_time_ms,
+							itr_hitobj.Time + _pre_countdown_time_ms,
+							itr_hitobj.Duration
+						)
+					else
+						push_back_single_note(
+							i,
+							itr_hitobj,
+							current_time_ms,
+							itr_hitobj.Time + _pre_countdown_time_ms
+						)
+					end
 				end
 				_audio_data_index = _audio_data_index + 1
 			else
