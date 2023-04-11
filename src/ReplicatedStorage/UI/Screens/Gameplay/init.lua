@@ -133,11 +133,34 @@ function Gameplay:init()
     self.songRate = if self.props.room then self.props.room.songRate else self.props.options.SongRate
 
     local spectateData = self.props.location.state.Spectate
+    local replayData = self.props.location.state.Replay
 
     local spectateReplay
     local earliestTime
 
-    if spectateData then
+    if replayData then
+        spectateReplay = Replay:new({ viewing = true })
+
+        spectateReplay:set_hits(replayData)
+
+        self.replayScoreChangedConnection = spectateReplay.scoreChanged.Event:Connect(function(scoreData)
+            self:setState({
+                score = scoreData.Score,
+                accuracy = scoreData.Accuracy,
+                chain = scoreData.Chain,
+                maxChain = scoreData.MaxChain,
+                marvelouses = scoreData.Marvelouses,
+                perfects = scoreData.Perfects,
+                greats = scoreData.Greats,
+                goods = scoreData.Goods,
+                bads = scoreData.Bads,
+                misses = scoreData.Misses,
+            })
+        end)
+
+        self.songKey = spectateData.SongKey
+        self.songRate = spectateData.SongRate
+    elseif spectateData then
         spectateReplay = Replay:new({ userId = spectateData.UserId, viewing = true })
 
         self.replayConnection = self.props.spectatingService.HitsSent:Connect(function(hits)
@@ -225,7 +248,7 @@ function Gameplay:init()
             end
 
             if _game._audio_manager:is_ready_to_play() and self:allPlayersLoaded() or self.state.secondsLeft <= 0 or self.skipped then
-                if spectateData and (not earliestTime or self.state.secondsLeft > 5) then
+                if spectateData and (not earliestTime or self.state.secondsLeft > 5) and not replayData then
                     return
                 end
 
@@ -427,7 +450,15 @@ function Gameplay:onGameplayEnd()
     })
 
     if (not self.forcedQuit) and (self.props.options.TimingPreset == "Standard") and not self.props.location.state.Spectate then
-        self:submitScore(finalRecords, hits)
+        local pb = self:submitScore(finalRecords, hits)
+
+        if pb then
+            print("Score was a personal best")
+
+            print(self._game:get_replay_hits())
+
+            self.props.scoreService:SubmitReplay(SongDatabase:get_hash_for_key(self.songKey), self._game:get_replay_hits())
+        end
     end
     
     local resultsRecords = Llama.Dictionary.join(finalRecords, {
@@ -489,14 +520,14 @@ function Gameplay:allPlayersLoaded()
 end
 
 function Gameplay:submitScore(records, hits)
-    self.props.scoreService:SubmitScore(records)
-        :andThen(function()
-            local moment = DateTime.now():ToLocalTime()
-            DebugOut:puts("Score submitted at %d:%d:%d", moment.Hour, moment.Minute, moment.Second)
-        end)
-        :andThen(function()
-            self.props.scoreService:SubmitGraph(records.SongMD5Hash, hits)
-        end)
+    local _, pb = self.props.scoreService:SubmitScore(records):await()
+
+    local moment = DateTime.now():ToLocalTime()
+    DebugOut:puts("Score submitted at %d:%d:%d", moment.Hour, moment.Minute, moment.Second)
+
+    self.props.scoreService:SubmitGraph(records.SongMD5Hash, hits):await()
+
+    return pb
 end
 
 function Gameplay:render()
@@ -736,13 +767,13 @@ function Gameplay:willUnmount()
     if self.replayConnection then
         self.replayConnection:Disconnect()
         self.replayScoreChangedConnection:Disconnect()
-    else
+    elseif self.checkSpectatorsConnection then
         self.checkSpectatorsConnection:Disconnect()
     end
 
     if not self.props.location.state.Spectate then
         self.props.spectatingService.GameEnded:Fire()
-    else
+    elseif self.props.spectatingService.Unspectate then
         self.props.spectatingService.Unspectate:Fire()
     end
 

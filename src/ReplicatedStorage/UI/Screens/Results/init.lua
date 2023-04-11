@@ -57,6 +57,20 @@ function Results:init()
 		end
 		self.props.history:goBack()
 	end)
+
+	local state = self.props.location.state
+
+	if state.Viewing then
+		local replay = self.props.scoreService:GetReplay(state.UserId, state.SongMD5Hash):expect()
+
+		if replay then
+			print(replay)
+
+			self:setState({
+				replay = replay
+			})
+		end
+	end
 end
 
 function Results:didUpdate(prevProps)
@@ -333,6 +347,37 @@ function Results:render()
 				PaddingBottom = UDim.new(0, 3),
 			})
 		}) else nil,
+		ViewReplay = if self.state.replay then Roact.createElement(RoundedTextButton, {
+			BackgroundColor3 = Color3.fromRGB(50, 144, 50);
+			AnchorPoint = Vector2.new(0, 1);
+			Position = UDim2.fromScale(0.12, 0.98);
+			Size = UDim2.fromScale(0.1, 0.04);
+			HoldSize = UDim2.fromScale(0.1, 0.04);
+			Text = "View Replay";
+			TextColor3 = Color3.fromRGB(255, 255, 255);
+			TextSize = 16,
+			ZIndex = 5,
+			TextScaled = true,
+			OnClick = function()
+				self.props.history:push("/play", {
+					Replay = self.state.replay,
+					Spectate = {
+						UserId = state.UserId,
+						PlayerName = state.PlayerName,
+						SongKey = SongDatabase:get_key_for_hash(state.SongMD5Hash),
+						SongRate = state.Rate
+					}
+				})
+			end
+		}, {
+			UITextSizeConstraint = Roact.createElement("UITextSizeConstraint", {
+				MaxTextSize = 25
+			}),
+			UIPadding = Roact.createElement("UIPadding", {
+				PaddingTop = UDim.new(0, 3),
+				PaddingBottom = UDim.new(0, 3),
+			})
+		}) else nil,
 		Ranking = if (self.props.profile and self.props.profile.Rating and not viewing and not room) then Roact.createElement(Ranking, {
 			Rating = self.props.profile.Rating.Overall,
 			Position = UDim2.fromScale(0.69, 0.95),
@@ -344,7 +389,8 @@ function Results:render()
 end
 
 local Injected = withInjection(Results, {
-	previewController = "PreviewController"
+	previewController = "PreviewController",
+	scoreService = "ScoreService"
 })
 
 return RoactRodux.connect(function(state, props)

@@ -98,6 +98,10 @@ function RobeatsGame:new(_game_environment_center_position, _config)
 		end
 	end
 
+	function self:get_replay_hits()
+		return replay:get_hits()
+	end
+
 	--[[ 2D Implementations ]]
 	function self:get_skin() return _skin end
 	function self:set_skin(val) _skin = val end
