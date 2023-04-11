@@ -11,6 +11,7 @@ local UserButton = Roact.Component:extend("UserButton")
 UserButton.defaultProps = {
     OnKick = function() end,
     OnBan = function() end,
+    OnViewProfile = function() end,
     PlayerName = "Player1",
     UserId = 0
 }
@@ -79,6 +80,23 @@ function UserButton:render()
             OnClick = function()
                 self.props.OnKick(self.props.UserId, self.props.PlayerName)
             end
+        }, {
+            UITextSizeConstraint = e("UITextSizeConstraint", {
+                MaxTextSize = 22
+            })
+        }),
+        ViewProfile = e(RoundedTextButton, {
+            Position = UDim2.fromScale(0.55, 0.5),
+            Size = UDim2.fromScale(0.15, 0.5),
+            HoldSize = UDim2.fromScale(0.15, 0.7),
+            BackgroundColor3 = Color3.fromRGB(21, 21, 21),
+            TextScaled = true,
+            AnchorPoint = Vector2.new(0.5, 0.5),
+            TextColor3 = Color3.fromRGB(184, 184, 184),
+            Text = "View Profile",
+            OnClick = function()
+                self.props.OnViewProfile(self.props.UserId, self.props.PlayerName)
+            end,
         }, {
             UITextSizeConstraint = e("UITextSizeConstraint", {
                 MaxTextSize = 22

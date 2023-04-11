@@ -33,6 +33,12 @@ function Users:render()
                     userId = userId,
                     playerName = playerName
                 })
+            end,
+            OnViewProfile = function(userId, playerName)
+                self.props.history:push("/scores", {
+                    userId = userId,
+                    playerName = playerName
+                })
             end
         })
     end
