@@ -40,11 +40,13 @@ function PlayerProfile:init()
 
     self.scoreService:GetProfile(self.state.userId):andThen(function(profile)
         if not Llama.isEmpty(profile) then
-            local tier = if profile.Rating then Tiers:GetTierFromRating(profile.Rating.Overall) else {}
+            local tier = if profile.Rating then Tiers:GetTierFromRating(profile.GlickoRating) else {}
 
             self:setState({
                 rank = profile.Rank,
                 rating = if profile.Rating then profile.Rating else 0,
+                mmr = profile.GlickoRating,
+                winstreak = profile.WinStreak,
                 accuracy = profile.Accuracy or 0,
                 totalMapsPlayed = profile.TotalMapsPlayed or 0,
                 tier = tier.name,
@@ -136,7 +138,7 @@ function PlayerProfile:render()
                Size = UDim2.fromScale(2.35, 0.18),
                TextXAlignment = Enum.TextXAlignment.Left,
                TextColor3 = Color3.fromRGB(194, 194, 194),
-               Text = string.format("Overall Rating: %0.2f", if typeof(self.state.rating) == "table" then self.state.rating.Overall else self.state.rating),
+               Text = string.format("MMR: %d | %s: %d", self.state.mmr, if self.state.winstreak > 0 then "Win Streak" else "Loss Streak", math.abs(self.state.winstreak)),
                TextScaled = true,
                Font = Enum.Font.Gotham,
                BackgroundTransparency = 1

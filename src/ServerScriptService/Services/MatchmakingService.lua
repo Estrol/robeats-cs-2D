@@ -5,6 +5,9 @@ local MatchmakingService = Knit.CreateService {
     Client = {};
 }
 
+MatchmakingService.WIN = "win"
+MatchmakingService.LOSS = "loss"
+
 local RateLimitService
 local AuthService
 
@@ -29,12 +32,34 @@ function MatchmakingService.Client:ReportMatch(player, data)
     end
 end
 
-function MatchmakingService.Client:HandleMatchResult(player, result)
+function MatchmakingService:RemoveMatch(player)
+    matches[player] = nil
+end
+
+function MatchmakingService:GetMatch(player)
+    return matches[player]
+end
+
+function MatchmakingService:HandleMatchResult(player, result)
     if RateLimitService:CanProcessRequestWithRateLimit("ReportMatch", player, 1) then
         local match = matches[player]
 
         if match then
-            
+            local result = Raxios.post(url "/matchmaking/result", {
+                query = {
+                    userid = player.UserId,
+                    result = result,
+                    hash = match.SongMD5Hash,
+                    rate = match.Rate,
+                    auth = AuthService.APIKey
+                }
+            }):json()
+
+            self:RemoveMatch(player)
+
+            return result
+        else
+            warn("No match found!")
         end
     end
 end

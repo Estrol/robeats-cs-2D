@@ -3,14 +3,14 @@ local Tiers = {}
 local SPUtil = require(game.ReplicatedStorage.Shared.SPUtil)
 
 local TierRatingMap = {
-    { name = "Prism", minRating = 2600 },
-    { name = "Ultraviolet", minRating = 2300 },
-    { name = "Emerald", minRating = 1900 },
-    { name = "Diamond", minRating = 1600 },
-    { name = "Gold", minRating = 1300 },
-    { name = "Silver", minRating = 900 },
-    { name = "Bronze", minRating = 600 },
-    { name = "Tin", minRating = 400 }
+    { name = "Prism", minRating = 2450 },
+    { name = "Ultraviolet", minRating = 2100 },
+    { name = "Emerald", minRating = 1800 },
+    { name = "Diamond", minRating = 1500 },
+    { name = "Gold", minRating = 1200 },
+    { name = "Silver", minRating = 850 },
+    { name = "Bronze", minRating = 500 },
+    { name = "Tin", minRating = 350 }
 }
 
 function Tiers:GetTierFromRating(rating)

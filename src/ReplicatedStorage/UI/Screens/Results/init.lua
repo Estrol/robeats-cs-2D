@@ -381,7 +381,7 @@ function Results:render()
 			})
 		}) else nil,
 		Ranking = if (self.props.profile and self.props.profile.Rating and not viewing and not room and ranked) then Roact.createElement(Ranking, {
-			Rating = self.props.profile.Rating.Overall,
+			Rating = self.props.profile.GlickoRating,
 			Position = UDim2.fromScale(0.69, 0.95),
 			Size = UDim2.fromScale(0.5, 0.2),
 			AnchorPoint = Vector2.new(0.5, 1)

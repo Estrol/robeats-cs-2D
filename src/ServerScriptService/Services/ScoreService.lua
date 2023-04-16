@@ -16,7 +16,7 @@ local RunService
 local HttpService
 
 local PermissionsService
-local ModerationService
+local MatchmakingService
 local RateLimitService
 local AuthService
 local StateService
@@ -25,6 +25,9 @@ local Llama
 local Raxios
 local Hook
 local FormatHelper
+
+-- the player wins against a map when they get >=96 accuracy
+local ACCURACY_WIN_THRESHOLD = 96
 
 local ScoreService = Knit.CreateService({
     Name = "ScoreService",
@@ -38,7 +41,7 @@ function ScoreService:KnitInit()
     HttpService = game:GetService("HttpService")
 
     PermissionsService = Knit.GetService("PermissionsService")
-    ModerationService = Knit.GetService("ModerationService")
+    MatchmakingService = Knit.GetService("MatchmakingService")
     RateLimitService = Knit.GetService("RateLimitService")
     AuthService = Knit.GetService("AuthService")
     StateService = Knit.GetService("StateService")
@@ -215,6 +218,20 @@ function ScoreService.Client:SubmitScore(player, data)
                 Mods = data.Mods
             }
         }):json()
+
+        local match = MatchmakingService:GetMatch(player)
+
+        if match then
+            local profile = MatchmakingService:HandleMatchResult(player, if data.Accuracy >= ACCURACY_WIN_THRESHOLD then MatchmakingService.WIN else MatchmakingService.LOSS)
+
+            local template = [[
+                MMR: %d
+                RD: %0.2f
+                Sigma: %0.4f
+            ]]
+
+            print(string.format(template, profile.GlickoRating, profile.RD, profile.Sigma))
+        end
 
         ScoreService:PopulateUserProfile(player, true)
 

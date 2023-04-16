@@ -48,9 +48,11 @@ function Matchmaking:init()
             end
         end
 
-        self.props.history:push("/play", {
-            Ranked = true
-        })
+        self.props.matchmakingService:ReportMatch(map):andThen(function()
+            self.props.history:push("/play", {
+                Ranked = true
+            })
+        end)
     end)
 end
 
