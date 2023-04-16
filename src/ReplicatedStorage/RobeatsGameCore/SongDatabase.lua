@@ -34,6 +34,10 @@ function SongDatabase:new()
 		return #_all_keys
 	end
 
+	function self:get_glicko_estimate_from_rating(rating)
+		return 0.55 * rating * rating + 500
+	end
+
 	function self:get_data_for_key(key)
 		local data = _all_keys[key]
 

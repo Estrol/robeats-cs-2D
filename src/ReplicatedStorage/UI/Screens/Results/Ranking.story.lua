@@ -3,7 +3,7 @@ local Roact = require(game.ReplicatedStorage.Packages.Roact)
 local Ranking = require(script.Parent.Ranking)
 
 return function(target)
-    local rating = 45
+    local rating = 1500
 
     local app = Roact.createElement(Ranking, {
         Rating = rating
@@ -13,7 +13,9 @@ return function(target)
 
     task.spawn(function()
         while task.wait(2) do
-            rating += 1
+            rating += math.random(-50, 50)
+
+            rating = math.max(0, rating)
 
             local app = Roact.createElement(Ranking, {
                 Rating = rating

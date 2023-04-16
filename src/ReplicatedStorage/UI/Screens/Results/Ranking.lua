@@ -29,8 +29,9 @@ function Ranking.getDerivedStateFromProps(nextProps, lastState)
         tier = tier.name,
         division = tier.division or Roact.None,
         subdivision = tier.subdivision or Roact.None,
-        subdivisionUp = if prevTier then tier.subdivision ~= prevTier.subdivision else false,
-        divisionUp = if prevTier then tier.division ~= prevTier.division or tier.tier ~= prevTier.tier else false,
+        subdivisionChanged = if prevTier then tier.subdivision ~= prevTier.subdivision else false,
+        divisionChanged = if prevTier then tier.division ~= prevTier.division or tier.tierBaseValue ~= prevTier.tierBaseValue else false,
+        up = if lastState.rating then nextProps.Rating > lastState.rating else false
     }
 end
 
@@ -46,9 +47,9 @@ function Ranking:init()
 end
 
 function Ranking:didUpdate(_, prevState)
-    if self.state.subdivisionUp ~= prevState.subdivisionUp or self.state.divisionUp ~= prevState.divisionUp then
+    if self.state.subdivisionChanged ~= prevState.subdivisionChanged or self.state.divisionChanged ~= prevState.divisionChanged then
         self.motor:setGoal({
-            rankUp = Flipper.Spring.new(if self.state.subdivisionUp then 1 else 0, {
+            rankUp = Flipper.Spring.new(if self.state.subdivisionChanged or self.state.divisionChanged then 1 else 0, {
                 frequency = 2,
                 dampingRatio = 1
             })
@@ -57,6 +58,20 @@ function Ranking:didUpdate(_, prevState)
 end
 
 function Ranking:render()
+    local rankChangedText
+    local rankChangedColor
+
+    if self.state.divisionChanged then
+        rankChangedText = if self.state.up then "PROMOTION" else "DEMOTION"
+        rankChangedColor = if self.state.up then Color3.fromRGB(15, 219, 25) else Color3.fromRGB(228, 12, 12)
+    elseif self.state.subdivisionChanged then
+        rankChangedText = if self.state.up then "DIVISION UP" else "DIVISION DOWN"
+        rankChangedColor = if self.state.up then Color3.fromRGB(15, 219, 25) else Color3.fromRGB(228, 12, 12)
+    else
+        rankChangedText = "CURRENT TIER"
+        rankChangedColor = Color3.fromRGB(218, 218, 218)
+    end
+
     return e(RoundedFrame, {
         Position = self.props.Position,
         Size = self.props.Size,
@@ -88,6 +103,10 @@ function Ranking:render()
                 TextYAlignment = Enum.TextYAlignment.Bottom,
                 Font = Enum.Font.GothamBold
                 -- TextTransparency = if self.state.divisionUp then 0 else 1
+            }, {
+                UITextSizeConstraint = e("UITextSizeConstraint", {
+                    MaxTextSize = 25
+                })
             }),
             Subdivision = if self.state.subdivision then e(RoundedTextLabel, {
                 Size = UDim2.fromScale(2, 0.2),
@@ -102,21 +121,16 @@ function Ranking:render()
                 Font = Enum.Font.GothamMedium
             }) else nil,
             RankUp = e(RoundedTextLabel, {
-                Size = UDim2.fromScale(2, 0.2),
-                Position = self.motorBinding:map(function(a)
-                    return UDim2.fromScale(-0.4 + a.rankUp * 0.2, 0.31)
-                end),
+                Size = UDim2.fromScale(2, 0.17),
+                Position = UDim2.fromScale(-0.2, 0.31),
                 AnchorPoint = Vector2.new(1, 1),
                 BackgroundTransparency = 1,
-                Text = if self.state.divisionUp then "PROMOTION" elseif self.state.subdivisionUp then "DIVISION UP" else "",
+                Text = rankChangedText,
                 TextScaled = true,
-                TextColor3 = Color3.fromRGB(15, 219, 25),
+                TextColor3 = rankChangedColor,
                 TextXAlignment = Enum.TextXAlignment.Left,
                 TextYAlignment = Enum.TextYAlignment.Top,
-                Font = Enum.Font.Gotham,
-                TextTransparency = self.motorBinding:map(function(a)
-                    return 1 - a.rankUp
-                end)
+                Font = Enum.Font.Gotham
             })
         })
     })
