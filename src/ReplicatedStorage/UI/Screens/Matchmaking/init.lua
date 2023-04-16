@@ -27,7 +27,7 @@ function Matchmaking:init()
         SongRate = nil
     })
 
-    self.props.matchmakingService:GetMatch():andThen(function(map)
+    self.props.matchmakingService:GetMatch(self.props.profile.GlickoRating):andThen(function(map)
         self:setState({
             Found = true,
             Hash = map.SongMD5Hash,
@@ -73,7 +73,7 @@ function Matchmaking:render()
 
     }, {
         Ranking = e(Ranking, {
-            Rating = 1500,
+            Rating = self.props.profile.GlickoRating,
 			Position = UDim2.fromScale(0.5, 0.1),
 			Size = UDim2.fromScale(0.5, 0.2),
 			AnchorPoint = Vector2.new(0.5, 0)
@@ -132,7 +132,8 @@ local Injected = withInjection(Matchmaking, {
 return RoactRodux.connect(function(state, props)
     return {
         options = Llama.Dictionary.join(state.options.persistent, state.options.transient),
-        permissions = state.permissions
+        permissions = state.permissions,
+        profile = state.profiles[tostring(game.Players.LocalPlayer.UserId)]
     }
 end, function(dispatch)
     return {

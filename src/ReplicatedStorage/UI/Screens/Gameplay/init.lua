@@ -509,6 +509,8 @@ function Gameplay:onGameplayEnd()
             resultsRecords.Viewing = true
         end
 
+        resultsRecords.Ranked = self.props.location.state.Ranked
+
         self.props.history:push("/results", resultsRecords)
     end
 end
@@ -587,6 +589,8 @@ function Gameplay:render()
     end
 
     local statCardPosition = UDim2.fromScale(0.7, 0.2)
+
+    local state = self.props.location.state
 
     if self.props.options.Use2DLane then
         statCardPosition =  UDim2.fromScale((self.props.options.PlayfieldWidth / 100 / 2) + 0.53, 0.2)
@@ -705,12 +709,12 @@ function Gameplay:render()
         }),
         Back = e(RoundedTextButton, {
             Size = UDim2.fromScale(0.1, 0.05),
-            HoldSize = UDim2.fromScale(0.08, 0.05),
+            HoldSize = UDim2.fromScale(0.1, 0.05),
             TextColor3 = Color3.fromRGB(255, 255, 255),
             BackgroundColor3 = Color3.fromRGB(230, 19, 19),
             HighlightBackgroundColor3 = Color3.fromRGB(187, 53, 53),
             Position = UDim2.fromScale(0.02, 0.09),
-            Text = "Back (No save)",
+            Text = if state.Ranked then "Forfeit Match" else "Quit",
             TextSize = 11,
             OnClick = function()
                 self.forcedQuit = true

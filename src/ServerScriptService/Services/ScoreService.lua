@@ -77,7 +77,7 @@ function ScoreService:PopulateUserProfile(player, override)
             leaderstats = Instance.new("Folder")
             leaderstats.Name = "leaderstats"
 
-            rating = Instance.new("NumberValue")
+            rating = Instance.new("StringValue")
             rating.Name = "Rating"
 
             rank = Instance.new("StringValue")
@@ -93,10 +93,10 @@ function ScoreService:PopulateUserProfile(player, override)
             leaderstats.Parent = player
         end
 
-        rating.Value = profile.Rating.Overall
+        rating.Value = string.format("%d", profile.GlickoRating)
         rank.Value = "#" .. profile.Rank
 
-        local tierInfo = Tiers:GetTierFromRating(profile.Rating.Overall)
+        local tierInfo = Tiers:GetTierFromRating(profile.GlickoRating)
 
         if tierInfo then
             tier.Value = string.sub(tierInfo.name, 1, 1)

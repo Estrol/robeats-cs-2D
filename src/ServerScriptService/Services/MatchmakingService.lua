@@ -39,10 +39,10 @@ function MatchmakingService.Client:HandleMatchResult(player, result)
     end
 end
 
-function MatchmakingService.Client:GetMatch(player)
+function MatchmakingService.Client:GetMatch(player, mmr)
     if RateLimitService:CanProcessRequestWithRateLimit("GetMatch", player, 3) then
         return Raxios.get(url "/maps/difficulty", {
-            query = { closest = 1500 },
+            query = { closest = mmr },
             auth = AuthService.APIKey
         }):json()
     end

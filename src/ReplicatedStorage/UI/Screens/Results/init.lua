@@ -95,6 +95,8 @@ end
 function Results:render()
 	local state = self.props.location.state
 
+	local ranked = state.Ranked
+
 	local grade = Grade:get_grade_from_accuracy(state.Accuracy)
 
 	local hits = state.Hits or {}
@@ -161,7 +163,7 @@ function Results:render()
 
 	local viewing = self.props.location.state.Viewing
 
-	local shouldShiftUp = not viewing and not room and self.props.profile
+	local shouldShiftUp = not viewing and not room and self.props.profile and ranked
 
     return Roact.createElement("Frame", {
 		BackgroundColor3 = Color3.fromRGB(0,0,0),
@@ -378,7 +380,7 @@ function Results:render()
 				PaddingBottom = UDim.new(0, 3),
 			})
 		}) else nil,
-		Ranking = if (self.props.profile and self.props.profile.Rating and not viewing and not room) then Roact.createElement(Ranking, {
+		Ranking = if (self.props.profile and self.props.profile.Rating and not viewing and not room and ranked) then Roact.createElement(Ranking, {
 			Rating = self.props.profile.Rating.Overall,
 			Position = UDim2.fromScale(0.69, 0.95),
 			Size = UDim2.fromScale(0.5, 0.2),
