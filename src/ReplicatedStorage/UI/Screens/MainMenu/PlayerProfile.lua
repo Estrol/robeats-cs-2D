@@ -32,6 +32,7 @@ function PlayerProfile:init()
         rating = 0,
         accuracy = 0,
         totalMapsPlayed = 0,
+        totalRankedPlayed = 0,
         userId = if self.props.UserId then self.props.UserId else if game.Players.LocalPlayer then game.Players.LocalPlayer.UserId else nil,
         playerName = if self.props.PlayerName then self.props.PlayerName else if game.Players.LocalPlayer then game.Players.LocalPlayer.Name else nil,
         loaded = false,
@@ -49,6 +50,7 @@ function PlayerProfile:init()
                 winstreak = profile.WinStreak,
                 accuracy = profile.Accuracy or 0,
                 totalMapsPlayed = profile.TotalMapsPlayed or 0,
+                totalRankedPlayed = profile.RankedMatchesPlayed or 0,
                 tier = tier.name,
                 division = tier.division,
                 subdivision = tier.subdivision,
@@ -65,6 +67,8 @@ function PlayerProfile:init()
 end
 
 function PlayerProfile:render()
+    local ranked = self.state.totalRankedPlayed and self.state.totalRankedPlayed >= 10
+
     if not self.state.loaded then
         return e(RoundedFrame, {
             Size = self.props.Size,
@@ -128,7 +132,7 @@ function PlayerProfile:render()
                RichText = true,
                TextXAlignment = Enum.TextXAlignment.Left,
                TextColor3 = Color3.fromRGB(255, 255, 255),
-               Text = if self.state.tier then string.format("%s <font color=\"#b3b3b3\">[%s]</font>", self.state.playerName, self.state.tier..(if self.state.division then string.format(" %s", string.rep("I", self.state.division)) else "")) else self.state.playerName,
+               Text = if self.state.tier then string.format("%s <font color=\"#b3b3b3\">[%s]</font>", self.state.playerName, if ranked then (self.state.tier..(if self.state.division then string.format(" %s", string.rep("I", self.state.division)) else "")) else "Unranked") else self.state.playerName,
                TextScaled = true,
                Font = Enum.Font.GothamBold,
                BackgroundTransparency = 1
@@ -138,7 +142,7 @@ function PlayerProfile:render()
                Size = UDim2.fromScale(2.35, 0.18),
                TextXAlignment = Enum.TextXAlignment.Left,
                TextColor3 = Color3.fromRGB(194, 194, 194),
-               Text = string.format("MMR: %d | %s: %d", self.state.mmr, if self.state.winstreak > 0 then "Win Streak" else "Loss Streak", math.abs(self.state.winstreak)),
+               Text = if ranked then string.format("MMR: %d | %s: %d", self.state.mmr, if self.state.winstreak > 0 then "Win Streak" else "Loss Streak", math.abs(self.state.winstreak)) else self.state.totalRankedPlayed .. "/10 ranked matches played",
                TextScaled = true,
                Font = Enum.Font.Gotham,
                BackgroundTransparency = 1
@@ -172,7 +176,8 @@ function PlayerProfile:render()
                     ImageTransparency = 0.1
                 },
                 tier = self.state.tier,
-                division = self.state.division
+                division = self.state.division,
+                unranked = not ranked
             })
         }),
         Rank = if self.state.rank and self.props.ShowRank then e(RoundedTextLabel, {

@@ -1,4 +1,5 @@
 local Knit = require(game:GetService("ReplicatedStorage").Packages.Knit)
+local Llama = require(game.ReplicatedStorage.Packages.Llama)
 
 local MatchmakingService = Knit.CreateService {
     Name = "MatchmakingService";
@@ -10,6 +11,7 @@ MatchmakingService.LOSS = "loss"
 
 local RateLimitService
 local AuthService
+local ScoreService
 
 local Raxios
 
@@ -20,6 +22,7 @@ local matches = {}
 function MatchmakingService:KnitStart()
     AuthService = Knit.GetService("AuthService")
     RateLimitService = Knit.GetService("RateLimitService")
+    ScoreService = Knit.GetService("ScoreService")
 
     Raxios = require(game.ReplicatedStorage.Packages.Raxios)
 end
@@ -71,6 +74,16 @@ function MatchmakingService.Client:GetMatch(player, mmr)
             auth = AuthService.APIKey
         }):json()
     end
+end
+
+function MatchmakingService.Client:ReportLeftEarly(player)
+    local result = MatchmakingService:HandleMatchResult(player, MatchmakingService.LOSS)
+
+    if result and Llama.Dictionary.count(result) > 0 then
+        ScoreService:PopulateUserProfile(player, true)
+    end
+
+    return result
 end
 
 return MatchmakingService

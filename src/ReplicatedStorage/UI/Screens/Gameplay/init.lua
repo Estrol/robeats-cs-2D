@@ -449,16 +449,24 @@ function Gameplay:onGameplayEnd()
         Rate = self.songRate
     })
 
+    local oldRating = self.props.profile.GlickoRating
+
     if (not self.forcedQuit) and (self.props.options.TimingPreset == "Standard") and not self.props.location.state.Spectate then
         local pb = self:submitScore(finalRecords, hits)
 
         if pb then
             print("Score was a personal best")
 
-            print(self._game:get_replay_hits())
-
             self.props.scoreService:SubmitReplay(SongDatabase:get_hash_for_key(self.songKey), self._game:get_replay_hits())
         end
+    end
+
+    print(self.props.location.state.Ranked, self.forcedQuit)
+
+    if self.props.location.state.Ranked and self.forcedQuit then
+        self.props.matchmakingService:ReportLeftEarly():andThen(function(r)
+            print(r)
+        end)
     end
     
     local resultsRecords = Llama.Dictionary.join(finalRecords, {
@@ -510,6 +518,7 @@ function Gameplay:onGameplayEnd()
         end
 
         resultsRecords.Ranked = self.props.location.state.Ranked
+        resultsRecords.OldRating = oldRating
 
         self.props.history:push("/results", resultsRecords)
     end
@@ -788,6 +797,7 @@ local Injected = withInjection(Gameplay, {
     scoreService = "ScoreService",
     multiplayerService = "MultiplayerService",
     spectatingService = "SpectatingService",
+    matchmakingService = "MatchmakingService"
 })
 
 return RoactRodux.connect(function(state, props)
@@ -796,6 +806,7 @@ return RoactRodux.connect(function(state, props)
     return {
         options = Llama.Dictionary.join(state.options.persistent, state.options.transient),
         room = if roomId then state.multiplayer.rooms[roomId] else nil,
-        roomId = roomId
+        roomId = roomId,
+        profile = state.profiles[tostring(game.Players.LocalPlayer.UserId)],
     }
 end)(Injected)

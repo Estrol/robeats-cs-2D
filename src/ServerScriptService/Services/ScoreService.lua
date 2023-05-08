@@ -50,7 +50,7 @@ function ScoreService:KnitInit()
     Raxios = require(game.ReplicatedStorage.Packages.Raxios)
 end
 
-function ScoreService:PopulateUserProfile(player, override)
+function ScoreService:PopulateUserProfile(player, override, profileOverride)
     local state = StateService.Store:getState()
 
     if state.profiles[tostring(player.UserId)] and not override then

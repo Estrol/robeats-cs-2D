@@ -17,7 +17,8 @@ Ranking.defaultProps = {
     Rating = 0,
     Size = UDim2.fromScale(0.5, 0.5),
     Position = UDim2.fromScale(0, 0.5),
-    AnchorPoint = Vector2.new(0, 0.5)
+    AnchorPoint = Vector2.new(0, 0.5),
+    MatchesPlayed = 10
 }
 
 function Ranking.getDerivedStateFromProps(nextProps, lastState)
@@ -58,13 +59,15 @@ function Ranking:didUpdate(_, prevState)
 end
 
 function Ranking:render()
+    local ranked = self.props.MatchesPlayed >= 10
+
     local rankChangedText
     local rankChangedColor
 
-    if self.state.divisionChanged then
+    if self.state.divisionChanged and ranked then
         rankChangedText = if self.state.up then "PROMOTION" else "DEMOTION"
         rankChangedColor = if self.state.up then Color3.fromRGB(15, 219, 25) else Color3.fromRGB(228, 12, 12)
-    elseif self.state.subdivisionChanged then
+    elseif self.state.subdivisionChanged and ranked then
         rankChangedText = if self.state.up then "DIVISION UP" else "DIVISION DOWN"
         rankChangedColor = if self.state.up then Color3.fromRGB(15, 219, 25) else Color3.fromRGB(228, 12, 12)
     else
@@ -79,6 +82,7 @@ function Ranking:render()
         BackgroundTransparency = 1,
     }, {
         Tier = e(Tier, {
+            unranked = not ranked,
             tier = self.state.tier,
             division = self.state.division,
             imageLabelProps = {
@@ -96,7 +100,7 @@ function Ranking:render()
                 Position = UDim2.fromScale(-0.2, 0.55),
                 AnchorPoint = Vector2.new(1, 1),
                 BackgroundTransparency = 1,
-                Text = self.state.tier:upper() .. if self.state.division then " " .. string.rep("I", self.state.division) else "",
+                Text = if ranked then self.state.tier:upper() .. if self.state.division then " " .. string.rep("I", self.state.division) else "" else "UNRANKED",
                 TextScaled = true,
                 TextColor3 = Color3.fromRGB(218, 218, 218),
                 TextXAlignment = Enum.TextXAlignment.Left,
@@ -105,7 +109,7 @@ function Ranking:render()
                 -- TextTransparency = if self.state.divisionUp then 0 else 1
             }, {
                 UITextSizeConstraint = e("UITextSizeConstraint", {
-                    MaxTextSize = 25
+                    MaxTextSize = 35
                 })
             }),
             Subdivision = if self.state.subdivision then e(RoundedTextLabel, {
@@ -113,7 +117,7 @@ function Ranking:render()
                 Position = UDim2.fromScale(-0.2, 0.53),
                 AnchorPoint = Vector2.new(1, 0),
                 BackgroundTransparency = 1,
-                Text = "DIVISION " .. if self.state.subdivision == 4 then "IV" else string.rep("I", self.state.subdivision),
+                Text = if ranked then "DIVISION " .. if self.state.subdivision == 4 then "IV" else string.rep("I", self.state.subdivision) else string.format("MATCHES PLAYED: %d/10"),
                 TextScaled = true,
                 TextColor3 = Color3.fromRGB(218, 218, 218),
                 TextXAlignment = Enum.TextXAlignment.Left,

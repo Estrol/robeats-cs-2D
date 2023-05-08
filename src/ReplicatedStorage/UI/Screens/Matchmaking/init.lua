@@ -108,7 +108,7 @@ function Matchmaking:render()
             Text = "Back",
             TextSize = 12,
             OnClick = function()
-                self.props.history:goBack()
+                self.props.history:push("/")
             end
         }),
         MatchFound = if found then e(RoundedTextLabel, {
