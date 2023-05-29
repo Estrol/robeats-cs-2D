@@ -30,12 +30,13 @@ function Player:init()
         return
     end
 
-    local tier = Tiers:GetTierFromRating(self.props.Profile.Rating.Overall)
+    local tier = Tiers:GetTierFromRating(self.props.Profile.GlickoRating)
 
     self:setState({
         tier = tier.name,
         division = tier.division,
-        subdivision = tier.subdivision
+        subdivision = tier.subdivision,
+        tierString = Tiers:GetStringForTier(tier)
     })
 end
 
@@ -81,7 +82,8 @@ function Player:render()
                 Position = UDim2.fromScale(1.3, 0.5),
                 Size = UDim2.fromScale(6.75, 0.55),
                 TextXAlignment = Enum.TextXAlignment.Left,
-                Text = if self.props.Profile then string.format("#%s | %0.2f [%s]", self.props.Profile.Rank, self.props.Profile.Rating.Overall, if self.state.tier then self.state.tier .. (if self.state.division then " " .. string.rep("I", self.state.division) .. " Division " .. if self.state.subdivision == 4 then "IV" else string.rep("I", self.state.subdivision) else "") else "...") else "???"
+                RichText = true,
+                Text = if self.props.Profile then string.format("#%s | <font color = \"rgb(211, 214, 2)\"><b>%d</b></font> [%s]", self.props.Profile.Rank, self.props.Profile.GlickoRating, if self.state.tierString then self.state.tierString else "???") else "..."
             }, {
                 UITextSizeConstraint = e("UITextSizeConstraint", {
                     MaxTextSize = 15
