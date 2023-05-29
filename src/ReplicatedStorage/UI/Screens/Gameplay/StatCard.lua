@@ -11,7 +11,7 @@ local StatCard = Roact.Component:extend("StatCard")
 
 StatCard.defaultProps = {
     Position = UDim2.fromScale(0.7, 0.2),
-    Ranked = true
+    Ranked = false
 }
 
 function StatCard:render()
@@ -38,7 +38,7 @@ function StatCard:render()
         Accuracy = e(AnimatedNumberLabel, {
             Position = UDim2.fromScale(0.97, 0.03),
             Size = UDim2.fromScale(1, 0.12),
-            TextColor3 = if not self.props.Ranked then Color3.fromRGB(228, 228, 228) else if self.props.Accuracy >= 96 then Color3.fromRGB(23, 248, 23) else Color3.fromRGB(240, 14, 14),
+            TextColor3 = if not self.props.Ranked then Color3.fromRGB(228, 228, 228) else (if self.props.Accuracy >= 96 then Color3.fromRGB(23, 248, 23) else Color3.fromRGB(240, 14, 14)),
             BackgroundTransparency = 1,
             AnchorPoint = Vector2.new(1, 0),
             Value = self.props.Accuracy,

@@ -680,7 +680,8 @@ function Gameplay:render()
             Goods = self.state.goods,
             Bads = self.state.bads,
             Misses = self.state.misses,
-            Accuracy = self.state.accuracy
+            Accuracy = self.state.accuracy,
+            Ranked = self.props.location.state.Ranked
         }),
         TimeLeft = e(RoundedTextLabel, {
             Size = UDim2.fromScale(0.115, 0.035),
