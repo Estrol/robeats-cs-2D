@@ -27,6 +27,12 @@ function MatchmakingService:KnitStart()
     ScoreService = Knit.GetService("ScoreService")
 
     Raxios = require(game.ReplicatedStorage.Packages.Raxios)
+
+    game.Players.PlayerRemoving:Connect(function(player)
+        if matches[player] then
+            self:HandleMatchResult(player, MatchmakingService.LOSS)
+        end
+    end)
 end
 
 function MatchmakingService.Client:ReportMatch(player, data)
@@ -84,7 +90,7 @@ function MatchmakingService.Client:GetMatch(player, mmr)
             if songKey ~= SongDatabase:invalid_songkey() then
                 local songLength = SongDatabase:get_song_length_for_key(songKey, m.Rate / 100)
 
-                if songLength >= 60000 and songLength <= 300000 then
+                if songLength >= 60000 and songLength <= 300000 and m.Rate <= 140 then
                     match = m
                     break
                 end
