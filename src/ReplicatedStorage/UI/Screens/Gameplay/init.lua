@@ -461,7 +461,7 @@ function Gameplay:onGameplayEnd()
         end
     end
 
-    print(self.props.location.state.Ranked, self.forcedQuit)
+    print((if self.props.location.state.Ranked then "User finished a ranked match" else "User finished a casual match") .. (if self.forcedQuit then " but quit early" else ""))
 
     if self.props.location.state.Ranked and self.forcedQuit then
         self.props.matchmakingService:ReportLeftEarly():andThen(function(r)
