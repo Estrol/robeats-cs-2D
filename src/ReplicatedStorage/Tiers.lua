@@ -57,4 +57,18 @@ function Tiers:GetTierFromRating(rating)
     end
 end
 
+function Tiers:GetStringForTier(tier, omitSubdivision)
+    local str = tier.name
+
+    if tier.division then
+        str ..= " " .. string.rep("I", tier.division)
+
+        if not omitSubdivision then
+            str ..= " Division " .. if tier.subdivision == 4 then "IV" else string.rep("I", tier.subdivision)
+        end
+    end
+
+    return str
+end
+
 return Tiers
