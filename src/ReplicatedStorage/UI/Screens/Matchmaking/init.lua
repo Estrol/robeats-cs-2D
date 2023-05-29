@@ -78,7 +78,8 @@ function Matchmaking:render()
             Rating = self.props.profile.GlickoRating,
 			Position = UDim2.fromScale(0.5, 0.1),
 			Size = UDim2.fromScale(0.5, 0.2),
-			AnchorPoint = Vector2.new(0.5, 0)
+			AnchorPoint = Vector2.new(0.5, 0),
+            MatchesPlayed = self.props.profile.RankedMatchesPlayed
         }),
         Message = if not found then e(RoundedTextLabel, {
             Position = UDim2.fromScale(0.54, 0.5),

@@ -110,6 +110,18 @@ function Ranking:render()
             }, {
                 UITextSizeConstraint = e("UITextSizeConstraint", {
                     MaxTextSize = 35
+                }),
+                RankUp = e(RoundedTextLabel, {
+                    Size = UDim2.fromScale(1, 0.4),
+                    Position = UDim2.new(0, 0, 0, 5),
+                    AnchorPoint = Vector2.new(0, 1),
+                    BackgroundTransparency = 1,
+                    Text = rankChangedText,
+                    TextScaled = true,
+                    TextColor3 = rankChangedColor,
+                    TextXAlignment = Enum.TextXAlignment.Left,
+                    TextYAlignment = Enum.TextYAlignment.Top,
+                    Font = Enum.Font.Gotham
                 })
             }),
             Subdivision = if self.state.subdivision then e(RoundedTextLabel, {
@@ -117,25 +129,13 @@ function Ranking:render()
                 Position = UDim2.fromScale(-0.2, 0.53),
                 AnchorPoint = Vector2.new(1, 0),
                 BackgroundTransparency = 1,
-                Text = if ranked then "DIVISION " .. if self.state.subdivision == 4 then "IV" else string.rep("I", self.state.subdivision) else string.format("MATCHES PLAYED: %d/10"),
+                Text = if ranked then "DIVISION " .. if self.state.subdivision == 4 then "IV" else string.rep("I", self.state.subdivision) else string.format("MATCHES PLAYED: %d/10", self.props.MatchesPlayed),
                 TextScaled = true,
                 TextColor3 = Color3.fromRGB(218, 218, 218),
                 TextXAlignment = Enum.TextXAlignment.Left,
                 TextYAlignment = Enum.TextYAlignment.Top,
                 Font = Enum.Font.GothamMedium
-            }) else nil,
-            RankUp = e(RoundedTextLabel, {
-                Size = UDim2.fromScale(2, 0.17),
-                Position = UDim2.fromScale(-0.2, 0.31),
-                AnchorPoint = Vector2.new(1, 1),
-                BackgroundTransparency = 1,
-                Text = rankChangedText,
-                TextScaled = true,
-                TextColor3 = rankChangedColor,
-                TextXAlignment = Enum.TextXAlignment.Left,
-                TextYAlignment = Enum.TextYAlignment.Top,
-                Font = Enum.Font.Gotham
-            })
+            }) else nil
         })
     })
 end

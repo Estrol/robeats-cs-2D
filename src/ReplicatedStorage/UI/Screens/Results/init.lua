@@ -406,7 +406,8 @@ function Results:render()
 			Rating = self.state.rankedRating,
 			Position = UDim2.fromScale(0.69, 0.95),
 			Size = UDim2.fromScale(0.5, 0.2),
-			AnchorPoint = Vector2.new(0.5, 1)
+			AnchorPoint = Vector2.new(0.5, 1),
+			MatchesPlayed = self.props.profile and self.props.profile.RankedMatchesPlayed
 		}) else nil,
 		PlayerSelection = playerSelection
 	})

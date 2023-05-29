@@ -21,7 +21,8 @@ local Score = Roact.Component:extend("Score")
 local function noop() end
 
 Score.defaultProps = {
-    OnClick = noop
+    OnClick = noop,
+    Mean = 0
 }
 
 function Score:init()

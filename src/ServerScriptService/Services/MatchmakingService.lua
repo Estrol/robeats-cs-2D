@@ -1,6 +1,8 @@
 local Knit = require(game:GetService("ReplicatedStorage").Packages.Knit)
 local Llama = require(game.ReplicatedStorage.Packages.Llama)
 
+local SongDatabase = require(game.ReplicatedStorage.RobeatsGameCore.SongDatabase)
+
 local MatchmakingService = Knit.CreateService {
     Name = "MatchmakingService";
     Client = {};
@@ -69,10 +71,27 @@ end
 
 function MatchmakingService.Client:GetMatch(player, mmr)
     if RateLimitService:CanProcessRequestWithRateLimit("GetMatch", player, 3) then
-        return Raxios.get(url "/maps/difficulty", {
+        local matches = Raxios.get(url "/maps/difficulty", {
             query = { closest = mmr },
             auth = AuthService.APIKey
         }):json()
+
+        local match
+
+        for _, m in matches do
+            local songKey = SongDatabase:get_key_for_hash(m.SongMD5Hash)
+
+            if songKey ~= SongDatabase:invalid_songkey() then
+                local songLength = SongDatabase:get_song_length_for_key(songKey, m.Rate / 100)
+
+                if songLength >= 60000 and songLength <= 300000 then
+                    match = m
+                    break
+                end
+            end
+        end
+
+        return match
     end
 end
 

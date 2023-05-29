@@ -71,11 +71,13 @@ function ScoreService:PopulateUserProfile(player, override, profileOverride)
         local rating
         local rank
         local tier
+        local wlstreak
 
         if leaderstats then
             rating = leaderstats:FindFirstChild("Rating")
             rank = leaderstats:FindFirstChild("Rank")
             tier = leaderstats:FindFirstChild("Tier")
+            wlstreak = leaderstats:FindFirstChild("Win/Loss")
         else
             leaderstats = Instance.new("Folder")
             leaderstats.Name = "leaderstats"
@@ -89,15 +91,20 @@ function ScoreService:PopulateUserProfile(player, override, profileOverride)
             tier = Instance.new("StringValue")
             tier.Name = "Tier"
 
+            wlstreak = Instance.new("StringValue")
+            wlstreak.Name = "Win/Loss"
+
             rating.Parent = leaderstats
             rank.Parent = leaderstats
             tier.Parent = leaderstats
+            wlstreak.Parent = leaderstats
 
             leaderstats.Parent = player
         end
 
-        rating.Value = string.format("%d", profile.GlickoRating)
+        rating.Value = if profile.RankedMatchesPlayed >= 10 then string.format("%d", profile.GlickoRating) else "???"
         rank.Value = "#" .. profile.Rank
+        wlstreak.Value = math.abs(profile.WinStreak) .. if profile.WinStreak > 0 then " W" elseif profile.WinStreak < 0 then " L" else ""
 
         local tierInfo = Tiers:GetTierFromRating(profile.GlickoRating)
 
@@ -210,7 +217,7 @@ function ScoreService.Client:SubmitScore(player, data)
                 Goods = data.Goods, 
                 Bads = data.Bads,
                 Misses = data.Misses,
-                Mean = data.Mean,
+                Mean = data.Mean or 0,
                 Accuracy = data.Accuracy,   
                 Rate = data.Rate,
                 MaxChain = data.MaxChain,
