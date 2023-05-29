@@ -27,6 +27,8 @@ function Matchmaking:init()
         SongRate = nil
     })
 
+    self.props.previewController:Silence()
+
     self.props.matchmakingService:GetMatch(self.props.profile.GlickoRating):andThen(function(map)
         self:setState({
             Found = true,
@@ -129,7 +131,8 @@ function Matchmaking:render()
 end
 
 local Injected = withInjection(Matchmaking, {
-    matchmakingService = "MatchmakingService"
+    matchmakingService = "MatchmakingService",
+    previewController = "PreviewController"
 })
 
 return RoactRodux.connect(function(state, props)
