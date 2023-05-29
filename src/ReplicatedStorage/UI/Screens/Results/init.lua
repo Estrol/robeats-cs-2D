@@ -71,6 +71,20 @@ function Results:init()
 			})
 		end
 	end
+
+	self:setState({
+		rankedRating = state.OldRating
+	})
+
+	task.delay(2, function()
+		if self.unmounted then
+			return
+		end
+
+		self:setState({
+			rankedRating = self.props.profile.GlickoRating
+		})
+	end)
 end
 
 function Results:didUpdate(prevProps)
@@ -88,12 +102,16 @@ function Results:didMount()
 end
 
 function Results:willUnmount()
+	self.unmounted = true
+
 	self.backOutConnection:Disconnect()
 	self.props.previewController:Silence()
 end
 
 function Results:render()
 	local state = self.props.location.state
+
+	local ranked = state.Ranked
 
 	local grade = Grade:get_grade_from_accuracy(state.Accuracy)
 
@@ -161,7 +179,7 @@ function Results:render()
 
 	local viewing = self.props.location.state.Viewing
 
-	local shouldShiftUp = not viewing and not room and self.props.profile
+	local shouldShiftUp = not viewing and not room and self.props.profile and ranked
 
     return Roact.createElement("Frame", {
 		BackgroundColor3 = Color3.fromRGB(0,0,0),
@@ -311,6 +329,8 @@ function Results:render()
 					})
 				elseif self.props.location.state.GoBack then
 					self.props.history:goBack()
+				elseif ranked then
+					self.props.history:push("/")
 				else
 					self.props.history:push("/select")
 				end
@@ -330,13 +350,17 @@ function Results:render()
 			Position = UDim2.fromScale(0.12, 0.98);
 			Size = UDim2.fromScale(0.1, 0.04);
 			HoldSize = UDim2.fromScale(0.1, 0.04);
-			Text = "Restart Map";
+			Text = if ranked then "Play Again" else "Restart Map";
 			TextColor3 = Color3.fromRGB(255, 255, 255);
 			TextSize = 16,
 			ZIndex = 5,
 			TextScaled = true,
 			OnClick = function()
-				self.props.history:push("/play")
+				if ranked then
+					self.props.history:push("/matchmaking")
+				else
+					self.props.history:push("/play")
+				end
 			end
 		}, {
 			UITextSizeConstraint = Roact.createElement("UITextSizeConstraint", {
@@ -378,11 +402,12 @@ function Results:render()
 				PaddingBottom = UDim.new(0, 3),
 			})
 		}) else nil,
-		Ranking = if (self.props.profile and self.props.profile.Rating and not viewing and not room) then Roact.createElement(Ranking, {
-			Rating = self.props.profile.Rating.Overall,
+		Ranking = if (self.props.profile and self.props.profile.Rating and not viewing and not room and ranked) then Roact.createElement(Ranking, {
+			Rating = self.state.rankedRating,
 			Position = UDim2.fromScale(0.69, 0.95),
 			Size = UDim2.fromScale(0.5, 0.2),
-			AnchorPoint = Vector2.new(0.5, 1)
+			AnchorPoint = Vector2.new(0.5, 1),
+			MatchesPlayed = self.props.profile and self.props.profile.RankedMatchesPlayed
 		}) else nil,
 		PlayerSelection = playerSelection
 	})

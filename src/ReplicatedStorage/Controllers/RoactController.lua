@@ -24,6 +24,7 @@ local Moderation = require(Screens.Moderation)
 local Multiplayer = require(Screens.Multiplayer)
 local Room = require(Screens.Room)
 local Spectating = require(Screens.Spectating)
+local Matchmaking = require(Screens.Matchmaking)
 
 local TopBar = require(game.ReplicatedStorage.UI.Components.TopBar)
 
@@ -97,6 +98,11 @@ function RoactController:GetRoutes()
             exact = true,
             component = Spectating
         }),
+        Matchmaking = Roact.createElement(RoactRouter.Route, {
+            path = "/matchmaking",
+            exact = true,
+            component = Matchmaking
+        }),
     }
 end
 
@@ -112,6 +118,7 @@ function RoactController:GetDependencies()
         SFXController = Knit.GetController("SFXController"),
         FadeController = Knit.GetController("FadeController"),
         SpectatingService = Knit.GetService("SpectatingService"),
+        MatchmakingService = Knit.GetService("MatchmakingService")
     }
 end
 
@@ -126,7 +133,6 @@ function RoactController:MountRoactNodes(store)
     local oldGoBack = history.goBack
 
     local lastBasePath = string.match(history.location.path, "^(/[^/]+)")
-    local lastPath = history.location.path
 
     local isTransitioning = false
 

@@ -95,7 +95,7 @@ function SongButton:render()
             Position = UDim2.new(0.0199999847, 0, 0.72, 0),
             Size = UDim2.new(0.462034643, 0, 0.18, 0),
             Font = Enum.Font.GothamSemibold,
-            Text = string.format("Difficulty: %0.2f | %s", difficulty.Overall, table.concat(topSkillsets, ", ")),
+            Text = string.format("Estimated Rating: %d | Difficulty: %0.2f | %s", SongDatabase:get_glicko_estimate_from_rating(difficulty.Overall), difficulty.Overall, table.concat(topSkillsets, ", ")),
             TextColor3 = Color3.fromRGB(255, 255, 255),
             TextScaled = true,
             TextSize = 22,

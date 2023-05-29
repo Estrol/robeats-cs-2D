@@ -16,7 +16,7 @@ local RunService
 local HttpService
 
 local PermissionsService
-local ModerationService
+local MatchmakingService
 local RateLimitService
 local AuthService
 local StateService
@@ -25,6 +25,9 @@ local Llama
 local Raxios
 local Hook
 local FormatHelper
+
+-- the player wins against a map when they get >=96 accuracy
+local ACCURACY_WIN_THRESHOLD = 96
 
 local ScoreService = Knit.CreateService({
     Name = "ScoreService",
@@ -38,7 +41,7 @@ function ScoreService:KnitInit()
     HttpService = game:GetService("HttpService")
 
     PermissionsService = Knit.GetService("PermissionsService")
-    ModerationService = Knit.GetService("ModerationService")
+    MatchmakingService = Knit.GetService("MatchmakingService")
     RateLimitService = Knit.GetService("RateLimitService")
     AuthService = Knit.GetService("AuthService")
     StateService = Knit.GetService("StateService")
@@ -47,7 +50,7 @@ function ScoreService:KnitInit()
     Raxios = require(game.ReplicatedStorage.Packages.Raxios)
 end
 
-function ScoreService:PopulateUserProfile(player, override)
+function ScoreService:PopulateUserProfile(player, override, profileOverride)
     local state = StateService.Store:getState()
 
     if state.profiles[tostring(player.UserId)] and not override then
@@ -68,16 +71,18 @@ function ScoreService:PopulateUserProfile(player, override)
         local rating
         local rank
         local tier
+        local wlstreak
 
         if leaderstats then
             rating = leaderstats:FindFirstChild("Rating")
             rank = leaderstats:FindFirstChild("Rank")
             tier = leaderstats:FindFirstChild("Tier")
+            wlstreak = leaderstats:FindFirstChild("Win/Loss")
         else
             leaderstats = Instance.new("Folder")
             leaderstats.Name = "leaderstats"
 
-            rating = Instance.new("NumberValue")
+            rating = Instance.new("StringValue")
             rating.Name = "Rating"
 
             rank = Instance.new("StringValue")
@@ -86,17 +91,22 @@ function ScoreService:PopulateUserProfile(player, override)
             tier = Instance.new("StringValue")
             tier.Name = "Tier"
 
+            wlstreak = Instance.new("StringValue")
+            wlstreak.Name = "Win/Loss"
+
             rating.Parent = leaderstats
             rank.Parent = leaderstats
             tier.Parent = leaderstats
+            wlstreak.Parent = leaderstats
 
             leaderstats.Parent = player
         end
 
-        rating.Value = profile.Rating.Overall
+        rating.Value = if profile.RankedMatchesPlayed >= 10 then string.format("%d", profile.GlickoRating) else "???"
         rank.Value = "#" .. profile.Rank
+        wlstreak.Value = math.abs(profile.WinStreak) .. if profile.WinStreak > 0 then " W" elseif profile.WinStreak < 0 then " L" else ""
 
-        local tierInfo = Tiers:GetTierFromRating(profile.Rating.Overall)
+        local tierInfo = Tiers:GetTierFromRating(profile.GlickoRating)
 
         if tierInfo then
             tier.Value = string.sub(tierInfo.name, 1, 1)
@@ -207,7 +217,7 @@ function ScoreService.Client:SubmitScore(player, data)
                 Goods = data.Goods, 
                 Bads = data.Bads,
                 Misses = data.Misses,
-                Mean = data.Mean,
+                Mean = data.Mean or 0,
                 Accuracy = data.Accuracy,   
                 Rate = data.Rate,
                 MaxChain = data.MaxChain,
@@ -215,6 +225,20 @@ function ScoreService.Client:SubmitScore(player, data)
                 Mods = data.Mods
             }
         }):json()
+
+        local match = MatchmakingService:GetMatch(player)
+
+        if match then
+            local profile = MatchmakingService:HandleMatchResult(player, if data.Accuracy >= ACCURACY_WIN_THRESHOLD then MatchmakingService.WIN else MatchmakingService.LOSS)
+
+            local template = [[
+                MMR: %d
+                RD: %0.2f
+                Sigma: %0.4f
+            ]]
+
+            print(string.format(template, profile.GlickoRating, profile.RD, profile.Sigma))
+        end
 
         ScoreService:PopulateUserProfile(player, true)
 

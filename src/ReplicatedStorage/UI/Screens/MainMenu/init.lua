@@ -26,7 +26,8 @@ function MainMenuUI:init()
     self:setState({
         currSFXName = SongDatabase:get_data_for_key(self.props.songKey).AudioFilename,
         currSFXArtistName = SongDatabase:get_data_for_key(self.props.songKey).AudioArtist,
-        currSFXBackground = SongDatabase:get_data_for_key(self.props.songKey).AudioCoverImageAssetId
+        currSFXBackground = SongDatabase:get_data_for_key(self.props.songKey).AudioCoverImageAssetId,
+        menuOpen = false
     })
 
     self.previewController = self.props.previewController
@@ -103,6 +104,69 @@ function MainMenuUI:render()
         });
     end
 
+    local playMenu
+
+    if self.state.menuOpen then
+        playMenu = e(RoundedFrame, {
+            Position = UDim2.fromScale(0.5, 0.5),
+            Size = UDim2.fromScale(0.7, 0.6),
+            AnchorPoint = Vector2.new(0.5, 0.5)
+        }, {
+            UIListLayout = e("UIListLayout", {
+                FillDirection = Enum.FillDirection.Horizontal,
+                SortOrder = Enum.SortOrder.LayoutOrder
+            }),
+            Casual = e(RoundedTextButton, {
+                Position = UDim2.fromScale(0, 0),
+                Size = UDim2.fromScale(1 / 3, 1),
+                HoldSize = UDim2.fromScale(1 / 3, 1),
+                LayoutOrder = 1,
+                Text = "⭐\n\nCasual",
+                TextColor3 = Color3.fromRGB(216, 216, 216),
+                TextScaled = true,
+                OnClick = function()
+                    self.props.history:push("/select")
+                end
+            }, {
+                UITextSizeConstraint = e("UITextSizeConstraint", {
+                    MaxTextSize = 30
+                })
+            }),
+            Competitive = e(RoundedTextButton, {
+                Position = UDim2.fromScale(1 / 3, 0),
+                Size = UDim2.fromScale(1 / 3, 1),
+                HoldSize = UDim2.fromScale(1 / 3, 1),
+                LayoutOrder = 2,
+                Text = "🏆\n\nCompetitive",
+                TextColor3 = Color3.fromRGB(216, 216, 216),
+                TextScaled = true,
+                OnClick = function()
+                    self.props.history:push("/matchmaking")
+                end
+            }, {
+                UITextSizeConstraint = e("UITextSizeConstraint", {
+                    MaxTextSize = 30
+                })
+            }),
+            Multiplayer = e(RoundedTextButton, {
+                Position = UDim2.fromScale(1 / 3, 0),
+                Size = UDim2.fromScale(1 / 3, 1),
+                HoldSize = UDim2.fromScale(1 / 3, 1),
+                LayoutOrder = 2,
+                Text = "👥\n\nMultiplayer",
+                TextColor3 = Color3.fromRGB(216, 216, 216),
+                TextScaled = true,
+                OnClick = function()
+                    self.props.history:push("/multiplayer")
+                end
+            }, {
+                UITextSizeConstraint = e("UITextSizeConstraint", {
+                    MaxTextSize = 30
+                })
+            })
+        })
+    end
+
     return e(RoundedImageLabel, {
         Size = UDim2.new(1, 0, 1, 0),
         Position = UDim2.fromScale(0.5,0.5),
@@ -177,7 +241,9 @@ function MainMenuUI:render()
                 HoldSize = UDim2.fromScale(1, 0.11),
                 Tooltip = "Play some songs!",
                 OnClick = function()
-                    self.props.history:push("/select")
+                    self:setState({
+                        menuOpen = not self.state.menuOpen
+                    })
                 end
             }, {
                 UITextSizeConstraint = e("UITextSizeConstraint", {
@@ -273,32 +339,6 @@ function MainMenuUI:render()
                     ApplyStrokeMode = Enum.ApplyStrokeMode.Border
                 })
             });
-            MultiButton = e(RoundedTextButton, {
-                TextXAlignment = Enum.TextXAlignment.Left;
-                BackgroundColor3 = Color3.fromRGB(22, 22, 22);
-                BorderMode = Enum.BorderMode.Inset,
-                BorderSizePixel = 0,
-                Size = UDim2.fromScale(1, 0.1),
-                Text = "  Multiplayer";
-                TextScaled = true;
-                TextColor3 = Color3.fromRGB(255, 255, 255);
-                LayoutOrder = 5;
-                HoldSize = UDim2.fromScale(1, 0.11),
-                Tooltip = "Play with others in real time!",
-                OnClick = function()
-                    self.props.history:push("/multiplayer")
-                end
-            }, {
-                UITextSizeConstraint = e("UITextSizeConstraint", {
-                    MinTextSize = 10;
-                    MaxTextSize = 18;
-                }),
-                UIStroke = e("UIStroke", {
-                    Thickness = 2;
-                    Color = Color3.fromRGB(100, 100, 100);
-                    ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-                })
-            }),
             SpectatingButton = e(RoundedTextButton, {
                 TextXAlignment = Enum.TextXAlignment.Left;
                 BackgroundColor3 = Color3.fromRGB(22, 22, 22);
@@ -308,7 +348,7 @@ function MainMenuUI:render()
                 Text = "  Spectate";
                 TextScaled = true;
                 TextColor3 = Color3.fromRGB(255, 255, 255);
-                LayoutOrder = 6;
+                LayoutOrder = 5;
                 HoldSize = UDim2.fromScale(1, 0.11),
                 Tooltip = "Watch others play!",
                 OnClick = function()
@@ -339,7 +379,8 @@ function MainMenuUI:render()
             AnchorPoint = Vector2.new(1, 0);
             Font = Enum.Font.GothamBlack;
         });
-        Moderation = moderation
+        Moderation = moderation,
+        PlayMenu = playMenu
     }); 
 end
 

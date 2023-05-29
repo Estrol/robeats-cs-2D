@@ -182,9 +182,9 @@ function SongInfoDisplay:render()
                 AspectRatio = 22,
             }),
             DifficultyDisplay = e(GridInfoDisplay, {
-                Value = SongDatabase:get_difficulty_for_key(self.props.SongKey, self.props.SongRate / 100),
+                Value = string.format("%0.2f", SongDatabase:get_difficulty_for_key(self.props.SongKey, self.props.SongRate / 100).Overall),
                 FormatValue = function(value)
-                    return string.format("Difficulty: %0.2f", value.Overall)
+                    return string.format("Difficulty: %s", value)
                 end,
                 LayoutOrder = 1
             }),

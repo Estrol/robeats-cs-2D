@@ -449,16 +449,24 @@ function Gameplay:onGameplayEnd()
         Rate = self.songRate
     })
 
+    local oldRating = self.props.profile.GlickoRating
+
     if (not self.forcedQuit) and (self.props.options.TimingPreset == "Standard") and not self.props.location.state.Spectate then
         local pb = self:submitScore(finalRecords, hits)
 
         if pb then
             print("Score was a personal best")
 
-            print(self._game:get_replay_hits())
-
             self.props.scoreService:SubmitReplay(SongDatabase:get_hash_for_key(self.songKey), self._game:get_replay_hits())
         end
+    end
+
+    print(self.props.location.state.Ranked, self.forcedQuit)
+
+    if self.props.location.state.Ranked and self.forcedQuit then
+        self.props.matchmakingService:ReportLeftEarly():andThen(function(r)
+            print(r)
+        end)
     end
     
     local resultsRecords = Llama.Dictionary.join(finalRecords, {
@@ -508,6 +516,9 @@ function Gameplay:onGameplayEnd()
             resultsRecords.MaxChain = self.state.maxChain
             resultsRecords.Viewing = true
         end
+
+        resultsRecords.Ranked = self.props.location.state.Ranked
+        resultsRecords.OldRating = oldRating
 
         self.props.history:push("/results", resultsRecords)
     end
@@ -587,6 +598,8 @@ function Gameplay:render()
     end
 
     local statCardPosition = UDim2.fromScale(0.7, 0.2)
+
+    local state = self.props.location.state
 
     if self.props.options.Use2DLane then
         statCardPosition =  UDim2.fromScale((self.props.options.PlayfieldWidth / 100 / 2) + 0.53, 0.2)
@@ -705,12 +718,12 @@ function Gameplay:render()
         }),
         Back = e(RoundedTextButton, {
             Size = UDim2.fromScale(0.1, 0.05),
-            HoldSize = UDim2.fromScale(0.08, 0.05),
+            HoldSize = UDim2.fromScale(0.1, 0.05),
             TextColor3 = Color3.fromRGB(255, 255, 255),
             BackgroundColor3 = Color3.fromRGB(230, 19, 19),
             HighlightBackgroundColor3 = Color3.fromRGB(187, 53, 53),
             Position = UDim2.fromScale(0.02, 0.09),
-            Text = "Back (No save)",
+            Text = if state.Ranked then "Forfeit Match" else "Quit",
             TextSize = 11,
             OnClick = function()
                 self.forcedQuit = true
@@ -784,6 +797,7 @@ local Injected = withInjection(Gameplay, {
     scoreService = "ScoreService",
     multiplayerService = "MultiplayerService",
     spectatingService = "SpectatingService",
+    matchmakingService = "MatchmakingService"
 })
 
 return RoactRodux.connect(function(state, props)
@@ -792,6 +806,7 @@ return RoactRodux.connect(function(state, props)
     return {
         options = Llama.Dictionary.join(state.options.persistent, state.options.transient),
         room = if roomId then state.multiplayer.rooms[roomId] else nil,
-        roomId = roomId
+        roomId = roomId,
+        profile = state.profiles[tostring(game.Players.LocalPlayer.UserId)],
     }
 end)(Injected)
