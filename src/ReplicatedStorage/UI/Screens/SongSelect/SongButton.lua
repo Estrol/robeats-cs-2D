@@ -5,6 +5,8 @@ local SongDatabase = require(game.ReplicatedStorage.RobeatsGameCore.SongDatabase
 local Flipper = require(game.ReplicatedStorage.Packages.Flipper)
 local RoactFlipper = require(game.ReplicatedStorage.Packages.RoactFlipper)
 
+local Tiers = require(game.ReplicatedStorage.Tiers)
+
 local RoundedTextButton = require(game.ReplicatedStorage.UI.Components.Base.RoundedTextButton)
 
 local SongButton = Roact.Component:extend("SongButton")
@@ -45,6 +47,8 @@ function SongButton:render()
     local mapper = SongDatabase:get_mapper_for_key(self.props.SongKey)
 
     local topSkillsets, allSkillsets = SongDatabase:get_skillsets_for_key(self.props.SongKey, self.props.SongRate / 100)
+
+    local glicko = SongDatabase:get_glicko_estimate_from_rating(difficulty.Overall)
 
     return e(RoundedTextButton, {
         BackgroundTransparency = self.motorBinding:map(function(a)
@@ -93,9 +97,9 @@ function SongButton:render()
             BackgroundTransparency = 1,
             BorderSizePixel = 0,
             Position = UDim2.new(0.0199999847, 0, 0.72, 0),
-            Size = UDim2.new(0.462034643, 0, 0.18, 0),
+            Size = UDim2.new(0.762034643, 0, 0.18, 0),
             Font = Enum.Font.GothamSemibold,
-            Text = string.format("Estimated Rating: %d | Difficulty: %0.2f | %s", SongDatabase:get_glicko_estimate_from_rating(difficulty.Overall), difficulty.Overall, table.concat(topSkillsets, ", ")),
+            Text = string.format("Estimated Rating: %d [%s] | %s", glicko, Tiers:GetStringForTier(Tiers:GetTierFromRating(glicko)), table.concat(topSkillsets, ", ")),
             TextColor3 = Color3.fromRGB(255, 255, 255),
             TextScaled = true,
             TextSize = 22,
