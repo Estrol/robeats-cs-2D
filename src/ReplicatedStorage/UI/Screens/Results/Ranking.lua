@@ -96,7 +96,7 @@ function Ranking:render()
             }
         }, {
             Tier = e(RoundedTextLabel, {
-                Size = UDim2.fromScale(2, 0.35),
+                Size = UDim2.fromScale(2, 0.33),
                 Position = UDim2.fromScale(-0.2, 0.55),
                 AnchorPoint = Vector2.new(1, 1),
                 BackgroundTransparency = 1,
@@ -104,12 +104,12 @@ function Ranking:render()
                 TextScaled = true,
                 TextColor3 = Color3.fromRGB(218, 218, 218),
                 TextXAlignment = Enum.TextXAlignment.Left,
-                TextYAlignment = Enum.TextYAlignment.Bottom,
+                TextYAlignment = Enum.TextYAlignment.Center,
                 Font = Enum.Font.GothamBold
                 -- TextTransparency = if self.state.divisionUp then 0 else 1
             }, {
                 UITextSizeConstraint = e("UITextSizeConstraint", {
-                    MaxTextSize = 35
+                    MaxTextSize = 55
                 }),
                 RankUp = e(RoundedTextLabel, {
                     Size = UDim2.fromScale(1, 0.4),
