@@ -10,6 +10,7 @@ local RoundedScrollingFrame = require(game.ReplicatedStorage.UI.Components.Base.
 local Dropdown = Roact.Component:extend("Dropdown")
 
 Dropdown.defaultProps = {
+    ButtonSize = UDim2.new(1, 0, 0, 30),
     OnSelectionChange = function()
         
     end
@@ -74,8 +75,8 @@ function Dropdown:render()
         TextColor3 = Color3.new(1, 1, 1),
         BackgroundColor3 = Color3.fromRGB(15, 15, 15),
         HighlightBackgroundColor3 = Color3.fromRGB(10, 10, 10),
-        Size = UDim2.new(1, 0, 0, 30),
-        HoldSize = UDim2.new(1, 0, 0, 30),
+        Size = self.props.ButtonSize,
+        HoldSize = self.props.ButtonSize,
         ZIndex = 2,
         TextXAlignment = Enum.TextXAlignment.Left,
         OnClick = function()
@@ -94,12 +95,12 @@ function Dropdown:render()
     }))
 
     local menu = Roact.createElement(RoundedScrollingFrame, {
-        Size = UDim2.fromScale(1, 1) - UDim2.fromOffset(0, 30),
+        Size = UDim2.fromScale(1, 1) - UDim2.fromOffset(0, self.props.ButtonSize.Y.Offset),
         CanvasSize = UDim2.fromScale(0, 0),
         BackgroundTransparency = 0.5,
         BackgroundColor3 = Color3.new(0, 0, 0),
         Position = self.motorBinding:map(function(value)
-            return UDim2.fromScale(0, value - 1) + UDim2.fromOffset(0, 30)
+            return UDim2.fromScale(0, value - 1) + UDim2.fromOffset(0, self.props.ButtonSize.Y.Offset)
         end),
         ClipsDescendants = true,
         AutomaticCanvasSize = Enum.AutomaticSize.Y,
@@ -108,7 +109,9 @@ function Dropdown:render()
 
     return Roact.createElement("Frame", {
         Position = self.props.Position,
-        Size = (self.props.Size or UDim2.fromScale(0.2, 0.3)) + UDim2.fromOffset(0, 30),
+        ZIndex = self.props.ZIndex,
+        Size = (self.props.Size or UDim2.fromScale(0.2, 0.3)) + UDim2.fromOffset(0, self.props.ButtonSize.Y.Offset),
+        AnchorPoint = self.props.AnchorPoint,
         BackgroundTransparency = 1,
         ClipsDescendants = true,
     }, {

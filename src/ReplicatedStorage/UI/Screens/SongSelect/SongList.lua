@@ -10,6 +10,7 @@ local SongDatabase = require(game.ReplicatedStorage.RobeatsGameCore.SongDatabase
 
 local RoundedLargeScrollingFrame = require(game.ReplicatedStorage.UI.Components.Base.RoundedLargeScrollingFrame)
 local RoundedTextButton = require(game.ReplicatedStorage.UI.Components.Base.RoundedTextButton)
+local Dropdown = require(game.ReplicatedStorage.UI.Components.Base.Dropdown)
 
 local SongButton = require(game.ReplicatedStorage.UI.Screens.SongSelect.SongButton)
 
@@ -29,6 +30,21 @@ local function sortByAlphabeticalOrder(a, b)
     return a.AudioFilename < b.AudioFilename
 end
 
+local function sortByDifference(a, b, options)
+    local ratingA = SongDatabase:get_difficulty_for_key(a.SongKey, options.SongRate)
+    local ratingB = SongDatabase:get_difficulty_for_key(b.SongKey, options.SongRate)
+
+    return math.abs(SongDatabase:get_glicko_estimate_from_rating(ratingA.Overall) - options.mmr) < math.abs(SongDatabase:get_glicko_estimate_from_rating(ratingB.Overall) - options.mmr)
+end
+
+local sorts = { "Sort by Rating", "Sort Alphabetically", "Sort by Skill Difference" }
+
+local sortFunctions = {
+    [sorts[1]] = sortByDifficulty,
+    [sorts[2]] = sortByAlphabeticalOrder,
+    [sorts[3]] = sortByDifference,
+}
+
 SongList.defaultProps = {
     Size = UDim2.fromScale(1, 1),
     OnSongSelected = noop,
@@ -38,16 +54,22 @@ SongList.defaultProps = {
 function SongList:getSongs()
     local found = SongDatabase:filter_keys(self.props.Search, self.props.SongRate / 100, self.props.ExcludeCustomMaps)
 
-    if self.props.SortByDifficulty then
-        return Llama.List.sort(found, sortByDifficulty)
-    end
+    local options = {
+        mmr = self.props.profile.GlickoRating,
+        rate = self.props.SongRate
+    }
 
-    return Llama.List.sort(found, sortByAlphabeticalOrder)
+    print(options)
+
+    return Llama.List.sort(found, function(a, b)
+        return sortFunctions[self.state.sort](a, b, options)
+    end)
 end
 
 function SongList:init()
     self:setState({
         found = {};
+        sort = sorts[1]
     })
 
     self:setState({
@@ -61,7 +83,7 @@ end
 
 
 function SongList:didUpdate(prevProps, prevState)
-    if (self.props.Search ~= prevProps.Search) or (self.props.SortByDifficulty ~= prevProps.SortByDifficulty) or (self.props.SongRate ~= prevProps.SongRate) then
+    if (self.props.Search ~= prevProps.Search) or (self.state.sort ~= prevState.sort) or (self.props.SongRate ~= prevProps.SongRate) then
         Promise.new(function(resolve)
             resolve(self:getSongs())
         end):andThen(function(sorted)
@@ -110,7 +132,7 @@ function SongList:render()
         SearchBar = e("Frame", {
             BackgroundColor3 = Color3.fromRGB(41, 41, 41),
             Position = UDim2.new(1, 0, 0.045, 0),
-            Size = UDim2.fromScale(0.85, 0.045),
+            Size = UDim2.fromScale(0.76, 0.045),
             AnchorPoint = Vector2.new(1, 1),
         }, {
             UICorner = e("UICorner", {
@@ -139,22 +161,19 @@ function SongList:render()
                 })
             })
         }),
-        SortByDifficulty = e(RoundedTextButton, {
-            BackgroundColor3 = self.props.SortByDifficulty and Color3.fromRGB(41, 176, 194) or Color3.fromRGB(41, 41, 41),
-            Position = UDim2.fromScale(0, 0.045),
-            Size = UDim2.fromScale(0.14, 0.045),
-            HoldSize = UDim2.fromScale(0.14, 0.045),
-            AnchorPoint = Vector2.new(0, 1),
-            TextScaled = true,
-            TextColor3 = Color3.fromRGB(255, 255, 255),
-            Text = "Sort By Difficulty",
-            OnClick = function()
-                self.props.setSortByDifficulty(not self.props.SortByDifficulty)
+        SortByDifficulty = e(Dropdown, {
+            Position = UDim2.fromScale(0, 0),
+            ButtonSize = UDim2.new(1, 0, 0, 23),
+            Size = UDim2.new(0.23, 0, 0, 30 * 2.5),
+            ZIndex = 5,
+            AnchorPoint = Vector2.new(0, 0),
+            Options = sorts,
+            SelectedOption = self.state.sort,
+            OnSelectionChange = function(sort)
+                self:setState({
+                    sort = sort
+                })
             end
-        }, {
-            UITextSizeConstraint = e("UITextSizeConstraint", {
-                MaxTextSize = 13
-            })
         })
     })
 end
@@ -163,6 +182,8 @@ return RoactRodux.connect(function(state)
     return {
         Search = state.options.transient.Search,
         SortByDifficulty = state.options.transient.SortByDifficulty,
+        SongRate = state.options.transient.SongRate,
+        profile = state.profiles[tostring(game.Players.LocalPlayer.UserId)]
     }
 end, function(dispatch)
     return {
