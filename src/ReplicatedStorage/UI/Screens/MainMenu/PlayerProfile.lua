@@ -41,7 +41,7 @@ function PlayerProfile:init()
 
     self.scoreService:GetProfile(self.state.userId):andThen(function(profile)
         if not Llama.isEmpty(profile) then
-            local tier = if profile.Rating then Tiers:GetTierFromRating(profile.GlickoRating) else {}
+            local tier = if profile.GlickoRating then Tiers:GetTierFromRating(profile.GlickoRating) else {}
 
             self:setState({
                 rank = profile.Rank,

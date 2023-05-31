@@ -82,7 +82,7 @@ function Results:init()
 		end
 
 		self:setState({
-			rankedRating = self.props.profile.GlickoRating
+			rankedRating = self.props.profile and self.props.profile.GlickoRating
 		})
 	end)
 end
@@ -402,7 +402,7 @@ function Results:render()
 				PaddingBottom = UDim.new(0, 3),
 			})
 		}) else nil,
-		Ranking = if (self.props.profile and self.props.profile.Rating and not viewing and not room and ranked) then Roact.createElement(Ranking, {
+		Ranking = if (self.props.profile and not viewing and not room and ranked) then Roact.createElement(Ranking, {
 			Rating = self.state.rankedRating,
 			Position = UDim2.fromScale(0.69, 0.95),
 			Size = UDim2.fromScale(0.5, 0.2),

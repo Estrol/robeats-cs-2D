@@ -449,7 +449,7 @@ function Gameplay:onGameplayEnd()
         Rate = self.songRate
     })
 
-    local oldRating = self.props.profile.GlickoRating
+    local oldRating = self.props.profile and self.props.profile.GlickoRating
 
     if (not self.forcedQuit) and (self.props.options.TimingPreset == "Standard") and not self.props.location.state.Spectate then
         local pb = self:submitScore(finalRecords, hits)

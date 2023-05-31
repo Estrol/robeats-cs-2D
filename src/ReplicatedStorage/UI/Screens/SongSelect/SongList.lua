@@ -55,7 +55,7 @@ function SongList:getSongs()
     local found = SongDatabase:filter_keys(self.props.Search, self.props.SongRate / 100, self.props.ExcludeCustomMaps)
 
     local options = {
-        mmr = self.props.profile.GlickoRating,
+        mmr = self.props.profile and self.props.profile.GlickoRating,
         rate = self.props.SongRate
     }
 
@@ -163,7 +163,7 @@ function SongList:render()
         }),
         SortByDifficulty = e(Dropdown, {
             Position = UDim2.fromScale(0, 0),
-            ButtonSize = UDim2.new(1, 0, 0, 23),
+            ButtonSize = UDim2.new(1, 0, 0, 25),
             Size = UDim2.new(0.23, 0, 0, 30 * 2.5),
             ZIndex = 5,
             AnchorPoint = Vector2.new(0, 0),

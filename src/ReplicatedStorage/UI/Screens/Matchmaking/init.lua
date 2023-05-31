@@ -29,7 +29,7 @@ function Matchmaking:init()
 
     self.props.previewController:Silence()
 
-    self.props.matchmakingService:GetMatch(self.props.profile.GlickoRating):andThen(function(map)
+    self.props.matchmakingService:GetMatch(self.props.profile and self.props.profile.GlickoRating):andThen(function(map)
         self:setState({
             Found = true,
             Hash = map.SongMD5Hash,
@@ -77,11 +77,11 @@ function Matchmaking:render()
 
     }, {
         Ranking = e(Ranking, {
-            Rating = self.props.profile.GlickoRating,
+            Rating = if self.props.profile then self.props.profile.GlickoRating else 1500,
 			Position = UDim2.fromScale(0.5, 0.1),
 			Size = UDim2.fromScale(0.5, 0.2),
 			AnchorPoint = Vector2.new(0.5, 0),
-            MatchesPlayed = self.props.profile.RankedMatchesPlayed
+            MatchesPlayed = if self.props.profile then self.props.profile.RankedMatchesPlayed else 0
         }),
         Message = if not found then e(RoundedTextLabel, {
             Position = UDim2.fromScale(0.54, 0.5),

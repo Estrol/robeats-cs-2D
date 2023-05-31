@@ -1,7 +1,11 @@
+local LocalizationService = game:GetService("LocalizationService")
+
 local Knit = require(game:GetService("ReplicatedStorage").Packages.Knit)
 local Llama = require(game.ReplicatedStorage.Packages.Llama)
 
 local SongDatabase = require(game.ReplicatedStorage.RobeatsGameCore.SongDatabase)
+
+local DEFAULT_MMR = 1500
 
 local MatchmakingService = Knit.CreateService {
     Name = "MatchmakingService";
@@ -56,12 +60,19 @@ function MatchmakingService:HandleMatchResult(player, result)
         local match = matches[player]
 
         if match then
+            local country
+
+            pcall(function()
+                country = LocalizationService:GetCountryRegionForPlayerAsync(player)
+            end)
+
             local result = Raxios.post(url "/matchmaking/result", {
                 query = {
                     userid = player.UserId,
                     result = result,
                     hash = match.SongMD5Hash,
                     rate = match.Rate,
+                    countrycode = country,
                     auth = AuthService.APIKey
                 }
             }):json()
@@ -76,6 +87,8 @@ function MatchmakingService:HandleMatchResult(player, result)
 end
 
 function MatchmakingService.Client:GetMatch(player, mmr)
+    mmr = if mmr then mmr else DEFAULT_MMR
+
     if RateLimitService:CanProcessRequestWithRateLimit("GetMatch", player, 3) then
         local matches = Raxios.get(url "/maps/difficulty", {
             query = { closest = mmr },

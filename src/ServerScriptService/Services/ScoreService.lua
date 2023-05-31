@@ -50,7 +50,7 @@ function ScoreService:KnitInit()
     Raxios = require(game.ReplicatedStorage.Packages.Raxios)
 end
 
-function ScoreService:PopulateUserProfile(player, override, profileOverride)
+function ScoreService:PopulateUserProfile(player, override)
     local state = StateService.Store:getState()
 
     if state.profiles[tostring(player.UserId)] and not override then
@@ -201,6 +201,12 @@ end
 
 function ScoreService.Client:SubmitScore(player, data)
     if RateLimitService:CanProcessRequestWithRateLimit(player, "SubmitScore", 1) then
+        local country
+
+        pcall(function()
+            country = LocalizationService:GetCountryRegionForPlayerAsync(player)
+        end)
+        
         local response = Raxios.post(url "/scores", {
             query = {
                 userid = player.UserId,
@@ -222,7 +228,8 @@ function ScoreService.Client:SubmitScore(player, data)
                 Rate = data.Rate,
                 MaxChain = data.MaxChain,
                 SongMD5Hash = data.SongMD5Hash,
-                Mods = data.Mods
+                Mods = data.Mods,
+                CountryRegion = country
             }
         }):json()
 
