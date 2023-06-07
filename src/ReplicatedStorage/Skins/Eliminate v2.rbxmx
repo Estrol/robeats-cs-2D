@@ -2,19 +2,19 @@
 	<Meta name="ExplicitAutoJoints">true</Meta>
 	<External>null</External>
 	<External>nil</External>
-	<Item class="Folder" referent="RBX5DD83AAB53F74E4E8ADA72374EFD7061">
+	<Item class="Folder" referent="RBX41259EECCCD746C78A30F68D92ECEB57">
 		<Properties>
 			<BinaryString name="AttributesSerialize"></BinaryString>
-			<string name="Name">Eliminate&apos;s V2 Skin (dont remove im figuring out how to add to the git)</string>
+			<string name="Name">Eliminate&apos;s V2 Skin</string>
 			<int64 name="SourceAssetId">-1</int64>
 			<BinaryString name="Tags"></BinaryString>
 		</Properties>
-		<Item class="ModuleScript" referent="RBX69601148F6454C6D84B42D5EDCABF9E7">
+		<Item class="ModuleScript" referent="RBXD6CE3D530B984964BEACF7A6643A05C0">
 			<Properties>
 				<BinaryString name="AttributesSerialize"></BinaryString>
 				<Content name="LinkedSource"><null></null></Content>
 				<string name="Name">SkinInfo</string>
-				<string name="ScriptGuid">{D3BC7B69-A5D1-4037-BB5F-6BE7AF28BFDD}</string>
+				<string name="ScriptGuid">{CF95CF60-9EC6-4E75-AE08-53230F5F9A0A}</string>
 				<ProtectedString name="Source"><![CDATA[return {
 	Name = "Eliminate's Skin",
 	Author = "Eliminate & pl0xx // Joshstar",
@@ -27,7 +27,7 @@
 				<BinaryString name="Tags"></BinaryString>
 			</Properties>
 		</Item>
-		<Item class="Color3Value" referent="RBX9C9ADEEDC2DF40428EC0345E0D39D268">
+		<Item class="Color3Value" referent="RBX0AF2B0F3B851480D8F67E0AC8F4B7EE4">
 			<Properties>
 				<BinaryString name="AttributesSerialize"></BinaryString>
 				<string name="Name">ButtonColor</string>
@@ -40,14 +40,14 @@
 				</Color3>
 			</Properties>
 		</Item>
-		<Item class="Folder" referent="RBX2DEC0531AD114872A5CE4A319BF4A729">
+		<Item class="Folder" referent="RBXB5DF8E98344343849B6EAAF69533D46B">
 			<Properties>
 				<BinaryString name="AttributesSerialize"></BinaryString>
 				<string name="Name">HeldNoteProto</string>
 				<int64 name="SourceAssetId">-1</int64>
 				<BinaryString name="Tags"></BinaryString>
 			</Properties>
-			<Item class="Frame" referent="RBX00871920E6534DB087578046F5B1F217">
+			<Item class="Frame" referent="RBX77DA8D150AD749C293FE0663DA14D433">
 				<Properties>
 					<bool name="Active">false</bool>
 					<Vector2 name="AnchorPoint">
@@ -107,14 +107,14 @@
 					<bool name="Visible">true</bool>
 					<int name="ZIndex">7</int>
 				</Properties>
-				<Item class="LocalScript" referent="RBX033A143113D045708D09BC5138D195DA">
+				<Item class="LocalScript" referent="RBX0B76C3A768354008AB21E23B27535625">
 					<Properties>
 						<BinaryString name="AttributesSerialize"></BinaryString>
 						<bool name="Disabled">false</bool>
 						<Content name="LinkedSource"><null></null></Content>
 						<string name="Name">DirectionChangerLN</string>
 						<token name="RunContext">0</token>
-						<string name="ScriptGuid">{BA5E5F8D-888D-4B80-970E-08B33AD5FB24}</string>
+						<string name="ScriptGuid">{BA33191F-1882-4892-B54A-1ECCEC1F8E79}</string>
 						<ProtectedString name="Source"><![CDATA[--LONG NOTE PROTO VERSION!
 
 local imgkeys =
@@ -136,7 +136,7 @@ img.Image = imgkeys[index]
 						<BinaryString name="Tags"></BinaryString>
 					</Properties>
 				</Item>
-				<Item class="UIAspectRatioConstraint" referent="RBXC1722BF6F70C4C9F978722FDD9B9236D">
+				<Item class="UIAspectRatioConstraint" referent="RBXC72258BBC4A64E03BEBE3A7859F9F6F4">
 					<Properties>
 						<float name="AspectRatio">1</float>
 						<token name="AspectType">1</token>
@@ -147,7 +147,7 @@ img.Image = imgkeys[index]
 						<BinaryString name="Tags"></BinaryString>
 					</Properties>
 				</Item>
-				<Item class="ImageLabel" referent="RBX231F03BF6924451DB8E95A73C5223CB1">
+				<Item class="ImageLabel" referent="RBXF4C0F76F68F24F20A732A87D0A6BD25E">
 					<Properties>
 						<bool name="Active">false</bool>
 						<Vector2 name="AnchorPoint">
@@ -242,7 +242,7 @@ img.Image = imgkeys[index]
 					</Properties>
 				</Item>
 			</Item>
-			<Item class="Frame" referent="RBXA1C88F52B7824064ADFCCDBEAC441A8B">
+			<Item class="Frame" referent="RBXBCD6E4961C5B4F1A8E40305DB0C4C405">
 				<Properties>
 					<bool name="Active">false</bool>
 					<Vector2 name="AnchorPoint">
@@ -302,7 +302,7 @@ img.Image = imgkeys[index]
 					<bool name="Visible">true</bool>
 					<int name="ZIndex">7</int>
 				</Properties>
-				<Item class="ImageLabel" referent="RBXA80FC02CE77B4FE18D45B9E2B763B2C0">
+				<Item class="ImageLabel" referent="RBX2999D249AABB4434A099E2B7D4FB9CFF">
 					<Properties>
 						<bool name="Active">false</bool>
 						<Vector2 name="AnchorPoint">
@@ -396,7 +396,7 @@ img.Image = imgkeys[index]
 						<int name="ZIndex">7</int>
 					</Properties>
 				</Item>
-				<Item class="UIAspectRatioConstraint" referent="RBX1DA10B518D574BD7B6A7923F83576855">
+				<Item class="UIAspectRatioConstraint" referent="RBX3264A7D2A85140228F22B491F554D2A0">
 					<Properties>
 						<float name="AspectRatio">1</float>
 						<token name="AspectType">1</token>
@@ -408,7 +408,7 @@ img.Image = imgkeys[index]
 					</Properties>
 				</Item>
 			</Item>
-			<Item class="Frame" referent="RBXFC8963A542844199A7007349F1F87254">
+			<Item class="Frame" referent="RBX8F8CB6F98C9642BA8854303458ABCACF">
 				<Properties>
 					<bool name="Active">false</bool>
 					<Vector2 name="AnchorPoint">
@@ -470,7 +470,7 @@ img.Image = imgkeys[index]
 				</Properties>
 			</Item>
 		</Item>
-		<Item class="ImageLabel" referent="RBXB417F1DBA180455BA406123164A0D917">
+		<Item class="ImageLabel" referent="RBX5F93805F62BD4B80AFC09BDC6805FFDE">
 			<Properties>
 				<bool name="Active">false</bool>
 				<Vector2 name="AnchorPoint">
@@ -563,7 +563,7 @@ img.Image = imgkeys[index]
 				<bool name="Visible">true</bool>
 				<int name="ZIndex">12</int>
 			</Properties>
-			<Item class="UIAspectRatioConstraint" referent="RBXC91517BF297744BD85CB1604DCC19B6C">
+			<Item class="UIAspectRatioConstraint" referent="RBX5CC5EA08860643D59FC11710EDDE11DB">
 				<Properties>
 					<float name="AspectRatio">1</float>
 					<token name="AspectType">1</token>
@@ -575,7 +575,7 @@ img.Image = imgkeys[index]
 				</Properties>
 			</Item>
 		</Item>
-		<Item class="Frame" referent="RBX40F80BED9B734EF6AE8EC3BFDD601011">
+		<Item class="Frame" referent="RBXF6C57942B0534B5C8036F6D2CB19F87D">
 			<Properties>
 				<bool name="Active">false</bool>
 				<Vector2 name="AnchorPoint">
@@ -635,7 +635,7 @@ img.Image = imgkeys[index]
 				<bool name="Visible">true</bool>
 				<int name="ZIndex">2</int>
 			</Properties>
-			<Item class="Folder" referent="RBXDE361CFB83F242FE96792A51BB975057">
+			<Item class="Folder" referent="RBXF674EC77004E4ADDA52A8D526DFF88E3">
 				<Properties>
 					<BinaryString name="AttributesSerialize"></BinaryString>
 					<string name="Name">ResultPopups</string>
@@ -643,7 +643,7 @@ img.Image = imgkeys[index]
 					<BinaryString name="Tags"></BinaryString>
 				</Properties>
 			</Item>
-			<Item class="Frame" referent="RBXB85A19A7796E4EEE85B7640422B579DC">
+			<Item class="Frame" referent="RBX6DF192A234504675B03DB6415F44F425">
 				<Properties>
 					<bool name="Active">false</bool>
 					<Vector2 name="AnchorPoint">
@@ -703,7 +703,7 @@ img.Image = imgkeys[index]
 					<bool name="Visible">true</bool>
 					<int name="ZIndex">1</int>
 				</Properties>
-				<Item class="ImageLabel" referent="RBX8A9FA01553C94A26ADA9953109283C0A">
+				<Item class="ImageLabel" referent="RBX83208A4780AD48CD8C0CE777FE9B87FB">
 					<Properties>
 						<bool name="Active">false</bool>
 						<Vector2 name="AnchorPoint">
@@ -797,7 +797,7 @@ img.Image = imgkeys[index]
 						<int name="ZIndex">5</int>
 					</Properties>
 				</Item>
-				<Item class="Frame" referent="RBX97C0BD710EF9490784249964BC262F7E">
+				<Item class="Frame" referent="RBXB6498A815AD04342A567964FFBC48161">
 					<Properties>
 						<bool name="Active">false</bool>
 						<Vector2 name="AnchorPoint">
@@ -858,7 +858,7 @@ img.Image = imgkeys[index]
 						<int name="ZIndex">1</int>
 					</Properties>
 				</Item>
-				<Item class="Frame" referent="RBX7D2F7CD9E9BE4890B0A3D29D76031676">
+				<Item class="Frame" referent="RBX2B015FE33AC84FFC803B24B149673B20">
 					<Properties>
 						<bool name="Active">false</bool>
 						<Vector2 name="AnchorPoint">
@@ -919,7 +919,7 @@ img.Image = imgkeys[index]
 						<int name="ZIndex">1</int>
 					</Properties>
 				</Item>
-				<Item class="Frame" referent="RBX1CEC480B60264427B920D45EED57A75E">
+				<Item class="Frame" referent="RBX8B07B80391EA4534B3254D5D1AC2D589">
 					<Properties>
 						<bool name="Active">false</bool>
 						<Vector2 name="AnchorPoint">
@@ -980,7 +980,7 @@ img.Image = imgkeys[index]
 						<int name="ZIndex">1</int>
 					</Properties>
 				</Item>
-				<Item class="Frame" referent="RBX6F62245DC37A4F2E87B15BD69229CA6B">
+				<Item class="Frame" referent="RBXAAFED1D3AD6D481D96790D05C2F14C7C">
 					<Properties>
 						<bool name="Active">false</bool>
 						<Vector2 name="AnchorPoint">
@@ -1042,7 +1042,7 @@ img.Image = imgkeys[index]
 					</Properties>
 				</Item>
 			</Item>
-			<Item class="Frame" referent="RBXE7CD35BF75B04400B5AD3EB2CD54754B">
+			<Item class="Frame" referent="RBX954804957689431CB1A3D293C3319935">
 				<Properties>
 					<bool name="Active">false</bool>
 					<Vector2 name="AnchorPoint">
@@ -1102,7 +1102,7 @@ img.Image = imgkeys[index]
 					<bool name="Visible">true</bool>
 					<int name="ZIndex">0</int>
 				</Properties>
-				<Item class="Frame" referent="RBX06EB00D5C88A44679A593CAAA9B14676">
+				<Item class="Frame" referent="RBXAFD4A5E441BE4166BF77AA53B2FAF354">
 					<Properties>
 						<bool name="Active">false</bool>
 						<Vector2 name="AnchorPoint">
@@ -1162,7 +1162,7 @@ img.Image = imgkeys[index]
 						<bool name="Visible">true</bool>
 						<int name="ZIndex">2</int>
 					</Properties>
-					<Item class="ImageLabel" referent="RBX53DE537905324A679640EA8DE85B2A6A">
+					<Item class="ImageLabel" referent="RBXE7A33392D98F4CDFBDE0B5708B86410B">
 						<Properties>
 							<bool name="Active">false</bool>
 							<Vector2 name="AnchorPoint">
@@ -1256,7 +1256,7 @@ img.Image = imgkeys[index]
 							<int name="ZIndex">4</int>
 						</Properties>
 					</Item>
-					<Item class="ImageLabel" referent="RBX495173BB90C0413AB42030A9E9C94EB0">
+					<Item class="ImageLabel" referent="RBXB5163C3C58F64CEEBEC97075A2C7B5CA">
 						<Properties>
 							<bool name="Active">false</bool>
 							<Vector2 name="AnchorPoint">
@@ -1349,7 +1349,7 @@ img.Image = imgkeys[index]
 							<bool name="Visible">true</bool>
 							<int name="ZIndex">1</int>
 						</Properties>
-						<Item class="UIAspectRatioConstraint" referent="RBX991D9BF481F84E7786C89D915C9101F0">
+						<Item class="UIAspectRatioConstraint" referent="RBX41F9AEC49E3F4BCCB047614D035267BD">
 							<Properties>
 								<float name="AspectRatio">1</float>
 								<token name="AspectType">0</token>
@@ -1362,7 +1362,7 @@ img.Image = imgkeys[index]
 						</Item>
 					</Item>
 				</Item>
-				<Item class="Frame" referent="RBX796C455EA67D4A5A958D2D2CC0B157A7">
+				<Item class="Frame" referent="RBX510A01E1BC92497CB82C8DF56888177E">
 					<Properties>
 						<bool name="Active">false</bool>
 						<Vector2 name="AnchorPoint">
@@ -1422,7 +1422,7 @@ img.Image = imgkeys[index]
 						<bool name="Visible">true</bool>
 						<int name="ZIndex">2</int>
 					</Properties>
-					<Item class="ImageLabel" referent="RBX82C203314FEA41D293946AF62B43BA0B">
+					<Item class="ImageLabel" referent="RBXFB6DCFAE5BB44B9C8977A9D4B866B2EC">
 						<Properties>
 							<bool name="Active">false</bool>
 							<Vector2 name="AnchorPoint">
@@ -1515,7 +1515,7 @@ img.Image = imgkeys[index]
 							<bool name="Visible">true</bool>
 							<int name="ZIndex">1</int>
 						</Properties>
-						<Item class="UIAspectRatioConstraint" referent="RBXF0074DF8752147A2A9439EAC299D9F8E">
+						<Item class="UIAspectRatioConstraint" referent="RBXD2143C99090F48408B7F42B7326C7A1C">
 							<Properties>
 								<float name="AspectRatio">1</float>
 								<token name="AspectType">0</token>
@@ -1527,7 +1527,7 @@ img.Image = imgkeys[index]
 							</Properties>
 						</Item>
 					</Item>
-					<Item class="ImageLabel" referent="RBXE663538C5A194176A3C7A46B45A269B7">
+					<Item class="ImageLabel" referent="RBXB7174B9773E04749B4D41D191D880F76">
 						<Properties>
 							<bool name="Active">false</bool>
 							<Vector2 name="AnchorPoint">
@@ -1622,7 +1622,7 @@ img.Image = imgkeys[index]
 						</Properties>
 					</Item>
 				</Item>
-				<Item class="Frame" referent="RBXC65BA73689854B77A4D3DA17B3BABB89">
+				<Item class="Frame" referent="RBX1B0AC537C8F242ABAC691207F958708C">
 					<Properties>
 						<bool name="Active">false</bool>
 						<Vector2 name="AnchorPoint">
@@ -1682,7 +1682,7 @@ img.Image = imgkeys[index]
 						<bool name="Visible">true</bool>
 						<int name="ZIndex">2</int>
 					</Properties>
-					<Item class="ImageLabel" referent="RBX7E0369A3E9814FD1B386603F5ABA97B0">
+					<Item class="ImageLabel" referent="RBX6B09611BBD39465C91FC4D0F6854CE6C">
 						<Properties>
 							<bool name="Active">false</bool>
 							<Vector2 name="AnchorPoint">
@@ -1775,7 +1775,7 @@ img.Image = imgkeys[index]
 							<bool name="Visible">true</bool>
 							<int name="ZIndex">1</int>
 						</Properties>
-						<Item class="UIAspectRatioConstraint" referent="RBX57000830FADD4AEA9CA9D9CD43164559">
+						<Item class="UIAspectRatioConstraint" referent="RBX157FA9644878417285C030951F0C3AB3">
 							<Properties>
 								<float name="AspectRatio">1</float>
 								<token name="AspectType">0</token>
@@ -1787,7 +1787,7 @@ img.Image = imgkeys[index]
 							</Properties>
 						</Item>
 					</Item>
-					<Item class="ImageLabel" referent="RBXFC49B9A23C9B4903AFA9A4C68E0CFBFE">
+					<Item class="ImageLabel" referent="RBXB07E616C0F28415397CEEB9FA405DC7D">
 						<Properties>
 							<bool name="Active">false</bool>
 							<Vector2 name="AnchorPoint">
@@ -1882,7 +1882,7 @@ img.Image = imgkeys[index]
 						</Properties>
 					</Item>
 				</Item>
-				<Item class="Frame" referent="RBX813F216D54FF4E958BDE254A45DF3FA6">
+				<Item class="Frame" referent="RBX90D9DAA9D90F4B8099A1898CFF204601">
 					<Properties>
 						<bool name="Active">false</bool>
 						<Vector2 name="AnchorPoint">
@@ -1942,7 +1942,7 @@ img.Image = imgkeys[index]
 						<bool name="Visible">true</bool>
 						<int name="ZIndex">2</int>
 					</Properties>
-					<Item class="ImageLabel" referent="RBX4E6F87C782A349E38F459433412975B6">
+					<Item class="ImageLabel" referent="RBXBBBC2DA8461B4B2C9B4EC00DCD83E863">
 						<Properties>
 							<bool name="Active">false</bool>
 							<Vector2 name="AnchorPoint">
@@ -2036,7 +2036,7 @@ img.Image = imgkeys[index]
 							<int name="ZIndex">4</int>
 						</Properties>
 					</Item>
-					<Item class="ImageLabel" referent="RBX876313C3DB554893934FEF4A6225681D">
+					<Item class="ImageLabel" referent="RBX2B3725349D2F4138A40A9B92EEB7D720">
 						<Properties>
 							<bool name="Active">false</bool>
 							<Vector2 name="AnchorPoint">
@@ -2129,7 +2129,7 @@ img.Image = imgkeys[index]
 							<bool name="Visible">true</bool>
 							<int name="ZIndex">1</int>
 						</Properties>
-						<Item class="UIAspectRatioConstraint" referent="RBX47AC01E992594AE993FD9C4F4BDA90B8">
+						<Item class="UIAspectRatioConstraint" referent="RBXA86C382869EA4A4A94BF8D022842C469">
 							<Properties>
 								<float name="AspectRatio">1</float>
 								<token name="AspectType">0</token>
@@ -2144,7 +2144,7 @@ img.Image = imgkeys[index]
 				</Item>
 			</Item>
 		</Item>
-		<Item class="Frame" referent="RBX3AFAEBA81C9743F1A8C25229E6D14A51">
+		<Item class="Frame" referent="RBX24971D297F9E4481A6986725C864CC1E">
 			<Properties>
 				<bool name="Active">false</bool>
 				<Vector2 name="AnchorPoint">
@@ -2204,14 +2204,14 @@ img.Image = imgkeys[index]
 				<bool name="Visible">true</bool>
 				<int name="ZIndex">8</int>
 			</Properties>
-			<Item class="LocalScript" referent="RBXC31EDB74EA694220A1DE81ECA4F1978E">
+			<Item class="LocalScript" referent="RBXF4E18AC4C4B940DFA2DEF13A5039FACC">
 				<Properties>
 					<BinaryString name="AttributesSerialize"></BinaryString>
 					<bool name="Disabled">false</bool>
 					<Content name="LinkedSource"><null></null></Content>
 					<string name="Name">DirectionChanger</string>
 					<token name="RunContext">0</token>
-					<string name="ScriptGuid">{AF932957-BCBE-4C8F-B85A-BBDEFCB14425}</string>
+					<string name="ScriptGuid">{5B872F24-C97D-434B-B3EA-2548EF647C7B}</string>
 					<ProtectedString name="Source"><![CDATA[local imgkeys =
 {
 		"rbxassetid://10537068540",
@@ -2230,7 +2230,7 @@ img.Image = imgkeys[index]
 					<BinaryString name="Tags"></BinaryString>
 				</Properties>
 			</Item>
-			<Item class="ImageLabel" referent="RBX90C159CF9E314FA2AA62F524D2D1D40C">
+			<Item class="ImageLabel" referent="RBXC8402CF72F504E438EB76F9F9E462D2E">
 				<Properties>
 					<bool name="Active">false</bool>
 					<Vector2 name="AnchorPoint">
@@ -2324,7 +2324,7 @@ img.Image = imgkeys[index]
 					<int name="ZIndex">6</int>
 				</Properties>
 			</Item>
-			<Item class="UIAspectRatioConstraint" referent="RBXC569872E5FFE481C991B58F99E007B80">
+			<Item class="UIAspectRatioConstraint" referent="RBX7C1D779BB0F343338A1BD3CE90EA7808">
 				<Properties>
 					<float name="AspectRatio">1</float>
 					<token name="AspectType">1</token>
