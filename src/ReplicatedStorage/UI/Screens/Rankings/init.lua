@@ -34,10 +34,7 @@ function Rankings:init()
         })
     end)
 
-    self.props.setRetryCount(0)
-    
 end
-
 function Rankings:didUpdate(_, prevState)
     if prevState.selectedCountry ~= self.state.selectedCountry then
         local countryCode = Countries:get_country_code_from_name(self.state.selectedCountry)
@@ -126,13 +123,6 @@ local Injected = withInjection(Rankings, {
 
 return RoactRodux.connect(function(state)
     return {
-        permissions = state.permissions,
-        retryCount = state.options.transient.RetryCount,
-    }
-end, function(dispatch)
-    return {
-        setRetryCount = function(value)
-            dispatch({ type = "setTransientOption", option = "RetryCount", value = value })
-        end
+        permissions = state.permissions
     }
 end)(Injected)

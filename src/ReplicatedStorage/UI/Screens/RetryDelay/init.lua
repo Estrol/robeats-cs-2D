@@ -18,7 +18,6 @@ local RetryDelay = Roact.Component:extend("RetryDelayUI")
 
 
 function RetryDelay:didMount()
-    print("Mounted")
     task.delay(.75, function()
         self.props.history:push("/play")
     end)
@@ -43,7 +42,7 @@ function RetryDelay:render()
             Value = self.props.RetryCount,
             Size = UDim2.new(0.1, 0, 0, 36),
             Position = UDim2.new(.1, 0, .1, 0),
-            TextColor3 = Color3.fromRGB(255, 255, 255)
+            TextColor3 = Color3.fromRGB(255, 255, 255),
         })
 
     })

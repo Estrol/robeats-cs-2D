@@ -555,6 +555,7 @@ function Gameplay:onGameplayEnd()
         resultsRecords.OldRating = oldRating
 
         if not self.retry then
+            self.props.setRetryCount(0)
             self.props.history:push("/results", resultsRecords)
         else
             self.props.history:push("/retrydelay")

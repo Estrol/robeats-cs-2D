@@ -97,11 +97,23 @@ function Options:getSettingElements()
         elements.QuickRetryKeybind = e(KeybindValue, {
             Values = {self.props.options.QuickRetryKeybind},
             Name = "Quick Retry Key",
+            Tooltip = "Press ESC to disable",
             OnChanged = function(_, value)
                 local key = (value ~= (Enum.KeyCode.Escape or Enum.KeyCode.Unknown) and value) or (Enum.KeyCode.Unknown)
                 self.props.setOption("QuickRetryKeybind", key)
             end,
             LayoutOrder = 9,
+        });
+
+        elements.ToggleLeaderboardKeybind = e(KeybindValue, {
+            Values = {self.props.options.ToggleLeaderboardKeybind},
+            Name = "Toggle Leaderboard Key",
+            Tooltip = "Press ESC to disable",
+            OnChanged = function(_, value)
+                local key = (value ~= (Enum.KeyCode.Escape or Enum.KeyCode.Unknown) and value) or (Enum.KeyCode.Unknown)
+                self.props.setOption("ToggleLeaderboardKeybind", key)
+            end,
+            LayoutOrder = 10
         })
 
         --Notespeed
@@ -216,7 +228,7 @@ function Options:getSettingElements()
                 return string.format("%0d%%", value)
             end,
             Name = "Lane Cover",
-            incrementValue = 2,
+            IncrementValue = 2,
             MinValue = 0,
             MaxValue = 100,
             LayoutOrder = 3
@@ -253,7 +265,7 @@ function Options:getSettingElements()
     :case(3, function()
         elements.BaseTransparency = e(IntValue, {
             Name = "Base Transparency",
-            incrementValue = 0.1;
+            IncrementValue = 0.1;
             Value = self.props.options.BaseTransparency,
             OnChanged = function(value)
                 self.props.setOption("BaseTransparency", value)
@@ -268,7 +280,7 @@ function Options:getSettingElements()
 
         elements.ReceptorTransparency = e(IntValue, {
             Name = "Receptor Transparency",
-            incrementValue = 0.1,
+            IncrementValue = 0.1,
             Value = self.props.options.ReceptorTransparency,
             OnChanged = function(value)
                 self.props.setOption("ReceptorTransparency", value)
@@ -283,7 +295,7 @@ function Options:getSettingElements()
 
         elements.ReceptorOuterTransparency = e(IntValue, {
             Name = "3D Receptor Outer Transparency",
-            incrementValue = 0.1,
+            IncrementValue = 0.1,
             Value = self.props.options.ReceptorOuterTransparency,
             OnChanged = function(value)
                 self.props.setOption("ReceptorOuterTransparency", value)
