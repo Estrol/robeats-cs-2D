@@ -157,6 +157,7 @@ function Results:render()
 			hits = player.hits
 		}
 	else
+		
 		scoreData = {
 			score = state.Score,
 			rating = state.Rating.Overall,

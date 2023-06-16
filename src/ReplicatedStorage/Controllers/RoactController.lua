@@ -25,6 +25,7 @@ local Multiplayer = require(Screens.Multiplayer)
 local Room = require(Screens.Room)
 local Spectating = require(Screens.Spectating)
 local Matchmaking = require(Screens.Matchmaking)
+local RetryDelay = require(Screens.RetryDelay)
 
 local TopBar = require(game.ReplicatedStorage.UI.Components.TopBar)
 
@@ -103,6 +104,11 @@ function RoactController:GetRoutes()
             exact = true,
             component = Matchmaking
         }),
+        Retry = Roact.createElement(RoactRouter.Route, {
+            path = "/retrydelay",
+            exact = true,
+            component = RetryDelay
+        })
     }
 end
 

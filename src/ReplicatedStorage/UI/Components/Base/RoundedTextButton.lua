@@ -25,6 +25,7 @@ RoundedTextButton.defaultProps = {
     OnMouseMoved = noop;
     Frequency = 13;
     dampingRatio = 2.5;
+    RichText = false;
     ZIndex = 1,
     TooltipOffset = UDim2.fromOffset(0, 0),
     TooltipTextSize = 11
@@ -53,6 +54,7 @@ function RoundedTextButton:render()
         TextScaled = self.props.TextScaled;
         TextXAlignment = self.props.TextXAlignment;
         TextYAlignment = self.props.TextYAlignment;
+        RichText = self.props.RichText;
         ZIndex = self.props.ZIndex;
         AutoButtonColor = false;
         LayoutOrder = self.props.LayoutOrder;

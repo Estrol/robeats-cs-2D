@@ -120,10 +120,10 @@ function MainMenuUI:render()
                 Position = UDim2.fromScale(0, 0),
                 Size = UDim2.fromScale(1 / 3, 1),
                 HoldSize = UDim2.fromScale(1 / 3, 1),
-                LayoutOrder = 1,
-                Text = "⭐\n\nCasual",
+                LayoutOrder = 2,
                 TextColor3 = Color3.fromRGB(216, 216, 216),
                 TextScaled = true,
+                Text = "⭐\n\nCasual",
                 OnClick = function()
                     self.props.history:push("/select")
                 end
@@ -136,7 +136,7 @@ function MainMenuUI:render()
                 Position = UDim2.fromScale(1 / 3, 0),
                 Size = UDim2.fromScale(1 / 3, 1),
                 HoldSize = UDim2.fromScale(1 / 3, 1),
-                LayoutOrder = 2,
+                LayoutOrder = 3,
                 Text = "🏆\n\nCompetitive",
                 TextColor3 = Color3.fromRGB(216, 216, 216),
                 TextScaled = true,
@@ -152,7 +152,7 @@ function MainMenuUI:render()
                 Position = UDim2.fromScale(1 / 3, 0),
                 Size = UDim2.fromScale(1 / 3, 1),
                 HoldSize = UDim2.fromScale(1 / 3, 1),
-                LayoutOrder = 2,
+                LayoutOrder = 1,
                 Text = "👥\n\nMultiplayer",
                 TextColor3 = Color3.fromRGB(216, 216, 216),
                 TextScaled = true,

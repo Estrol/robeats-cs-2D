@@ -77,8 +77,10 @@ function Gameplay:init()
 
     self.kps, self.setKps = Roact.createBinding(0)
     
+    self.resetDuration, self.setResetDuration = Roact.createBinding(0)
     -- Set up hit deviance parent reference
-    
+
+
     self.hitDevianceRef = Roact.createRef()
     
     if not self.props.options.Use2DLane then
@@ -97,12 +99,7 @@ function Gameplay:init()
     workspace.CurrentCamera.FieldOfView = self.props.options.FOV
     Lighting.TimeOfDay = self.props.options.TimeOfDay
     
-    -- Turn PlayerList & Chat off
-    if not self.props.location.state.Spectate then
-        game.StarterGui:SetCoreGuiEnabled("PlayerList", not self.props.options.HidePlayerList)
-        game.StarterGui:SetCoreGuiEnabled("Chat", not self.props.options.HideChat)
-    end
-
+    
     EnvironmentSetup:set_gui_inset(true);
     
     -- 2D Properties
@@ -111,6 +108,15 @@ function Gameplay:init()
     -- Create the game instance
     
     local _game = RobeatsGame:new(EnvironmentSetup:get_game_environment_center_position(), self.props.options)
+    
+    -- Turn PlayerList & Chat off
+    if not self.props.location.state.Spectate then
+        game.StarterGui:SetCoreGuiEnabled("PlayerList", not self.props.options.HidePlayerList)
+        game.StarterGui:SetCoreGuiEnabled("Chat", not self.props.options.HideChat)
+        game.StarterGui:SetCoreGuiEnabled("Backpack", false)
+
+    end
+    
     _game._input:set_keybinds({
         self.props.options.Keybind1,
         self.props.options.Keybind2,
@@ -353,6 +359,8 @@ function Gameplay:init()
         end
     end)
 
+
+
     -- Expose the game instance to the rest of the component
 
     self._game = _game
@@ -372,6 +380,32 @@ function Gameplay:startGame(earliestTime)
     end
     
     self._game:start_game(earliestTime)
+
+    -- @RetryFunctionality
+    -- MainHandler for Retrying the map.
+    self.trove:Add(game:GetService("RunService").RenderStepped:Connect(function()
+        if ( self.retryData and self.retryData.resetKeyHeld ) then
+
+            self.setResetDuration( ( tick() - self.retryData.startTick ) / self.props.options.QuickRetrySpeed )
+            if ( tick() - self.retryData.startTick >= self.props.options.QuickRetrySpeed ) then
+                warn("Player ForceQuited through quick-reset. A cleanup process will now begin")
+
+                self.forcedQuit = true -- Status setup
+                self.retry = true
+
+                self._game:set_mode(RobeatsGame.Mode.GameEnded)
+            end
+        end
+    end))
+
+    self.trove:Add(SPUtil:bind_to_key(self.props.options.QuickRetryKeybind, function()
+        self.retryData = {resetKeyHeld = true, startTick = tick()}
+    end))
+
+    self.trove:Add(SPUtil:bind_to_key_release(self.props.options.QuickRetryKeybind, function()
+        self.retryData = {resetKeyHeld = false}
+    end))
+
 end
 
 function Gameplay:didMount()
@@ -520,7 +554,11 @@ function Gameplay:onGameplayEnd()
         resultsRecords.Ranked = self.props.location.state.Ranked
         resultsRecords.OldRating = oldRating
 
-        self.props.history:push("/results", resultsRecords)
+        if not self.retry then
+            self.props.history:push("/results", resultsRecords)
+        else
+            self.props.history:push("/retrydelay")
+        end
     end
 end
 
@@ -597,6 +635,7 @@ function Gameplay:render()
         end
     end
 
+
     local statCardPosition = UDim2.fromScale(0.7, 0.2)
 
     local state = self.props.location.state
@@ -631,6 +670,24 @@ function Gameplay:render()
             BackgroundColor3 = self.props.options.ProgressBarColor,
             BackgroundTransparency = 0
         })
+    end
+
+    local fastResetProgress
+    if self.retryData and self.retryData.resetKeyHeld then
+
+        fastResetProgress = e(RoundedFrame, {
+            Size = UDim2.new(.15, 0, .05, 0),
+            Position = UDim2.new(0.7, 0, 0.1, 0),
+            BackgroundColor3 = Color3.fromRGB(32, 31, 31),
+        }, {
+            internalRatio = e(RoundedFrame, {
+                Size = self.resetDuration:map(function(value)
+                    return UDim2.new( ( tick() - self.retryData.startTick ) / self.props.options.QuickRetrySpeed, 0, 1, 0  )
+                end),
+                BackgroundColor3 = Color3.fromRGB(255, 255, 255),
+            })
+        })
+
     end
 
     local spectators = {}
@@ -767,7 +824,9 @@ function Gameplay:render()
             TextColor3 = Color3.new(1, 1, 1),
             TextXAlignment = Enum.TextXAlignment.Right,
             BackgroundTransparency = 1,
-        })
+        }),
+        RetryOverlay = fastResetProgress,
+
     })
 end
 
@@ -791,7 +850,13 @@ function Gameplay:willUnmount()
         self.props.spectatingService.Unspectate:Fire()
     end
 
+    if self.retry then
+        self.props.setRetryCount(self.props.options.RetryCount + 1)
+    end
+
     self.trove:Destroy()
+
+    -- self.props.history:push("/play")
 end
 
 local Injected = withInjection(Gameplay, {
@@ -809,5 +874,11 @@ return RoactRodux.connect(function(state, props)
         room = if roomId then state.multiplayer.rooms[roomId] else nil,
         roomId = roomId,
         profile = state.profiles[tostring(game.Players.LocalPlayer.UserId)],
+    }
+end,function(dispatch)
+    return {
+        setRetryCount = function(value)
+            dispatch({ type = "setTransientOption", option = "RetryCount", value = value })
+        end
     }
 end)(Injected)

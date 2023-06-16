@@ -14,6 +14,10 @@ local defaultState = {
         Keybind3 = Enum.KeyCode.O,
         Keybind4 = Enum.KeyCode.P,
 
+        ToggleLeaderboardKeybind = Enum.KeyCode.Tab,
+        QuickRetryKeybind = Enum.KeyCode.Backquote,
+        QuickRetrySpeed = 2,
+
         AudioOffset = 0;
         NoteSpeed = 15;
         FOV = 70;
@@ -24,6 +28,7 @@ local defaultState = {
         PlayfieldHitPos = 10;
         Use2DLane = false;
         Skin2D = Skins:key_list():get(1);
+        Lane2DAspectRatioConstraintMode = -1; -- -1 = Automatic. 
         Upscroll = false;
         ComboPosition = "Middle";
         NoteColorAffects2D = false;
@@ -31,6 +36,7 @@ local defaultState = {
         NoteColor = Color3.fromRGB(255, 255, 255);
         ShowProgressBar = true;
         ProgressBarColor = Color3.new(1, 1, 1);
+
 
         --Extra settings.
         TimeOfDay = 24;
@@ -66,6 +72,8 @@ local defaultState = {
         Mods = {},
         Search = "",
         SortByDifficulty = true,
+        ShowRetryCountAfterFastReset = true,
+        RetryCount = 0,
     }
 }
 

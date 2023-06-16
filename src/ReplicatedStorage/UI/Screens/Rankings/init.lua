@@ -33,6 +33,9 @@ function Rankings:init()
             players = players
         })
     end)
+
+    self.props.setRetryCount(0)
+    
 end
 
 function Rankings:didUpdate(_, prevState)
@@ -123,6 +126,13 @@ local Injected = withInjection(Rankings, {
 
 return RoactRodux.connect(function(state)
     return {
-        permissions = state.permissions
+        permissions = state.permissions,
+        retryCount = state.options.transient.RetryCount,
+    }
+end, function(dispatch)
+    return {
+        setRetryCount = function(value)
+            dispatch({ type = "setTransientOption", option = "RetryCount", value = value })
+        end
     }
 end)(Injected)
