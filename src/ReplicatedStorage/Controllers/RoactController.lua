@@ -243,25 +243,6 @@ function RoactController:InitializeCursor()
     self.OverlayCursor.ZIndex = 2
     self.OverlayCursor:SetAttribute("Visible", true)
 
-    local cursorFadeTween: TweenBase
-    
-    self.OverlayCursor:GetAttributeChangedSignal("Visible"):Connect(function()
-        local state = self.OverlayCursor:GetAttribute("Visible")
-        print("Cursor should changed", state)
-        if not state then
-            for _, trail in self.TrailEmitters:GetChildren() do
-                trail:Destroy()
-            end
-        end
-        
-        if cursorFadeTween then
-            cursorFadeTween:Cancel()
-        end
-
-        cursorFadeTween = TweenService:Create(self.OverlayCursor, TweenInfo.new(0.4), {ImageTransparency = state == true and 1 or 0})
-        cursorFadeTween:Play()
-    end)
-
     UserInputService.MouseIconEnabled = false
 
     self.TrailEmitters = Instance.new("Folder"); self.TrailEmitters.Parent = self.MouseOverlay
@@ -283,7 +264,13 @@ function RoactController:InitializeCursor()
 
     self.TimeSinceLastEmitter = tick()
 
+    self.GenerateTrail = true
+
     game:GetService("RunService").Heartbeat:Connect(function()
+        if not self.GenerateTrail then
+            return
+        end
+
         self.OverlayCursor.ImageColor3 = cursorImageColor
         
         if tick() - self.TimeSinceLastEmitter > .02 then
@@ -312,9 +299,30 @@ function RoactController:InitializeCursor()
     end)
 end
 
-function RoactController:ToggleCursor(state: boolean)
-    if state == nil then state = true end -- default to enabled
-    self.OverlayCursor:SetAttribute("Visible", state)
+local prevValue
+
+function RoactController:ToggleCursor(value: boolean)
+    if prevValue == value then
+        return
+    end
+
+    if value == nil then value = true end -- default to enabled
+
+    if not value then
+        for _, trail in self.TrailEmitters:GetChildren() do
+            trail:Destroy()
+        end
+    end
+
+    local cursorFadeTween = TweenService:Create(self.OverlayCursor, TweenInfo.new(0.4), {
+        ImageTransparency = if value then 0 else 1
+    })
+
+    cursorFadeTween:Play()
+
+    prevValue = value
+    
+    self.GenerateTrail = value
 end
 
 return RoactController
