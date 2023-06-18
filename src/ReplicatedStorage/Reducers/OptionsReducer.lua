@@ -36,7 +36,7 @@ local defaultState = {
         NoteColor = Color3.fromRGB(255, 255, 255);
         ShowProgressBar = true;
         ProgressBarColor = Color3.new(1, 1, 1);
-
+        CursorImageColor = Color3.fromRGB(194, 244, 106);
 
         --Extra settings.
         TimeOfDay = 24;

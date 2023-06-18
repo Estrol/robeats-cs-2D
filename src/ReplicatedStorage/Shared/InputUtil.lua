@@ -2,6 +2,8 @@ local SPUtil = require(game.ReplicatedStorage.Shared.SPUtil)
 local SPDict = require(game.ReplicatedStorage.Shared.SPDict)
 local SPList = require(game.ReplicatedStorage.Shared.SPList)
 local SPVector = require(game.ReplicatedStorage.Shared.SPVector)
+local Signal = require(game.ReplicatedStorage.Packages.Signal)
+
 
 local InputUtil = {}
 
@@ -228,7 +230,7 @@ function InputUtil:new()
 	end
 	
 	function self:set_mouse_visible(val)
-		userinput_service.MouseIconEnabled = val
+		
 	end
 	
 	local _keyboard_focused_mode = false

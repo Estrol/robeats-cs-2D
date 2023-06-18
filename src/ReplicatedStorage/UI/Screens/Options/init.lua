@@ -259,6 +259,15 @@ function Options:getSettingElements()
             end,
             Name = "Note Color",
             LayoutOrder = 7
+        });
+
+        elements.CursorColor = e(ColorValue, {
+            Value = self.props.options.CursorImageColor,
+            OnChanged = function(value)
+                self.props.setOption("CursorImageColor", value)
+            end,
+            Name = "Cursor Color",
+            LayoutOrder = 8,
         })
     end)
     --extras
