@@ -2,8 +2,8 @@ local SPUtil = require(game.ReplicatedStorage.Shared.SPUtil)
 local SPDict = require(game.ReplicatedStorage.Shared.SPDict)
 local SPList = require(game.ReplicatedStorage.Shared.SPList)
 local SPVector = require(game.ReplicatedStorage.Shared.SPVector)
-local Signal = require(game.ReplicatedStorage.Packages.Signal)
 
+local Knit = require(game.ReplicatedStorage.Packages.Knit)
 
 local InputUtil = {}
 
@@ -46,6 +46,8 @@ InputUtil.KEYCODE_TOUCH_TRACK4 = 10004
 function InputUtil:new()
 	local self = {}
 	
+	local RoactController = Knit.GetController("RoactController")
+
 	local userinput_service = game:GetService("UserInputService")
 	local _just_pressed_keys = SPDict:new()
 	local _down_keys = SPDict:new()
@@ -230,7 +232,7 @@ function InputUtil:new()
 	end
 	
 	function self:set_mouse_visible(val)
-		
+		RoactController:ToggleCursor(val)
 	end
 	
 	local _keyboard_focused_mode = false

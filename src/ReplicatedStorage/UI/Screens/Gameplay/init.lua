@@ -409,6 +409,10 @@ function Gameplay:startGame(earliestTime)
     end))
 
     self.trove:Add(SPUtil:bind_to_key(options.QuickRetryKeybind, function()
+        if self.props.location.state.Spectate or self.props.room then
+            return
+        end
+
         self:setState({
             retryHeld = true,
             retryStartTick = tick()

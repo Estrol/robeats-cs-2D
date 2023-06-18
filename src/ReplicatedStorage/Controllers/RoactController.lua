@@ -222,7 +222,7 @@ function RoactController:MountRoactNodes(store)
 end
 
 
-function RoactController:UpdateLocalCursorImage()
+function RoactController:InitializeCursor()
     local state = self.store:getState()
     local cursorImageColor = state.options.persistent.CursorImageColor
     local hue, saturation, value = state.options.persistent.CursorImageColor:ToHSV()
@@ -231,9 +231,9 @@ function RoactController:UpdateLocalCursorImage()
 
     local cursorTrailColor = Color3.fromHSV(hue, saturation, value)
 
-    self.MouseOverlay = Instance.new("ScreenGui", Knit.Player.PlayerGui)
+    self.MouseOverlay = Instance.new("ScreenGui"); self.MouseOverlay.Parent = Knit.Player.PlayerGui
 
-    self.OverlayCursor = Instance.new("ImageLabel", self.MouseOverlay)
+    self.OverlayCursor = Instance.new("ImageLabel"); self.OverlayCursor.Parent = self.MouseOverlay
 
     self.OverlayCursor.Size = UDim2.new(0, 128, 0, 128)
     self.OverlayCursor.BackgroundTransparency = 1
@@ -241,10 +241,30 @@ function RoactController:UpdateLocalCursorImage()
     self.OverlayCursor.AnchorPoint = Vector2.new(0.5, 0.5)
     self.OverlayCursor.Image = "rbxassetid://13783067565"
     self.OverlayCursor.ZIndex = 2
+    self.OverlayCursor:SetAttribute("Visible", true)
+
+    local cursorFadeTween: TweenBase
+    
+    self.OverlayCursor:GetAttributeChangedSignal("Visible"):Connect(function()
+        local state = self.OverlayCursor:GetAttribute("Visible")
+        print("Cursor should changed", state)
+        if not state then
+            for _, trail in self.TrailEmitters:GetChildren() do
+                trail:Destroy()
+            end
+        end
+        
+        if cursorFadeTween then
+            cursorFadeTween:Cancel()
+        end
+
+        cursorFadeTween = TweenService:Create(self.OverlayCursor, TweenInfo.new(0.4), {ImageTransparency = state == true and 1 or 0})
+        cursorFadeTween:Play()
+    end)
 
     UserInputService.MouseIconEnabled = false
 
-    self.TrailEmitters = Instance.new("Folder", self.MouseOverlay)
+    self.TrailEmitters = Instance.new("Folder"); self.TrailEmitters.Parent = self.MouseOverlay
     self.TrailEmitters.Name = "TrailEmitterCache"
 
     self.store.changed:connect(function(newState, _)
@@ -266,7 +286,7 @@ function RoactController:UpdateLocalCursorImage()
     game:GetService("RunService").Heartbeat:Connect(function()
         self.OverlayCursor.ImageColor3 = cursorImageColor
         
-        if tick() - self.TimeSinceLastEmitter > .05 then
+        if tick() - self.TimeSinceLastEmitter > .02 then
             self.TimeSinceLastEmitter = tick()
 
             local temporaryOverlay = Instance.new("ImageLabel")
@@ -280,7 +300,7 @@ function RoactController:UpdateLocalCursorImage()
             temporaryOverlay.ImageColor3 = cursorTrailColor
             temporaryOverlay.ZIndex = 1
 
-            local lifetime = UserInputService:IsKeyDown(Enum.KeyCode.C) and 10 or .5
+            local lifetime = UserInputService:IsKeyDown(Enum.KeyCode.C) and 7 or .5
             local smoothing = TweenService:Create(temporaryOverlay, TweenInfo.new(lifetime), {ImageTransparency = 1})
 
             smoothing:Play()
@@ -290,6 +310,11 @@ function RoactController:UpdateLocalCursorImage()
             end)
         end
     end)
+end
+
+function RoactController:ToggleCursor(state: boolean)
+    if state == nil then state = true end -- default to enabled
+    self.OverlayCursor:SetAttribute("Visible", state)
 end
 
 return RoactController
