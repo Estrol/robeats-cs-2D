@@ -95,6 +95,11 @@ function AudioManager:new(_game)
 	local _pre_start_time_ms = 0
 	local _post_playing_time_ms = 0
 	local _audio_volume = 0.5
+	local _hitsounds
+
+	function self:get_hitsounds()
+		return _hitsounds
+	end
 
 	local _note_count = 0
 	function self:get_note_count() return _note_count end
@@ -119,6 +124,8 @@ function AudioManager:new(_game)
 
 		--Apply song rate
 		self:set_rate(_config.SongRate / 100)
+
+		_hitsounds = _config.Hitsounds
 
 		--Add hit objects and perform note count calculations
 		_hit_objects = SongDatabase:get_hit_objects_for_key(_song_key, _rate, _game:is_mod_active(Mods.Mirror))

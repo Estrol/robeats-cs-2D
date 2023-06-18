@@ -22,6 +22,7 @@ local defaultState = {
         NoteSpeed = 15;
         FOV = 70;
         LaneCover = 0;
+        Hitsounds = true;
 
         --interface settings
         PlayfieldWidth = 45;

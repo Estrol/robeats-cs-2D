@@ -117,7 +117,7 @@ function ScoreManager:new(_game)
 			end
 		end
 
-		if params.PlaySFX == true and (not params.GhostTap) then
+		if params.PlaySFX == true and (not params.GhostTap) and _game._audio_manager:get_hitsounds() then
 			
 			--Make sure only one sfx is played per frame
 			if _frame_has_played_sfx == false then

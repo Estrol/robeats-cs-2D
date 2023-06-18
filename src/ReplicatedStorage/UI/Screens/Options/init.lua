@@ -186,6 +186,15 @@ function Options:getSettingElements()
             Name = "Timing Preset",
             LayoutOrder = 2
         })
+
+        elements.Hitsounds = e(BoolValue, {
+            Value = self.props.options.Hitsounds,
+            OnChanged = function(value)
+                self.props.setOption("Hitsounds", value)
+            end,
+            Name = "Play Hitsounds",
+            LayoutOrder = 11
+        })
     end)
     
     --UI settings
