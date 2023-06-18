@@ -6,7 +6,8 @@ local RoundedFrame = require(game.ReplicatedStorage.UI.Components.Base.RoundedFr
 local TopBar = Roact.Component:extend("TopBar")
 
 TopBar.blacklistedRoutes = {
-    "/play"
+    "/play",
+    "/retrydelay"
 }
 
 TopBar.routeColors = {

@@ -59,8 +59,6 @@ function SongList:getSongs()
         rate = self.props.SongRate
     }
 
-    print(options)
-
     return Llama.List.sort(found, function(a, b)
         return sortFunctions[self.state.sort](a, b, options)
     end)

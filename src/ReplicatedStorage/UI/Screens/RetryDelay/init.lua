@@ -4,15 +4,9 @@ local RoactRodux = require(ReplicatedStorage.Packages.RoactRodux)
 
 local e = Roact.createElement
 
-local components = {
-    RoundedFrame = require(ReplicatedStorage.UI.Components.Base.RoundedFrame),
-    LoadingWheel = require(ReplicatedStorage.UI.Components.Base.LoadingWheel),
-    AnimatedNumberLabel = require(ReplicatedStorage.UI.Components.Base.AnimatedNumberLabel),
-    RoundedTextLabel = require(ReplicatedStorage.UI.Components.Base.RoundedTextLabel),
-
-}
-
-
+local RoundedFrame = require(ReplicatedStorage.UI.Components.Base.RoundedFrame)
+local LoadingWheel = require(ReplicatedStorage.UI.Components.Base.LoadingWheel)
+local AnimatedNumberLabel = require(ReplicatedStorage.UI.Components.Base.AnimatedNumberLabel)
 
 local RetryDelay = Roact.Component:extend("RetryDelayUI")
 
@@ -24,24 +18,27 @@ function RetryDelay:didMount()
 end
 
 function RetryDelay:render()
-    return e(components.RoundedFrame, {
+    return e(RoundedFrame, {
         Size = UDim2.new(1, 0, 1, 0),
         BackgroundColor3  = Color3.fromRGB(0, 0, 0)
     },{
-        Wheel = e(components.LoadingWheel, {
+        Wheel = e(LoadingWheel, {
             RotationSpeed = 1,
             Size = UDim2.fromScale(.1, .1),
             Position = UDim2.fromScale(.5, .5),
             AnchorPoint = Vector2.new(0.5, 0.5)
         }),
 
-        RetryCounter = e(components.AnimatedNumberLabel, {
+        RetryCounter = e(AnimatedNumberLabel, {
             FormatValue = function(value)
-                return string.format("%02d", value)
+                return string.format("Retry count: %d", value)
             end,
             Value = self.props.RetryCount,
-            Size = UDim2.new(0.1, 0, 0, 36),
-            Position = UDim2.new(.1, 0, .1, 0),
+            AnchorPoint = Vector2.new(0.5, 1),
+            Size = UDim2.fromScale(0.7, 0.06),
+            Position = UDim2.fromScale(0.5, 0.4),
+            BackgroundTransparency = 1,
+            TextScaled = true,
             TextColor3 = Color3.fromRGB(255, 255, 255),
         })
 

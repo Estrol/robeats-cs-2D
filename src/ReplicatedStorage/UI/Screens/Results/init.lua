@@ -64,8 +64,6 @@ function Results:init()
 		local replay = self.props.scoreService:GetReplay(state.UserId, state.SongMD5Hash):expect()
 
 		if replay then
-			print(replay)
-
 			self:setState({
 				replay = replay
 			})

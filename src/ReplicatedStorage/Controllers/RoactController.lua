@@ -223,30 +223,29 @@ end
 
 
 function RoactController:UpdateLocalCursorImage()
-
     local state = self.store:getState()
     local cursorImageColor = state.options.persistent.CursorImageColor
     local hue, saturation, value = state.options.persistent.CursorImageColor:ToHSV()
-    value *= .85
-    local cursorTrailColor = Color3.fromHSV(hue, saturation, value)
 
+    value *= .85
+
+    local cursorTrailColor = Color3.fromHSV(hue, saturation, value)
 
     self.MouseOverlay = Instance.new("ScreenGui", Knit.Player.PlayerGui)
 
     self.OverlayCursor = Instance.new("ImageLabel", self.MouseOverlay)
+
     self.OverlayCursor.Size = UDim2.new(0, 128, 0, 128)
     self.OverlayCursor.BackgroundTransparency = 1
     self.OverlayCursor.Position = UDim2.new(.5, 0, .5, 0)
     self.OverlayCursor.AnchorPoint = Vector2.new(0.5, 0.5)
     self.OverlayCursor.Image = "rbxassetid://13783067565"
     self.OverlayCursor.ZIndex = 2
-    UserInputService.MouseIconEnabled = false
 
-    self.MouseOverlayTrove = Trove.new()
+    UserInputService.MouseIconEnabled = false
 
     self.TrailEmitters = Instance.new("Folder", self.MouseOverlay)
     self.TrailEmitters.Name = "TrailEmitterCache"
-
 
     self.store.changed:connect(function(newState, _)
         cursorImageColor = newState.options.persistent.CursorImageColor
@@ -264,37 +263,33 @@ function RoactController:UpdateLocalCursorImage()
 
     self.TimeSinceLastEmitter = tick()
 
-    self.MouseOverlayTrove:Add(game:GetService("RunService").RenderStepped:Connect(function()
-
+    game:GetService("RunService").Heartbeat:Connect(function()
         self.OverlayCursor.ImageColor3 = cursorImageColor
-        if ( tick() - self.TimeSinceLastEmitter > .02 ) then
+        
+        if tick() - self.TimeSinceLastEmitter > .05 then
             self.TimeSinceLastEmitter = tick()
 
-            task.spawn(function()
-                
-                local temporaryOverlay = Instance.new("ImageLabel")
-                temporaryOverlay.Image = "rbxassetid://13783068813"
-                temporaryOverlay.BackgroundTransparency = 1
-                temporaryOverlay.AnchorPoint = Vector2.new(.5, .5)
-                temporaryOverlay.Size = UDim2.fromOffset(80, 80)
-                temporaryOverlay.Position = self.OverlayCursor.Position
-                temporaryOverlay.Parent = self.TrailEmitters
-                temporaryOverlay.ImageColor3 = cursorTrailColor
-                temporaryOverlay.ZIndex = 1
+            local temporaryOverlay = Instance.new("ImageLabel")
 
-                local lifetime = UserInputService:IsKeyDown(Enum.KeyCode.C) and 10 or .5
-                local smoothing = TweenService:Create(temporaryOverlay, TweenInfo.new(lifetime), {ImageTransparency = 1})
-                smoothing:Play()
-                smoothing.Completed:Once(function()
-                    smoothing:Destroy()
-                    temporaryOverlay:Destroy()
-                end)
+            temporaryOverlay.Image = "rbxassetid://13783068813"
+            temporaryOverlay.BackgroundTransparency = 1
+            temporaryOverlay.AnchorPoint = Vector2.new(.5, .5)
+            temporaryOverlay.Size = UDim2.fromOffset(80, 80)
+            temporaryOverlay.Position = self.OverlayCursor.Position
+            temporaryOverlay.Parent = self.TrailEmitters
+            temporaryOverlay.ImageColor3 = cursorTrailColor
+            temporaryOverlay.ZIndex = 1
+
+            local lifetime = UserInputService:IsKeyDown(Enum.KeyCode.C) and 10 or .5
+            local smoothing = TweenService:Create(temporaryOverlay, TweenInfo.new(lifetime), {ImageTransparency = 1})
+
+            smoothing:Play()
+
+            smoothing.Completed:Once(function()
+                temporaryOverlay:Destroy()
             end)
-
         end
-
-    end))
-
+    end)
 end
 
 return RoactController

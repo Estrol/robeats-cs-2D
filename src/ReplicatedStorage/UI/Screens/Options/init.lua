@@ -86,7 +86,7 @@ function Options:getSettingElements()
                 if ( value == 0 ) then
                     return "Instant"
                 elseif ( value > 0 ) then
-                    return string.format("%d/sec", value)
+                    return string.format("%d second" .. if value > 1 then "s" else "", value)
                 end
             end,
             MinValue = 0,
