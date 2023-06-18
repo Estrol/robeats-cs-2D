@@ -6,6 +6,8 @@ local RoactRouter = require(game.ReplicatedStorage.Packages.RoactRouter)
 local RoactRodux = require(game.ReplicatedStorage.Packages.RoactRodux)
 local Trove = require(game.ReplicatedStorage.Packages.Trove)
 
+local UserInputService = game:GetService("UserInputService")
+
 local SongDatabase = require(game.ReplicatedStorage.RobeatsGameCore.SongDatabase)
 
 local Actions = require(game.ReplicatedStorage.Actions)
@@ -41,6 +43,10 @@ function RoactController:KnitStart()
     self:MountRoactNodes(store)
 
     self.store = store
+
+    if UserInputService.TouchEnabled then
+        self:ToggleCursor(false)
+    end
 end
 
 function RoactController:GetRoutes()
@@ -266,6 +272,11 @@ function RoactController:InitializeCursor()
 
     self.GenerateTrail = true
 
+    if UserInputService.TouchEnabled then
+        self.OverlayCursor.Visible = false
+        self.GenerateTrail = false
+    end
+
     game:GetService("RunService").Heartbeat:Connect(function()
         if not self.GenerateTrail then
             return
@@ -304,6 +315,10 @@ local prevValue
 function RoactController:ToggleCursor(value: boolean)
     if prevValue == value then
         return
+    end
+
+    if UserInputService.TouchEnabled then
+        value = false
     end
 
     if value == nil then value = true end -- default to enabled
