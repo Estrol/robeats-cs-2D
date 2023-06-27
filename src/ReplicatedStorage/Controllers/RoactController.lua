@@ -265,6 +265,8 @@ function RoactController:InitializeCursor()
         if input.UserInputType == Enum.UserInputType.MouseMovement then
             local MouseLocation = UserInputService:GetMouseLocation()
             self.OverlayCursor.Position = UDim2.fromOffset(MouseLocation.X, MouseLocation.Y - 30)
+
+            self:ToggleCursor(true)
         end
     end)
 
