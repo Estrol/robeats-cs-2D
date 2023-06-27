@@ -95,7 +95,7 @@ function MatchmakingService.Client:GetMatch(player, mmr)
             auth = AuthService.APIKey
         }):json()
 
-        local match
+        -- this is the worst way to do this but who cares
 
         for _, m in matches do
             local songKey = SongDatabase:get_key_for_hash(m.SongMD5Hash)
@@ -104,13 +104,22 @@ function MatchmakingService.Client:GetMatch(player, mmr)
                 local songLength = SongDatabase:get_song_length_for_key(songKey, m.Rate / 100)
 
                 if songLength >= 60000 and songLength <= 300000 and m.Rate <= 140 then
-                    match = m
-                    break
+                    return m
                 end
             end
         end
 
-        return match
+        for _, m in matches do
+            local songKey = SongDatabase:get_key_for_hash(m.SongMD5Hash)
+
+            if songKey ~= SongDatabase:invalid_songkey() then
+                local songLength = SongDatabase:get_song_length_for_key(songKey, m.Rate / 100)
+
+                if songLength >= 60000 and songLength <= 300000 then
+                    return m
+                end
+            end
+        end
     end
 end
 
