@@ -138,7 +138,7 @@ function RankSlot:render()
                 Position = UDim2.new(1.25, 0, 0.6, 0),
                 Size = UDim2.new(8, 0, 0.35, 0),
                 Font = Enum.Font.GothamSemibold,
-                Text = string.format("Rating: <font color = \"rgb(211, 214, 2)\"><b>%0d</b></font> | Overall Accuracy: %0.2f%% | Total Maps Played: %d", self.props.Data.GlickoRating, self.props.Data.Accuracy, self.props.Data.TotalMapsPlayed),
+                Text = string.format("Rating: <font color = \"rgb(211, 214, 2)\"><b>%0d</b></font> | Overall Accuracy: %0.2f%% | Ranked Maps Played: %d", self.props.Data.GlickoRating, self.props.Data.Accuracy, self.props.Data.RankedMatchesPlayed),
                 RichText = true,
                 TextColor3 = Color3.fromRGB(80, 80, 80),
                 TextScaled = true,

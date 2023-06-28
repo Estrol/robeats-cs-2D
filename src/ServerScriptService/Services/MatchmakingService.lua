@@ -3,6 +3,8 @@ local LocalizationService = game:GetService("LocalizationService")
 local Knit = require(game:GetService("ReplicatedStorage").Packages.Knit)
 local Llama = require(game.ReplicatedStorage.Packages.Llama)
 
+local SPUtil = require(game.ReplicatedStorage.Shared.SPUtil)
+
 local SongDatabase = require(game.ReplicatedStorage.RobeatsGameCore.SongDatabase)
 
 local DEFAULT_MMR = 1500
@@ -95,31 +97,47 @@ function MatchmakingService.Client:GetMatch(player, mmr)
             auth = AuthService.APIKey
         }):json()
 
-        -- this is the worst way to do this but who cares
+        local ideal
+        local matchNumber = 0
 
-        for _, m in matches do
-            local songKey = SongDatabase:get_key_for_hash(m.SongMD5Hash)
+        for _, match in matches do
+            local songKey = SongDatabase:get_key_for_hash(match.SongMD5Hash)
 
             if songKey ~= SongDatabase:invalid_songkey() then
-                local songLength = SongDatabase:get_song_length_for_key(songKey, m.Rate / 100)
+                local songLength = SongDatabase:get_song_length_for_key(songKey, match.Rate / 100)
+                
+                local IDEAL_SONG_LENGTH = 140000
+                
+                -- cut out any songs too short or too long
+                if songLength <= 60000 or songLength >= 300000 then
+                    continue
+                end
 
-                if songLength >= 60000 and songLength <= 300000 and m.Rate <= 140 then
-                    return m
+                matchNumber += 1
+
+                local songLengthScore = IDEAL_SONG_LENGTH - math.abs(songLength - IDEAL_SONG_LENGTH)
+                local closeToBaseRateScore = 100 - math.abs(100 - match.Rate) -- out of 100
+
+                local score = (songLengthScore / IDEAL_SONG_LENGTH * 0.6) + (closeToBaseRateScore / 100 * 0.4)
+
+                if matchNumber == 1 or score > ideal.score then
+                    ideal = { match = match, score = score }
                 end
             end
         end
 
-        for _, m in matches do
-            local songKey = SongDatabase:get_key_for_hash(m.SongMD5Hash)
+        return ideal and ideal.match
+    end
+end
 
-            if songKey ~= SongDatabase:invalid_songkey() then
-                local songLength = SongDatabase:get_song_length_for_key(songKey, m.Rate / 100)
+function MatchmakingService.Client:GetMapMMR(player, hash)
+    if RateLimitService:CanProcessRequestWithRateLimit("GetMapMMR", player, 3) then
+        local mmr = Raxios.get(url "/maps", {
+            query = { hash = hash },
+            auth = AuthService.APIKey
+        }):json()
 
-                if songLength >= 60000 and songLength <= 300000 then
-                    return m
-                end
-            end
-        end
+        return mmr
     end
 end
 

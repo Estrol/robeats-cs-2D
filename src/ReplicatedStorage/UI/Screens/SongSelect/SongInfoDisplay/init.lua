@@ -182,9 +182,9 @@ function SongInfoDisplay:render()
                 AspectRatio = 22,
             }),
             DifficultyDisplay = e(GridInfoDisplay, {
-                Value = string.format("%0.2f", SongDatabase:get_difficulty_for_key(self.props.SongKey, self.props.SongRate / 100).Overall),
+                Value = SongDatabase:get_glicko_estimate_from_rating(SongDatabase:get_difficulty_for_key(self.props.SongKey, self.props.SongRate / 100).Overall),
                 FormatValue = function(value)
-                    return string.format("Difficulty: %s", value)
+                    return string.format("MMR: %d", value)
                 end,
                 LayoutOrder = 1
             }),
