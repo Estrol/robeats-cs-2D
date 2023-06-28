@@ -76,7 +76,7 @@ function Breakdown:render()
                 BackgroundColor3 = Color3.fromRGB(255, 255, 255),
                 BackgroundTransparency = 1,
                 Position = UDim2.fromScale(0.963, 0.5),
-                Size = UDim2.new(0, 49, 1, 0),
+                Size = UDim2.new(0, 80, 1, 0),
             }),
     
             Label = e("TextLabel", {
@@ -128,7 +128,7 @@ function Breakdown:render()
                 BackgroundColor3 = Color3.fromRGB(255, 255, 255),
                 BackgroundTransparency = 1,
                 Position = UDim2.fromScale(0.963, 0.5),
-                Size = UDim2.new(0, 49, 1, 0),
+                Size = UDim2.new(0, 80, 1, 0),
             }),
     
             Label1 = e("TextLabel", {
@@ -180,7 +180,7 @@ function Breakdown:render()
                 BackgroundColor3 = Color3.fromRGB(255, 255, 255),
                 BackgroundTransparency = 1,
                 Position = UDim2.fromScale(0.963, 0.5),
-                Size = UDim2.fromScale(0.248, 1),
+                Size = UDim2.new(0, 80, 1, 0),
             }),
     
             Label2 = e("TextLabel", {
@@ -231,7 +231,7 @@ function Breakdown:render()
                 BackgroundColor3 = Color3.fromRGB(255, 255, 255),
                 BackgroundTransparency = 1,
                 Position = UDim2.fromScale(0.963, 0.547),
-                Size = UDim2.fromScale(0.248, 1),
+                Size = UDim2.new(0, 80, 1, 0),
             }),
     
             Label3 = e("TextLabel", {
@@ -283,7 +283,7 @@ function Breakdown:render()
                 BackgroundColor3 = Color3.fromRGB(255, 255, 255),
                 BackgroundTransparency = 1,
                 Position = UDim2.fromScale(0.963, 0.5),
-                Size = UDim2.new(0, 49, 1, 0),
+                Size = UDim2.new(0, 80, 1, 0),
             }),
     
             Label4 = e("TextLabel", {
@@ -335,7 +335,7 @@ function Breakdown:render()
                 BackgroundColor3 = Color3.fromRGB(255, 255, 255),
                 BackgroundTransparency = 1,
                 Position = UDim2.fromScale(0.963, 0.501),
-                Size = UDim2.fromScale(0.248, 1),
+                Size = UDim2.new(0, 80, 1, 0),
             }),
     
             Label5 = e("TextLabel", {
@@ -392,7 +392,7 @@ function Breakdown:render()
                 BackgroundColor3 = Color3.fromRGB(255, 255, 255),
                 BackgroundTransparency = 1,
                 Position = UDim2.fromScale(0.963, 0.5),
-                Size = UDim2.new(0, 49, 1, 0),
+                Size = UDim2.new(0, 80, 1, 0),
             }),
     
             Label6 = e("TextLabel", {
