@@ -133,8 +133,7 @@ end
 function MatchmakingService.Client:GetMapMMR(player, hash)
     if RateLimitService:CanProcessRequestWithRateLimit("GetMapMMR", player, 3) then
         local mmr = Raxios.get(url "/maps", {
-            query = { hash = hash },
-            auth = AuthService.APIKey
+            query = { hash = hash, auth = AuthService.APIKey }
         }):json()
 
         return mmr

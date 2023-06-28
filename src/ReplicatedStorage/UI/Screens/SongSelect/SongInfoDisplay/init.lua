@@ -1,11 +1,11 @@
 local SongDatabase = require(game.ReplicatedStorage.RobeatsGameCore.SongDatabase)
 local SPUtil = require(game.ReplicatedStorage.Shared.SPUtil)
 local Roact = require(game.ReplicatedStorage.Packages.Roact)
+local RoactRodux = require(game.ReplicatedStorage.Packages.RoactRodux)
 local Flipper = require(game.ReplicatedStorage.Packages.Flipper)
 local RoactFlipper = require(game.ReplicatedStorage.Packages.RoactFlipper)
-local Llama = require(game.ReplicatedStorage.Packages.Llama)
 
-local Rating = require(game.ReplicatedStorage.RobeatsGameCore.Enums.Rating)
+local withInjection = require(game.ReplicatedStorage.UI.Components.HOCs.withInjection)
 
 local e = Roact.createElement
 local f = Roact.createFragment
@@ -40,6 +40,8 @@ function SongInfoDisplay:init()
         artist = 0;
     })
     self.motorBinding = RoactFlipper.getBinding(self.motor)
+
+    self:getMMRForCurrentSong()
 end
 
 function SongInfoDisplay:didUpdate(prevProps)
@@ -59,6 +61,16 @@ function SongInfoDisplay:didUpdate(prevProps)
                 dampingRatio = 2.5;
             });
         })
+
+        self:getMMRForCurrentSong()
+    end
+end
+
+function SongInfoDisplay:getMMRForCurrentSong()
+    if not self.props.mmr then
+        self.props.matchmakingService:GetMapMMR(self.props.hash):andThen(function(mmr)
+            self.props.updateMapMMR(self.props.hash, mmr)
+        end)
     end
 end
 
@@ -87,6 +99,16 @@ function SongInfoDisplay:render()
     end
     
     local total_notes, total_holds, total_left_hand_objects, total_right_hand_objects = SongDatabase:get_note_metrics_for_key(self.props.SongKey)
+
+    local difficulty = SongDatabase:get_glicko_estimate_from_rating(SongDatabase:get_difficulty_for_key(self.props.SongKey, self.props.SongRate / 100).Overall)
+
+    if self.props.mmr then
+        for _, d in self.props.mmr do
+            if d.Rate == self.props.SongRate then
+                difficulty = d.Rating
+            end
+        end
+    end
 
     return e(RoundedFrame, {
         Position = self.props.Position,
@@ -182,7 +204,7 @@ function SongInfoDisplay:render()
                 AspectRatio = 22,
             }),
             DifficultyDisplay = e(GridInfoDisplay, {
-                Value = SongDatabase:get_glicko_estimate_from_rating(SongDatabase:get_difficulty_for_key(self.props.SongKey, self.props.SongRate / 100).Overall),
+                Value = difficulty,
                 FormatValue = function(value)
                     return string.format("MMR: %d", value)
                 end,
@@ -263,4 +285,21 @@ function SongInfoDisplay:render()
     })
 end
 
-return SongInfoDisplay
+local Injected = withInjection(SongInfoDisplay, {
+    matchmakingService = "MatchmakingService"
+})
+
+return RoactRodux.connect(function(state, props)
+    local hash = SongDatabase:get_hash_for_key(props.SongKey)
+
+    return {
+        mmr = state.mmr[hash],
+        hash = hash
+    }
+end, function(dispatch)
+    return {
+        updateMapMMR = function(hash, mmr)
+            dispatch({ type = "addMMR", hash = hash, mmr = mmr })
+        end
+    }
+end)(Injected)

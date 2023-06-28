@@ -58,8 +58,6 @@ function Score:render()
         LayoutOrder = self.props.Place,
         OnClick = self.props.OnClick,
         OnRightClick = function()
-            print("ok")
-
             self:setState(function(state)
                 return {
                     dialogOpen = not state.dialogOpen
@@ -100,7 +98,7 @@ function Score:render()
             RichText = true,
             TextScaled = true,
             Font = Enum.Font.GothamBlack,
-            Text = string.format("<font color=\"rgb(255, 249, 64)\">%0.2f</font> | %s - %s [%0.2fx]", self.props.Rating.Overall, SongDatabase:get_title_for_key(songKey), SongDatabase:get_artist_for_key(songKey), self.props.Rate / 100)
+            Text = string.format("<font color=\"rgb(255, 249, 64)\">%d</font> | %s - %s [%0.2fx]", SongDatabase:get_glicko_estimate_from_rating(self.props.Rating.Overall), SongDatabase:get_title_for_key(songKey), SongDatabase:get_artist_for_key(songKey), self.props.Rate / 100)
         }, {
             UITextSizeConstraint = e("UITextSizeConstraint", {
                 MaxTextSize = 21

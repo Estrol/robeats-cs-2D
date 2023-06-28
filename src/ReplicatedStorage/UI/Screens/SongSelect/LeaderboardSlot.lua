@@ -215,8 +215,7 @@ function LeaderboardSlot:render()
                     BorderSizePixel = 0,
                     Position = UDim2.new(1.25, 0, 0, 0),
                     Size = UDim2.new(1, 0, 0.55, 0),
-                    ZIndex = -2,
-                    ImageTransparency = 0.6
+                    ZIndex = -2
                 },
                 tier = tier.name,
                 division = tier.division

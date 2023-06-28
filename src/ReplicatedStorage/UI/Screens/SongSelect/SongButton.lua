@@ -1,4 +1,5 @@
 local Roact = require(game.ReplicatedStorage.Packages.Roact)
+local RoactRodux = require(game.ReplicatedStorage.Packages.RoactRodux)
 local e = Roact.createElement
 local SongDatabase = require(game.ReplicatedStorage.RobeatsGameCore.SongDatabase)
 
@@ -43,12 +44,19 @@ function SongButton:render()
     local id = if song.AudioAssetId then tonumber(string.match(song.AudioAssetId, "rbxassetid://(%d+)")) or MIN_ID else 0
 
     local difficulty = SongDatabase:get_difficulty_for_key(self.props.SongKey, self.props.SongRate / 100)
+    local glicko = SongDatabase:get_glicko_estimate_from_rating(difficulty.Overall)
+
+    if self.props.mmr then
+        for _, d in self.props.mmr do
+            if d.Rate == self.props.SongRate then
+                glicko = d.Rating
+            end
+        end
+    end
 
     local mapper = SongDatabase:get_mapper_for_key(self.props.SongKey)
 
     local topSkillsets, allSkillsets = SongDatabase:get_skillsets_for_key(self.props.SongKey, self.props.SongRate / 100)
-
-    local glicko = SongDatabase:get_glicko_estimate_from_rating(difficulty.Overall)
 
     return e(RoundedTextButton, {
         BackgroundTransparency = self.motorBinding:map(function(a)
@@ -99,7 +107,7 @@ function SongButton:render()
             Position = UDim2.new(0.0199999847, 0, 0.72, 0),
             Size = UDim2.new(0.762034643, 0, 0.18, 0),
             Font = Enum.Font.GothamSemibold,
-            Text = string.format("Estimated Rating: %d [%s] | %s", glicko, Tiers:GetStringForTier(Tiers:GetTierFromRating(glicko)), table.concat(topSkillsets, ", ")),
+            Text = string.format((if self.props.mmr then "" else "Estimated ") .. "Rating: %d [%s] | %s", glicko, Tiers:GetStringForTier(Tiers:GetTierFromRating(glicko)), table.concat(topSkillsets, ", ")),
             TextColor3 = Color3.fromRGB(255, 255, 255),
             TextScaled = true,
             TextSize = 22,
@@ -152,4 +160,10 @@ function SongButton:render()
     })
 end
 
-return SongButton
+return RoactRodux.connect(function(state, props)
+    local hash = SongDatabase:get_hash_for_key(props.SongKey)
+
+    return {
+        mmr = state.mmr[hash]
+    }
+end)(SongButton)
