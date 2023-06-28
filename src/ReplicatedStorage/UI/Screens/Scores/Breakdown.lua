@@ -1,4 +1,8 @@
 local Roact = require(game.ReplicatedStorage.Packages.Roact)
+local Llama = require(game.ReplicatedStorage.Packages.Llama)
+
+local SongDatabase = require(game.ReplicatedStorage.RobeatsGameCore.SongDatabase)
+
 local e = Roact.createElement
 
 local Breakdown = Roact.Component:extend("Breakdown")
@@ -15,10 +19,16 @@ Breakdown.defaultProps = {
     }
 }
 
-local MAX_SR = 80
+local MAX_SR = 4000
 
 function Breakdown:render()
-    local skillsets = self.props.Skillsets
+    local skillsets = Llama.Dictionary.map(self.props.Skillsets, function(s)
+        if typeof(s) == "number" then
+            return SongDatabase:get_glicko_estimate_from_rating(s)
+        end
+
+        return s
+    end)
 
     return e("Frame", {
         BackgroundColor3 = Color3.fromRGB(255, 255, 255),

@@ -181,7 +181,7 @@ function SongDatabase:new()
 				continue
 			end
 
-			table.insert(allSkillsets, string.format("%s: %.2f", skillset, skillsetDiff))
+			table.insert(allSkillsets, string.format("%s: %d", skillset, self:get_glicko_estimate_from_rating(skillsetDiff)))
 
 			if math.abs(difficulty.Overall - skillsetDiff) < 3 and #topSkillsets < 4 then
 				table.insert(topSkillsets, skillset)

@@ -250,7 +250,7 @@ function Results:render()
 				};
 				{
 					Name = "Rating";
-					Value = string.format("%0.2f", scoreData.rating);
+					Value = string.format("%d", SongDatabase:get_glicko_estimate_from_rating(scoreData.rating));
 				};
 				{
 					Name = "Max Combo";
