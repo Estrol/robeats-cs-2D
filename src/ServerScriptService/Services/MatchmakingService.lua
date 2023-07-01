@@ -26,6 +26,17 @@ local Raxios
 local url = require(game.ServerScriptService.URLs)
 
 local matches = {}
+local matchHistory = {}
+
+function MatchmakingService:KnitInit()
+    game.Players.PlayerRemoving:Connect(function(player)
+        matchHistory[player] = nil
+
+        if matches[player] then
+            self:HandleMatchResult(player, MatchmakingService.LOSS)
+        end
+    end)
+end
 
 function MatchmakingService:KnitStart()
     AuthService = Knit.GetService("AuthService")
@@ -33,12 +44,6 @@ function MatchmakingService:KnitStart()
     ScoreService = Knit.GetService("ScoreService")
 
     Raxios = require(game.ReplicatedStorage.Packages.Raxios)
-
-    game.Players.PlayerRemoving:Connect(function(player)
-        if matches[player] then
-            self:HandleMatchResult(player, MatchmakingService.LOSS)
-        end
-    end)
 end
 
 function MatchmakingService.Client:ReportMatch(player, data)
@@ -81,6 +86,8 @@ function MatchmakingService:HandleMatchResult(player, result)
 
             self:RemoveMatch(player)
 
+            table.insert(matchHistory[player], match.SongMD5Hash)
+
             return result
         else
             warn("No match found!")
@@ -100,13 +107,14 @@ function MatchmakingService.Client:GetMatch(player, mmr)
         local ideal
         local matchNumber = 0
 
-        for _, match in matches do
+        for i, match in matches do
             local songKey = SongDatabase:get_key_for_hash(match.SongMD5Hash)
 
             if songKey ~= SongDatabase:invalid_songkey() then
                 local songLength = SongDatabase:get_song_length_for_key(songKey, match.Rate / 100)
                 
                 local IDEAL_SONG_LENGTH = 140000
+                local IDEAL_MAP_RATE = 100
                 
                 -- cut out any songs too short or too long
                 if songLength <= 60000 or songLength >= 300000 then
@@ -116,9 +124,17 @@ function MatchmakingService.Client:GetMatch(player, mmr)
                 matchNumber += 1
 
                 local songLengthScore = IDEAL_SONG_LENGTH - math.abs(songLength - IDEAL_SONG_LENGTH)
-                local closeToBaseRateScore = 100 - math.abs(100 - match.Rate) -- out of 100
+                local closeToBaseRateScore = IDEAL_MAP_RATE - math.abs(IDEAL_MAP_RATE - match.Rate) -- out of 100
 
-                local score = (songLengthScore / IDEAL_SONG_LENGTH * 0.6) + (closeToBaseRateScore / 100 * 0.4)
+                local score = (songLengthScore / IDEAL_SONG_LENGTH * 0.7) + (closeToBaseRateScore / 100 * 0.3) * SPUtil:lerp(1, 0.7, i / #matches)
+
+                if not matchHistory[player] then
+                    matchHistory[player] = {}
+                end
+
+                if table.find(matchHistory[player], match.SongMD5Hash) then
+                    score *= 0.85
+                end
 
                 if matchNumber == 1 or score > ideal.score then
                     ideal = { match = match, score = score }
