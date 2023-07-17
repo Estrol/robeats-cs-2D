@@ -4,8 +4,11 @@ local f = Roact.createFragment
 local Llama = require(game.ReplicatedStorage.Packages.Llama)
 
 local SongDatabase = require(game.ReplicatedStorage.RobeatsGameCore.SongDatabase)
+local SPUtil = require(game.ReplicatedStorage.Shared.SPUtil)
+local RoactRodux = require(game.ReplicatedStorage.Packages.RoactRodux)
 
 local Knit = require(game:GetService("ReplicatedStorage").Packages.Knit)
+local StarterGUI = game:GetService("StarterGui")
 
 local LeaderboardSlot = require(game.ReplicatedStorage.UI.Screens.Gameplay.LeaderboardSlot)
 
@@ -23,7 +26,8 @@ Leaderboard.defaultProps = {
 
 function Leaderboard:init()
     self:setState({
-        scores = {}
+        scores = {},
+        visible = true,
     })
 
     local ScoreService = Knit.GetService("ScoreService")
@@ -33,6 +37,14 @@ function Leaderboard:init()
             scores = scores
         })
     end)
+
+    StarterGUI:SetCoreGuiEnabled(Enum.CoreGuiType.PlayerList, false)
+
+
+    SPUtil:bind_to_key(self.props.settings.ToggleLeaderboardKeybind, function()
+        self:setState({visible = not self.state.visible})
+    end)
+
 end
 
 function Leaderboard:render()
@@ -73,8 +85,13 @@ function Leaderboard:render()
         Position = self.props.Position,
         AnchorPoint = Vector2.new(0, 0.5),
         Size = UDim2.fromScale(0.175, 0.5),
-        BackgroundTransparency = 1
+        BackgroundTransparency = 1,
+        Visible = self.state.visible,
     }, children)
 end
 
-return Leaderboard
+return RoactRodux.connect(function(state, props)
+    return {
+        settings = Llama.Dictionary.join(state.options.persistent, state.options.transient)
+    }
+end)(Leaderboard)

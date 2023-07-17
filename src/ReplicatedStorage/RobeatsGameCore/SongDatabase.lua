@@ -34,8 +34,18 @@ function SongDatabase:new()
 		return #_all_keys
 	end
 
+	function self:get_glicko_estimate_from_rating(rating)
+		return 0.55 * rating * rating + 500
+	end
+
 	function self:get_data_for_key(key)
-		return _all_keys[key]
+		local data = _all_keys[key]
+
+		data.AudioAssetId = data.AudioAssetId or "rbxassetid://0"
+		data.AudioFilename = data.AudioFilename or "Unknown"
+		data.AudioArtist = data.AudioArtist or "Unknown"
+
+		return data
 	end
 
 	function self:contains_key(key)
@@ -76,12 +86,12 @@ function SongDatabase:new()
 
 	function self:get_title_for_key(key)
 		local songdata = self:get_data_for_key(key)
-		return songdata.AudioFilename
+		return songdata.AudioFilename or "Unknown"
 	end
 
 	function self:get_artist_for_key(key)
 		local songdata = self:get_data_for_key(key)
-		return songdata.AudioArtist
+		return songdata.AudioArtist or "Unknown"
 	end
 
 	function self:get_md5_hash_for_key(key)
@@ -171,7 +181,7 @@ function SongDatabase:new()
 				continue
 			end
 
-			table.insert(allSkillsets, string.format("%s: %.2f", skillset, skillsetDiff))
+			table.insert(allSkillsets, string.format("%s: %d", skillset, self:get_glicko_estimate_from_rating(skillsetDiff)))
 
 			if math.abs(difficulty.Overall - skillsetDiff) < 3 and #topSkillsets < 4 then
 				table.insert(topSkillsets, skillset)
@@ -214,8 +224,8 @@ function SongDatabase:new()
 			local topSkillsets = self:get_skillsets_for_key(key, rate)
 
 			local _search_data = {
-				data.AudioArtist,
-				data.AudioFilename,
+				data.AudioArtist or "Unknown",
+				data.AudioFilename or "Unknown",
 				"diff=" .. string.format("%0.2f", difficulty.Overall),
 				data.AudioMapper or "unknown",
 			}

@@ -95,6 +95,11 @@ function AudioManager:new(_game)
 	local _pre_start_time_ms = 0
 	local _post_playing_time_ms = 0
 	local _audio_volume = 0.5
+	local _hitsounds
+
+	function self:get_hitsounds()
+		return _hitsounds
+	end
 
 	local _note_count = 0
 	function self:get_note_count() return _note_count end
@@ -119,6 +124,8 @@ function AudioManager:new(_game)
 
 		--Apply song rate
 		self:set_rate(_config.SongRate / 100)
+
+		_hitsounds = _config.Hitsounds
 
 		--Add hit objects and perform note count calculations
 		_hit_objects = SongDatabase:get_hit_objects_for_key(_song_key, _rate, _game:is_mod_active(Mods.Mirror))
@@ -373,13 +380,22 @@ function AudioManager:new(_game)
 					)
 
 				elseif itr_hitobj.Type == 2 then
-					push_back_heldnote(
-						i,
-						itr_hitobj,
-						current_time_ms,
-						itr_hitobj.Time + _pre_countdown_time_ms,
-						itr_hitobj.Duration
-					)
+					if itr_hitobj.Duration > 0 then
+						push_back_heldnote(
+							i,
+							itr_hitobj,
+							current_time_ms,
+							itr_hitobj.Time + _pre_countdown_time_ms,
+							itr_hitobj.Duration
+						)
+					else
+						push_back_single_note(
+							i,
+							itr_hitobj,
+							current_time_ms,
+							itr_hitobj.Time + _pre_countdown_time_ms
+						)
+					end
 				end
 				_audio_data_index = _audio_data_index + 1
 			else

@@ -47,6 +47,8 @@ local Gameplay = Roact.Component:extend("Gameplay")
 Gameplay.SpreadString = "<font color=\"rgb(125, 125, 125)\">%d</font> <font color=\"rgb(55, 55, 55)\">/</font> <font color=\"rgb(99, 91, 15)\">%d</font> <font color=\"rgb(55, 55, 55)\">/</font> <font color=\"rgb(23, 99, 15)\">%d</font> <font color=\"rgb(55, 55, 55)\">/</font> <font color=\"rgb(15, 39, 99)\">%d</font> <font color=\"rgb(55, 55, 55)\">/</font> <font color=\"rgb(91, 15, 99)\">%d</font> <font color=\"rgb(55, 55, 55)\">/</font> <font color=\"rgb(99, 15, 21)\">%d</font> | %0.1f M/P"
 
 function Gameplay:init()
+    local options = self.props.options
+
     self.trove = Trove.new()
 
     -- Set gameplay state
@@ -77,67 +79,100 @@ function Gameplay:init()
 
     self.kps, self.setKps = Roact.createBinding(0)
     
+    self.retryTick, self.setRetryTick = Roact.createBinding(0)
     -- Set up hit deviance parent reference
-    
+
+
     self.hitDevianceRef = Roact.createRef()
     
-    if not self.props.options.Use2DLane then
+    if not options.Use2DLane then
         local stagePlat = EnvironmentSetup:get_robeats_game_stage()
-        stagePlat.Transparency = self.props.options.BaseTransparency
+        stagePlat.Transparency = options.BaseTransparency
     end
 
-    EnvironmentSetup:get_element_protos_folder().TriggerButtonProto.Interior.Transparency = self.props.options.ReceptorTransparency
-    EnvironmentSetup:get_element_protos_folder().TriggerButtonProto.Outer.Transparency = self.props.options.ReceptorOuterTransparency
+    EnvironmentSetup:get_element_protos_folder().TriggerButtonProto.Interior.Transparency = options.ReceptorTransparency
+    EnvironmentSetup:get_element_protos_folder().TriggerButtonProto.Outer.Transparency = options.ReceptorOuterTransparency
 
     --Is the player on mobile
     self.numLanes = 4
 
     -- Set FOV and Time of Day
     
-    workspace.CurrentCamera.FieldOfView = self.props.options.FOV
-    Lighting.TimeOfDay = self.props.options.TimeOfDay
+    workspace.CurrentCamera.FieldOfView = options.FOV
+    Lighting.TimeOfDay = options.TimeOfDay
     
-    -- Turn PlayerList & Chat off
-    if not self.props.location.state.Spectate then
-        game.StarterGui:SetCoreGuiEnabled("PlayerList", not self.props.options.HidePlayerList)
-        game.StarterGui:SetCoreGuiEnabled("Chat", not self.props.options.HideChat)
-    end
-
+    
     EnvironmentSetup:set_gui_inset(true);
     
     -- 2D Properties
-    local lane_2d = self.props.options.Use2DLane
+    local lane_2d = options.Use2DLane
     
     -- Create the game instance
     
-    local _game = RobeatsGame:new(EnvironmentSetup:get_game_environment_center_position(), self.props.options)
-    _game._input:set_keybinds({
-        self.props.options.Keybind1,
-        self.props.options.Keybind2,
-        self.props.options.Keybind3,
-        self.props.options.Keybind4
+    local options = Llama.Dictionary.join(options, {
+        TimingPreset = if self.props.location.state.Ranked then "Standard" else options.TimingPreset
     })
-    _game:set_hit_lighting(self.props.options.HitLighting)
-    _game:set_ln_tails(self.props.options.HideLNTails)
-    _game:set_judgement_visibility(self.props.options.JudgementVisibility)
-    _game:set_note_color(self.props.options.NoteColor)
-    _game:set_ln_transparent(self.props.options.TransparentHeldNote)
+
+    local _game = RobeatsGame:new(EnvironmentSetup:get_game_environment_center_position(), options)
+    
+    -- Turn PlayerList & Chat off
+    if not self.props.location.state.Spectate then
+        game.StarterGui:SetCoreGuiEnabled("PlayerList", not options.HidePlayerList)
+        game.StarterGui:SetCoreGuiEnabled("Chat", not options.HideChat)
+        game.StarterGui:SetCoreGuiEnabled("Backpack", false)
+
+    end
+    
+    _game._input:set_keybinds({
+        options.Keybind1,
+        options.Keybind2,
+        options.Keybind3,
+        options.Keybind4
+    })
+    _game:set_hit_lighting(options.HitLighting)
+    _game:set_ln_tails(options.HideLNTails)
+    _game:set_judgement_visibility(options.JudgementVisibility)
+    _game:set_note_color(options.NoteColor)
+    _game:set_ln_transparent(options.TransparentHeldNote)
     _game:set_2d_mode(lane_2d)
     if lane_2d then
-        _game:set_upscroll_mode(self.props.options.Upscroll);
+        _game:set_upscroll_mode(options.Upscroll);
     end
     
     -- Load the map
 
-    self.songKey = if self.props.room then self.props.room.selectedSongKey else self.props.options.SongKey
-    self.songRate = if self.props.room then self.props.room.songRate else self.props.options.SongRate
+    self.songKey = if self.props.room then self.props.room.selectedSongKey else options.SongKey
+    self.songRate = if self.props.room then self.props.room.songRate else options.SongRate
 
     local spectateData = self.props.location.state.Spectate
+    local replayData = self.props.location.state.Replay
 
     local spectateReplay
     local earliestTime
 
-    if spectateData then
+    if replayData then
+        spectateReplay = Replay:new({ viewing = true })
+
+        spectateReplay:set_hits(replayData)
+
+        self.replayScoreChangedConnection = spectateReplay.scoreChanged.Event:Connect(function(scoreData)
+            self:setState({
+                score = scoreData.Score,
+                accuracy = scoreData.Accuracy,
+                chain = scoreData.Chain,
+                maxChain = scoreData.MaxChain,
+                marvelouses = scoreData.Marvelouses,
+                perfects = scoreData.Perfects,
+                greats = scoreData.Greats,
+                goods = scoreData.Goods,
+                bads = scoreData.Bads,
+                misses = scoreData.Misses,
+            })
+        end)
+
+        self.songKey = spectateData.SongKey
+        self.songRate = spectateData.SongRate
+    elseif spectateData then
         spectateReplay = Replay:new({ userId = spectateData.UserId, viewing = true })
 
         self.replayConnection = self.props.spectatingService.HitsSent:Connect(function(hits)
@@ -185,7 +220,7 @@ function Gameplay:init()
         checkSpectators:Start()
     end
 
-    _game:load(self.songKey, GameSlot.SLOT_1, Llama.Dictionary.join(self.props.options, {
+    _game:load(self.songKey, GameSlot.SLOT_1, Llama.Dictionary.join(options, {
         SongRate = self.songRate
     }), spectateReplay)
 
@@ -225,7 +260,7 @@ function Gameplay:init()
             end
 
             if _game._audio_manager:is_ready_to_play() and self:allPlayersLoaded() or self.state.secondsLeft <= 0 or self.skipped then
-                if spectateData and (not earliestTime or self.state.secondsLeft > 5) then
+                if spectateData and (not earliestTime or self.state.secondsLeft > 5) and not replayData then
                     return
                 end
 
@@ -330,12 +365,16 @@ function Gameplay:init()
         end
     end)
 
+
+
     -- Expose the game instance to the rest of the component
 
     self._game = _game
 end
 
 function Gameplay:startGame(earliestTime)
+    local options = self.props.options
+
     if self.props.room then
         self.props.multiplayerService:SetLoaded(self.props.roomId, true)
     end
@@ -349,6 +388,43 @@ function Gameplay:startGame(earliestTime)
     end
     
     self._game:start_game(earliestTime)
+
+    -- @RetryFunctionality
+    -- MainHandler for Retrying the map.
+    self.trove:Add(game:GetService("RunService").RenderStepped:Connect(function()
+        if self.state.retryHeld then
+            local startTick = self.state.retryStartTick
+
+            self.setRetryTick(tick())
+
+            if tick() - startTick >= options.QuickRetrySpeed then
+                warn("Player ForceQuited through quick-reset. A cleanup process will now begin")
+
+                self.forcedQuit = true -- Status setup
+                self.retry = true
+
+                self._game:set_mode(RobeatsGame.Mode.GameEnded)
+            end
+        end
+    end))
+
+    self.trove:Add(SPUtil:bind_to_key(options.QuickRetryKeybind, function()
+        if self.props.location.state.Spectate or self.props.room then
+            return
+        end
+
+        self:setState({
+            retryHeld = true,
+            retryStartTick = tick()
+        })
+    end))
+
+    self.trove:Add(SPUtil:bind_to_key_release(options.QuickRetryKeybind, function()
+        self:setState({
+            retryHeld = false
+        })
+    end))
+
 end
 
 function Gameplay:didMount()
@@ -407,8 +483,9 @@ end
 
 function Gameplay:onGameplayEnd()
     local spectate = self.props.location.state.Spectate
+    local options = self.props.options
 
-    if self.props.options.Use2DLane then
+    if options.Use2DLane then
         EnvironmentSetup:teardown_2d_environment()
     end
 
@@ -421,13 +498,29 @@ function Gameplay:onGameplayEnd()
     local finalRecords = Llama.Dictionary.join(records, {
         Mean = mean,
         Rating = rating,
-        Mods = self.props.options.Mods,
+        Mods = options.Mods,
         SongMD5Hash = SongDatabase:get_hash_for_key(self.songKey),
         Rate = self.songRate
     })
 
-    if (not self.forcedQuit) and (self.props.options.TimingPreset == "Standard") and not self.props.location.state.Spectate then
-        self:submitScore(finalRecords, hits)
+    local oldRating = self.props.profile and self.props.profile.GlickoRating
+
+    if (not self.forcedQuit) and (options.TimingPreset == "Standard") and not spectate then
+        local pb = self:submitScore(finalRecords, hits)
+
+        if pb then
+            print("Score was a personal best")
+
+            self.props.scoreService:SubmitReplay(SongDatabase:get_hash_for_key(self.songKey), self._game:get_replay_hits())
+        end
+    end
+
+    print((if self.props.location.state.Ranked then "User finished a ranked match" else "User finished a casual match") .. (if self.forcedQuit then " but quit early" else ""))
+
+    if self.props.location.state.Ranked and self.forcedQuit then
+        self.props.matchmakingService:ReportLeftEarly():andThen(function(r)
+            print(r)
+        end)
     end
     
     local resultsRecords = Llama.Dictionary.join(finalRecords, {
@@ -478,7 +571,15 @@ function Gameplay:onGameplayEnd()
             resultsRecords.Viewing = true
         end
 
-        self.props.history:push("/results", resultsRecords)
+        resultsRecords.Ranked = self.props.location.state.Ranked
+        resultsRecords.OldRating = oldRating
+
+        if not self.retry then
+            self.props.setRetryCount(0)
+            self.props.history:push("/results", resultsRecords)
+        else
+            self.props.history:push("/retrydelay")
+        end
     end
 end
 
@@ -489,14 +590,14 @@ function Gameplay:allPlayersLoaded()
 end
 
 function Gameplay:submitScore(records, hits)
-    self.props.scoreService:SubmitScore(records)
-        :andThen(function()
-            local moment = DateTime.now():ToLocalTime()
-            DebugOut:puts("Score submitted at %d:%d:%d", moment.Hour, moment.Minute, moment.Second)
-        end)
-        :andThen(function()
-            self.props.scoreService:SubmitGraph(records.SongMD5Hash, hits)
-        end)
+    local _, pb = self.props.scoreService:SubmitScore(records):await()
+
+    local moment = DateTime.now():ToLocalTime()
+    DebugOut:puts("Score submitted at %d:%d:%d", moment.Hour, moment.Minute, moment.Second)
+
+    self.props.scoreService:SubmitGraph(records.SongMD5Hash, hits):await()
+
+    return pb
 end
 
 function Gameplay:render()
@@ -513,14 +614,16 @@ function Gameplay:render()
         })
     end
 
+    local options = self.props.options
+
     local laneCoverY
     local laneCoverPosY
     local laneCoverRotation
 
-    if self.props.options.LaneCover > 0 then
-        laneCoverY = SPUtil:lerp(0.32, 0.8, self.props.options.LaneCover / 100)
+    if options.LaneCover > 0 then
+        laneCoverY = SPUtil:lerp(0.32, 0.8, options.LaneCover / 100)
 
-        if self.props.options.Use2DLane and self.props.options.Upscroll then
+        if options.Use2DLane and options.Upscroll then
             laneCoverPosY = 0.6
             laneCoverRotation = 180
         else
@@ -535,35 +638,38 @@ function Gameplay:render()
 
     local leaderboard
 
-    if not self.props.options.HideLeaderboard then
+    if not options.HideLeaderboard then
         local spectate = self.props.location.state.Spectate
 
         if self.props.room then
             leaderboard = e(MultiplayerLeaderboard, {
                 Scores = self.props.room.players,
-                Position = LeaderboardPositions[self.props.options.InGameLeaderboardPosition]
+                Position = LeaderboardPositions[options.InGameLeaderboardPosition]
             })
         else
             leaderboard = e(Leaderboard, {
                 SongKey = self.songKey,
-                LocalRating = Rating:get_rating_from_song_key(self.songKey, self.state.accuracy, self.props.options.SongRate / 100).Overall,
+                LocalRating = Rating:get_rating_from_song_key(self.songKey, self.state.accuracy, options.SongRate / 100).Overall,
                 LocalAccuracy = self.state.accuracy, 
-                Position = LeaderboardPositions[self.props.options.InGameLeaderboardPosition],
+                Position = LeaderboardPositions[options.InGameLeaderboardPosition],
                 UserId = if spectate then spectate.UserId else game.Players.LocalPlayer.UserId,
                 PlayerName = if spectate then spectate.PlayerName else game.Players.LocalPlayer.Name,
             })
         end
     end
 
+
     local statCardPosition = UDim2.fromScale(0.7, 0.2)
 
-    if self.props.options.Use2DLane then
-        statCardPosition =  UDim2.fromScale((self.props.options.PlayfieldWidth / 100 / 2) + 0.53, 0.2)
+    local state = self.props.location.state
+
+    if options.Use2DLane then
+        statCardPosition =  UDim2.fromScale((options.PlayfieldWidth / 100 / 2) + 0.53, 0.2)
     end
     
     local sections = {}
 
-    if self.state.isMobile and self.props.options.DividersEnabled then
+    if self.state.isMobile and options.DividersEnabled then
         for i = 0, self.numLanes - 1 do
             local el = e(Divider, {
                 Lane = i,
@@ -577,14 +683,14 @@ function Gameplay:render()
 
     local songProgress
 
-    if self.props.options.ShowProgressBar then
+    if options.ShowProgressBar then
         songProgress = e(RoundedFrame, {
             Size = self.timeLeft:map(function(val)
                 return UDim2.fromScale((self._game._audio_manager:get_song_length_ms() - val) / self._game._audio_manager:get_song_length_ms(), 0.0125) + UDim2.fromOffset(5, 0)
             end),
             Position = UDim2.fromScale(0, 1) - UDim2.fromOffset(5, 0),
             AnchorPoint = Vector2.new(0, 1),
-            BackgroundColor3 = self.props.options.ProgressBarColor,
+            BackgroundColor3 = options.ProgressBarColor,
             BackgroundTransparency = 0
         })
     end
@@ -636,7 +742,8 @@ function Gameplay:render()
             Goods = self.state.goods,
             Bads = self.state.bads,
             Misses = self.state.misses,
-            Accuracy = self.state.accuracy
+            Accuracy = self.state.accuracy,
+            Ranked = state.Ranked
         }),
         TimeLeft = e(RoundedTextLabel, {
             Size = UDim2.fromScale(0.115, 0.035),
@@ -665,7 +772,7 @@ function Gameplay:render()
         Combo = e(RoundedTextLabel, {
             Size = UDim2.fromScale(0.13, 0.07),
             TextColor3 = Color3.fromRGB(255, 255, 255),
-            Position = ComboPositions[self.props.options.ComboPosition],
+            Position = ComboPositions[options.ComboPosition],
             AnchorPoint = Vector2.new(0.5, 0.5),
             BackgroundTransparency = 1,
             TextScaled = true,
@@ -674,12 +781,12 @@ function Gameplay:render()
         }),
         Back = e(RoundedTextButton, {
             Size = UDim2.fromScale(0.1, 0.05),
-            HoldSize = UDim2.fromScale(0.08, 0.05),
+            HoldSize = UDim2.fromScale(0.1, 0.05),
             TextColor3 = Color3.fromRGB(255, 255, 255),
             BackgroundColor3 = Color3.fromRGB(230, 19, 19),
             HighlightBackgroundColor3 = Color3.fromRGB(187, 53, 53),
             Position = UDim2.fromScale(0.02, 0.09),
-            Text = "Back (No save)",
+            Text = if state.Ranked then "Forfeit Match" else "Quit",
             TextSize = 11,
             OnClick = function()
                 self.forcedQuit = true
@@ -689,9 +796,9 @@ function Gameplay:render()
         Leaderboard = leaderboard,
         Sections = f(sections),
         HitDeviance = e(RoundedFrame, {
-           Position = self.props.options.Use2DLane and UDim2.fromScale(0.5, 0.635) or UDim2.fromScale(0.5, 0.95),
-           Size = self.props.options.Use2DLane and UDim2.fromScale(0.15, 0.014) or UDim2.fromScale(0.15, 0.05),
-           BackgroundTransparency = self.props.options.Use2DLane and 1,
+           Position = options.Use2DLane and UDim2.fromScale(0.5, 0.635) or UDim2.fromScale(0.5, 0.95),
+           Size = options.Use2DLane and UDim2.fromScale(0.15, 0.014) or UDim2.fromScale(0.15, 0.05),
+           BackgroundTransparency = options.Use2DLane and 1,
            AnchorPoint = Vector2.new(0.5, 1),
            ZIndex = 5, -- This needed to overlap the 2D Lane's ZIndex
            [Roact.Ref] = self.hitDevianceRef
@@ -718,11 +825,23 @@ function Gameplay:render()
             Size = UDim2.fromScale(0.2, 0.055),
             Position = UDim2.new(0.98, 0, 1, -10),
             AnchorPoint = Vector2.new(1, 1),
-            Text = "Timing Preset: " .. self.props.options.TimingPreset,
+            Text = "Timing Preset: " .. if state.Ranked then "Standard" else options.TimingPreset,
             TextColor3 = Color3.new(1, 1, 1),
             TextXAlignment = Enum.TextXAlignment.Right,
             BackgroundTransparency = 1,
-        })
+        }),
+        RetryOverlay = if self.state.retryHeld then e(RoundedFrame, {
+            Size = UDim2.new(1, 0, 0, 5),
+            Position = UDim2.fromScale(0, 0),
+            BackgroundTransparency = 1
+        }, {
+            internalRatio = e(RoundedFrame, {
+                Size = self.retryTick:map(function(value)
+                    return UDim2.fromScale((value - self.state.retryStartTick) / options.QuickRetrySpeed, 1)
+                end),
+                BackgroundColor3 = Color3.fromRGB(255, 255, 255),
+            })
+        }) else nil
     })
 end
 
@@ -736,23 +855,30 @@ function Gameplay:willUnmount()
     if self.replayConnection then
         self.replayConnection:Disconnect()
         self.replayScoreChangedConnection:Disconnect()
-    else
+    elseif self.checkSpectatorsConnection then
         self.checkSpectatorsConnection:Disconnect()
     end
 
     if not self.props.location.state.Spectate then
         self.props.spectatingService.GameEnded:Fire()
-    else
+    elseif self.props.spectatingService.Unspectate then
         self.props.spectatingService.Unspectate:Fire()
     end
 
+    if self.retry then
+        self.props.setRetryCount(self.props.options.RetryCount + 1)
+    end
+
     self.trove:Destroy()
+
+    -- self.props.history:push("/play")
 end
 
 local Injected = withInjection(Gameplay, {
     scoreService = "ScoreService",
     multiplayerService = "MultiplayerService",
     spectatingService = "SpectatingService",
+    matchmakingService = "MatchmakingService"
 })
 
 return RoactRodux.connect(function(state, props)
@@ -761,6 +887,13 @@ return RoactRodux.connect(function(state, props)
     return {
         options = Llama.Dictionary.join(state.options.persistent, state.options.transient),
         room = if roomId then state.multiplayer.rooms[roomId] else nil,
-        roomId = roomId
+        roomId = roomId,
+        profile = state.profiles[tostring(game.Players.LocalPlayer.UserId)],
+    }
+end,function(dispatch)
+    return {
+        setRetryCount = function(value)
+            dispatch({ type = "setTransientOption", option = "RetryCount", value = value })
+        end
     }
 end)(Injected)

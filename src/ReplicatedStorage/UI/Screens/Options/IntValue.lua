@@ -1,6 +1,8 @@
 local Roact = require(game.ReplicatedStorage.Packages.Roact)
 local e = Roact.createElement
 
+local UserInputService = game:GetService("UserInputService")
+
 local RoundedFrame = require(game.ReplicatedStorage.UI.Components.Base.RoundedFrame)
 local RoundedTextLabel = require(game.ReplicatedStorage.UI.Components.Base.RoundedTextLabel)
 local RoundedImageButton = require(game.ReplicatedStorage.UI.Components.Base.RoundedImageButton)
@@ -16,7 +18,8 @@ IntValue.defaultProps = {
     MinValue = -math.huge,
     Name = "SettingName",
     OnChanged = noop,
-    incrementValue = 1;
+    IncrementValue = 1;
+    ShiftIncrement = .1;
     FormatValue = function(value)
         return value
     end
@@ -55,8 +58,8 @@ function IntValue:render()
         }),
         Subtract = e(RoundedImageButton, {
             OnClick = function()
-                if (self.props.Value - self.props.incrementValue) >= self.props.MinValue then
-                    self.props.OnChanged(self.props.Value - self.props.incrementValue)
+                if (self.props.Value - self.props.IncrementValue) >= self.props.MinValue then
+                    self.props.OnChanged(self.props.Value - self.props.IncrementValue)
                 else
                     self.props.OnChanged(self.props.MinValue)
                 end
@@ -80,8 +83,8 @@ function IntValue:render()
         }),
         Add = e(RoundedImageButton, {
             OnClick = function()
-                if (self.props.Value + self.props.incrementValue) <= self.props.MaxValue then
-                    self.props.OnChanged(self.props.Value + self.props.incrementValue)
+                if (self.props.Value + self.props.IncrementValue) <= self.props.MaxValue then
+                    self.props.OnChanged(self.props.Value + self.props.IncrementValue)
                 else
                     self.props.OnChanged(self.props.MaxValue)
                 end

@@ -3,6 +3,8 @@ local SPDict = require(game.ReplicatedStorage.Shared.SPDict)
 local SPList = require(game.ReplicatedStorage.Shared.SPList)
 local SPVector = require(game.ReplicatedStorage.Shared.SPVector)
 
+local Knit = require(game.ReplicatedStorage.Packages.Knit)
+
 local InputUtil = {}
 
 InputUtil.KEY_TRACK1 = 0
@@ -44,6 +46,8 @@ InputUtil.KEYCODE_TOUCH_TRACK4 = 10004
 function InputUtil:new()
 	local self = {}
 	
+	local RoactController = Knit.GetController("RoactController")
+
 	local userinput_service = game:GetService("UserInputService")
 	local _just_pressed_keys = SPDict:new()
 	local _down_keys = SPDict:new()
@@ -228,18 +232,13 @@ function InputUtil:new()
 	end
 	
 	function self:set_mouse_visible(val)
-		userinput_service.MouseIconEnabled = val
-	end
-	
-	local _keyboard_focused_mode = false
-	function self:set_keyboard_focused_mode(val)
-		_keyboard_focused_mode = val
+		RoactController:ToggleCursor(val)
 	end
 
 	function self:post_update()
 		local cursor = game.Players.LocalPlayer:GetMouse()
 		if (SPUtil:is_mobile() == false) then
-			if _keyboard_focused_mode == true and (self:control_pressed(InputUtil.KEY_TRACK1) or self:control_pressed(InputUtil.KEY_TRACK2) or self:control_pressed(InputUtil.KEY_TRACK3) or self:control_pressed(InputUtil.KEY_TRACK4)) then
+			if self:control_pressed(InputUtil.KEY_TRACK1) or self:control_pressed(InputUtil.KEY_TRACK2) or self:control_pressed(InputUtil.KEY_TRACK3) or self:control_pressed(InputUtil.KEY_TRACK4) then
 				self:set_mouse_visible(false)
 			elseif cursor.X ~= _last_cursor._x or cursor.Y ~= _last_cursor._y then
 				self:set_mouse_visible(true)

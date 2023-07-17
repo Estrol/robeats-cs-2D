@@ -10,6 +10,8 @@ local MultiplayerService = Knit.CreateService {
 
 local Llama
 
+local TextService
+
 local StateService
 local RateLimitService
 
@@ -37,6 +39,7 @@ function MultiplayerService:KnitInit()
     StateService = Knit.GetService("StateService")
     Llama = require(game.ReplicatedStorage.Packages.Llama)
     AssertType = require(game.ReplicatedStorage.Shared.AssertType)
+    TextService = game:GetService("TextService")
 end
 
 function MultiplayerService:GetState()
@@ -109,6 +112,10 @@ function MultiplayerService.Client:AddRoom(player, name, password)
     if password ~= "" then
         Passwords[id] = password
     end
+
+    pcall(function()
+        name = TextService:FilterStringAsync(name, player.UserId):GetNonChatStringForBroadcastAsync()
+    end)
 
     StateService.Store:dispatch({
         type = "createRoom",

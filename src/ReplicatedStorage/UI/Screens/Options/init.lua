@@ -76,6 +76,46 @@ function Options:getSettingElements()
             LayoutOrder = 5
         });
 
+        elements.RetryDelay = e(IntValue, {
+            Value = self.props.options.QuickRetrySpeed,
+            Name = "Quick Retry Hold Delay",
+            OnChanged = function(value)
+                self.props.setOption("QuickRetrySpeed", value)
+            end,
+            FormatValue = function(value)
+                if ( value == 0 ) then
+                    return "Instant"
+                elseif ( value > 0 ) then
+                    return string.format("%d second" .. if value > 1 then "s" else "", value)
+                end
+            end,
+            MinValue = 0,
+            MaxValue = 3,
+            LayoutOrder = 10,
+        });
+        
+        elements.QuickRetryKeybind = e(KeybindValue, {
+            Values = {self.props.options.QuickRetryKeybind},
+            Name = "Quick Retry Key",
+            Tooltip = "Press ESC to disable",
+            OnChanged = function(_, value)
+                local key = (value ~= (Enum.KeyCode.Escape or Enum.KeyCode.Unknown) and value) or (Enum.KeyCode.Unknown)
+                self.props.setOption("QuickRetryKeybind", key)
+            end,
+            LayoutOrder = 9,
+        });
+
+        elements.ToggleLeaderboardKeybind = e(KeybindValue, {
+            Values = {self.props.options.ToggleLeaderboardKeybind},
+            Name = "Toggle Leaderboard Key",
+            Tooltip = "Press ESC to disable",
+            OnChanged = function(_, value)
+                local key = (value ~= (Enum.KeyCode.Escape or Enum.KeyCode.Unknown) and value) or (Enum.KeyCode.Unknown)
+                self.props.setOption("ToggleLeaderboardKeybind", key)
+            end,
+            LayoutOrder = 10
+        })
+
         --Notespeed
         elements.NoteSpeed = e(IntValue, {
             Value = self.props.options.NoteSpeed,
@@ -124,7 +164,6 @@ function Options:getSettingElements()
             LayoutOrder = 1
         });
 
-
         elements.JudgementVisibility = e(MultipleChoiceValue, {
             Values = self.props.options.JudgementVisibility,
             ValueNames = { "Miss", "Bad", "Good", "Great", "Perfect", "Marvelous" },
@@ -146,6 +185,15 @@ function Options:getSettingElements()
             end,
             Name = "Timing Preset",
             LayoutOrder = 2
+        })
+
+        elements.Hitsounds = e(BoolValue, {
+            Value = self.props.options.Hitsounds,
+            OnChanged = function(value)
+                self.props.setOption("Hitsounds", value)
+            end,
+            Name = "Play Hitsounds",
+            LayoutOrder = 11
         })
     end)
     
@@ -171,6 +219,15 @@ function Options:getSettingElements()
             LayoutOrder = 1;
         })
 
+        elements.ShowLeaderboardAlways = e(BoolValue, {
+            Value = self.props.options.HideLeaderboard,
+            OnChanged = function(value)
+                self.props.setOption("HideLeaderboard", value)
+            end,
+            Name = "Hide Leaderboard in-game",
+            LayoutOrder = 5,
+        })
+
         elements.LaneCover = e(IntValue, {
             Value = self.props.options.LaneCover,
             OnChanged = function(value)
@@ -180,7 +237,7 @@ function Options:getSettingElements()
                 return string.format("%0d%%", value)
             end,
             Name = "Lane Cover",
-            incrementValue = 2,
+            IncrementValue = 2,
             MinValue = 0,
             MaxValue = 100,
             LayoutOrder = 3
@@ -201,7 +258,7 @@ function Options:getSettingElements()
                 self.props.setOption("ProgressBarColor", value)
             end,
             Name = "Song Progress Color",
-            LayoutOrder = 5
+            LayoutOrder = 6
         })
 
         elements.NoteColor = e(ColorValue, {
@@ -210,14 +267,23 @@ function Options:getSettingElements()
                 self.props.setOption("NoteColor", value)
             end,
             Name = "Note Color",
-            LayoutOrder = 6
+            LayoutOrder = 7
+        });
+
+        elements.CursorColor = e(ColorValue, {
+            Value = self.props.options.CursorImageColor,
+            OnChanged = function(value)
+                self.props.setOption("CursorImageColor", value)
+            end,
+            Name = "Cursor Color",
+            LayoutOrder = 8,
         })
     end)
     --extras
     :case(3, function()
         elements.BaseTransparency = e(IntValue, {
             Name = "Base Transparency",
-            incrementValue = 0.1;
+            IncrementValue = 0.1;
             Value = self.props.options.BaseTransparency,
             OnChanged = function(value)
                 self.props.setOption("BaseTransparency", value)
@@ -232,7 +298,7 @@ function Options:getSettingElements()
 
         elements.ReceptorTransparency = e(IntValue, {
             Name = "Receptor Transparency",
-            incrementValue = 0.1,
+            IncrementValue = 0.1,
             Value = self.props.options.ReceptorTransparency,
             OnChanged = function(value)
                 self.props.setOption("ReceptorTransparency", value)
@@ -247,7 +313,7 @@ function Options:getSettingElements()
 
         elements.ReceptorOuterTransparency = e(IntValue, {
             Name = "3D Receptor Outer Transparency",
-            incrementValue = 0.1,
+            IncrementValue = 0.1,
             Value = self.props.options.ReceptorOuterTransparency,
             OnChanged = function(value)
                 self.props.setOption("ReceptorOuterTransparency", value)
@@ -362,7 +428,7 @@ function Options:getSettingElements()
                 self.props.setOption("NoteColorAffects2D", value)
             end,
             Name = "Let Note Color determine 2D object colors",
-            LayoutOrder = 3
+            LayoutOrder = 4
         })
 
         elements.PlayfieldWidth = e(IntValue, {
@@ -376,7 +442,7 @@ function Options:getSettingElements()
             end,
             MaxValue = 100,
             MinValue = 5,
-            LayoutOrder = 4
+            LayoutOrder = 5
         })
 
         elements.PlayfieldHitPos = e(IntValue, {
@@ -390,7 +456,7 @@ function Options:getSettingElements()
             end,
             MaxValue = 60,
             MinValue = 1,
-            LayoutOrder = 5
+            LayoutOrder = 6
         })
 
         elements.SelectSkin = e(ButtonValue, {
@@ -403,7 +469,37 @@ function Options:getSettingElements()
             end,
             Name = "Select Skin",
             ButtonText = "Open Skin Selection Panel",
-            LayoutOrder = 6
+            LayoutOrder = 7
+        })
+
+        elements.AspectRatio = e(MultipleChoiceValue, {
+            Values = {
+                self.props.options.Lane2DAspectRatioConstraintMode == -1 or false,
+                self.props.options.Lane2DAspectRatioConstraintMode == 9/16 or false,
+                self.props.options.Lane2DAspectRatioConstraintMode == 3/4 or false,
+            },
+            ValueNames = {
+                "Automatic",
+                "16:9",
+                "4:3",
+            },
+            Name = "2D Lane Aspect Ratio",
+            LayoutOrder = 3,
+            OnChanged = function(index, enabled)
+                SPUtil:switch(index)
+                    :case(1, function()
+                        -- Automatic Aspect Ratio
+                        self.props.setOption("Lane2DAspectRatioConstraintMode", -1)
+                    end)
+                    :case(2, function()
+                        -- 16:9 Aspect Ratio
+                        self.props.setOption("Lane2DAspectRatioConstraintMode", 9/16)
+                    end)
+                    :case(3, function()
+                        -- 4:3 Aspect Ratio
+                        self.props.setOption("Lane2DAspectRatioConstraintMode", 3/4)
+                    end)
+            end,
         })
     end):case(5, function()
         elements.DividersEnabled = e(BoolValue, {

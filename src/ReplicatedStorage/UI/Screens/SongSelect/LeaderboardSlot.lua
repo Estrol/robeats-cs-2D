@@ -3,14 +3,20 @@ local e = Roact.createElement
 local Flipper = require(game.ReplicatedStorage.Packages.Flipper)
 local RoactFlipper = require(game.ReplicatedStorage.Packages.RoactFlipper)
 
+local SongDatabase = require(game.ReplicatedStorage.RobeatsGameCore.SongDatabase)
+
 local Mods = require(game.ReplicatedStorage.RobeatsGameCore.Enums.Mods)
 
 local withInjection = require(game.ReplicatedStorage.UI.Components.HOCs.withInjection)
+
+local Tier = require(game.ReplicatedStorage.UI.Components.Tier)
 
 local RoundedTextLabel =  require(game.ReplicatedStorage.UI.Components.Base.RoundedTextLabel)
 local RoundedImageLabel = require(game.ReplicatedStorage.UI.Components.Base.RoundedImageLabel)
 local RoundedTextButton = require(game.ReplicatedStorage.UI.Components.Base.RoundedTextButton)
 local ButtonLayout = require(game.ReplicatedStorage.UI.Components.Base.ButtonLayout)
+
+local Tiers = require(game.ReplicatedStorage.Tiers)
 
 local RunService = game:GetService("RunService")
 
@@ -66,6 +72,8 @@ end
 
 function LeaderboardSlot:render()
     local localUserId = game.Players.LocalPlayer and game.Players.LocalPlayer.UserId or 0
+
+    local tier = Tiers:GetTierFromRating(SongDatabase:get_glicko_estimate_from_rating(self.props.Data.Rating.Overall))
 
     return e(RoundedTextButton, {
         BackgroundColor3 = Color3.fromRGB(15, 15, 15),
@@ -155,7 +163,7 @@ function LeaderboardSlot:render()
                 Position = UDim2.new(1.25, 0, 0.6, 0),
                 Size = UDim2.new(12.75, 0, 0.35, 0),
                 Font = Enum.Font.GothamSemibold,
-                Text = if self.props.Data.Rating and self.props.Data.Rating.Overall ~= 0 then string.format("Rating: %0.2f", self.props.Data.Rating.Overall) else string.format("Score: %d", self.props.Data.Score),
+                Text = if self.props.Data.Rating and self.props.Data.Rating.Overall ~= 0 then string.format("Rating: %d", SongDatabase:get_glicko_estimate_from_rating(self.props.Data.Rating.Overall)) else string.format("Score: %d", self.props.Data.Score),
                 TextColor3 = Color3.fromRGB(80, 80, 80),
                 TextScaled = true,
                 TextXAlignment = Enum.TextXAlignment.Left,
@@ -188,13 +196,29 @@ function LeaderboardSlot:render()
                 BackgroundColor3 = Color3.fromRGB(255, 255, 255),
                 BackgroundTransparency = 1,
                 BorderSizePixel = 0,
-                Position = UDim2.new(1.25, 0, 0, 0),
+                Position = UDim2.new(2, 0, 0, 0),
                 Size = UDim2.new(15.3, 0, 0.55, 0),
                 Font = Enum.Font.GothamSemibold,
                 Text = if self.props.friendsController:IsFriend(self.props.Data.UserId) then "👥 " .. self.props.Data.PlayerName else self.props.Data.PlayerName,
                 TextColor3 = (self.props.Data.UserId == localUserId) and Color3.fromRGB(25, 207, 231) or Color3.fromRGB(94, 94, 94),
                 TextScaled = true,
                 TextXAlignment = Enum.TextXAlignment.Left,
+            }, {
+                e("UITextSizeConstraint", {
+                    MaxTextSize = 49,
+                })
+            });
+            Tier = e(Tier, {
+                imageLabelProps = {
+                    BackgroundColor3 = Color3.fromRGB(255, 255, 255),
+                    BackgroundTransparency = 1,
+                    BorderSizePixel = 0,
+                    Position = UDim2.new(1.25, 0, 0, 0),
+                    Size = UDim2.new(1, 0, 0.55, 0),
+                    ZIndex = -2
+                },
+                tier = tier.name,
+                division = tier.division
             }, {
                 e("UITextSizeConstraint", {
                     MaxTextSize = 49,

@@ -80,7 +80,7 @@ function RobeatsGame:new(_game_environment_center_position, _config)
 	local _local_game_slot = 0
 	function self:get_local_game_slot() return _local_game_slot end
 	
-	local _current_mode = RobeatsGame.Mode.Setup
+	local _current_mode = RobeatsGame.Mode.up
 	function self:get_mode() return _current_mode end
 	function self:set_mode(val) 
 		AssertType:is_enum_member(val, RobeatsGame.Mode)
@@ -96,6 +96,10 @@ function RobeatsGame:new(_game_environment_center_position, _config)
                 game.StarterGui:SetCoreGuiEnabled("Chat", true)
             end
 		end
+	end
+
+	function self:get_replay_hits()
+		return replay:get_hits()
 	end
 
 	--[[ 2D Implementations ]]

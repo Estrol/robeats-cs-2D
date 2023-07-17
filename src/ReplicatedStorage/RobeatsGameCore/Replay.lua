@@ -1,6 +1,5 @@
 local SongDatabase = require(game:GetService("ReplicatedStorage").RobeatsGameCore.SongDatabase)
 local NoteResult = require(game:GetService("ReplicatedStorage").RobeatsGameCore.Enums.NoteResult)
-local SocialService = game:GetService("SocialService")
 
 local Knit = require(game:GetService("ReplicatedStorage").Packages.Knit)
 
@@ -34,6 +33,10 @@ function Replay:new(config)
 
         table.insert(self.hits, hit)
         table.insert(hitsSinceLastSend, hit)
+    end
+
+    function self:set_hits(hits)
+        self.hits = hits
     end
 
     function self:get_hits()

@@ -80,7 +80,7 @@ function RankSlot:render()
         })
     end
 
-    local tier = Tiers:GetTierFromRating(self.props.Data.Rating.Overall)
+    local tier = Tiers:GetTierFromRating(self.props.Data.GlickoRating)
 
     return Roact.createElement(RoundedTextButton, {
         BackgroundColor3 = Color3.fromRGB(15, 15, 15),
@@ -138,7 +138,7 @@ function RankSlot:render()
                 Position = UDim2.new(1.25, 0, 0.6, 0),
                 Size = UDim2.new(8, 0, 0.35, 0),
                 Font = Enum.Font.GothamSemibold,
-                Text = string.format("Rating: <font color = \"rgb(211, 214, 2)\"><b>%0.2f</b></font> | Overall Accuracy: %0.2f%% | Total Maps Played: %d", self.props.Data.Rating.Overall, self.props.Data.Accuracy, self.props.Data.TotalMapsPlayed),
+                Text = string.format("Rating: <font color = \"rgb(211, 214, 2)\"><b>%0d</b></font> | Overall Accuracy: %0.2f%% | Ranked Maps Played: %d", self.props.Data.GlickoRating, self.props.Data.Accuracy, self.props.Data.RankedMatchesPlayed),
                 RichText = true,
                 TextColor3 = Color3.fromRGB(80, 80, 80),
                 TextScaled = true,
@@ -156,7 +156,8 @@ function RankSlot:render()
                 Position = UDim2.new(1.25, 0, 0, 0),
                 Size = UDim2.new(15.3, 0, 0.55, 0),
                 Font = Enum.Font.GothamSemibold,
-                Text = self.props.Data.PlayerName,
+                Text = string.format("%s <font color = \"%s\"><b>%s%s</b></font>", self.props.Data.PlayerName, if self.props.Data.WinStreak > 0 then "rgb(50, 211, 20)" else "rgb(211, 50, 20)", if self.props.Data.WinStreak > 0 then "↑" else "↓", math.abs(self.props.Data.WinStreak)),
+                RichText = true,
                 TextColor3 = Color3.fromRGB(94, 94, 94),
                 TextScaled = true,
                 TextXAlignment = Enum.TextXAlignment.Left,

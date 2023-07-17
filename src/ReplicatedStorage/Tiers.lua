@@ -3,18 +3,27 @@ local Tiers = {}
 local SPUtil = require(game.ReplicatedStorage.Shared.SPUtil)
 
 local TierRatingMap = {
-    { name = "Prism", minRating = 58.5 },
-    { name = "Ultraviolet", minRating = 49 },
-    { name = "Emerald", minRating = 43 },
-    { name = "Diamond", minRating = 32 },
-    { name = "Gold", minRating = 24 },
-    { name = "Silver", minRating = 14 },
-    { name = "Bronze", minRating = 7 },
-    { name = "Tin", minRating = 0 }
+    { name = "Prism", minRating = 2450 },
+    { name = "Ultraviolet", minRating = 2100 },
+    { name = "Emerald", minRating = 1800 },
+    { name = "Diamond", minRating = 1500 },
+    { name = "Gold", minRating = 1200 },
+    { name = "Silver", minRating = 850 },
+    { name = "Bronze", minRating = 500 },
+    { name = "Tin", minRating = 350 }
 }
 
 function Tiers:GetTierFromRating(rating)
     for i, tier in ipairs(TierRatingMap) do
+        if i == #TierRatingMap and rating < tier.minRating then
+            return {
+                name = tier.name,
+                division = 1,
+                subdivision = 1,
+                tierBaseValue = i
+            }
+        end
+
         if rating >= tier.minRating or i == #TierRatingMap then
             if i ~= 1 then
                 local nextTier = TierRatingMap[i - 1]
@@ -32,7 +41,8 @@ function Tiers:GetTierFromRating(rating)
                                 return {
                                     name = tier.name,
                                     division = x + 1,
-                                    subdivision = y + 1
+                                    subdivision = y + 1,
+                                    tierBaseValue = i
                                 }
                             end
                         end
@@ -45,6 +55,20 @@ function Tiers:GetTierFromRating(rating)
             end
         end
     end
+end
+
+function Tiers:GetStringForTier(tier, omitSubdivision)
+    local str = tier.name
+
+    if tier.division then
+        str ..= " " .. string.rep("I", tier.division)
+
+        if not omitSubdivision then
+            str ..= " Division " .. if tier.subdivision == 4 then "IV" else string.rep("I", tier.subdivision)
+        end
+    end
+
+    return str
 end
 
 return Tiers

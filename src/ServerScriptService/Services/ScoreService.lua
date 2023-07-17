@@ -3,6 +3,8 @@ local Knit = require(game.ReplicatedStorage.Packages.Knit)
 local DataStoreService = require(game.ReplicatedStorage.Packages.DataStoreService)
 local LocalizationService = game:GetService("LocalizationService")
 
+local DataSerializer = require(game.ReplicatedStorage.Packages.DataSerializer)
+
 local GraphDataStore = DataStoreService:GetDataStore("GraphDataStore")
 
 local DebugOut = require(game.ReplicatedStorage.Shared.DebugOut)
@@ -11,9 +13,10 @@ local SongDatabase = require(game.ReplicatedStorage.RobeatsGameCore.SongDatabase
 local Tiers = require(game.ReplicatedStorage.Tiers)
 
 local RunService
+local HttpService
 
 local PermissionsService
-local ModerationService
+local MatchmakingService
 local RateLimitService
 local AuthService
 local StateService
@@ -22,6 +25,9 @@ local Llama
 local Raxios
 local Hook
 local FormatHelper
+
+-- the player wins against a map when they get >=96 accuracy
+local ACCURACY_WIN_THRESHOLD = 96
 
 local ScoreService = Knit.CreateService({
     Name = "ScoreService",
@@ -32,9 +38,10 @@ local url = require(game.ServerScriptService.URLs)
 
 function ScoreService:KnitInit()
     RunService = game:GetService("RunService")
+    HttpService = game:GetService("HttpService")
 
     PermissionsService = Knit.GetService("PermissionsService")
-    ModerationService = Knit.GetService("ModerationService")
+    MatchmakingService = Knit.GetService("MatchmakingService")
     RateLimitService = Knit.GetService("RateLimitService")
     AuthService = Knit.GetService("AuthService")
     StateService = Knit.GetService("StateService")
@@ -64,16 +71,18 @@ function ScoreService:PopulateUserProfile(player, override)
         local rating
         local rank
         local tier
+        local wlstreak
 
         if leaderstats then
             rating = leaderstats:FindFirstChild("Rating")
             rank = leaderstats:FindFirstChild("Rank")
             tier = leaderstats:FindFirstChild("Tier")
+            wlstreak = leaderstats:FindFirstChild("Win/Loss")
         else
             leaderstats = Instance.new("Folder")
             leaderstats.Name = "leaderstats"
 
-            rating = Instance.new("NumberValue")
+            rating = Instance.new("StringValue")
             rating.Name = "Rating"
 
             rank = Instance.new("StringValue")
@@ -82,17 +91,22 @@ function ScoreService:PopulateUserProfile(player, override)
             tier = Instance.new("StringValue")
             tier.Name = "Tier"
 
+            wlstreak = Instance.new("StringValue")
+            wlstreak.Name = "Win/Loss"
+
             rating.Parent = leaderstats
             rank.Parent = leaderstats
             tier.Parent = leaderstats
+            wlstreak.Parent = leaderstats
 
             leaderstats.Parent = player
         end
 
-        rating.Value = profile.Rating.Overall
+        rating.Value = if profile.RankedMatchesPlayed >= 10 then string.format("%d", profile.GlickoRating) else "???"
         rank.Value = "#" .. profile.Rank
+        wlstreak.Value = math.abs(profile.WinStreak) .. if profile.WinStreak > 0 then " W" elseif profile.WinStreak < 0 then " L" else ""
 
-        local tierInfo = Tiers:GetTierFromRating(profile.Rating.Overall)
+        local tierInfo = Tiers:GetTierFromRating(profile.GlickoRating)
 
         if tierInfo then
             tier.Value = string.sub(tierInfo.name, 1, 1)
@@ -187,7 +201,13 @@ end
 
 function ScoreService.Client:SubmitScore(player, data)
     if RateLimitService:CanProcessRequestWithRateLimit(player, "SubmitScore", 1) then
-        Raxios.post(url "/scores", {
+        local country
+
+        pcall(function()
+            country = LocalizationService:GetCountryRegionForPlayerAsync(player)
+        end)
+        
+        local response = Raxios.post(url "/scores", {
             query = {
                 userid = player.UserId,
                 auth = AuthService.APIKey
@@ -203,14 +223,29 @@ function ScoreService.Client:SubmitScore(player, data)
                 Goods = data.Goods, 
                 Bads = data.Bads,
                 Misses = data.Misses,
-                Mean = data.Mean,
+                Mean = data.Mean or 0,
                 Accuracy = data.Accuracy,   
                 Rate = data.Rate,
                 MaxChain = data.MaxChain,
                 SongMD5Hash = data.SongMD5Hash,
-                Mods = data.Mods
+                Mods = data.Mods,
+                CountryRegion = country
             }
-        })
+        }):json()
+
+        local match = MatchmakingService:GetMatch(player)
+
+        if match then
+            local profile = MatchmakingService:HandleMatchResult(player, if data.Accuracy >= ACCURACY_WIN_THRESHOLD then MatchmakingService.WIN else MatchmakingService.LOSS)
+
+            local template = [[
+                MMR: %d
+                RD: %0.2f
+                Sigma: %0.4f
+            ]]
+
+            print(string.format(template, profile.GlickoRating, profile.RD, profile.Sigma))
+        end
 
         ScoreService:PopulateUserProfile(player, true)
 
@@ -250,8 +285,48 @@ function ScoreService.Client:SubmitScore(player, data)
         spreadField:AppendLine("Misses: " .. FormatHelper:CodeblockLine(data.Misses))
 
         message:Send()
+
+        print("Webhook posted")
+
+        return response.pb
     end
-    print("Webhook posted")
+
+    return false
+end
+
+function ScoreService.Client:GetReplay(player, userId, hash)
+    assert(typeof(hash) == "string", "You did not include a hash!")
+
+    if RateLimitService:CanProcessRequestWithRateLimit(player, "GetReplay", 2) then
+        local replay = Raxios.get(url "/scores/replay", {
+            query = {
+                auth = AuthService.APIKey,
+                hash = hash,
+                userid = userId
+            }
+        }):json()
+
+        if replay.success == false then
+            return
+        end
+
+        return DataSerializer.Deserialize(replay)
+    end
+end
+
+function ScoreService.Client:SubmitReplay(player, hash, replay)
+    assert(typeof(hash) == "string", "You did not include a hash!")
+
+    if RateLimitService:CanProcessRequestWithRateLimit(player, "SubmitReplay", 2) then
+        Raxios.post(url "/scores/replay", {
+            query = {
+                auth = AuthService.APIKey,
+                hash = hash,
+                userid = player.UserId
+            },
+            data = DataSerializer.Serialize(replay)
+        })
+    end
 end
 
 function ScoreService.Client:SubmitGraph(player, songMD5Hash, graph)
@@ -292,10 +367,10 @@ function ScoreService.Client:GetProfile(player, userId)
     return ScoreService:GetProfile(player, userId)
 end
 
-function ScoreService.Client:GetGlobalLeaderboard(player)
+function ScoreService.Client:GetGlobalLeaderboard(player, country)
     if RateLimitService:CanProcessRequestWithRateLimit(player, "GetGlobalLeaderboard", 3) then
         local leaderboard = Raxios.get(url "/profiles/top", {
-            query = { auth = AuthService.APIKey }
+            query = { auth = AuthService.APIKey, country = country }
         }):json()
 
         for _, slot in ipairs(leaderboard) do

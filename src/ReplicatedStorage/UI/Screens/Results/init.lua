@@ -57,6 +57,32 @@ function Results:init()
 		end
 		self.props.history:goBack()
 	end)
+
+	local state = self.props.location.state
+
+	if state.Viewing then
+		local replay = self.props.scoreService:GetReplay(state.UserId, state.SongMD5Hash):expect()
+
+		if replay then
+			self:setState({
+				replay = replay
+			})
+		end
+	end
+
+	self:setState({
+		rankedRating = state.OldRating
+	})
+
+	task.delay(2, function()
+		if self.unmounted then
+			return
+		end
+
+		self:setState({
+			rankedRating = self.props.profile and self.props.profile.GlickoRating
+		})
+	end)
 end
 
 function Results:didUpdate(prevProps)
@@ -74,12 +100,16 @@ function Results:didMount()
 end
 
 function Results:willUnmount()
+	self.unmounted = true
+
 	self.backOutConnection:Disconnect()
 	self.props.previewController:Silence()
 end
 
 function Results:render()
 	local state = self.props.location.state
+
+	local ranked = state.Ranked
 
 	local grade = Grade:get_grade_from_accuracy(state.Accuracy)
 
@@ -125,6 +155,7 @@ function Results:render()
 			hits = player.hits
 		}
 	else
+		
 		scoreData = {
 			score = state.Score,
 			rating = state.Rating.Overall,
@@ -147,7 +178,7 @@ function Results:render()
 
 	local viewing = self.props.location.state.Viewing
 
-	local shouldShiftUp = not viewing and not room and self.props.profile
+	local shouldShiftUp = not viewing and not room and self.props.profile and ranked
 
     return Roact.createElement("Frame", {
 		BackgroundColor3 = Color3.fromRGB(0,0,0),
@@ -219,7 +250,7 @@ function Results:render()
 				};
 				{
 					Name = "Rating";
-					Value = string.format("%0.2f", scoreData.rating);
+					Value = string.format("%d", SongDatabase:get_glicko_estimate_from_rating(scoreData.rating));
 				};
 				{
 					Name = "Max Combo";
@@ -297,6 +328,8 @@ function Results:render()
 					})
 				elseif self.props.location.state.GoBack then
 					self.props.history:goBack()
+				elseif ranked then
+					self.props.history:push("/")
 				else
 					self.props.history:push("/select")
 				end
@@ -316,13 +349,17 @@ function Results:render()
 			Position = UDim2.fromScale(0.12, 0.98);
 			Size = UDim2.fromScale(0.1, 0.04);
 			HoldSize = UDim2.fromScale(0.1, 0.04);
-			Text = "Restart Map";
+			Text = if ranked then "Play Again" else "Restart Map";
 			TextColor3 = Color3.fromRGB(255, 255, 255);
 			TextSize = 16,
 			ZIndex = 5,
 			TextScaled = true,
 			OnClick = function()
-				self.props.history:push("/play")
+				if ranked then
+					self.props.history:push("/matchmaking")
+				else
+					self.props.history:push("/play")
+				end
 			end
 		}, {
 			UITextSizeConstraint = Roact.createElement("UITextSizeConstraint", {
@@ -333,18 +370,51 @@ function Results:render()
 				PaddingBottom = UDim.new(0, 3),
 			})
 		}) else nil,
-		Ranking = if (self.props.profile and self.props.profile.Rating and not viewing and not room) then Roact.createElement(Ranking, {
-			Rating = self.props.profile.Rating.Overall,
+		ViewReplay = if self.state.replay then Roact.createElement(RoundedTextButton, {
+			BackgroundColor3 = Color3.fromRGB(50, 144, 50);
+			AnchorPoint = Vector2.new(0, 1);
+			Position = UDim2.fromScale(0.12, 0.98);
+			Size = UDim2.fromScale(0.1, 0.04);
+			HoldSize = UDim2.fromScale(0.1, 0.04);
+			Text = "View Replay";
+			TextColor3 = Color3.fromRGB(255, 255, 255);
+			TextSize = 16,
+			ZIndex = 5,
+			TextScaled = true,
+			OnClick = function()
+				self.props.history:push("/play", {
+					Replay = self.state.replay,
+					Spectate = {
+						UserId = state.UserId,
+						PlayerName = state.PlayerName,
+						SongKey = SongDatabase:get_key_for_hash(state.SongMD5Hash),
+						SongRate = state.Rate
+					}
+				})
+			end
+		}, {
+			UITextSizeConstraint = Roact.createElement("UITextSizeConstraint", {
+				MaxTextSize = 25
+			}),
+			UIPadding = Roact.createElement("UIPadding", {
+				PaddingTop = UDim.new(0, 3),
+				PaddingBottom = UDim.new(0, 3),
+			})
+		}) else nil,
+		Ranking = if (self.props.profile and not viewing and not room and ranked) then Roact.createElement(Ranking, {
+			Rating = self.state.rankedRating,
 			Position = UDim2.fromScale(0.69, 0.95),
 			Size = UDim2.fromScale(0.5, 0.2),
-			AnchorPoint = Vector2.new(0.5, 1)
+			AnchorPoint = Vector2.new(0.5, 1),
+			MatchesPlayed = self.props.profile and self.props.profile.RankedMatchesPlayed
 		}) else nil,
 		PlayerSelection = playerSelection
 	})
 end
 
 local Injected = withInjection(Results, {
-	previewController = "PreviewController"
+	previewController = "PreviewController",
+	scoreService = "ScoreService"
 })
 
 return RoactRodux.connect(function(state, props)

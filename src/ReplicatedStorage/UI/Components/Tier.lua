@@ -59,8 +59,10 @@ function Tier:didUpdate()
 end
 
 function Tier:render()
-    local prevImage = self.Images[self.state.prevTier][if self.state.prevDivision then self.state.prevDivision else 1]
-    local image = self.Images[self.props.tier][if self.props.division then self.props.division else 1]
+    local prevImage = if self.props.unranked then "rbxassetid://696413137" else self.Images[self.state.prevTier][if self.state.prevDivision then self.state.prevDivision else 1]
+    local image = if self.props.unranked then "rbxassetid://696413137" else self.Images[self.props.tier][if self.props.division then self.props.division else 1]
+
+    local imageTransparency = self.props.imageLabelProps.ImageTransparency
 
     local props = Llama.Dictionary.join(self.props.imageLabelProps, {
         Image = self.motorBinding:map(function(a)
@@ -70,7 +72,7 @@ function Tier:render()
 
             return prevImage
         end),
-        ImageTransparency = self.motorBinding:map(function(a)
+        ImageTransparency = if imageTransparency then imageTransparency else self.motorBinding:map(function(a)
             return if a.rankUp > 0.5 then 1 - a.rankUp else a.rankUp
         end)
     })
