@@ -205,6 +205,76 @@ function Options:getSettingElements()
             Name = "Use Custom Judgements",
             LayoutOrder = 12
         })
+
+        elements.CustomMarvelousPreset = e(IntValue, {
+            Value = self.props.options.CustomMarvelousPreset,
+            OnChanged = function(value)
+                self.props.setOption("CustomMarvelousPreset", value);
+            end,
+            FormatValue = function(value)
+                return string.format("%d ms", value)
+            end,
+            Name = "Marvelous Preset",
+            LayoutOrder = 13,
+            MinValue = 1,
+            MaxValue = 200
+        })
+
+        elements.CustomPerfectPreset = e(IntValue, {
+            Value = self.props.options.CustomPerfectPreset,
+            OnChanged = function(value)
+                self.props.setOption("CustomPerfectPreset", value);
+            end,
+            FormatValue = function(value)
+                return string.format("%d ms", value)
+            end,
+            Name = "Perfect Preset",
+            LayoutOrder = 14,
+            MinValue = 1,
+            MaxValue = 200
+        })
+
+        elements.CustomGreatPreset = e(IntValue, {
+            Value = self.props.options.CustomGreatPreset,
+            OnChanged = function(value)
+                self.props.setOption("CustomGreatPreset", value);
+            end,
+            FormatValue = function(value)
+                return string.format("%d ms", value)
+            end,
+            Name = "Great Preset",
+            LayoutOrder = 15,
+            MinValue = 1,
+            MaxValue = 200
+        })
+
+        elements.CustomGoodPreset = e(IntValue, {
+            Value = self.props.options.CustomGoodPreset,
+            OnChanged = function(value)
+                self.props.setOption("CustomGoodPreset", value);
+            end,
+            FormatValue = function(value)
+                return string.format("%d ms", value)
+            end,
+            Name = "Good Preset",
+            LayoutOrder = 16,
+            MinValue = 1,
+            MaxValue = 200
+        })
+
+        elements.CustomBadPreset = e(IntValue, {
+            Value = self.props.options.CustomBadPreset,
+            OnChanged = function(value)
+                self.props.setOption("CustomBadPreset", value);
+            end,
+            FormatValue = function(value)
+                return string.format("%d ms", value)
+            end,
+            Name = "Bad Preset",
+            LayoutOrder = 17,
+            MinValue = 1,
+            MaxValue = 200
+        })
     end)
     
     --UI settings
