@@ -322,6 +322,21 @@ function Options:getSettingElements()
             MaxValue = 100,
             LayoutOrder = 3
         })
+        
+        elements.CursorSize = e(IntValue, {
+            Value = self.props.options.CursorSize,
+            OnChanged = function(value)
+                self.props.options.setOption("CursorSize", value)
+            end,
+            FormatValue = function(value)
+                return string.format("%d px", value)
+            end,
+            Name = "Cursor Size",
+            IncrementValue = 1,
+            MinValue = 1,
+            MaxValue = 512,
+            LayoutOrder = 3
+        })
 
         elements.ShowProgressBar = e(BoolValue, {
             Value = self.props.options.ShowProgressBar,

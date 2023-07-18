@@ -38,6 +38,7 @@ local defaultState = {
         ShowProgressBar = true;
         ProgressBarColor = Color3.new(1, 1, 1);
         CursorImageColor = Color3.fromRGB(194, 244, 106);
+        CursorSize = 128;
 
         --Extra settings.
         TimeOfDay = 24;
