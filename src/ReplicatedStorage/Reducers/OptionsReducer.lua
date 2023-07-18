@@ -52,6 +52,15 @@ local defaultState = {
         HideChat = false;
         HideLeaderboard = false;
 
+        --Custom judgements
+        UseCustomJudgements = false;
+
+        CustomMarvelousPreset = 22;
+        CustomPerfectPreset = 45;
+        CustomGreatPreset = 85;
+        CustomGoodPreset = 112;
+        CustomBadPreset = 136;
+
         --Mobile Settings
         DividersEnabled = true,
 

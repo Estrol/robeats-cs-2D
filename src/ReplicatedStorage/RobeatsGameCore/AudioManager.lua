@@ -155,17 +155,31 @@ function AudioManager:new(_game)
 		_note_prebuffer_time = 13720 / _config.NoteSpeed
 		
 		--Apply timing windows
-		_timing_preset = TimingPresets[_config.TimingPreset]
-		_note_bad_max = _timing_preset.NoteBadMaxMS
-		_note_good_max = _timing_preset.NoteGoodMaxMS
-		_note_great_max = _timing_preset.NoteGreatMaxMS
-		_note_perfect_max =_timing_preset.NotePerfectMaxMS
-		_note_marvelous_max =_timing_preset.NoteMarvelousMaxMS
-		_note_marvelous_min = _timing_preset.NoteMarvelousMinMS
-		_note_perfect_min = _timing_preset.NotePerfectMinMS
-		_note_great_min = _timing_preset.NoteGreatMinMS
-		_note_good_min = _timing_preset.NoteGoodMinMS
-		_note_bad_min = _timing_preset.NoteBadMinMS
+		if (not _config.UseCustomJudgements) then
+			_timing_preset = TimingPresets[_config.TimingPreset]
+			_note_bad_max = _timing_preset.NoteBadMaxMS
+			_note_good_max = _timing_preset.NoteGoodMaxMS
+			_note_great_max = _timing_preset.NoteGreatMaxMS
+			_note_perfect_max =_timing_preset.NotePerfectMaxMS
+			_note_marvelous_max =_timing_preset.NoteMarvelousMaxMS
+			_note_marvelous_min = _timing_preset.NoteMarvelousMinMS
+			_note_perfect_min = _timing_preset.NotePerfectMinMS
+			_note_great_min = _timing_preset.NoteGreatMinMS
+			_note_good_min = _timing_preset.NoteGoodMinMS
+			_note_bad_min = _timing_preset.NoteBadMinMS
+		else
+			_note_bad_max = _config.CustomBadPreset
+			_note_good_max = _config.CustomGoodPreset
+			_note_great_max = _config.CustomGreatPreset
+			_note_perfect_max =_config.CustomPerfectPreset
+			_note_marvelous_max =_config.CustomMarvelousPreset
+			_note_marvelous_min = -_config.CustomMarvelousPreset
+			_note_perfect_min = -_config.CustomPerfectPreset
+			_note_great_min = -_config.CustomGreatPreset
+			_note_good_min = -_config.CustomGoodPreset
+			_note_bad_min = -_config.CustomBadPreset
+		end
+		
 	end
 
 	function self:teardown()
