@@ -195,6 +195,16 @@ function Options:getSettingElements()
             Name = "Play Hitsounds",
             LayoutOrder = 11
         })
+
+        --Custom judgements
+        elements.UseCustomJudgements = e(BoolValue, {
+            Value = self.props.options.UseCustomJudgements,
+            OnChanged = function(value)
+                self.props.setOption("UseCustomJudgements", value);
+            end,
+            Name = "Use Custom Judgements",
+            LayoutOrder = 12
+        })
     end)
     
     --UI settings

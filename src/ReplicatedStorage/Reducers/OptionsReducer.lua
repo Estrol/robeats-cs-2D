@@ -52,6 +52,9 @@ local defaultState = {
         HideChat = false;
         HideLeaderboard = false;
 
+        --Custom judgements
+        UseCustomJudgements = false;
+
         --Mobile Settings
         DividersEnabled = true,
 
