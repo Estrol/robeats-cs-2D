@@ -25,5 +25,5 @@ If you have any questions feel free to join the Discord server (link above) and 
 
 # Special thanks
 
-- [astral](https://github.com/astralkingdummy) for much work and maintinence, along with doing various things with the legacy game
+- [astral/ary](https://github.com/arynnette) for much work and maintinence, along with doing various things with the legacy game
 - [spotco](https://github.com/spotco) for providing a solid base for this game and making this even possible!
