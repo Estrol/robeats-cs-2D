@@ -258,6 +258,7 @@ function RoactController:InitializeCursor()
     self.store.changed:connect(function(newState, _)
         cursorImageColor = newState.options.persistent.CursorImageColor
         hue, saturation, value = newState.options.persistent.CursorImageColor:ToHSV()
+        cursorSize = newState.options.persistent.CursorSize
         value *= .85
         cursorTrailColor = Color3.fromHSV(hue, saturation, value)
     end)
