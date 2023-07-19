@@ -232,7 +232,8 @@ function RoactController:InitializeCursor()
     local state = self.store:getState()
     local cursorImageColor = state.options.persistent.CursorImageColor
     local hue, saturation, value = state.options.persistent.CursorImageColor:ToHSV()
-
+    local cursorSize = state.options.persistent.CursorSize
+    
     value *= .85
 
     local cursorTrailColor = Color3.fromHSV(hue, saturation, value)
@@ -241,7 +242,7 @@ function RoactController:InitializeCursor()
 
     self.OverlayCursor = Instance.new("ImageLabel"); self.OverlayCursor.Parent = self.MouseOverlay
 
-    self.OverlayCursor.Size = UDim2.new(0, 128, 0, 128)
+    self.OverlayCursor.Size = UDim2.new(0, cursorSize, 0, cursorSize)
     self.OverlayCursor.BackgroundTransparency = 1
     self.OverlayCursor.Position = UDim2.new(.5, 0, .5, 0)
     self.OverlayCursor.AnchorPoint = Vector2.new(0.5, 0.5)
