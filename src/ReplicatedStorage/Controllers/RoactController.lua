@@ -256,9 +256,9 @@ function RoactController:InitializeCursor()
     self.TrailEmitters.Name = "TrailEmitterCache"
 
     self.store.changed:connect(function(newState, _)
+        cursorSize = newState.options.persistent.CursorSize
         cursorImageColor = newState.options.persistent.CursorImageColor
         hue, saturation, value = newState.options.persistent.CursorImageColor:ToHSV()
-        cursorSize = newState.options.persistent.CursorSize
         value *= .85
         cursorTrailColor = Color3.fromHSV(hue, saturation, value)
     end)
@@ -287,6 +287,7 @@ function RoactController:InitializeCursor()
         end
 
         self.OverlayCursor.ImageColor3 = cursorImageColor
+        self.OverlayCursor.Size = UDim2.fromOffset(cursorSize, cursorSize);
         
         if tick() - self.TimeSinceLastEmitter > .02 then
             self.TimeSinceLastEmitter = tick()
@@ -296,7 +297,7 @@ function RoactController:InitializeCursor()
             temporaryOverlay.Image = "rbxassetid://13783068813"
             temporaryOverlay.BackgroundTransparency = 1
             temporaryOverlay.AnchorPoint = Vector2.new(.5, .5)
-            temporaryOverlay.Size = UDim2.fromOffset(80, 80)
+            temporaryOverlay.Size = UDim2.fromOffset(cursorSize - (cursorSize / 1.6), cursorSize - (cursorSize / 1.6))
             temporaryOverlay.Position = self.OverlayCursor.Position
             temporaryOverlay.Parent = self.TrailEmitters
             temporaryOverlay.ImageColor3 = cursorTrailColor
