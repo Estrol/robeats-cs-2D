@@ -38,6 +38,7 @@ local defaultState = {
         ShowProgressBar = true;
         ProgressBarColor = Color3.new(1, 1, 1);
         CursorImageColor = Color3.fromRGB(194, 244, 106);
+        CursorSize = 128;
 
         --Extra settings.
         TimeOfDay = 24;
@@ -51,6 +52,15 @@ local defaultState = {
         HidePlayerList = false;
         HideChat = false;
         HideLeaderboard = false;
+
+        --Custom judgements
+        UseCustomJudgements = false;
+
+        CustomMarvelousPreset = 22;
+        CustomPerfectPreset = 45;
+        CustomGreatPreset = 85;
+        CustomGoodPreset = 112;
+        CustomBadPreset = 136;
 
         --Mobile Settings
         DividersEnabled = true,

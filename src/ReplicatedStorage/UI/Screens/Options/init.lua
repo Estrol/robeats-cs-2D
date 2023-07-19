@@ -195,6 +195,86 @@ function Options:getSettingElements()
             Name = "Play Hitsounds",
             LayoutOrder = 11
         })
+
+        --Custom judgements
+        elements.UseCustomJudgements = e(BoolValue, {
+            Value = self.props.options.UseCustomJudgements,
+            OnChanged = function(value)
+                self.props.setOption("UseCustomJudgements", value);
+            end,
+            Name = "Use Custom Judgements",
+            LayoutOrder = 12
+        })
+
+        elements.CustomMarvelousPreset = e(IntValue, {
+            Value = self.props.options.CustomMarvelousPreset,
+            OnChanged = function(value)
+                self.props.setOption("CustomMarvelousPreset", value);
+            end,
+            FormatValue = function(value)
+                return string.format("%d ms", value)
+            end,
+            Name = "Marvelous Preset",
+            LayoutOrder = 13,
+            MinValue = 1,
+            MaxValue = 200
+        })
+
+        elements.CustomPerfectPreset = e(IntValue, {
+            Value = self.props.options.CustomPerfectPreset,
+            OnChanged = function(value)
+                self.props.setOption("CustomPerfectPreset", value);
+            end,
+            FormatValue = function(value)
+                return string.format("%d ms", value)
+            end,
+            Name = "Perfect Preset",
+            LayoutOrder = 14,
+            MinValue = 1,
+            MaxValue = 200
+        })
+
+        elements.CustomGreatPreset = e(IntValue, {
+            Value = self.props.options.CustomGreatPreset,
+            OnChanged = function(value)
+                self.props.setOption("CustomGreatPreset", value);
+            end,
+            FormatValue = function(value)
+                return string.format("%d ms", value)
+            end,
+            Name = "Great Preset",
+            LayoutOrder = 15,
+            MinValue = 1,
+            MaxValue = 200
+        })
+
+        elements.CustomGoodPreset = e(IntValue, {
+            Value = self.props.options.CustomGoodPreset,
+            OnChanged = function(value)
+                self.props.setOption("CustomGoodPreset", value);
+            end,
+            FormatValue = function(value)
+                return string.format("%d ms", value)
+            end,
+            Name = "Good Preset",
+            LayoutOrder = 16,
+            MinValue = 1,
+            MaxValue = 200
+        })
+
+        elements.CustomBadPreset = e(IntValue, {
+            Value = self.props.options.CustomBadPreset,
+            OnChanged = function(value)
+                self.props.setOption("CustomBadPreset", value);
+            end,
+            FormatValue = function(value)
+                return string.format("%d ms", value)
+            end,
+            Name = "Bad Preset",
+            LayoutOrder = 17,
+            MinValue = 1,
+            MaxValue = 200
+        })
     end)
     
     --UI settings
@@ -225,7 +305,7 @@ function Options:getSettingElements()
                 self.props.setOption("HideLeaderboard", value)
             end,
             Name = "Hide Leaderboard in-game",
-            LayoutOrder = 5,
+            LayoutOrder = 4,
         })
 
         elements.LaneCover = e(IntValue, {
@@ -240,7 +320,21 @@ function Options:getSettingElements()
             IncrementValue = 2,
             MinValue = 0,
             MaxValue = 100,
-            LayoutOrder = 3
+            LayoutOrder = 2
+        })
+
+        elements.CursorSize = e(IntValue, {
+            Value = self.props.options.CursorSize,
+            OnChanged = function(value)
+                self.props.setOption("CursorSize", value);
+            end,
+            FormatValue = function(value)
+                return string.format("%d px", value)
+            end,
+            Name = "Cursor Size",
+            LayoutOrder = 3,
+            MinValue = 1,
+            MaxValue = 512
         })
 
         elements.ShowProgressBar = e(BoolValue, {
@@ -249,7 +343,7 @@ function Options:getSettingElements()
                 self.props.setOption("ShowProgressBar", value)
             end,
             Name = "Show in-game song progress",
-            LayoutOrder = 4
+            LayoutOrder = 5
         })
 
         elements.ProgressBarColor = e(ColorValue, {
@@ -258,7 +352,7 @@ function Options:getSettingElements()
                 self.props.setOption("ProgressBarColor", value)
             end,
             Name = "Song Progress Color",
-            LayoutOrder = 6
+            LayoutOrder = 7
         })
 
         elements.NoteColor = e(ColorValue, {
@@ -267,7 +361,7 @@ function Options:getSettingElements()
                 self.props.setOption("NoteColor", value)
             end,
             Name = "Note Color",
-            LayoutOrder = 7
+            LayoutOrder = 8
         });
 
         elements.CursorColor = e(ColorValue, {
@@ -276,7 +370,7 @@ function Options:getSettingElements()
                 self.props.setOption("CursorImageColor", value)
             end,
             Name = "Cursor Color",
-            LayoutOrder = 8,
+            LayoutOrder = 9,
         })
     end)
     --extras

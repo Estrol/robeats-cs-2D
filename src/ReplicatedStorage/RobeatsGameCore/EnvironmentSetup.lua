@@ -28,7 +28,7 @@ function EnvironmentSetup:initial_setup()
 	
 	_element_protos_folder = game.Workspace.ElementProtos
 	_element_protos_folder.Parent = game.ReplicatedStorage
-	
+
 	_local_elements_folder = Instance.new("Folder",game.Workspace)
 	_local_elements_folder.Name = "LocalElements"
 
@@ -126,7 +126,7 @@ function EnvironmentSetup:get_player_gui_root()
 end
 
 function EnvironmentSetup:get_robeats_game_stage()
-	return _element_protos_folder.NoteTrackSystemProto.TrackBG.Union
+	return EnvironmentSetup:get_element_protos_folder().NoteTrackSystemProto.TrackBG.Union
 end
 
 return EnvironmentSetup
