@@ -31,8 +31,8 @@ local function sortByAlphabeticalOrder(a, b)
 end
 
 local function sortByDifference(a, b, options)
-    local ratingA = SongDatabase:get_difficulty_for_key(a.SongKey, options.SongRate)
-    local ratingB = SongDatabase:get_difficulty_for_key(b.SongKey, options.SongRate)
+    local ratingA = SongDatabase:get_difficulty_for_key(a.SongKey, options.rate)
+    local ratingB = SongDatabase:get_difficulty_for_key(b.SongKey, options.rate)
 
     return math.abs(SongDatabase:get_glicko_estimate_from_rating(ratingA.Overall) - options.mmr) < math.abs(SongDatabase:get_glicko_estimate_from_rating(ratingB.Overall) - options.mmr)
 end
@@ -56,7 +56,7 @@ function SongList:getSongs()
 
     local options = {
         mmr = self.props.profile and self.props.profile.GlickoRating,
-        rate = self.props.SongRate
+        rate = self.props.SongRate / 100
     }
 
     return Llama.List.sort(found, function(a, b)
@@ -77,6 +77,8 @@ function SongList:init()
     self.OnSearchChanged = function(o)
         self.props.setSearch(o.Text)
     end
+
+    self.scrollingFrameRef = Roact.createRef()
 end
 
 
@@ -125,7 +127,8 @@ function SongList:render()
             end,
             getItemSize = function()
                 return 80
-            end
+            end,
+            [Roact.Ref] = self.scrollingFrameRef
         }),
         SearchBar = e("Frame", {
             BackgroundColor3 = Color3.fromRGB(41, 41, 41),
@@ -176,12 +179,25 @@ function SongList:render()
     })
 end
 
+function SongList:didMount()
+    local frame = self.scrollingFrameRef:getValue()
+
+    frame.CanvasPosition = Vector2.new(0, self.props.ScrollPosition)
+end
+
+function SongList:willUnmount()
+    local frame = self.scrollingFrameRef:getValue()
+
+    self.props.setScrollPosition(frame.CanvasPosition.Y)
+end
+
 return RoactRodux.connect(function(state)
     return {
         Search = state.options.transient.Search,
         SortByDifficulty = state.options.transient.SortByDifficulty,
         SongRate = state.options.transient.SongRate,
-        profile = state.profiles[tostring(game.Players.LocalPlayer.UserId)]
+        profile = state.profiles[tostring(game.Players.LocalPlayer.UserId)],
+        ScrollPosition = state.options.transient.SongListScrollPosition
     }
 end, function(dispatch)
     return {
@@ -190,6 +206,9 @@ end, function(dispatch)
         end,
         setSortByDifficulty = function(sortByDifficulty)
             dispatch({ type = "setTransientOption", option = "SortByDifficulty", value = sortByDifficulty })
+        end,
+        setScrollPosition = function(position)
+            dispatch({ type = "setTransientOption", option = "SongListScrollPosition", value = position })
         end
     }
 end)(SongList)

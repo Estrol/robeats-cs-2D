@@ -141,6 +141,7 @@ function SongSelect:render()
                     SongKey = SongDatabase:get_key_for_hash(stats.SongMD5Hash),
                     TimePlayed = if stats._updated_at then DateTime.fromIsoDate(stats._updated_at).UnixTimestamp else nil,
                     Hits = hits,
+                    Mods = stats.Mods,
                     Viewing = true
                 }))
             end,

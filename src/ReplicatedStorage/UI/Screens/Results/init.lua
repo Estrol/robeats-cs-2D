@@ -168,7 +168,8 @@ function Results:render()
 			misses = state.Misses,
 			mean = state.Mean,
 			maxChain = state.MaxChain,
-			playerName = state.PlayerName
+			playerName = state.PlayerName,
+			mods = state.Mods
 		}
 	end
 
@@ -388,7 +389,8 @@ function Results:render()
 						UserId = state.UserId,
 						PlayerName = state.PlayerName,
 						SongKey = SongDatabase:get_key_for_hash(state.SongMD5Hash),
-						SongRate = state.Rate
+						SongRate = state.Rate,
+						Mods = scoreData.mods
 					}
 				})
 			end

@@ -232,7 +232,8 @@ function RoactController:InitializeCursor()
     local state = self.store:getState()
     local cursorImageColor = state.options.persistent.CursorImageColor
     local hue, saturation, value = state.options.persistent.CursorImageColor:ToHSV()
-
+    local cursorSize = state.options.persistent.CursorSize
+    
     value *= .85
 
     local cursorTrailColor = Color3.fromHSV(hue, saturation, value)
@@ -241,7 +242,7 @@ function RoactController:InitializeCursor()
 
     self.OverlayCursor = Instance.new("ImageLabel"); self.OverlayCursor.Parent = self.MouseOverlay
 
-    self.OverlayCursor.Size = UDim2.new(0, 128, 0, 128)
+    self.OverlayCursor.Size = UDim2.new(0, cursorSize, 0, cursorSize)
     self.OverlayCursor.BackgroundTransparency = 1
     self.OverlayCursor.Position = UDim2.new(.5, 0, .5, 0)
     self.OverlayCursor.AnchorPoint = Vector2.new(0.5, 0.5)
@@ -255,6 +256,7 @@ function RoactController:InitializeCursor()
     self.TrailEmitters.Name = "TrailEmitterCache"
 
     self.store.changed:connect(function(newState, _)
+        cursorSize = newState.options.persistent.CursorSize
         cursorImageColor = newState.options.persistent.CursorImageColor
         hue, saturation, value = newState.options.persistent.CursorImageColor:ToHSV()
         value *= .85
@@ -285,6 +287,7 @@ function RoactController:InitializeCursor()
         end
 
         self.OverlayCursor.ImageColor3 = cursorImageColor
+        self.OverlayCursor.Size = UDim2.fromOffset(cursorSize, cursorSize);
         
         if tick() - self.TimeSinceLastEmitter > .02 then
             self.TimeSinceLastEmitter = tick()
@@ -294,7 +297,7 @@ function RoactController:InitializeCursor()
             temporaryOverlay.Image = "rbxassetid://13783068813"
             temporaryOverlay.BackgroundTransparency = 1
             temporaryOverlay.AnchorPoint = Vector2.new(.5, .5)
-            temporaryOverlay.Size = UDim2.fromOffset(80, 80)
+            temporaryOverlay.Size = UDim2.fromOffset(cursorSize - (cursorSize / 1.6), cursorSize - (cursorSize / 1.6))
             temporaryOverlay.Position = self.OverlayCursor.Position
             temporaryOverlay.Parent = self.TrailEmitters
             temporaryOverlay.ImageColor3 = cursorTrailColor
