@@ -75,6 +75,7 @@ local defaultState = {
         SortByDifficulty = true,
         ShowRetryCountAfterFastReset = true,
         RetryCount = 0,
+        SongListScrollPosition = 0
     }
 }
 

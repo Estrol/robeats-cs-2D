@@ -53,7 +53,7 @@ function RoundedLargeScrollingFrame:init()
         end
     end
 
-    self.listRef = Roact.createRef()
+    self.listRef = self.props[Roact.Ref] or Roact.createRef()
 end
 
 function RoundedLargeScrollingFrame:render()

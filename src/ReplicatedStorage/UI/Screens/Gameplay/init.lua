@@ -110,7 +110,8 @@ function Gameplay:init()
     -- Create the game instance
     
     local options = Llama.Dictionary.join(options, {
-        TimingPreset = if self.props.location.state.Ranked then "Standard" else options.TimingPreset
+        TimingPreset = if self.props.location.state.Ranked then "Standard" else options.TimingPreset,
+        Mods = if self.props.location.state.Spectate and self.props.location.state.Spectate.Mods then self.props.location.state.Spectate.Mods else options.Mods
     })
 
     local _game = RobeatsGame:new(EnvironmentSetup:get_game_environment_center_position(), options)
